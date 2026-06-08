@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+.bground {
+  background-image: url(./assets/home/headerimage.png);
+  background-size: cover;
+  background-position: center;
+}
+
+@media (max-width: 640px) {
+  .home-header {
+    background-image: url(./assets/home/Mobview-bg.png);
+    background-position: center;
+    background-size: cover;
+  }
+}
+
+.linear-text{
+  background: linear-gradient(to right, #AED5C6, #037B76);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+html{
+  scroll-behavior: smooth;
+}
+
+.marquee-container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.marquee-content {
+  display: flex;
+  width: fit-content;
+}
+
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+.marquee-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.animate-marqueeAbout {
+  animation: marqueeAbout 30s linear infinite;
+}
+
+@keyframes marqueeAbout {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+

@@ -1,0 +1,484 @@
+{
+  "navigation": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "doctors": "Doctors",
+    "blogs": "Blogs",
+    "contact": "Contact Us",
+    "booking": "Book Appointment"
+  },
+  "topNav": {
+    "phone": "+966 505730003",
+    "email": "contact@starhealth.sa"
+  },
+  "hero": {
+    "title": "Treated with Care, Always!",
+    "subtitle": "Compassionate and Expert Care is just a click away",
+    "cta": "Talk to Us!"
+  },
+  "bookingForm": {
+    "title": "Book an Appointment",
+    "subtitle": "Your Better Health, Just a Click Away",
+    "selectSpeciality": "Select Speciality",
+    "selectDoctor": "Select Doctor",
+    "yourName": "Your Name",
+    "yourPhone": "Your Phone",
+    "selectAge": "Select Age",
+    "selectDate": "Select Date",
+    "bookNow": "Book Now"
+  },
+  "welcome": {
+    "title": "WELCOME TO STAR HEALTH",
+    "description": "At Star Health, we do more than treat illness — we care for you as a person. You are not a case number — you are family. From diagnosis to healing, we stand with you."
+  },
+  "safety": {
+    "title": "We Prioritize Your Health, Safety and Well-being",
+    "description": "Star Health Medical Centre is designed for your peace of mind - from hygiene protocols to a calming patient experience. From entry to exit, your health and peace of mind matters the most.",
+    "point1": "Our team is trained to care with empathy, not just efficiency.",
+    "point2": " We ensure smooth patient flow to minimize waiting and stress. ",
+    "point3": "Our clean, quiet spaces are designed to help you relax and feel at home. ",
+    "contactUs": "Contact Us"
+  },
+  "services": {
+    "title": "Our Services",
+    "description": "Whatever your health concern — big or small — we’ll treat you with warmth, honesty, and care just like family. ",
+    "showMore": "Show More",
+    "contactUs": "Contact Us",
+    "service": {
+      "generalMedicine": {
+        "title": "General Medicine",
+        "description": "Feeling unwell or just need a routine check-up? Our doctors are here to listen, guide, and help you stay healthy — one visit at a time. "
+      },
+      "familyMedicine": {
+        "title": "Family Medicine",
+        "description": "Your trusted family doctor — from kids to grandparents. Our family doctors take the time to listen, and care — just like someone who’s known you for years."
+      },
+      "internalMedicine": {
+        "title": "Internal Medicine",
+        "description": "Managing diabetes, hypertension, or other long-term conditions? We’ll work with you closely, explain every step, and ensure you’re never alone in your care journey."
+      },
+      "obg": {
+        "title": "Obstetrics & Gynecology (OBG)",
+        "description": "From pregnancy care to women’s wellness, our OBG specialists offer trusted, private, and supportive care — every step of the way. "
+      },
+      "generalDentistry": {
+        "title": "Dentistry & Orthodontics",
+        "description": "Healthy smiles start here. From cleanings to braces and smile correction, our dental team combines expertise and precision in every visit."
+      },
+      "ortho": {
+        "title": "Orthopedics",
+        "description": "From joint pain to injuries, our Orthopedics team is only a call away — ready to support you through recovery always with care."
+      },
+      "laboratory": {
+        "title": "Laboratory",
+        "description": "When it comes to your health, trust matters. Our laboratory delivers accurate results with care, honesty, and attention."
+      },
+      "pediatrics": {
+        "title": "Pediatrics",
+        "description": "Family-centered care supporting the growth and wellness of children."
+      }
+    }
+  },
+  "common": {
+    "readMore": "Read More",
+    "learnMore": "Learn More",
+    "bookNow": "Book Now",
+    "submitForm": "Submit",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "message": "Message",
+    "submit": "Submit"
+  },
+  "whatNext": {
+    "title": "What's Next?",
+    "scheduleConsultation": "Schedule Consultation",
+    "exploreSpecialties": "Explore Specialties",
+    "getInformation": "Get Information"
+  },
+  "medicalTeam": {
+    "title": "Meet Our Medical Team",
+    "description": "Behind every smile and every recovery is a caring team of doctors who truly listen, guide, and treat you like family. From first visit to full recovery, you’re in trusted hands. ",
+    "comingSoon": "Coming Soon",
+    "appointment": "Appointment",
+    "viewAll": "View All"
+  },
+  "doctorModal": {
+    "title": "Book an Appointment",
+    "description": "Select your preferred specialty and doctor, choose a convenient date, provide your personal details, and book your appointment with just a few clicks. Our team will confirm your booking shortly.",
+    "descriptionMobile": "Select your preferred specialty and doctor, choose a convenient date, provide your personal details, and book your appointment with just a few clicks. Our team will confirm your booking shortly.",
+    "specialty": "Specialty",
+    "doctor": "Doctor",
+    "fullName": "Full Name",
+    "phoneNumber": "Phone Number",
+    "age": "Age",
+    "date": "Date",
+    "selectSpecialty": "Select Specialty",
+    "selectDoctor": "Select Doctor",
+    "selectAge": "Select Age",
+    "selectDate": "Select Date",
+    "enterFullName": "Enter your full name",
+    "enterPhone": "Enter phone number",
+    "bookNow": "Book Now"
+  },
+  "specialties": {
+    "generalMedicine": "General Medicine",
+    "internalMedicine": "Internal Medicine",
+    "pediatrics": "Pediatrics",
+    "obg": "Obstetrics & Gynecology (OBG)",
+    "generalDentistry": "General Dentistry",
+    "orthodontics": "Orthodontics",
+    "urology": "Urology (Part-Time)",
+    "laserTreatments": "Laser Treatments",
+    "obstetrics": "Obstetrics and Gynaecology",
+    "dentistry": "Dentistry"
+  },
+  "ageRanges": {
+    "1-10": "1-10 years",
+    "11-20": "11-20 years",
+    "21-30": "21-30 years",
+    "31-40": "31-40 years",
+    "41-50": "41-50 years",
+    "51-60": "51-60 years",
+    "61-70": "61-70 years",
+    "71-80": "71-80 years",
+    "81-90": "81-90 years",
+    "91-100": "91-100 years"
+  },
+  "whyUs": {
+    "heading": "Why Us? Specialized Care, Designed Around You, With Expertise you Can Trust.",
+    "paragraph": "We are guided by values of compassion, integrity, and excellence. Your health needs are unique and so is our approach. From everyday checkups to women's wellness and laser skin treatments, we deliver care that respects your time and priorities.",
+    "points": {
+      "patientFirst": "Patient-first Approach",
+      "safetyAccountability": "Safety & Accountability",
+      "cleanCalm": "Clean & Calm Environment",
+      "simpleClear": "Simple & Clear Guidance",
+      "convenientLocation": "Conveniently Located",
+      "safetyAccountability2": "Safety and Accountability"
+    }
+  },
+  "insurance": {
+    "title": "We accept all major insurance plans",
+    "description": "We help you navigate your coverage with ease so you can focus on healing, not paperwork."
+  },
+  "testimonials": {
+    "title": "Hear from Our Patients",
+    "description": "Get to know our experienced medical team, whose dedication, skill, and compassionate approach ensure you receive personalized, exceptional care throughout your healing journey.",
+    "patients": {
+      "nadia": {
+        "name": "Nadia_Vlog",
+        "comment": "Hello. I would like to give my 5 stars to Star Health Medical Center. I got today treatment in Dental doctor Dr. Aljazi and her assistant nurse. I am totally setisfied. Thank you Dr. Aljazi. I like the clinic. The receptionists, Budur and Fatema, are attentive and welcoming. My children's doctor, Dr. Haifa, also sees patients here. If you're looking for a good dentist or pediatrician, I recommend Dr. Alzhazi and Dr. Haifa. My overall impression of the clinic: it's clean, smells pleasant, and the team of doctors is professional. The clinic's management is also involved in the work processes. I wish the clinic continued growth and prosperity. Regarding the treatment prices, they are reasonable and affordable for the whole family."
+      },
+      "subi": {
+        "name": "Subi Justin",
+        "comment": "Thank you for providing such high-quality service. It makes a real difference, and I’m grateful for the dedication of the entire team."
+      },
+      "maria": {
+        "name": "Dr Maria Iftikhar",
+        "comment": "I am consultant Gynecologist from Pakistan. Permanent resident and Aqma holder, in Riyadh on my husband's visa. Booked SCFHS exam.where to send CV ?"
+      },
+      "rajesh": {
+        "name": "Rajesh D",
+        "comment": "If you need a nursing staff for the clinic, I am here. I have experience in clinics and the clinic is close to me. i have valid saudi council license. thank you..."
+      },
+      "muntasr":{
+        "name": "Muntasr Bajsair",
+        "comment": "The center is very clean, with excellent and pleasant service. The reception and attention from the medical staff were wonderful. Pediatrician Dr. Haifa Ali is very professional and gives helpful advice. May God bless you all."
+      },
+      "amar":{
+        "name":"Amer Bayazeed",
+        "comment":"Excellent service and professional staff; a comprehensive center.Special thanks to the kind Dr. Haifa.We also thank the management and staff for their excellent service."
+      }
+    }
+  },
+  "whatNextSection": {
+    "title": "What's Next?",
+    "bookAppointment": "Book Consultation",
+    "specialities": "Call Us ",
+    "findLocation": "Find a Location",
+    "modalDescription": "Every journey to better health starts with a simple step. Schedule your consultation, explore our care areas, or talk to our team — we’ll guide you every step of the way."
+  },
+  "footer": {
+    "appointments": "For Appointments",
+    "appointmentnumber": "+966 505 730 003",
+    "emergency": "Emergency",
+    "emergencynumber": "+966 505 730 003",
+    "labResults" : "For Lab Results",
+    "labMail": "labs@starhealth.sa",
+    "patientEnquiries": "For Job Enquiries",
+    "enquirynumber": "contact@starhealth.sa",
+    "description": "At Star Health, we believe every patient deserves the same warmth and attention we give our own family. From your first consultation to recovery and beyond, our doctors, nurses, and support staff walk with you every step of the way — ensuring comfort, clarity, and confidence in your care. ",
+    "quickLinks": "Quick Links",
+    "ourServices": "Our Services",
+    "newsletter": "Subscribe to Our Newsletter",
+    "emailPlaceholder": "Your email...",
+    "subscribe": "Subscribe",
+    "socialMedia": "Social Media",
+    "services": {
+      "generalMedicine": "General Medicine",
+      "paediatrics": "Family Medicine",
+      "orthopaedics": "Internal Medicine",
+      "internalMedicine": "OBG",
+      "dentistry": "Orthopedics",
+      "dermatology": "Dentistry & Orthodontics",
+      "laboratory": "Laboratory",
+      "pediatrics" : "Pediatrics"
+    },
+    "quickLink": {
+      "home": "Home",
+      "aboutUs": "About Us",
+      "services": "Services",
+      "doctors": "Doctors",
+      "blogs" : "Blogs",
+      "contactUs": "Contact Us",
+      "privacy": "Privacy Policy"
+    }
+  },
+  "doctorsPage": {
+    "title": "Meet Our Dedicated Experts",
+    "description": "Trust your health to our dedicated team of experts. We bring together extensive experience and a shared passion the highest quality medical care.",
+    "all": "All",
+    "services": {
+      "all": "All",
+      "generalMedicine": "General Medicine",
+      "paediatrics": "Pediatrics",
+      "orthopaedics": "Orthopaedics",
+      "internalMedicine": "Internal Medicine",
+      "dentistry": "Dentistry",
+      "dermatology": "Dermatology",
+      "cosmetology": "Cosmetology",
+      "cardiology": "Cardiology"
+    },
+    "priorities": {
+      "heading": "We Prioritize Your Health Safety and Well-being.",
+      "paragraph": "We offer a wide spectrum of expert medical specialities, advanced technology, and a patient-centered approach to ensure you receive the highest quality and most comprehensive care available.",
+      "points": {
+        "advancedTechnology": "Advanced Technology",
+        "trustedReputation": "Trusted Reputation",
+        "compassionateCare": "Compassionate Care",
+        "focusOnOutcomes": "Focus on Outcomes",
+        "convenientLocation": "Convenient Location",
+        "qualityFocus": "Quality Focus"
+      },
+      "callText": "Please call us at +666 625 925 966 and we'll help you out."
+    },
+    "storiesOfHope": {
+      "title": "Stories of Hope and Healing",
+      "description": "Hear directly from those who have entrusted their health to us and learn about their experiences with our dedicated medical team and advanced treatments.",
+      "patients": {
+        "kristin": {
+          "name": "Kristin Watson",
+          "comment": "After my surgery, the rehabilitation team provided exceptional, continuous care. Their tailored therapy plan truly helped me regain my strength and independence. I'm now back to enjoying my daily activities thanks to their dedicated support."
+        },
+        "cameron": {
+          "name": "Cameron Williamson",
+          "comment": "Needing constant hospital care for my recovery was daunting, but the personalized approach here made all the difference. The team's commitment to my specific needs helped me return home and resume my life much sooner than I expected."
+        },
+        "courtney": {
+          "name": "Courtney Henry",
+          "comment": "Knowing I needed round-the-clock care post-illness was concerning, but the individualized rehabilitation program I received was fantastic. It was tailored perfectly to my needs and helped me get back to living independently."
+        }
+      }
+    }
+  },
+  "contactPage": {
+    "header": {
+      "title": "Connect With Us",
+      "description": "Reach out to us at anytime. We are here to help you with appointments, services, or any other general enquiries. Your care and comfort always comes first.",
+      "phoneTitle": "Phone Number",
+      "phoneNumber": "+966 505 730 003",
+      "emailTitle": "Email",
+      "email": "contact@starhealth.sa",
+      "locationTitle": "Location",
+      "location": "HPXV+GPC, Al Mansourah, Riyadh 12684, Saudi Arabia"
+    },
+    "form": {
+      "fullName": "Full Name",
+      "fullNamePlaceholder": "Enter Name",
+      "phoneNumber": "Phone Number",
+      "phoneNumberPlaceholder": "Enter Phone Number",
+      "email": "Email",
+      "emailPlaceholder": "Enter Email",
+      "countryOfResidence": "Country of Residence",
+      "countryOfResidencePlaceholder": "Enter Country of Residence",
+      "speciality": "Speciality",
+      "select": "Select",
+      "address": "Address",
+      "addressPlaceholder": "Enter Address",
+      "message": "Message",
+      "messagePlaceholder": "Enter Message",
+      "sendMessage": "Send Message",
+      "specialties": {
+        "generalMedicine": "General Medicine",
+        "internalMedicine": "Internal Medicine",
+        "pediatrics": "Pediatrics",
+        "obg": "Obstetrics & Gynecology (OBG)",
+        "generalDentistry": "General Dentistry",
+        "orthodontics": "Orthodontics",
+        "urology": "Urology (Part-Time)",
+        "laserTreatments": "Laser Treatments"
+      }
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "titleLine1": "Frequently",
+      "titleLine2": "Asked Questions",
+      "helpText": "Can't find what you're looking for?",
+      "contactUs": "Contact Us",
+      "questions": {
+        "q1": {
+          "question": "How can I book an appointment and check doctor availability?",
+          "answer": "You can book a specialist appointment through our website's online portal. Alternatively, call our appointment helpline at +966 505 730 003. Our coordinators will assist you with available slots. You may also visit the specific department's outpatient clinic directly. Please have your medical details ready when booking."
+        },
+        "q2": {
+          "question": "What makes Star Health more than just a Medical Center?",
+          "answer": "You're supported by more than just skilled doctors in Star Health. Every member of our team is here to help by offering care, guidance, and service you can rely on. We combine expert staff with advanced medical technology to give patients the attention and treatment they truly deserve."
+        },
+        "q3": {
+          "question": "What insurance plans do you accept?",
+          "answer": "We accept most major insurance plans. If your provider isn't listed on our Insurance page, feel free to call and confirm. We also offer affordable care options to ensure everyone gets the treatment they need."
+        },
+        "q4": {
+          "question": "How do you ensure patient privacy and data security?",
+          "answer": "We follow strict privacy protocols and comply with healthcare regulations to ensure all personal and medical information remains confidential and secure."
+        },
+        "q5": {
+          "question": "Do you provide follow-up care?",
+          "answer": "Yes, we offer follow-up consultations to monitor recovery and ensure optimal outcomes. Our team will guide you through the necessary post-treatment or post-surgery care."
+        }
+      }
+    }
+  },
+  "privacyPolicy": {
+    "title": "Privacy Policy",
+    "intro": {
+      "paragraph1": "Star Health Medical Centre (Star Health', 'we', 'our', or 'us') is committed to protecting your privacy and safeguarding your personal information. This Privacy Policy explains how we collect, use, store, and protect your information when you visit our website ",
+      "websiteUrl": "https://starhealth.sa/",
+      "paragraph2": " or interact with our services.",
+      "consent": "By using our website, you consent to the practices described in this Privacy Policy."
+    },
+    "sections": {
+      "informationWeCollect": {
+        "title": "1. Information We Collect",
+        "description": "We collect information to provide safe, efficient, and personalized healthcare services.",
+        "personalInfo": {
+          "title": "a. Personal Information",
+          "description": "We may collect personal details that you voluntarily provide, including but not limited to:",
+          "items": [
+            "Full name",
+            "Phone number",
+            "Email address",
+            "Date of birth",
+            "Address",
+            "Appointment details",
+            "Medical or health-related information you choose to share",
+            "Any information submitted through forms on the website"
+          ],
+          "collectedWhen": "This information is typically collected when you:",
+          "collectionMethods": [
+            "Book an appointment",
+            "Submit a contact or enquiry form",
+            "Communicate with us via email or phone",
+            "Access patient-related services online"
+          ]
+        },
+        "automaticInfo": {
+          "title": "b. Automatically Collected Information",
+          "description": "When you visit our website, certain information may be collected automatically, such as:",
+          "items": [
+            "IP address",
+            "Browser type and device information",
+            "Operating system",
+            "Pages visited and time spent on the website",
+            "Referring to website links"
+          ],
+          "purpose": "This data helps us understand how visitors use our website and improve user experience."
+        }
+      },
+      "howWeUseInfo": {
+        "title": "2. How We Use Your Information",
+        "description": "We use your information responsibly and only for legitimate purposes, including:",
+        "purposes": [
+          "Providing medical and healthcare services",
+          "Managing appointments and patient communication",
+          "Responding to inquiries and requests",
+          "Improving our website and service quality",
+          "Ensuring patient safety and operational efficiency",
+          "Sending important updates or service-related information",
+          "Complying with legal and regulatory requirements"
+        ],
+        "note": "We do not use your personal data for unrelated purposes without your consent."
+      },
+      "cookies": {
+        "title": "3. Cookies and Website Technologies",
+        "intro": "Our website uses cookies and similar technologies to enhance your browsing experience.",
+        "purposes": "Cookies help us:",
+        "items": [
+          "Improve website functionality",
+          "Understand visitor behavior",
+          "Remember user preferences",
+          "Optimize performance and content"
+        ],
+        "note": "You can manage or disable cookies through your browser settings. Please note that disabling cookies may affect certain features of the website."
+      },
+      "sharingInfo": {
+        "title": "4. Sharing and Disclosure of Information",
+        "intro": "We respect your privacy and do not sell or rent your personal information.",
+        "sharedWith": "Your data may be shared only when necessary, including with:",
+        "recipients": [
+          "Authorized healthcare professionals involved in your care",
+          "Trusted service providers supporting our website and systems",
+          "Regulatory or legal authorities, if required by law",
+          "Third parties, only with your explicit consent"
+        ],
+        "note": "All third parties are required to handle your information securely and confidentially."
+      },
+      "dataSecurity": {
+        "title": "5. Data Security",
+        "description": "We take data protection seriously and implement appropriate security measures to safeguard your information, including:",
+        "measures": [
+          "Secure servers and encrypted data storage",
+          "Restricted access to authorized personnel only",
+          "Regular system monitoring and updates"
+        ],
+        "disclaimer": "While we take all reasonable steps to protect your data, no online system is completely secure, and we cannot guarantee absolute security."
+      },
+      "thirdPartyLinks": {
+        "title": "6. Third-Party Links",
+        "content": "Our website may contain links to third-party websites for additional information or services. Star Health Medical Centre is not responsible for the privacy practices or content of external websites. We encourage users to review the privacy policies of any third-party sites they visit."
+      },
+      "childrenPrivacy": {
+        "title": "7. Children's Privacy",
+        "content": "Our services and website are not intended for children under the age of 16. We do not knowingly collect personal information from minors. If such information is identified, it will be promptly removed from our records."
+      },
+      "privacyRights": {
+        "title": "8. Your Privacy Rights",
+        "description": "We take data protection seriously and implement appropriate security measures to safeguard your information, including:",
+        "rights": [
+          "Secure servers and encrypted data storage",
+          "Restricted access to authorized personnel only",
+          "Regular system monitoring and updates"
+        ],
+        "note": "While we take all reasonable steps to protect your data, no online system is completely secure, and we cannot guarantee absolute security."
+      },
+      "policyUpdates": {
+        "title": "9. Policy Updates",
+        "content": "We may update this Privacy Policy periodically to reflect changes in our practices or legal requirements. Any updates will be posted on this page with a revised 'Last Updated' date. We encourage you to review this policy regularly."
+      },
+      "contactInfo": {
+        "title": "10. Contact Information",
+        "intro": "If you have any questions, concerns, or requests regarding this Privacy Policy, please contact:",
+        "companyName": "Star Health Medical",
+        "website": "https://starhealth.sa",
+        "email": "contact@starhealth.sa",
+        "phone": "+966 505 730 003",
+        "address": "Star Health Medical Centre 3336 Southern Ring Road, Al Mansurah Riyadh 12693, Saudi Arabia"
+      }
+    }
+  },
+  "blogs":{
+    "title" : "Expert Advice And Updates",
+    "description":"Our blog shares valuable knowledge, real-world strategies, and actionable insights to support your personal and business growth journey."
+  }
+}
