@@ -88,7 +88,7 @@ function Footer() {
 
   const quicklinks = [
     { nameKey: 'footer.quickLink.home', path: '/' },
-    { nameKey: 'footer.quickLink.aboutUs', path: '/#about' },
+    { nameKey: 'footer.quickLink.aboutUs', path: '/about' },
     { nameKey: 'footer.quickLink.services', path: '/#services' },
     { nameKey: 'footer.quickLink.doctors', path: '/doctors' },
     {nameKey: 'footer.quickLink.blogs', path: '/blogs'},

@@ -30,9 +30,9 @@ function header() {
                         </Link>
                     </li>
                     <li>
-                        <a href="/#about" className='md:pr-[20px] hover:text-[#687276] lg:-pr[20px]'>
+                        <Link to="/about" className='md:pr-[20px] hover:text-[#687276] lg:-pr[20px]'>
                             {t('navigation.about')}
-                        </a>
+                        </Link>
                     </li>
                     <li>
                         <a href="/#services" className='md:pr-[20px] hover:text-[#687276] lg:-pr[20px]'>

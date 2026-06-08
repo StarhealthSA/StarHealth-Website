@@ -39,9 +39,9 @@ function Header() {
               </Link>
             </li>
             <li className='md:pr-[20px] lg:pr-[20px]'>
-              <a href="/#about" className='hover:text-[#FFFFFF99] transition-colors duration-200'>
+              <Link to="/about" className='hover:text-[#FFFFFF99] transition-colors duration-200'>
                 {t('navigation.about')}
-              </a>
+              </Link>
             </li>
             <li className='md:pr-[20px] lg:pr-[20px]'>
               <a href="/#services" className='hover:text-[#FFFFFF99] transition-colors duration-200'>

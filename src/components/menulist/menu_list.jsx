@@ -58,9 +58,9 @@ function Menulist({ open, setOpen }) {
                     </Link>
                 </li>
                 <li className='mb-[30px]'>
-                    <a href="/#about" onClick={() => setOpen(false)} className='hover:text-[#FFFFFF99] transition-colors duration-200'>
+                    <Link to="/about" onClick={() => setOpen(false)} className='hover:text-[#FFFFFF99] transition-colors duration-200'>
                         {t('navigation.about')}
-                    </a>
+                    </Link>
                 </li>
                 <li className='mb-[30px]'>
                     <a href="/#services" onClick={() => setOpen(false)} className='hover:text-[#FFFFFF99] transition-colors duration-200'>
