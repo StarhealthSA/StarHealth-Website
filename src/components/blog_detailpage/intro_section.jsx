@@ -1,36 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
-import { client, urlFor } from '../../../../sanity-client';
+import { urlFor } from '@/lib/sanity';
 
-const QUERY = `*[_type == "post" && slug.current == $slug][0] {
-  _id,
-  title,
-  slug,
-  category,
-  about,
-  mainImage,
-  publishedAt,
-  "author": author->name
-}`;
-
-function HeaderData() {
-    const { slug } = useParams();
-    const [post, setPost] = useState(null);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        client.fetch(QUERY, { slug })
-            .then((data) => setPost(data))
-            .finally(() => setLoading(false));
-    }, [slug]);
-
-    if (loading) return <div>Loading...</div>;
+function IntroSection({ post }) {
     if (!post) return null;
 
     return (
-        <div className="bg-[#F6F4F3] flex flex-col md:flex-row items-start md:items-center px-[30px] lg:px-[120px] py-10">
+        <section className="bg-[#F6F4F3] flex flex-col md:flex-row items-start md:items-center px-[30px] lg:px-[120px] py-10">
             <div className="w-full flex flex-col md:flex-row items-start md:items-center gap-5 lg:gap-12">
                 <img
                     src={urlFor(post.mainImage).width(1000).url()}
@@ -51,8 +27,8 @@ function HeaderData() {
                     </p>
                 </div>
             </div>
-        </div>
+        </section>
     );
 }
 
-export default HeaderData;
+export default IntroSection;

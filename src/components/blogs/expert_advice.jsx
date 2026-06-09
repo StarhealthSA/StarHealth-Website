@@ -1,37 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
-import { client, urlFor } from '../../../sanity-client';
+import { urlFor } from '@/lib/sanity';
 
-const QUERY = `*[_type == "post"] | order(publishedAt desc) {
-  _id,
-  title,
-  slug,
-  category,
-  about,
-  mainImage,
-  publishedAt,
-  "author": author->name
-}`;
-
-function ExpertAdvice() {
+function ExpertAdvice({ posts = [] }) {
     const { t } = useTranslation();
-    const [blogPosts, setBlogPosts] = useState([]);
-    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        client.fetch(QUERY)
-            .then((data) => setBlogPosts(data))
-            .finally(() => setLoading(false));
-    }, []);
+    if (!posts.length) return null;
 
-    if (loading) return <div>Loading...</div>;
-    if (!blogPosts.length) return null;
-
-    const featuredPost = blogPosts[0];
-    const sidePosts = blogPosts.slice(1, 5);
+    const featuredPost = posts[0];
+    const sidePosts = posts.slice(1, 5);
 
     return (
         <div className="bg-[#FFFFFF] flex flex-col justify-start items-center px-[30px] lg:px-[120px]">

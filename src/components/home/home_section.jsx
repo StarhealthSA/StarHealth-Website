@@ -1,13 +1,11 @@
-import Header from '../home/header/header'
-import WelcomePart from '../home/welcome_part'
-import Safety from '../home/safety'
-import SpecializedServices from '../home/specialized_services'
-import Whyus from '../home/whyus'
-import MedTeam from '../home/med_team'
+import HeroSection from './hero_section'
+import WelcomePart from './welcome_part'
+import Safety from './safety'
+import SpecializedServices from './specialized_services'
+import MedTeam from './med_team'
 import Whatnext from '../what_next'
 import Mobviewform from '../mob_view_form'
 import Testimonials from './testomonials'
-import AllEvents from '../blogs/all_events'
 
 function homesection(){
 
@@ -15,7 +13,7 @@ function homesection(){
 
     return(
         <div>
-            <Header/>
+            <HeroSection/>
             <div className='sm:hidden'>
                 <Mobviewform/>
             </div>
@@ -27,9 +25,7 @@ function homesection(){
                 <SpecializedServices/>
             </div>
             <MedTeam/>
-            {/* <Whyus/> */}
             <Testimonials/>
-            {/* <AllEvents showButton/> */}
             <Whatnext text={content}/>
         </div>
     )

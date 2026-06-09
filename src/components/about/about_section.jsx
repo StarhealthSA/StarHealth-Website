@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import Header from './header/header';
+import IntroSection from './intro_section';
 import Whatnext from '../what_next';
 
 function AboutSection() {
@@ -73,7 +73,7 @@ function AboutSection() {
 
   return (
     <div className="bg-[#f8fbfa]">
-      <Header />
+      <IntroSection />
 
       <section className="px-[20px] md:px-[30px] lg:px-[120px] py-14 lg:py-20">
         <div className="grid gap-6 md:grid-cols-3">

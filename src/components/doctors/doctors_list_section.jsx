@@ -1,17 +1,17 @@
 'use client';
 
-import dr_aljazi from "../../../assets/doctors/dr_aljazi.png"
-import dr_hany from "../../../assets/doctors/dr_hany.png"
-import dr_tanaa from "../../../assets/doctors/dr_thanaa.png"
-import dr_asma from "../../../assets/doctors/dr_asma.png"
-import dr_haifa from "../../../assets/doctors/dr_haifa.png"
-import dr_waad from "../../../assets/doctors/dr_waad.png"
-import Headerdata from '../header/header_data'
-import DoctorsCard from '../../doctors_card'
+import dr_aljazi from "../../assets/doctors/dr_aljazi.png"
+import dr_hany from "../../assets/doctors/dr_hany.png"
+import dr_tanaa from "../../assets/doctors/dr_thanaa.png"
+import dr_asma from "../../assets/doctors/dr_asma.png"
+import dr_haifa from "../../assets/doctors/dr_haifa.png"
+import dr_waad from "../../assets/doctors/dr_waad.png"
+import IntroSection from './intro_section'
+import DoctorsCard from '../doctors_card'
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 
-function header() {
+function DoctorsListSection() {
     const { t, i18n } = useTranslation();
     const isRTL = i18n.language === 'ar';
 
@@ -79,8 +79,8 @@ function header() {
         : doctors.filter(doctor => doctor.category === selectedService);
 
     return (
-        <div className="bg-[#FFFFFF] w-full">
-            <Headerdata />
+        <section className="bg-[#FFFFFF] w-full">
+            <IntroSection />
             <div className={`w-full px-[30px] ${isRTL ? 'lg:pr-[120px]' : 'lg:pl-[120px]'} pt-[5px] lg:pt-[20px]`}>
                 <div className="overflow-x-auto space-x-3 lg:space-x-5 py-4 md:py-0 lg:ml-2.5 flex flex-row sm:whitespace-normal scrollbar-hide">
                     {services.map((item, index) => (
@@ -102,8 +102,8 @@ function header() {
                     <DoctorsCard imgs={item.imgDr} name={item.name} specialty={item.specialty} key={index} />
                 ))}
             </div>
-        </div>
+        </section>
     )
 }
 
-export default header;  
+export default DoctorsListSection;  

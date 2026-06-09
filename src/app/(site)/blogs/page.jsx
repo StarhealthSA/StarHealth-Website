@@ -1,5 +1,8 @@
-import BlogSection from '@/components/blogs/blogs_Section';
+import BlogsSection from '@/components/blogs/blogs_Section';
+import { getPosts } from '@/lib/sanity';
 
-export default function BlogsPage() {
-  return <BlogSection />;
+export default async function BlogsPage() {
+  const posts = await getPosts();
+
+  return <BlogsSection posts={posts} />;
 }

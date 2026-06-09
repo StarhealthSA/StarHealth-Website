@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import calender from '../../../assets/home/calender.svg';
+import calender from '../../assets/home/calender.svg';
 import { useTranslation } from 'react-i18next';
 import emailjs from '@emailjs/browser';
 

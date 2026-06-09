@@ -1,16 +1,14 @@
-import Contactform from './header/contact_form';
+import Contactform from './contact_form_section';
 import Faqsection from './faq_section';
-import Header from './header/header';
-import Headerdata from './header/header_data';
-import Mobileviewform from './header/mobile_view_form';
+import IntroSection from './intro_section';
+import Mobileviewform from './mobile_form_section';
 import WhatNext from '../what_next';
 
 function ContactUs() {
 
     return (
         <div>
-            <Header />
-            <Headerdata />
+            <IntroSection />
             <div className='hidden md:block'>
                 <Contactform />
             </div>
@@ -23,4 +21,4 @@ function ContactUs() {
     )
 }
 
-export default ContactUs; 
+export default ContactUs;

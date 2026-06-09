@@ -1,30 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
-import { client, urlFor } from '../../../sanity-client';
+import { urlFor } from '@/lib/sanity';
 import { PortableText } from '@portabletext/react';
-
-const POST_QUERY = `*[_type == "post" && slug.current == $slug][0] {
-  _id,
-  title,
-  slug,
-  category,
-  about,
-  mainImage,
-  publishedAt,
-  body,
-  "author": author->name
-}`;
-
-const RELATED_QUERY = `*[_type == "post" && slug.current != $slug] | order(publishedAt desc) [0...4] {
-  _id,
-  title,
-  slug,
-  category,
-  mainImage
-}`;
 
 const portableTextComponents = {
     block: {
@@ -43,27 +21,14 @@ const portableTextComponents = {
     },
 };
 
-function BlogDetailBody() {
-    const { slug } = useParams();
-    const [post, setPost] = useState(null);
-    const [relatedPosts, setRelatedPosts] = useState([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        if (!slug) return;
-        Promise.all([
-            client.fetch(POST_QUERY, { slug }),
-            client.fetch(RELATED_QUERY, { slug })
-        ])
-            .then(([postData, relatedData]) => {
-                setPost(postData);
-                setRelatedPosts(relatedData);
-            })
-            .finally(() => setLoading(false));
-    }, [slug]);
-
-    if (loading) return <div>Loading...</div>;
-    if (!post) return null;
+function BlogDetailBody({ post, relatedPosts = [] }) {
+    if (!post) {
+        return (
+            <div className="px-[30px] lg:px-[120px] py-10 text-[#687276] font-inter">
+                Post not found.
+            </div>
+        );
+    }
 
     return (
         <div className="bg-[#FFFFFF] flex flex-col lg:flex-row items-start px-[30px] lg:px-[120px] lg:gap-12">

@@ -1,16 +1,14 @@
-import HeaderData from "../../components/blog_detailpage/header/header_data";
+import IntroSection from "./intro_section";
 import BlogDetailBody from "./blog_detail_body";
-import Header from "../blogs/header/header"
 import WhatNext from "../what_next";
 import AllEvents from "../blogs/all_events";
 
-function BlogDetailPage() {
+function BlogDetailPage({ post, relatedPosts = [], posts = [] }) {
     return (
         <>
-            <Header />
-            <HeaderData />
-            <BlogDetailBody />
-            <AllEvents  showButton/>
+            <IntroSection post={post} />
+            <BlogDetailBody post={post} relatedPosts={relatedPosts} />
+            <AllEvents posts={posts} showButton />
             <WhatNext />
         </>
     );
