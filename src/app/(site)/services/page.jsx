@@ -1,4 +1,5 @@
 import IntroSection from '@/components/services/intro_section';
+import ServiceCardsGrid from '@/components/services/service_cards_grid';
 import Whatnext from '@/components/what_next';
 import Reveal from '@/components/reveal';
 import { staggerDelay } from '@/lib/stagger_delay';
@@ -19,41 +20,6 @@ export const metadata = {
 export default function ServicesPage() {
   const content =
     'Need guidance? Book an appointment, call our care team, or visit us for a complete consultation across specialties.';
-
-  const servicePillars = [
-    {
-      title: 'General & Family Medicine',
-      body: 'Primary consultations, preventive checkups, chronic condition planning, and continuity care for all age groups.',
-    },
-    {
-      title: 'Pediatrics',
-      body: 'Child wellness evaluations, developmental monitoring, seasonal illness support, and family counseling.',
-    },
-    {
-      title: 'Women Health (OBG)',
-      body: 'Routine gynecology care, pregnancy follow-up, and women-focused consultations in a private setting.',
-    },
-    {
-      title: 'Dentistry & Orthodontics',
-      body: 'Preventive dental care, restorations, smile correction, and oral health planning for adults and children.',
-    },
-    {
-      title: 'Internal Medicine',
-      body: 'Assessment and management for diabetes, blood pressure, thyroid, and metabolic conditions.',
-    },
-    {
-      title: 'Orthopedics & Mobility',
-      body: 'Joint pain treatment, injury evaluation, functional recovery plans, and long-term mobility support.',
-    },
-    {
-      title: 'Laboratory Diagnostics',
-      body: 'Timely and accurate lab testing that supports precise diagnosis and faster treatment decisions.',
-    },
-    {
-      title: 'Integrated Follow-up Care',
-      body: 'Coordinated follow-up between departments to improve outcomes and reduce treatment fragmentation.',
-    },
-  ];
 
   const highlights = [
     { label: 'Specialties Under One Roof', value: '8+' },
@@ -135,16 +101,7 @@ export default function ServicesPage() {
             Each service line is structured for clinical depth, practical timelines, and coordinated follow-up across your complete health journey.
           </p>
         </Reveal>
-        <div className="mt-7 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {servicePillars.map((item, index) => (
-            <Reveal key={item.title} delay={staggerDelay(index, 70)}>
-              <article className="rounded-2xl border border-[#d9e7e3] bg-white p-5">
-                <h3 className="text-[19px] leading-[25px] font-semibold text-[#033d49]">{item.title}</h3>
-                <p className="mt-3 text-[15px] leading-[24px] text-[#607179]">{item.body}</p>
-              </article>
-            </Reveal>
-          ))}
-        </div>
+        <ServiceCardsGrid className="mt-7" />
       </section>
 
       <section className="px-[20px] md:px-[30px] lg:px-[120px] pb-14 lg:pb-20">
