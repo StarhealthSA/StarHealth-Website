@@ -14,7 +14,7 @@ function Header() {
 
   return (
     <>
-      <div className="flex justify-between items-center pt-[15px] md:pt-[30px] lg:pt-[30px] pb-[30px] md:pb-[20px] lg:pb-[30px] px-[30px] lg:px-[100px] bg-white">
+      <div className="flex justify-between items-center pt-[15px] md:pt-[30px] lg:pt-[8px] pb-[8px] md:pb-[20px] lg:pb-[30px] px-[30px] lg:px-[100px] bg-white">
         {open && (
           <div
             className="fixed inset-0 bg-transparent bg-opacity-50 z-40"
