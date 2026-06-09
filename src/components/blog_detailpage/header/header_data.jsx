@@ -1,5 +1,7 @@
+'use client';
+
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'next/navigation';
 import { client, urlFor } from '../../../../sanity-client';
 
 const QUERY = `*[_type == "post" && slug.current == $slug][0] {

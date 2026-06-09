@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom';
+'use client';
+
+import Link from 'next/link';
 import React, { useState } from 'react';
 import close from "../assets/contact/close_button.svg"
 import DatePicker from 'react-datepicker';
@@ -130,7 +132,7 @@ function WhatNext() {
           </button>
         </a>
 
-        <Link to="https://maps.app.goo.gl/8niyr59pCeujLD6Y6?g_st=ac">
+        <Link href="https://maps.app.goo.gl/8niyr59pCeujLD6Y6?g_st=ac">
           <button className="bg-gradient-to-tl from-[#037B76] to-[#AED5C6] hover:bg-gradient-to-br hover:from-[#037B76] hover:to-[#AED5C6] text-white font-inter font-semibold text-[14px] lg:text-[16px] w-[250px] px-4 py-2 sm:px-8 sm:py-3 rounded-lg">
             {t('whatNextSection.findLocation')}
           </button>

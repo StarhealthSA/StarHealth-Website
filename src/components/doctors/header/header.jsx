@@ -1,3 +1,5 @@
+'use client';
+
 import dr_aljazi from "../../../assets/doctors/dr_aljazi.png"
 import dr_hany from "../../../assets/doctors/dr_hany.png"
 import dr_tanaa from "../../../assets/doctors/dr_thanaa.png"

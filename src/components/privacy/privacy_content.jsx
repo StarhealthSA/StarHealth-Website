@@ -1,3 +1,5 @@
+'use client';
+
 import website from "../../assets/privacy/website_icon_black.svg"
 import mail from "../../assets/privacy/mail_icon_black.svg"
 import phone from "../../assets/privacy/phone_icon_black.svg"

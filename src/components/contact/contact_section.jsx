@@ -1,5 +1,3 @@
-import Topnav from '../top_nav'
-import Footer from '../footer'
 import Contactform from './header/contact_form';
 import Faqsection from './faq_section';
 import Header from './header/header';
@@ -11,7 +9,6 @@ function ContactUs() {
 
     return (
         <div>
-            <Topnav />
             <Header />
             <Headerdata />
             <div className='hidden md:block'>
@@ -22,7 +19,6 @@ function ContactUs() {
             </div>
             <Faqsection />
             <WhatNext />
-            <Footer />
         </div>
     )
 }

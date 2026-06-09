@@ -1,6 +1,8 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { client, urlFor } from '../../../sanity-client';
 
 const QUERY = `*[_type == "post"] | order(publishedAt desc) {
@@ -45,7 +47,7 @@ function ExpertAdvice() {
             <div className="flex flex-col lg:flex-row md:justify-between items-start gap-8 lg:gap-12 mt-6 lg:mt-10">
 
                 <div className="w-full lg:w-1/2 flex flex-col items-start">
-                    <Link to={`/blog/${featuredPost.slug.current}`} className="w-full">
+                    <Link href={`/blog/${featuredPost.slug.current}`} className="w-full">
                         <img
                             src={urlFor(featuredPost.mainImage).width(800).url()}
                             alt='featured blog'
@@ -57,7 +59,7 @@ function ExpertAdvice() {
                             {featuredPost.category}
                         </p>
                     </div>
-                    <Link to={`/blog/${featuredPost.slug.current}`}>
+                    <Link href={`/blog/${featuredPost.slug.current}`}>
                         <h1 className='text-[#002333] font-semibold font-inter text-[18px] lg:text-[24px] mb-[8px] lg:mb-[12px] hover:text-[#027B76] transition-colors'>
                             {featuredPost.title}
                         </h1>
@@ -65,7 +67,7 @@ function ExpertAdvice() {
                     <p className='text-[14px] lg:text-[16px] text-[#687276] font-inter mb-[8px] lg:mb-[12px]'>
                         {featuredPost.about}
                     </p>
-                    <Link to={`/blog/${featuredPost.slug.current}`}>
+                    <Link href={`/blog/${featuredPost.slug.current}`}>
                         <p className='text-[14px] lg:text-[16px] text-[#687276] font-inter decoration-solid underline cursor-pointer hover:text-[#027B76]'>
                             Read more
                         </p>
@@ -74,7 +76,7 @@ function ExpertAdvice() {
 
                 <div className='w-full lg:w-1/2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4'>
                     {sidePosts.map((post) => (
-                        <Link key={post._id} to={`/blog/${post.slug.current}`} className="flex flex-col lg:flex-row items-start gap-3 hover:opacity-90 transition-opacity">
+                        <Link key={post._id} href={`/blog/${post.slug.current}`} className="flex flex-col lg:flex-row items-start gap-3 hover:opacity-90 transition-opacity">
                             <div className='relative flex-shrink-0'>
                                 <img
                                     src={urlFor(post.mainImage).width(400).url()}

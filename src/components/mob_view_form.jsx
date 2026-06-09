@@ -1,3 +1,5 @@
+'use client';
+
 import calender from '../assets/home/calender.svg'
 import React, { useState } from 'react';
 import "react-datepicker/dist/react-datepicker.css";

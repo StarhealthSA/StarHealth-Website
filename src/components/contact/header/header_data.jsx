@@ -1,3 +1,5 @@
+'use client';
+
 import phone from '../../../assets/contact/contactus_phone.svg'
 import mail from '../../../assets/contact/contactus_mail.svg'
 import location from '../../../assets/contact/contactus_location.svg'

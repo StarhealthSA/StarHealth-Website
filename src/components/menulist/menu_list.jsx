@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom';
+'use client';
+
+import Link from 'next/link';
 import { useEffect } from 'react';
 import logo from '../../assets/home/logo.svg';
 import cancel from '../../assets/home/cancel.svg';
@@ -36,7 +38,7 @@ function Menulist({ open, setOpen }) {
             transition-transform duration-300 ease-in-out bg-[#063330] h-screen overflow-y-auto`}>
 
             <div className='flex justify-between items-center pt-[30px] sm:pt-[60px] pb-[30px] sm:pb-[60px] px-[30px] sm:px-[115px]'>
-                <Link to="/" onClick={() => setOpen(false)}>
+                <Link href="/" onClick={() => setOpen(false)}>
                     <img src={logo} alt='logo' className='w-[102px] h-[32px] sm:w-[192px] sm:h-[58px] cursor-pointer hover:opacity-80 transition-opacity duration-200' />
                 </Link>
                 <button
@@ -53,32 +55,32 @@ function Menulist({ open, setOpen }) {
 
             <ul className='text-white flex flex-col text-[16px] font-medium px-[30px] py-[10px]'>
                 <li className='mb-[30px]'>
-                    <Link to="/" onClick={() => setOpen(false)} className='hover:text-[#FFFFFF99] transition-colors duration-200'>
+                    <Link href="/" onClick={() => setOpen(false)} className='hover:text-[#FFFFFF99] transition-colors duration-200'>
                         {t('navigation.home')}
                     </Link>
                 </li>
                 <li className='mb-[30px]'>
-                    <Link to="/about" onClick={() => setOpen(false)} className='hover:text-[#FFFFFF99] transition-colors duration-200'>
+                    <Link href="/about" onClick={() => setOpen(false)} className='hover:text-[#FFFFFF99] transition-colors duration-200'>
                         {t('navigation.about')}
                     </Link>
                 </li>
                 <li className='mb-[30px]'>
-                    <Link to="/services" onClick={() => setOpen(false)} className='hover:text-[#FFFFFF99] transition-colors duration-200'>
+                    <Link href="/services" onClick={() => setOpen(false)} className='hover:text-[#FFFFFF99] transition-colors duration-200'>
                         {t('navigation.services')}
                     </Link>
                 </li>
                 <li className='mb-[30px]'>
-                    <Link to="/doctors" onClick={() => setOpen(false)} className='hover:text-[#FFFFFF99] transition-colors duration-200'>
+                    <Link href="/doctors" onClick={() => setOpen(false)} className='hover:text-[#FFFFFF99] transition-colors duration-200'>
                         {t('navigation.doctors')}
                     </Link>
                 </li>
                 {/* <li className='mb-[30px]'>
-                    <Link to="/blogs" onClick={() => setOpen(false)} className='hover:text-[#FFFFFF99] transition-colors duration-200'>
+                    <Link href="/blogs" onClick={() => setOpen(false)} className='hover:text-[#FFFFFF99] transition-colors duration-200'>
                         {t('navigation.blogs')}
                     </Link>
                 </li> */}
                 <li className='mb-[30px]'>
-                    <Link to="/contact" onClick={() => setOpen(false)} className='hover:text-[#FFFFFF99] transition-colors duration-200'>
+                    <Link href="/contact" onClick={() => setOpen(false)} className='hover:text-[#FFFFFF99] transition-colors duration-200'>
                         {t('navigation.contact')}
                     </Link>
                 </li>

@@ -1,5 +1,8 @@
+'use client';
+
 import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { client, urlFor } from '../../../sanity-client';
 import { PortableText } from '@portabletext/react';
 
@@ -73,7 +76,7 @@ function BlogDetailBody() {
             <div className="hidden lg:flex flex-col items-start w-[20%]">
                 <h1 className="text-[24px] text-[#002333] font-semibold font-inter mb-6 mt-6">You May Also Like</h1>
                 {relatedPosts.map((related) => (
-                    <Link key={related._id} to={`/blog/${related.slug.current}`} className="flex flex-col items-start gap-3 mb-4 hover:opacity-90 transition-opacity">
+                    <Link key={related._id} href={`/blog/${related.slug.current}`} className="flex flex-col items-start gap-3 mb-4 hover:opacity-90 transition-opacity">
                         <div className='relative flex-shrink-0 w-full'>
                             <img
                                 src={urlFor(related.mainImage).width(400).url()}

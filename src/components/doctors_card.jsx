@@ -1,3 +1,5 @@
+'use client';
+
 import arrow from '../assets/home/arrow_right.svg'
 import { useState } from 'react';
 import close from "../assets/contact/close_button.svg"

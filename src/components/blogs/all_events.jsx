@@ -1,5 +1,7 @@
+'use client';
+
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import Button from '../web_button';
 import { client, urlFor } from '../../../sanity-client';
 
@@ -32,7 +34,7 @@ function AllEvents({ showButton = false }) {
             <h2 className="text-lg font-semibold text-gray-800 mb-6">All Events & News</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-4">
                 {blogPosts.map((post) => (
-                    <Link key={post._id} to={`/blog/${post.slug.current}`} className="hover:opacity-90 transition-opacity">
+                    <Link key={post._id} href={`/blog/${post.slug.current}`} className="hover:opacity-90 transition-opacity">
                         <div className='relative flex-shrink-0'>
                             <img
                                 src={urlFor(post.mainImage).width(400).url()}
@@ -56,7 +58,7 @@ function AllEvents({ showButton = false }) {
 
             {showButton && (
                 <div className="mt-8 flex flex-row justify-center">
-                    <Link to="/blogs">
+                    <Link href="/blogs">
                         <Button text="View All" />
                     </Link>
                 </div>

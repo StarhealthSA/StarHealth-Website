@@ -1,10 +1,12 @@
+'use client';
+
 import dr_aljazi from "../../assets/doctors/dr_aljazi.png"
 import dr_hany from "../../assets/doctors/dr_hany.png"
 import dr_tanaa from "../../assets/doctors/dr_thanaa.png"
 import dr_asma from "../../assets/doctors/dr_asma.png"
 import Button from '../web_button'
 import DoctorsCard from '../doctors_card'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { useTranslation } from 'react-i18next'
 
 
@@ -49,7 +51,7 @@ function medTeam() {
                     ))}
                 </div>
             </div>
-            <Link to='/doctors'>
+            <Link href='/doctors'>
                 <Button text={t('medicalTeam.viewAll')} />
             </Link>
         </div>

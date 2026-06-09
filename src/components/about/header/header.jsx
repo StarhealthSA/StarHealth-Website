@@ -1,5 +1,7 @@
+'use client';
+
 import logo from '../../../assets/doctors/logo1.svg';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import Menulist from '../../menulist/menu_list';
 import menu from '../../../assets/doctors/secondmenu.svg';
 import { useState } from 'react';
@@ -22,38 +24,38 @@ function Header() {
               onClick={() => setOpen(false)}
             />
           )}
-          <Link to="/">
+          <Link href="/">
             <img src={logo} alt='logo' className='w-[102px] h-[32px] cursor-pointer hover:filter hover:brightness-90 hover:saturate(0) hover:invert-[0.3] lg:w-[160px] lg:h-[58px]' />
           </Link>
           <div className='hidden sm:flex flex-row justify-end sm:w-3/3 items-end'>
             <ul className='text-[#002333] flex flex-row sm:text-[14px] md:text-[16px] lg:text-[16px] font-medium'>
               <li>
-                <Link to="/" className='md:pr-[20px] hover:text-[#687276] lg:-pr[20px]'>
+                <Link href="/" className='md:pr-[20px] hover:text-[#687276] lg:-pr[20px]'>
                   {t('navigation.home')}
                 </Link>
               </li>
               <li>
-                <Link to="/about" className='md:pr-[20px] hover:text-[#687276] lg:-pr[20px]'>
+                <Link href="/about" className='md:pr-[20px] hover:text-[#687276] lg:-pr[20px]'>
                   {t('navigation.about')}
                 </Link>
               </li>
               <li>
-                <Link to="/services" className='md:pr-[20px] hover:text-[#687276] lg:-pr[20px]'>
+                <Link href="/services" className='md:pr-[20px] hover:text-[#687276] lg:-pr[20px]'>
                   {t('navigation.services')}
                 </Link>
               </li>
               <li>
-                <Link to="/doctors" className='md:pr-[20px] hover:text-[#687276] lg:-pr[20px]'>
+                <Link href="/doctors" className='md:pr-[20px] hover:text-[#687276] lg:-pr[20px]'>
                   {t('navigation.doctors')}
                 </Link>
               </li>
               <li>
-                <Link to="/blogs" className='md:pr-[20px] hover:text-[#687276] lg:-pr[20px]'>
+                <Link href="/blogs" className='md:pr-[20px] hover:text-[#687276] lg:-pr[20px]'>
                   {t('navigation.blogs')}
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className='md:pr-[20px] hover:text-[#687276] lg:-pr[20px]'>
+                <Link href="/contact" className='md:pr-[20px] hover:text-[#687276] lg:-pr[20px]'>
                   {t('navigation.contact')}
                 </Link>
               </li>

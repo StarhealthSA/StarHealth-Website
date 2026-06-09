@@ -1,8 +1,8 @@
+'use client';
+
 import { useEffect } from 'react';
-import Topnav from '../top_nav';
 import Header from './header/header';
 import Whatnext from '../what_next';
-import Footer from '../footer';
 
 function AboutSection() {
   useEffect(() => {
@@ -73,7 +73,6 @@ function AboutSection() {
 
   return (
     <div className="bg-[#f8fbfa]">
-      <Topnav />
       <Header />
 
       <section className="px-[20px] md:px-[30px] lg:px-[120px] py-14 lg:py-20">
@@ -159,7 +158,6 @@ function AboutSection() {
       </section>
 
       <Whatnext text={content} />
-      <Footer />
     </div>
   );
 }

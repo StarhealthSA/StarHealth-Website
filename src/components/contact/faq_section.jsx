@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import arrow from '../../assets/contact/contactus_arrow.svg';
 import { useTranslation } from 'react-i18next';

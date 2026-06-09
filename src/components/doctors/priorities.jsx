@@ -1,3 +1,5 @@
+'use client';
+
 import InsuranceSection from '../insurance_section'
 import AboveInsuranceSection from '../above_insurance_section';
 import img from '../../assets/doctors/priority.png'

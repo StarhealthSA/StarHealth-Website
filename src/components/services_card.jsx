@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom';
+'use client';
+
+import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 
 function servicescard(props) {
@@ -17,7 +19,7 @@ function servicescard(props) {
 
     if (props.link) {
         return (
-            <Link to={props.link} className="block">
+            <Link href={props.link} className="block">
                 {card}
             </Link>
         );

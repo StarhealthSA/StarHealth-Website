@@ -1,3 +1,5 @@
+'use client';
+
 import stars from '../../assets/home/stars.svg'
 import avatar from '../../assets/home/avatar.svg'
 import { useTranslation } from 'react-i18next'

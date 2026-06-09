@@ -1,3 +1,5 @@
+'use client';
+
 import whyus from '../../assets/home/whyus.png'
 import InsuranceSection from '../insurance_section'
 import AboveInsuranceSection from '../above_insurance_section'

@@ -1,8 +1,10 @@
+'use client';
+
 import HeaderForm from './header_form';
 import logo from '../../../assets/home/logo.svg';
 import Button from '../../web_button';
 import menu from '../../../assets/home/menu.svg';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { useState } from 'react';
 import Menulist from '../../menulist/menu_list';
 import { useTranslation } from 'react-i18next';
@@ -23,7 +25,7 @@ function Header() {
       )}
 
       <div className='flex justify-between items-center pt-[15px] md:pt-[30px] lg:pt-[30px] pb-[30px] px-[30px] md:px-[30px] lg:px-[100px]'>
-        <Link to="/">
+        <Link href="/">
           <img
             src={logo}
             alt='logo'
@@ -34,32 +36,32 @@ function Header() {
         <div className='hidden md:flex flex-row justify-end items-center'>
           <ul className='text-white flex flex-row md:text-[14px] lg:text-[16px] font-medium font-inter'>
             <li className='md:pr-[20px] lg:pr-[20px]'>
-              <Link to="/" className='hover:text-[#FFFFFF99] transition-colors duration-200'>
+              <Link href="/" className='hover:text-[#FFFFFF99] transition-colors duration-200'>
                 {t('navigation.home')}
               </Link>
             </li>
             <li className='md:pr-[20px] lg:pr-[20px]'>
-              <Link to="/about" className='hover:text-[#FFFFFF99] transition-colors duration-200'>
+              <Link href="/about" className='hover:text-[#FFFFFF99] transition-colors duration-200'>
                 {t('navigation.about')}
               </Link>
             </li>
             <li className='md:pr-[20px] lg:pr-[20px]'>
-              <Link to="/services" className='hover:text-[#FFFFFF99] transition-colors duration-200'>
+              <Link href="/services" className='hover:text-[#FFFFFF99] transition-colors duration-200'>
                 {t('navigation.services')}
               </Link>
             </li>
             <li className='md:pr-[20px] lg:pr-[20px]'>
-              <Link to="/doctors" className='hover:text-[#FFFFFF99] transition-colors duration-200'>
+              <Link href="/doctors" className='hover:text-[#FFFFFF99] transition-colors duration-200'>
                 {t('navigation.doctors')}
               </Link>
             </li>
             <li className='md:pr-[20px] lg:pr-[20px]'>
-              <Link to="/blogs" className='hover:text-[#FFFFFF99] transition-colors duration-200'>
+              <Link href="/blogs" className='hover:text-[#FFFFFF99] transition-colors duration-200'>
                 {t('navigation.blogs')}
               </Link>
             </li>
             <li className='md:pr-[15px] lg:pr-[15px]'>
-              <Link to="/contact" className='hover:text-[#FFFFFF99] transition-colors duration-200'>
+              <Link href="/contact" className='hover:text-[#FFFFFF99] transition-colors duration-200'>
                 {t('navigation.contact')}
               </Link>
             </li>
@@ -88,7 +90,7 @@ function Header() {
             <p className='text-white text-[16px] lg:text-[23px] font-normal mb-5 lg:mb-6 w-full lg:w-3/4 leading-[24px] lg:leading-[28px]'>
               {t('hero.subtitle')}
             </p>
-            <Link to="/services">
+            <Link href="/services">
               <Button text={t('hero.cta')} />
             </Link>
           </div>

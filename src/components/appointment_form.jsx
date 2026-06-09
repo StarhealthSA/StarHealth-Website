@@ -1,3 +1,5 @@
+'use client';
+
 import close from "../assets/contact/close_button.svg"
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";

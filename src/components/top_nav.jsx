@@ -1,3 +1,5 @@
+'use client';
+
 import phone from '../assets/home/phone.svg';
 import mail from '../assets/home/mail.svg';
 import instagram from '../assets/home/instagram.svg';

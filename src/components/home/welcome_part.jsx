@@ -1,3 +1,5 @@
+'use client';
+
 import welcomeimg from "../../assets/home/welcomeimg.png"
 import { useTranslation } from 'react-i18next';
 

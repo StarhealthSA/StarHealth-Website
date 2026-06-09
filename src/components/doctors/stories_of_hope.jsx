@@ -1,3 +1,5 @@
+'use client';
+
 import stars from '../../assets/home/stars.svg'
 import cameron from '../../assets/home/cameron_williamson1.png'
 import courtney from '../../assets/home/Courtney_Henry.png'

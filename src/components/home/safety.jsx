@@ -1,8 +1,10 @@
+'use client';
+
 import safety from '../../assets/home/safety.png'
 import mark from '../../assets/home/mark.svg'
 import Button from '../web_button'
 import safetymobile from '../../assets/home/safety_mobile_view.png'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { useTranslation } from 'react-i18next';
 
 function Safety() {
@@ -44,7 +46,7 @@ function Safety() {
                         {t('safety.point3')}
                     </p>
                 </div>
-                <Link to={'/contact'}>
+                <Link href={'/contact'}>
                 <div className="w-full lg:w-auto mb-5 md:mb-7 lg:mb-0">
                     <Button text={t('safety.contactUs')} />
                 </div>

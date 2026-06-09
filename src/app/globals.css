@@ -1,14 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Playwrite+DK+Uloopet:wght@100..400&display=swap');
 @import "tailwindcss";
 
 .bground {
-  background-image: url(./assets/home/headerimage.png);
+  background-image: url(../assets/home/headerimage.png);
   background-size: cover;
   background-position: center;
 }
 
 @media (max-width: 640px) {
   .home-header {
-    background-image: url(./assets/home/Mobview-bg.png);
+    background-image: url(../assets/home/Mobview-bg.png);
     background-position: center;
     background-size: cover;
   }
@@ -64,4 +65,3 @@ html{
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-

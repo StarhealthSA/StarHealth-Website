@@ -1,3 +1,5 @@
+'use client';
+
 import logo from '../assets/home/logo.svg';
 import instagram from '../assets/home/instagram1.svg';
 import facebook from '../assets/home/facebook1.svg';
@@ -11,9 +13,8 @@ import close from "../assets/contact/close_button.svg"
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import calender from '../assets/contact/calder.svg';
-import Button from "../components/web_button";
+import Button from "./web_button";
 import { useTranslation } from 'react-i18next';
-import path from 'node:path';
 
 function Footer() {
   const { t, i18n } = useTranslation();

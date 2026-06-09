@@ -1,3 +1,5 @@
+'use client';
+
 import bigbrand from '../assets/home/bigbrand.png'
 import anchor from '../assets/home/anchor.png'
 import airtel from '../assets/home/Airtel.png'

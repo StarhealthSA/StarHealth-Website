@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import generalmedicine from '../../assets/home/general_medicine.svg';
 import ortho from "../../assets/home/ortho.svg";
@@ -9,7 +11,7 @@ import laboratory from '../../assets/home/laboratory.svg';
 import pediatrics from '../../assets/home/pediatric.svg';
 import Button from '../web_button'
 import Servicescard from '../services_card'
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import downarrow from '../../assets/home/downarrow.svg';
 import { useTranslation } from 'react-i18next';
 
@@ -108,11 +110,11 @@ const SpecializedServices = () => {
                 </button>
             )}
             {showAll && (
-                <Link to={'/contact'}>
+                <Link href={'/contact'}>
                     <Button text={t('services.contactUs')} />
                 </Link>
             )}
-            <Link to={'/contact'} className='hidden md:block'>
+            <Link href={'/contact'} className='hidden md:block'>
                 <Button text={t('services.contactUs')} />
             </Link>
         </div>

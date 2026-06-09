@@ -1,7 +1,9 @@
+'use client';
+
 import whyuslogo from '../assets/home/whyuslogo.png'
 import mark from '../assets/home/mark.svg'
 import Button from './web_button'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { useTranslation } from 'react-i18next'
 
 function AboveInsuranceSection(props){
@@ -30,7 +32,7 @@ function AboveInsuranceSection(props){
                                 </div>
                             ))}
                         </div>
-                        <Link to={'/contact'}>
+                        <Link href={'/contact'}>
                         <Button text={t('safety.contactUs')}/>
                         </Link>
                     </div>
