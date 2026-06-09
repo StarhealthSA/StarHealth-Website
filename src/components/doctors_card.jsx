@@ -10,6 +10,7 @@ import Button from "../components/web_button";
 import Reveal from './reveal';
 import { useTranslation } from 'react-i18next';
 import emailjs from '@emailjs/browser';
+import { useLocalizedDoctors } from '@/contexts/content-context';
 
 function DoctorsCard(props) {
   const { t, i18n } = useTranslation();
@@ -86,12 +87,7 @@ function DoctorsCard(props) {
     { sty: "specialties.laserTreatments" },
   ];
 
-  const Doctors = [
-    { doc: "Dr. Anjali Menon" },
-    { doc: "Dr. Vikram Krishnan" },
-    { doc: "Dr. Leela Joseph" },
-    { doc: "Dr. Rajeev Kurian" },
-  ];
+  const doctors = useLocalizedDoctors(i18n.language);
 
   const Age = [
     { age: "ageRanges.1-10" },
@@ -187,9 +183,9 @@ function DoctorsCard(props) {
                         <option value="" disabled>
                           {t('doctorModal.selectDoctor')}
                         </option>
-                        {Doctors.map((item, index) => (
-                          <option key={index} value={item.doc}>
-                            {item.doc}
+                        {doctors.map((item) => (
+                          <option key={item.id} value={item.displayName}>
+                            {item.displayName}
                           </option>
                         ))}
                       </select>

@@ -1,0 +1,34 @@
+'use client';
+
+import Link from 'next/link';
+import { useAdminAuth } from '@/contexts/admin-auth-context';
+
+export default function AdminDashboardPage() {
+  const { role, canWrite } = useAdminAuth();
+
+  return (
+    <div>
+      <h1 className="text-3xl font-semibold text-[#002f3b]">Dashboard</h1>
+      <p className="mt-2 text-[#586971]">
+        Signed in as <strong>{role}</strong>. {canWrite ? 'You can manage content below.' : 'You have read-only access.'}
+      </p>
+
+      <div className="mt-8 grid gap-4 md:grid-cols-2">
+        <Link
+          href="/admin/doctors"
+          className="rounded-2xl border border-[#d7e6e2] bg-white p-6 transition-shadow hover:shadow-md"
+        >
+          <h2 className="text-xl font-semibold text-[#037B76]">Doctors</h2>
+          <p className="mt-2 text-sm text-[#586971]">Manage doctor profiles, specialties, and visibility.</p>
+        </Link>
+        <Link
+          href="/admin/services"
+          className="rounded-2xl border border-[#d7e6e2] bg-white p-6 transition-shadow hover:shadow-md"
+        >
+          <h2 className="text-xl font-semibold text-[#037B76]">Services</h2>
+          <p className="mt-2 text-sm text-[#586971]">Manage service listings shown on the website.</p>
+        </Link>
+      </div>
+    </div>
+  );
+}
