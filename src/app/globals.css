@@ -25,6 +25,14 @@ html {
   scroll-behavior: auto;
 }
 
+.glass-nav {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 4px 24px rgba(0, 35, 51, 0.06);
+}
+
 .marquee-container {
   width: 100%;
   overflow: hidden;
