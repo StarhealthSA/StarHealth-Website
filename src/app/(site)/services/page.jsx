@@ -1,5 +1,6 @@
 import IntroSection from '@/components/services/intro_section';
 import ServiceCardsGrid from '@/components/services/service_cards_grid';
+import PremiumQualitySection from '@/components/services/premium_quality_section';
 import Whatnext from '@/components/what_next';
 import Reveal from '@/components/reveal';
 import { staggerDelay } from '@/lib/stagger_delay';
@@ -105,21 +106,7 @@ export default function ServicesPage() {
       </section>
 
       <section className="px-[20px] md:px-[30px] lg:px-[120px] pb-14 lg:pb-20">
-        <Reveal>
-        <div className="rounded-3xl bg-[#063330] p-8 text-white md:p-10 lg:p-12">
-          <h2 className="text-[28px] leading-[36px] font-semibold">How We Deliver Premium Service Quality</h2>
-          <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {process.map((item, index) => (
-              <Reveal key={item.title} delay={staggerDelay(index, 70)}>
-                <article className="rounded-xl bg-white/10 p-4">
-                  <h3 className="text-[18px] font-semibold text-[#d8efe6]">{item.title}</h3>
-                  <p className="mt-2 text-[14px] leading-[23px] text-[#cde3da]">{item.body}</p>
-                </article>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-        </Reveal>
+        <PremiumQualitySection process={process} />
       </section>
 
       <section className="px-[20px] md:px-[30px] lg:px-[120px] pb-14 lg:pb-20">
