@@ -44,9 +44,9 @@ function Header() {
               </Link>
             </li>
             <li className='md:pr-[20px] lg:pr-[20px]'>
-              <a href="/#services" className='hover:text-[#FFFFFF99] transition-colors duration-200'>
+              <Link to="/services" className='hover:text-[#FFFFFF99] transition-colors duration-200'>
                 {t('navigation.services')}
-              </a>
+              </Link>
             </li>
             <li className='md:pr-[20px] lg:pr-[20px]'>
               <Link to="/doctors" className='hover:text-[#FFFFFF99] transition-colors duration-200'>
@@ -88,9 +88,9 @@ function Header() {
             <p className='text-white text-[16px] lg:text-[23px] font-normal mb-5 lg:mb-6 w-full lg:w-3/4 leading-[24px] lg:leading-[28px]'>
               {t('hero.subtitle')}
             </p>
-            <a href='/#services'>
+            <Link to="/services">
               <Button text={t('hero.cta')} />
-            </a>
+            </Link>
           </div>
         </div>
         <div className='hidden sm:block'>

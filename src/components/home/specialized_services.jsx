@@ -79,6 +79,7 @@ const SpecializedServices = () => {
                         images={item.imgSrc}
                         title={t(item.titleKey)}
                         description={t(item.descriptionKey)}
+                        link="/services"
                         key={index}
                     />
                 ))}
@@ -90,6 +91,7 @@ const SpecializedServices = () => {
                         images={item.imgSrc}
                         title={t(item.titleKey)}
                         description={t(item.descriptionKey)}
+                        link="/services"
                         key={index}
                     />
                 ))}

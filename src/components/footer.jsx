@@ -77,19 +77,19 @@ function Footer() {
   ];
 
   const services = [
-    { key: 'footer.services.generalMedicine' },
-    { key: 'footer.services.paediatrics' },
-    { key: 'footer.services.orthopaedics' },
-    { key: 'footer.services.internalMedicine' },
-    { key: 'footer.services.dentistry' },
-    { key: 'footer.services.dermatology' },
-    { key: 'footer.services.pediatrics' }
+    { key: 'footer.services.generalMedicine', path: '/services' },
+    { key: 'footer.services.paediatrics', path: '/services' },
+    { key: 'footer.services.orthopaedics', path: '/services' },
+    { key: 'footer.services.internalMedicine', path: '/services' },
+    { key: 'footer.services.dentistry', path: '/services' },
+    { key: 'footer.services.dermatology', path: '/services' },
+    { key: 'footer.services.pediatrics', path: '/services' }
   ];
 
   const quicklinks = [
     { nameKey: 'footer.quickLink.home', path: '/' },
     { nameKey: 'footer.quickLink.aboutUs', path: '/about' },
-    { nameKey: 'footer.quickLink.services', path: '/#services' },
+    { nameKey: 'footer.quickLink.services', path: '/services' },
     { nameKey: 'footer.quickLink.doctors', path: '/doctors' },
     {nameKey: 'footer.quickLink.blogs', path: '/blogs'},
     { nameKey: 'footer.quickLink.contactUs', path: '/contact' },
@@ -151,8 +151,8 @@ function Footer() {
             <h4 className="text-lg lg:text-xl font-medium text-white mb-2 lg:mb-6">{t('footer.ourServices')}</h4>
             <ul className="grid grid-cols-2 md:grid-cols-1 gap-2 lg:gap-4">
               {services.map((service, index) => (
-                <li key={index} onClick={() => setShowModal(true)} className="text-sm cursor-pointer lg:text-base text-[#FFFFFFCC] hover:text-[#FFFFFF] transition">
-                  {t(service.key)}
+                <li key={index} className="text-sm lg:text-base text-[#FFFFFFCC] hover:text-[#FFFFFF] transition">
+                  <a href={service.path}>{t(service.key)}</a>
                 </li>
               ))}
             </ul>

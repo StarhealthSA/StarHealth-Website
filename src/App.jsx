@@ -8,6 +8,7 @@ const Homesection = lazy(() => import('./components/home/home_section'));
 const DoctorsSection = lazy(() => import('./components/doctors/doctors_section'));
 const ContactUs = lazy(() => import('./components/contact/contact_section'));
 const AboutSection = lazy(() => import('./components/about/about_section'));
+const ServicesSection = lazy(() => import('./components/services/services_section'));
 const Menulist = lazy(() => import('./components/menulist/menu_list'));
 const AppoinmentForm = lazy(() => import('./components/appointment_form'));
 const PrivacySection = lazy(() => import('./components/privacy/privacy_section'));
@@ -47,6 +48,7 @@ const AppContent = () => {
         <Route path="/doctors" element={<DoctorsSection />} />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/about" element={<AboutSection />} />
+        <Route path="/services" element={<ServicesSection />} />
         <Route path="/menulist" element={<Menulist />} />
         <Route path="/booking" element={<AppoinmentForm />} />
         <Route path="/privacy" element={<PrivacySection />} />

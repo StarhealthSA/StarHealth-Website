@@ -37,9 +37,9 @@ function headerData() {
                             </Link>
                         </li>
                         <li>
-                            <a href="/#services" className='md:pr-[20px] hover:text-[#687276] lg:-pr[20px]'>
+                            <Link to="/services" className='md:pr-[20px] hover:text-[#687276] lg:-pr[20px]'>
                                 {t('navigation.services')}
-                            </a>
+                            </Link>
                         </li>
                         <li>
                             <Link to="/doctors" className='md:pr-[20px] hover:text-[#687276] lg:-pr[20px]'>
