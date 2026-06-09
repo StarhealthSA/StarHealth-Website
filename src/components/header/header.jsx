@@ -2,23 +2,15 @@
 
 import logo from '@/assets/doctors/logo1.svg';
 import menu from '@/assets/doctors/secondmenu.svg';
-import Link from 'next/link';
+import NavLink from '@/components/nav_link';
 import { useState } from 'react';
 import Menulist from '@/components/menulist/menu_list';
 import { useTranslation } from 'react-i18next';
+import { HEADER_NAV_LINKS } from '@/constants/nav_routes';
 
 function Header() {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
-
-  const navLinks = [
-    { href: '/', label: t('navigation.home') },
-    { href: '/about', label: t('navigation.about') },
-    { href: '/services', label: t('navigation.services') },
-    { href: '/doctors', label: t('navigation.doctors') },
-    { href: '/blogs', label: t('navigation.blogs') },
-    { href: '/contact', label: t('navigation.contact') },
-  ];
 
   return (
     <>
@@ -30,21 +22,21 @@ function Header() {
           />
         )}
 
-        <Link href="/">
+        <NavLink href="/">
           <img
             src={logo}
             alt="logo"
             className="w-[102px] h-[32px] cursor-pointer hover:filter hover:brightness-90 hover:saturate(0) hover:invert-[0.3] lg:w-[160px] lg:h-[58px]"
           />
-        </Link>
+        </NavLink>
 
         <div className="hidden sm:flex flex-row justify-end items-end">
           <ul className="text-[#002333] flex flex-row sm:text-[14px] md:text-[16px] lg:text-[16px] font-medium">
-            {navLinks.map((link) => (
+            {HEADER_NAV_LINKS.map((link) => (
               <li key={link.href}>
-                <Link href={link.href} className="md:pr-[20px] hover:text-[#687276]">
-                  {link.label}
-                </Link>
+                <NavLink href={link.href} className="md:pr-[20px] hover:text-[#687276]">
+                  {t(link.labelKey)}
+                </NavLink>
               </li>
             ))}
           </ul>

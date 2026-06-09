@@ -1,5 +1,8 @@
 import './globals.css';
 import Providers from './providers';
+import Footer from '@/components/footer';
+import ScrollToTop from '@/components/scroll_to_top';
+import RoutePrefetcher from '@/components/route_prefetcher';
 
 export const metadata = {
   title: 'Star Health',
@@ -29,7 +32,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <RoutePrefetcher />
+          <ScrollToTop />
+          {children}
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

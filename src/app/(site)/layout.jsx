@@ -1,8 +1,5 @@
-'use client';
-
 import Topnav from '@/components/top_nav';
 import Header from '@/components/header/header';
-import Footer from '@/components/footer';
 
 export default function SiteLayout({ children }) {
   return (
@@ -10,7 +7,6 @@ export default function SiteLayout({ children }) {
       <Topnav />
       <Header />
       {children}
-      <Footer />
     </>
   );
 }
