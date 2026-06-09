@@ -8,6 +8,7 @@ import dr_haifa from "../../assets/doctors/dr_haifa.png"
 import dr_waad from "../../assets/doctors/dr_waad.png"
 import IntroSection from './intro_section'
 import DoctorsCard from '../doctors_card'
+import Reveal, { staggerDelay } from '../reveal';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 
@@ -99,7 +100,7 @@ function DoctorsListSection() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-8 md:mt-0 pb-[30px] pt-[25px] px-[20px] md:px-[60px] lg:px-[120px]">
                 {filteredDoctors.map((item, index) => (
-                    <DoctorsCard imgs={item.imgDr} name={item.name} specialty={item.specialty} key={index} />
+                    <DoctorsCard imgs={item.imgDr} name={item.name} specialty={item.specialty} revealDelay={staggerDelay(index)} key={index} />
                 ))}
             </div>
         </section>

@@ -13,6 +13,7 @@ import Button from '../web_button'
 import Servicescard from '../services_card'
 import Link from 'next/link';
 import downarrow from '../../assets/home/downarrow.svg';
+import Reveal, { staggerDelay } from '../reveal';
 import { useTranslation } from 'react-i18next';
 
 const SpecializedServices = () => {
@@ -66,14 +67,14 @@ const SpecializedServices = () => {
 
     return (
         <div className="bg-[#E9E7E6] flex flex-col justify-start items-center px-[30px] md:px-[10px] py-[50px] lg:py-[80px]">
-            <div className="flex flex-col items-center">
-                <h1 className="text-[24px] lg:text-[44px] w-full text-[#002333] leading-[32px] lg:leading-[56px] font-medium text-center font-inter">
+            <Reveal className="flex flex-col items-center">
+                <h1 className="w-full text-center font-inter text-[24px] font-medium leading-[32px] text-[#002333] lg:text-[44px] lg:leading-[56px]">
                     {t('services.title')}
                 </h1>
-                <p className="hidden md:block text-[14px] lg:text-[16px] text-[#687276] font-normal text-center w-full md:w-3/4 lg:w-3/5 leading-[20px] font-inter mt-[5px] lg:mt-[20px]">
+                <p className="mt-[5px] hidden w-full text-center font-inter text-[14px] font-normal leading-[20px] text-[#687276] md:block md:w-3/4 lg:mt-[20px] lg:w-3/5 lg:text-[16px]">
                     {t('services.description')}
                 </p>
-            </div>
+            </Reveal>
 
             <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-4 gap-2 lg:gap-4 w-full pb-[20px] pt-[30px] mb-5 lg:px-[120px]">
                 {services.map((item, index) => (
@@ -82,6 +83,7 @@ const SpecializedServices = () => {
                         title={t(item.titleKey)}
                         description={t(item.descriptionKey)}
                         link="/services"
+                        revealDelay={staggerDelay(index)}
                         key={index}
                     />
                 ))}
@@ -94,6 +96,7 @@ const SpecializedServices = () => {
                         title={t(item.titleKey)}
                         description={t(item.descriptionKey)}
                         link="/services"
+                        revealDelay={staggerDelay(index)}
                         key={index}
                     />
                 ))}

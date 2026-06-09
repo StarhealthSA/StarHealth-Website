@@ -7,6 +7,7 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import calender from '../assets/contact/calder.svg';
 import Button from "../components/web_button";
+import Reveal from './reveal';
 import { useTranslation } from 'react-i18next';
 import emailjs from '@emailjs/browser';
 
@@ -106,7 +107,8 @@ function DoctorsCard(props) {
   ];
 
   return (
-    <div className="flex flex-col justify-between lg:mb-1 bg-[#FFFFFF] border-[1px] border-[#E9E7E6] rounded-[12px] py-[30px] px-[20px]">
+    <Reveal delay={props.revealDelay ?? 0} className="h-full">
+    <div className="flex h-full flex-col justify-between rounded-[12px] border-[1px] border-[#E9E7E6] bg-[#FFFFFF] px-[20px] py-[30px] lg:mb-1">
       <img src={props.imgs} alt='doctor' className="w-full h-auto object-cover" />
       <h1 className='font-medium text-[16px] lg:text-[20px] text-[#002333] font-inter mt-4'>{props.name}</h1>
       <p className='font-medium lg:font-normal text-[12px] lg:text-[16px] text-[#687276] font-inter mt-2'>{props.specialty}</p>
@@ -295,6 +297,7 @@ function DoctorsCard(props) {
         </div>
       )}
     </div>
+    </Reveal>
   )
 }
 

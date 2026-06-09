@@ -4,6 +4,7 @@ import calender from '../assets/home/calender.svg'
 import React, { useState } from 'react';
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from 'react-datepicker';
+import Reveal from './reveal';
 import { useTranslation } from 'react-i18next';
 import emailjs from '@emailjs/browser';
 
@@ -98,7 +99,8 @@ function Mobviewform() {
   ]
 
   return (
-    <div className={`flex flex-col w-full overflow-hidden bg-gradient-to-tl from-[#037B76] to-[#AED5C6] items-center justify-center pt-[30px] pb-[30px] pr-[30px] pl-[30px] ${isRTL ? 'text-right' : 'text-left'}`}>
+    <Reveal>
+    <div className={`flex w-full flex-col items-center justify-center overflow-hidden bg-gradient-to-tl from-[#037B76] to-[#AED5C6] px-[30px] py-[30px] ${isRTL ? 'text-right' : 'text-left'}`}>
       <h1 className="text-[#FFFFFF] font-medium text-[18px] leading-[26px] font-inter mb-2">{t('bookingForm.title')}</h1>
       <h2 className="text-[#FFFFFF] font-normal text-[14px] leading-[24px] font-inter mb-6">{t('bookingForm.subtitle')}</h2>
       <form onSubmit={handleSubmit}>
@@ -228,6 +230,7 @@ function Mobviewform() {
         </div>
       </form>
     </div>
+    </Reveal>
   );
 }
 export default Mobviewform;

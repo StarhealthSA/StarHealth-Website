@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import arrow from '../../assets/contact/contactus_arrow.svg';
+import Reveal, { staggerDelay } from '../reveal';
 import { useTranslation } from 'react-i18next';
 
 function FaqSection() {
@@ -40,7 +41,7 @@ function FaqSection() {
     <div className="bg-white pb-[40px] lg:py-[80px]">
       <div className="mx-[30px] lg:mx-[120px]">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 lg:gap-12 ">
-          <div className={`${isRTL ? 'pl-0 lg:pl-8' : 'pr-0 lg:pr-8'}`}>
+          <Reveal className={`${isRTL ? 'pl-0 lg:pl-8' : 'pr-0 lg:pr-8'}`}>
             <h2 className='md:hidden font-inter mt-5 font-medium text-[24px] leading-[32px] text-[#002333] mb-0'>
               {t('contactPage.faq.title')}
             </h2>
@@ -62,11 +63,12 @@ function FaqSection() {
                 <img src={arrow} alt='arrow' className={`w-[20px] h-[20px] md:w-[30px] md:h-[30px] ${isRTL ? 'rotate-180' : ''}`} />
               </a>
             </div>
-          </div>
+          </Reveal>
 
           <div className="space-y-0">
             {faqs.map((faq, index) => (
-              <div key={index} className="border-b border-[#DAD8D7]">
+              <Reveal key={index} delay={staggerDelay(index, 70)}>
+              <div className="border-b border-[#DAD8D7]">
                 <button
                   className={`w-full py-4 lg:py-5 ${isRTL ? 'text-right' : 'text-left'} flex items-center justify-between transition-colors duration-200 ${activeIndex === index ? 'bg-[#FFFFFF]' : ''}`}
                   onClick={() => toggleAccordion(index)}
@@ -93,6 +95,7 @@ function FaqSection() {
                   </div>
                 </div>
               </div>
+              </Reveal>
             ))}
           </div>
         </div>

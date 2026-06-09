@@ -1,5 +1,7 @@
 import IntroSection from '@/components/services/intro_section';
 import Whatnext from '@/components/what_next';
+import Reveal from '@/components/reveal';
+import { staggerDelay } from '@/lib/stagger_delay';
 
 export const metadata = {
   title: 'Medical Services in Riyadh | Star Health',
@@ -115,64 +117,82 @@ export default function ServicesPage() {
 
       <section className="px-[20px] md:px-[30px] lg:px-[120px] py-14 lg:py-20">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {highlights.map((item) => (
-            <article key={item.label} className="rounded-2xl border border-[#d7e6e2] bg-white p-6">
-              <p className="text-[13px] font-semibold tracking-[0.09em] uppercase text-[#5d737b]">{item.label}</p>
-              <p className="mt-2 text-[34px] leading-[40px] font-semibold text-[#002f3b]">{item.value}</p>
-            </article>
+          {highlights.map((item, index) => (
+            <Reveal key={item.label} delay={staggerDelay(index)}>
+              <article className="rounded-2xl border border-[#d7e6e2] bg-white p-6">
+                <p className="text-[13px] font-semibold tracking-[0.09em] uppercase text-[#5d737b]">{item.label}</p>
+                <p className="mt-2 text-[34px] leading-[40px] font-semibold text-[#002f3b]">{item.value}</p>
+              </article>
+            </Reveal>
           ))}
         </div>
       </section>
 
       <section className="px-[20px] md:px-[30px] lg:px-[120px] pb-14 lg:pb-20">
-        <h2 className="text-[28px] font-semibold text-[#002333]">Our Core Medical Services</h2>
-        <p className="mt-3 max-w-3xl text-[15px] leading-[25px] text-[#586971]">
-          Each service line is structured for clinical depth, practical timelines, and coordinated follow-up across your complete health journey.
-        </p>
+        <Reveal>
+          <h2 className="text-[28px] font-semibold text-[#002333]">Our Core Medical Services</h2>
+          <p className="mt-3 max-w-3xl text-[15px] leading-[25px] text-[#586971]">
+            Each service line is structured for clinical depth, practical timelines, and coordinated follow-up across your complete health journey.
+          </p>
+        </Reveal>
         <div className="mt-7 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {servicePillars.map((item) => (
-            <article key={item.title} className="rounded-2xl border border-[#d9e7e3] bg-white p-5">
-              <h3 className="text-[19px] leading-[25px] font-semibold text-[#033d49]">{item.title}</h3>
-              <p className="mt-3 text-[15px] leading-[24px] text-[#607179]">{item.body}</p>
-            </article>
+          {servicePillars.map((item, index) => (
+            <Reveal key={item.title} delay={staggerDelay(index, 70)}>
+              <article className="rounded-2xl border border-[#d9e7e3] bg-white p-5">
+                <h3 className="text-[19px] leading-[25px] font-semibold text-[#033d49]">{item.title}</h3>
+                <p className="mt-3 text-[15px] leading-[24px] text-[#607179]">{item.body}</p>
+              </article>
+            </Reveal>
           ))}
         </div>
       </section>
 
       <section className="px-[20px] md:px-[30px] lg:px-[120px] pb-14 lg:pb-20">
-        <div className="rounded-3xl bg-[#063330] p-8 md:p-10 lg:p-12 text-white">
+        <Reveal>
+        <div className="rounded-3xl bg-[#063330] p-8 text-white md:p-10 lg:p-12">
           <h2 className="text-[28px] leading-[36px] font-semibold">How We Deliver Premium Service Quality</h2>
           <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {process.map((item) => (
-              <article key={item.title} className="rounded-xl bg-white/10 p-4">
-                <h3 className="text-[18px] font-semibold text-[#d8efe6]">{item.title}</h3>
-                <p className="mt-2 text-[14px] leading-[23px] text-[#cde3da]">{item.body}</p>
-              </article>
+            {process.map((item, index) => (
+              <Reveal key={item.title} delay={staggerDelay(index, 70)}>
+                <article className="rounded-xl bg-white/10 p-4">
+                  <h3 className="text-[18px] font-semibold text-[#d8efe6]">{item.title}</h3>
+                  <p className="mt-2 text-[14px] leading-[23px] text-[#cde3da]">{item.body}</p>
+                </article>
+              </Reveal>
             ))}
           </div>
         </div>
+        </Reveal>
       </section>
 
       <section className="px-[20px] md:px-[30px] lg:px-[120px] pb-14 lg:pb-20">
-        <h2 className="text-[28px] font-semibold text-[#002333]">SEO-Focused Healthcare Information</h2>
+        <Reveal>
+          <h2 className="text-[28px] font-semibold text-[#002333]">SEO-Focused Healthcare Information</h2>
+        </Reveal>
         <div className="mt-6 grid gap-4 lg:grid-cols-3">
-          {seoContentBlocks.map((item) => (
-            <article key={item.title} className="rounded-2xl border border-[#d7e5e1] bg-white p-6">
-              <h3 className="text-[20px] leading-[28px] font-semibold text-[#0a3944]">{item.title}</h3>
-              <p className="mt-3 text-[15px] leading-[25px] text-[#5e6f77]">{item.text}</p>
-            </article>
+          {seoContentBlocks.map((item, index) => (
+            <Reveal key={item.title} delay={staggerDelay(index)}>
+              <article className="rounded-2xl border border-[#d7e5e1] bg-white p-6">
+                <h3 className="text-[20px] leading-[28px] font-semibold text-[#0a3944]">{item.title}</h3>
+                <p className="mt-3 text-[15px] leading-[25px] text-[#5e6f77]">{item.text}</p>
+              </article>
+            </Reveal>
           ))}
         </div>
       </section>
 
       <section className="px-[20px] md:px-[30px] lg:px-[120px] pb-16 lg:pb-20">
-        <h2 className="text-[28px] font-semibold text-[#002333]">Frequently Asked Questions</h2>
+        <Reveal>
+          <h2 className="text-[28px] font-semibold text-[#002333]">Frequently Asked Questions</h2>
+        </Reveal>
         <div className="mt-6 space-y-4">
-          {faq.map((item) => (
-            <article key={item.q} className="rounded-2xl border border-[#dbe8e4] bg-white p-6">
-              <h3 className="text-[18px] font-semibold text-[#033a45]">{item.q}</h3>
-              <p className="mt-2 text-[15px] leading-[25px] text-[#607179]">{item.a}</p>
-            </article>
+          {faq.map((item, index) => (
+            <Reveal key={item.q} delay={staggerDelay(index, 80)}>
+              <article className="rounded-2xl border border-[#dbe8e4] bg-white p-6">
+                <h3 className="text-[18px] font-semibold text-[#033a45]">{item.q}</h3>
+                <p className="mt-2 text-[15px] leading-[25px] text-[#607179]">{item.a}</p>
+              </article>
+            </Reveal>
           ))}
         </div>
       </section>

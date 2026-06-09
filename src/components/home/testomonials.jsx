@@ -2,6 +2,7 @@
 
 import stars from '../../assets/home/stars.svg'
 import avatar from '../../assets/home/avatar.svg'
+import Reveal from '../reveal';
 import { useTranslation } from 'react-i18next'
 import google from '../../assets/home/google.svg'
 
@@ -22,14 +23,14 @@ function Testimonials() {
 
     return (
         <div className='bg-[#FFFFFF] flex-col justify-start items-center py-[60px] lg:py-[80px]'>
-            <div className="flex flex-col items-center mb-[35px]">
-                <h1 className="text-[24px] lg:text-[44px] text-[#002333] font-medium font-inter leading-[32px] lg:leading-[54px]">
+            <Reveal className="mb-[35px] flex flex-col items-center">
+                <h1 className="font-inter text-[24px] font-medium leading-[32px] text-[#002333] lg:text-[44px] lg:leading-[54px]">
                     {t('testimonials.title')}
                 </h1>
-                <p className="text-[14px] lg:text-[16px] text-[#687276] font-normal text-center w-full lg:w-3/5 leading-[22px] lg:leading-[24px] px-[25px] font-inter mt-4 lg:mt-[10px]">
+                <p className="mt-4 w-full px-[25px] text-center font-inter text-[14px] font-normal leading-[22px] text-[#687276] lg:mt-[10px] lg:w-3/5 lg:text-[16px] lg:leading-[24px]">
                     {t('testimonials.description')}
                 </p>
-            </div>
+            </Reveal>
 
             <div
                 className="w-full overflow-hidden"

@@ -1,5 +1,7 @@
 import IntroSection from '@/components/about/intro_section';
 import Whatnext from '@/components/what_next';
+import Reveal from '@/components/reveal';
+import { staggerDelay } from '@/lib/stagger_delay';
 
 export const metadata = {
   title: 'About Star Health | Premium Medical Care in Riyadh',
@@ -69,28 +71,23 @@ export default function AboutPage() {
 
       <section className="px-[20px] md:px-[30px] lg:px-[120px] py-14 lg:py-20">
         <div className="grid gap-6 md:grid-cols-3">
-          <article className="rounded-2xl border border-[#dce9e5] bg-white p-6">
-            <h2 className="text-[20px] font-semibold text-[#002333]">Our Vision</h2>
-            <p className="mt-3 text-[15px] leading-[25px] text-[#58696f]">
-              To become the most trusted neighborhood healthcare destination in Riyadh by delivering clinical excellence with genuine human care.
-            </p>
-          </article>
-          <article className="rounded-2xl border border-[#dce9e5] bg-white p-6">
-            <h2 className="text-[20px] font-semibold text-[#002333]">Our Mission</h2>
-            <p className="mt-3 text-[15px] leading-[25px] text-[#58696f]">
-              Provide accessible, preventive, and personalized healthcare for families through modern diagnostics and multidisciplinary expertise.
-            </p>
-          </article>
-          <article className="rounded-2xl border border-[#dce9e5] bg-white p-6">
-            <h2 className="text-[20px] font-semibold text-[#002333]">Our Promise</h2>
-            <p className="mt-3 text-[15px] leading-[25px] text-[#58696f]">
-              Clear communication, ethical practice, and continuity of care from first consultation through recovery and long-term wellness.
-            </p>
-          </article>
+          {[
+            { title: 'Our Vision', body: 'To become the most trusted neighborhood healthcare destination in Riyadh by delivering clinical excellence with genuine human care.' },
+            { title: 'Our Mission', body: 'Provide accessible, preventive, and personalized healthcare for families through modern diagnostics and multidisciplinary expertise.' },
+            { title: 'Our Promise', body: 'Clear communication, ethical practice, and continuity of care from first consultation through recovery and long-term wellness.' },
+          ].map((item, index) => (
+            <Reveal key={item.title} delay={staggerDelay(index)}>
+              <article className="rounded-2xl border border-[#dce9e5] bg-white p-6">
+                <h2 className="text-[20px] font-semibold text-[#002333]">{item.title}</h2>
+                <p className="mt-3 text-[15px] leading-[25px] text-[#58696f]">{item.body}</p>
+              </article>
+            </Reveal>
+          ))}
         </div>
       </section>
 
       <section className="px-[20px] md:px-[30px] lg:px-[120px] pb-14 lg:pb-20">
+        <Reveal>
         <div className="overflow-hidden rounded-3xl bg-[#063330] text-white">
           <div className="grid gap-8 p-8 md:grid-cols-2 lg:p-12">
             <div>
@@ -100,61 +97,71 @@ export default function AboutPage() {
               </p>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <div className="rounded-xl bg-white/10 p-4">
-                <p className="text-[12px] uppercase tracking-[0.12em] text-[#aed5c6]">Average Wait</p>
-                <p className="mt-2 text-[26px] font-semibold">15-20 min</p>
-              </div>
-              <div className="rounded-xl bg-white/10 p-4">
-                <p className="text-[12px] uppercase tracking-[0.12em] text-[#aed5c6]">Patient Follow-ups</p>
-                <p className="mt-2 text-[26px] font-semibold">48 hrs</p>
-              </div>
-              <div className="rounded-xl bg-white/10 p-4">
-                <p className="text-[12px] uppercase tracking-[0.12em] text-[#aed5c6]">Specialties</p>
-                <p className="mt-2 text-[26px] font-semibold">8+</p>
-              </div>
-              <div className="rounded-xl bg-white/10 p-4">
-                <p className="text-[12px] uppercase tracking-[0.12em] text-[#aed5c6]">Care Model</p>
-                <p className="mt-2 text-[26px] font-semibold">Family-first</p>
-              </div>
+              {[
+                { label: 'Average Wait', value: '15-20 min' },
+                { label: 'Patient Follow-ups', value: '48 hrs' },
+                { label: 'Specialties', value: '8+' },
+                { label: 'Care Model', value: 'Family-first' },
+              ].map((stat, index) => (
+                <Reveal key={stat.label} delay={staggerDelay(index, 70)}>
+                  <div className="rounded-xl bg-white/10 p-4">
+                    <p className="text-[12px] uppercase tracking-[0.12em] text-[#aed5c6]">{stat.label}</p>
+                    <p className="mt-2 text-[26px] font-semibold">{stat.value}</p>
+                  </div>
+                </Reveal>
+              ))}
             </div>
           </div>
         </div>
+        </Reveal>
       </section>
 
       <section className="px-[20px] md:px-[30px] lg:px-[120px] pb-14 lg:pb-20">
-        <h2 className="text-[28px] font-semibold text-[#002333]">Core Medical Specialties</h2>
-        <p className="mt-3 max-w-3xl text-[15px] leading-[25px] text-[#5b6a71]">
-          Our multidisciplinary services support preventive care, acute treatment, chronic condition management, and long-term family wellness.
-        </p>
+        <Reveal>
+          <h2 className="text-[28px] font-semibold text-[#002333]">Core Medical Specialties</h2>
+          <p className="mt-3 max-w-3xl text-[15px] leading-[25px] text-[#5b6a71]">
+            Our multidisciplinary services support preventive care, acute treatment, chronic condition management, and long-term family wellness.
+          </p>
+        </Reveal>
         <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {specialties.map((item) => (
-            <div key={item} className="rounded-xl border border-[#d8e6e2] bg-white px-4 py-3 text-[15px] font-medium text-[#123f49]">
-              {item}
-            </div>
+          {specialties.map((item, index) => (
+            <Reveal key={item} delay={staggerDelay(index, 60)}>
+              <div className="rounded-xl border border-[#d8e6e2] bg-white px-4 py-3 text-[15px] font-medium text-[#123f49]">
+                {item}
+              </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
       <section className="px-[20px] md:px-[30px] lg:px-[120px] pb-14 lg:pb-20">
-        <h2 className="text-[28px] font-semibold text-[#002333]">How Care Works at Star Health</h2>
+        <Reveal>
+          <h2 className="text-[28px] font-semibold text-[#002333]">How Care Works at Star Health</h2>
+        </Reveal>
         <div className="mt-6 grid gap-4 lg:grid-cols-2">
-          {process.map((item) => (
-            <article key={item.title} className="rounded-2xl bg-white p-6 border border-[#dfebe7]">
-              <h3 className="text-[19px] font-semibold text-[#02353f]">{item.title}</h3>
-              <p className="mt-2 text-[15px] leading-[25px] text-[#5a6b72]">{item.body}</p>
-            </article>
+          {process.map((item, index) => (
+            <Reveal key={item.title} delay={staggerDelay(index)}>
+              <article className="rounded-2xl border border-[#dfebe7] bg-white p-6">
+                <h3 className="text-[19px] font-semibold text-[#02353f]">{item.title}</h3>
+                <p className="mt-2 text-[15px] leading-[25px] text-[#5a6b72]">{item.body}</p>
+              </article>
+            </Reveal>
           ))}
         </div>
       </section>
 
       <section className="px-[20px] md:px-[30px] lg:px-[120px] pb-16 lg:pb-20">
-        <h2 className="text-[28px] font-semibold text-[#002333]">Frequently Asked Questions</h2>
+        <Reveal>
+          <h2 className="text-[28px] font-semibold text-[#002333]">Frequently Asked Questions</h2>
+        </Reveal>
         <div className="mt-6 space-y-4">
-          {faq.map((item) => (
-            <article key={item.q} className="rounded-2xl border border-[#dbe8e4] bg-white p-6">
-              <h3 className="text-[18px] font-semibold text-[#033a45]">{item.q}</h3>
-              <p className="mt-2 text-[15px] leading-[25px] text-[#607179]">{item.a}</p>
-            </article>
+          {faq.map((item, index) => (
+            <Reveal key={item.q} delay={staggerDelay(index, 80)}>
+              <article className="rounded-2xl border border-[#dbe8e4] bg-white p-6">
+                <h3 className="text-[18px] font-semibold text-[#033a45]">{item.q}</h3>
+                <p className="mt-2 text-[15px] leading-[25px] text-[#607179]">{item.a}</p>
+              </article>
+            </Reveal>
           ))}
         </div>
       </section>

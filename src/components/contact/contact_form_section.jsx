@@ -1,5 +1,6 @@
 'use client';
 
+import Reveal from '../reveal';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import emailjs from '@emailjs/browser';
@@ -76,6 +77,7 @@ function ContactForm() {
   return (
     <div className="min-h-screen bg-white">
       <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
+        <Reveal>
         <form onSubmit={handleSubmit}>
           <div className="bg-[#F6F4F3] rounded-2xl shadow-sm p-8 sm:p-16">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-6">
@@ -207,6 +209,7 @@ function ContactForm() {
             </div>
           </div>
         </form>
+        </Reveal>
       </div>
     </div>
   )

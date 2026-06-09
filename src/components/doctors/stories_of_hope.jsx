@@ -4,6 +4,7 @@ import stars from '../../assets/home/stars.svg'
 import cameron from '../../assets/home/cameron_williamson1.png'
 import courtney from '../../assets/home/Courtney_Henry.png'
 import kristin from '../../assets/home/Kristin_Watson.png'
+import Reveal from '../reveal';
 import { useTranslation } from 'react-i18next';
 
 function storiesOfHope() {
@@ -34,11 +35,11 @@ function storiesOfHope() {
 
     return (
         <div className="bg-[#FFFFFF] hidden flex-col justify-start items-center py-[40px] lg:py-[80px]">
-            <div className="flex flex-col px-[30px] sm:px-[120px] items-center">
+            <Reveal className="flex flex-col items-center px-[30px] sm:px-[120px]">
                 <h1 className="text-[24px] lg:text-[44px] text-[#002333] font-medium font-inter text-center leading-[32px] lg:leading-[54px]">{t('doctorsPage.storiesOfHope.title')}</h1>
                 <p className="text-[14px] lg:text-[16px] text-[#687276] font-weight-[400] text-center mb-5 lg:mb-10  w-full lg:w-3/5 leading-[24px] font-family-inter mt-4 ">
                     {t('doctorsPage.storiesOfHope.description')}</p>
-            </div>
+            </Reveal>
 
             <div className={`marquee-container w-full overflow-hidden bg-transparent`}>
                 <div className="marquee-wrapper flex">

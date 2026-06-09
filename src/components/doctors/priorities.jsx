@@ -3,6 +3,7 @@
 import InsuranceSection from '../insurance_section'
 import AboveInsuranceSection from '../above_insurance_section';
 import img from '../../assets/doctors/priority.png'
+import Reveal from '../reveal';
 import { useTranslation } from 'react-i18next';
 
 function priorities() {
@@ -18,7 +19,8 @@ function priorities() {
     ];
 
     return (
-        <div className=" bg-[#063330] w-full overflow-x-hidden py-[40px] sm:py-[60px]">
+        <div className=" w-full overflow-x-hidden bg-[#063330] py-[40px] sm:py-[60px]">
+            <Reveal>
             <AboveInsuranceSection
                 img={img}
                 heading={t('doctorsPage.priorities.heading')}
@@ -26,6 +28,7 @@ function priorities() {
                 points={points}
             />
             <InsuranceSection h2text={t('doctorsPage.priorities.callText')}/>
+            </Reveal>
         </div>
     )
 }

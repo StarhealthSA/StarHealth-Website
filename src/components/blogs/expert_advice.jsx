@@ -3,6 +3,7 @@
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { urlFor } from '@/lib/sanity';
+import Reveal, { staggerDelay } from '../reveal';
 
 function ExpertAdvice({ posts = [] }) {
     const { t } = useTranslation();
@@ -14,18 +15,18 @@ function ExpertAdvice({ posts = [] }) {
 
     return (
         <div className="bg-[#FFFFFF] flex flex-col justify-start items-center px-[30px] lg:px-[120px]">
-            <div className="flex flex-col items-center">
+            <Reveal className="flex flex-col items-center">
                 <h1 className="text-[24px] lg:text-[44px] text-[#002333] font-medium font-inter leading-[32px] lg:leading-[54px]">
                     {t('blogs.title')}
                 </h1>
                 <p className="text-[14px] lg:text-[16px] text-[#687276] font-normal text-center w-full lg:w-3/5 leading-[22px] lg:leading-[24px] font-inter mt-4 sm:mt-[10px] mb-0 md:mb-0">
                     {t('blogs.description')}
                 </p>
-            </div>
+            </Reveal>
 
-            <div className="flex flex-col lg:flex-row md:justify-between items-start gap-8 lg:gap-12 mt-6 lg:mt-10">
+            <div className="mt-6 flex flex-col items-start gap-8 md:justify-between lg:mt-10 lg:flex-row lg:gap-12">
 
-                <div className="w-full lg:w-1/2 flex flex-col items-start">
+                <Reveal className="flex w-full flex-col items-start lg:w-1/2">
                     <Link href={`/blog/${featuredPost.slug.current}`} className="w-full">
                         <img
                             src={urlFor(featuredPost.mainImage).width(800).url()}
@@ -51,11 +52,12 @@ function ExpertAdvice({ posts = [] }) {
                             Read more
                         </p>
                     </Link>
-                </div>
+                </Reveal>
 
-                <div className='w-full lg:w-1/2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4'>
-                    {sidePosts.map((post) => (
-                        <Link key={post._id} href={`/blog/${post.slug.current}`} className="flex flex-col lg:flex-row items-start gap-3 hover:opacity-90 transition-opacity">
+                <div className='grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:w-1/2 lg:grid-cols-1'>
+                    {sidePosts.map((post, index) => (
+                        <Reveal key={post._id} delay={staggerDelay(index)}>
+                        <Link href={`/blog/${post.slug.current}`} className="flex flex-col items-start gap-3 hover:opacity-90 transition-opacity lg:flex-row">
                             <div className='relative flex-shrink-0'>
                                 <img
                                     src={urlFor(post.mainImage).width(400).url()}
@@ -77,6 +79,7 @@ function ExpertAdvice({ posts = [] }) {
                                 </p>
                             </div>
                         </Link>
+                        </Reveal>
                     ))}
                 </div>
             </div>
