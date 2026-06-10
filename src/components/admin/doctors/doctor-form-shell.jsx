@@ -15,6 +15,7 @@ import { adminFetch, uploadAdminFile } from '@/lib/admin-api';
 import LocalizedInput from '@/components/admin/localized-input';
 import LocalizedListEditor from '@/components/admin/localized-list-editor';
 import AutoTranslateBar from '@/components/admin/auto-translate-bar';
+import DoctorReelsEditor from '@/components/admin/doctors/doctor-reels-editor';
 
 export default function DoctorFormShell({ initial, specializations = [], services = [] }) {
   const router = useRouter();
@@ -275,6 +276,14 @@ export default function DoctorFormShell({ initial, specializations = [], service
               ))}
             </div>
           </div>
+        )}
+
+        {tab === 'reels' && (
+          <DoctorReelsEditor
+            reels={form.reels || []}
+            onChange={(reels) => update('reels', reels)}
+            disabled={uploading}
+          />
         )}
 
         {tab === 'seo' && (

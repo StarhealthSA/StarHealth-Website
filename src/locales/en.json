@@ -119,6 +119,9 @@
     "onlineAvailable": "Online consultation available",
     "affiliation": "Hospital / Clinic Affiliation",
     "bookAppointment": "Book an Appointment",
+    "reels": "Doctor Reels",
+    "reelsDescription": "Watch short videos and highlights from this doctor.",
+    "reelFallback": "Doctor reel",
     "yearsExperience": "years experience",
     "days": {
       "sun": "Sunday",

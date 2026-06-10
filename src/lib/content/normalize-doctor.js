@@ -35,6 +35,7 @@ export function normalizeDoctor(raw = {}) {
     workingDays: raw.workingDays ?? [],
     onlineConsultationAvailable: raw.onlineConsultationAvailable ?? false,
     galleryImages: raw.galleryImages ?? [],
+    reels: raw.reels ?? [],
     metaTitle: raw.metaTitle ?? emptyLocalized(),
     metaDescription: raw.metaDescription ?? emptyLocalized(),
     status,

@@ -10,6 +10,7 @@ import DoctorBanner from './doctor_banner';
 import DoctorProfile from './doctor_profile';
 import DoctorServices from './doctor_services';
 import DoctorConsultation from './doctor_consultation';
+import DoctorReels from './doctor_reels';
 
 export default function DoctorDetailClient({ doctor: rawDoctor, relatedServices }) {
   const { i18n } = useTranslation();
@@ -33,6 +34,7 @@ export default function DoctorDetailClient({ doctor: rawDoctor, relatedServices 
     <div className="bg-white">
       <DoctorBanner doctor={doctor} />
       <DoctorProfile doctor={doctor} />
+      <DoctorReels doctor={rawDoctor} />
       <DoctorServices doctor={doctor} relatedServices={relatedServices} />
       <DoctorConsultation doctor={doctor} />
     </div>

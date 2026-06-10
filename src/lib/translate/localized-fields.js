@@ -23,6 +23,9 @@ const SKIP_KEYS = new Set([
   'active',
   'published',
   'iconKey',
+  'url',
+  'thumbnailUrl',
+  'platform',
 ]);
 
 export function isLocalizedField(value) {

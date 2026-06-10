@@ -26,6 +26,7 @@ export function createEmptyDoctor() {
     workingDays: [],
     onlineConsultationAvailable: false,
     galleryImages: [],
+    reels: [],
     metaTitle: emptyLocalized(),
     metaDescription: emptyLocalized(),
     status: 'active',
@@ -41,6 +42,7 @@ export const DOCTOR_FORM_TABS = [
   { id: 'profile', label: 'Profile' },
   { id: 'availability', label: 'Availability' },
   { id: 'media', label: 'Media' },
+  { id: 'reels', label: 'Reels' },
   { id: 'seo', label: 'SEO' },
   { id: 'status', label: 'Status' },
 ];

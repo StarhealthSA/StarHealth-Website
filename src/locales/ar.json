@@ -119,6 +119,9 @@
     "onlineAvailable": "الاستشارة عبر الإنترنت متاحة",
     "affiliation": "الانتماء للمستشفى / العيادة",
     "bookAppointment": "احجز موعداً",
+    "reels": "ريلز الطبيب",
+    "reelsDescription": "شاهد مقاطع الفيديو القصيرة وأبرز لحظات هذا الطبيب.",
+    "reelFallback": "ريل الطبيب",
     "yearsExperience": "سنوات خبرة",
     "days": {
       "sun": "الأحد",
