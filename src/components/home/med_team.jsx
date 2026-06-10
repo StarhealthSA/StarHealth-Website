@@ -28,7 +28,14 @@ function medTeam() {
         <div className="overflow-x-auto whitespace-nowrap py-8 md:grid grid-cols-4 md:gap-4 md:whitespace-normal scrollbar-hide">
           {doctors.map((item, index) => (
             <div key={item.id} className="inline-block w-[80%] sm:w-full sm:inline-flex mx-3 sm:mx-0">
-              <DoctorsCard imgs={item.image} name={item.displayName} specialty={item.displaySpecialty} revealDelay={staggerDelay(index)} />
+              <DoctorsCard
+                imgs={item.image}
+                name={item.displayName}
+                specialty={item.displaySpecialty}
+                specialization={item.displaySpecialization}
+                slug={item.slug}
+                revealDelay={staggerDelay(index)}
+              />
             </div>
           ))}
         </div>

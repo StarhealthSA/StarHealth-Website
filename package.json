@@ -9,6 +9,8 @@
     "start": "next start",
     "lint": "eslint .",
     "seed:firebase": "node scripts/seed-firebase.js",
+    "seed:specializations": "node scripts/seed-specializations.js",
+    "migrate:doctors": "node scripts/migrate-doctors.js",
     "admin:set-role": "node scripts/set-admin-role.js"
   },
   "dependencies": {

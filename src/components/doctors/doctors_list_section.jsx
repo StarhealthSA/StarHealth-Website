@@ -4,60 +4,104 @@ import IntroSection from './intro_section';
 import DoctorsCard from '../doctors_card';
 import Reveal, { staggerDelay } from '../reveal';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
-import { useLocalizedDoctors } from '@/contexts/content-context';
+import { useMemo, useState } from 'react';
+import { useLocalizedDoctors, useSpecializations } from '@/contexts/content-context';
+import { getTopLevelSpecializations } from '@/lib/content/specialization-utils';
 
 function DoctorsListSection() {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
   const doctors = useLocalizedDoctors(i18n.language);
+  const specializations = useSpecializations(i18n.language);
+  const topLevel = getTopLevelSpecializations(specializations);
 
-  const [selectedService, setSelectedService] = useState('all');
+  const [selectedSpec, setSelectedSpec] = useState('all');
+  const [search, setSearch] = useState('');
 
-  const services = [
-    { service: t('doctorsPage.services.all'), value: 'all' },
-    { service: t('doctorsPage.services.generalMedicine'), value: 'generalMedicine' },
-    { service: t('doctorsPage.services.paediatrics'), value: 'paediatrics' },
-    { service: t('doctorsPage.services.dentistry'), value: 'dentistry' },
-  ];
+  const filteredDoctors = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    return doctors.filter((doctor) => {
+      const matchesSpec =
+        selectedSpec === 'all' ||
+        doctor.specializationId === selectedSpec ||
+        doctor.subSpecializationId === selectedSpec ||
+        doctor.category === selectedSpec;
 
-  const handleServiceClick = (serviceValue) => {
-    setSelectedService(serviceValue);
-  };
+      if (!query) return matchesSpec;
 
-  const filteredDoctors = selectedService === 'all'
-    ? doctors
-    : doctors.filter((doctor) => doctor.category === selectedService);
+      const haystack = [
+        doctor.displayName,
+        doctor.displayQualification,
+        doctor.displayDesignation,
+        doctor.displaySpecialty,
+        doctor.displaySpecialization,
+        doctor.displaySubSpecialization,
+      ]
+        .join(' ')
+        .toLowerCase();
+
+      return matchesSpec && haystack.includes(query);
+    });
+  }, [doctors, selectedSpec, search]);
 
   return (
-    <section className="bg-[#FFFFFF] w-full">
+    <section className="w-full bg-[#FFFFFF]">
       <IntroSection />
+
       <div className={`w-full px-[30px] ${isRTL ? 'lg:pr-[120px]' : 'lg:pl-[120px]'} pt-[5px] lg:pt-[20px]`}>
-        <div className="overflow-x-auto space-x-3 lg:space-x-5 py-4 md:py-0 lg:ml-2.5 flex flex-row sm:whitespace-normal scrollbar-hide">
-          {services.map((item, index) => (
+        <div className="mb-4 max-w-xl">
+          <input
+            type="search"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder={t('doctorsPage.searchPlaceholder')}
+            className="w-full rounded-lg border border-[#DAD8D7] px-4 py-3 font-inter text-[14px] text-[#687276] focus:border-[#037B76] focus:outline-none"
+          />
+        </div>
+
+        <div className="scrollbar-hide flex flex-row space-x-3 overflow-x-auto py-4 sm:whitespace-normal md:py-0 lg:ml-2.5 lg:space-x-5">
+          <button
+            onClick={() => setSelectedSpec('all')}
+            className={`${selectedSpec === 'all'
+              ? 'bg-gradient-to-tl from-[#037B76] to-[#AED5C6] text-[#FFFFFF]'
+              : 'border-[1px] border-[#DAD8D7] text-[#687276] hover:bg-gray-50'
+              } w-fit whitespace-nowrap rounded-[8px] px-4 py-2 font-inter text-[14px] font-weight-[400px] transition-all lg:text-[16px]`}
+          >
+            {t('doctorsPage.services.all')}
+          </button>
+          {topLevel.map((item) => (
             <button
-              onClick={() => handleServiceClick(item.value)}
-              className={`${selectedService === item.value
+              key={item.id}
+              onClick={() => setSelectedSpec(item.id)}
+              className={`${selectedSpec === item.id
                 ? 'bg-gradient-to-tl from-[#037B76] to-[#AED5C6] text-[#FFFFFF]'
-                : 'border-[#DAD8D7] border-[1px] text-[#687276] hover:bg-gray-50'
-                } whitespace-nowrap font-inter text-[14px] lg:text-[16px] font-weight-[400px] w-fit px-4 py-2 rounded-[8px] transition-all`}
-              key={index}
+                : 'border-[1px] border-[#DAD8D7] text-[#687276] hover:bg-gray-50'
+                } w-fit whitespace-nowrap rounded-[8px] px-4 py-2 font-inter text-[14px] font-weight-[400px] transition-all lg:text-[16px]`}
             >
-              {item.service}
+              {item.displayName}
             </button>
           ))}
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-8 md:mt-0 pb-[30px] pt-[25px] px-[20px] md:px-[60px] lg:px-[120px]">
-        {filteredDoctors.map((item, index) => (
-          <DoctorsCard
-            imgs={item.image}
-            name={item.displayName}
-            specialty={item.displaySpecialty}
-            revealDelay={staggerDelay(index)}
-            key={item.id}
-          />
-        ))}
+
+      <div className="mt-8 grid grid-cols-1 gap-6 px-[20px] pb-[30px] pt-[25px] md:mt-0 md:grid-cols-3 md:px-[60px] lg:grid-cols-4 lg:px-[120px]">
+        {filteredDoctors.length === 0 ? (
+          <p className="col-span-full py-8 text-center font-inter text-[#687276]">
+            {t('doctorsPage.noResults')}
+          </p>
+        ) : (
+          filteredDoctors.map((item, index) => (
+            <DoctorsCard
+              imgs={item.image}
+              name={item.displayName}
+              specialty={item.displaySpecialty}
+              specialization={item.displaySpecialization}
+              slug={item.slug}
+              revealDelay={staggerDelay(index)}
+              key={item.id}
+            />
+          ))
+        )}
       </div>
     </section>
   );

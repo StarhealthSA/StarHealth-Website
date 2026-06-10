@@ -13,7 +13,14 @@ export default function AdminDashboardPage() {
         Signed in as <strong>{role}</strong>. {canWrite ? 'You can manage content below.' : 'You have read-only access.'}
       </p>
 
-      <div className="mt-8 grid gap-4 md:grid-cols-2">
+      <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <Link
+          href="/admin/specializations"
+          className="rounded-2xl border border-[#d7e6e2] bg-white p-6 transition-shadow hover:shadow-md"
+        >
+          <h2 className="text-xl font-semibold text-[#037B76]">Specializations</h2>
+          <p className="mt-2 text-sm text-[#586971]">Manage specializations and sub-specializations.</p>
+        </Link>
         <Link
           href="/admin/doctors"
           className="rounded-2xl border border-[#d7e6e2] bg-white p-6 transition-shadow hover:shadow-md"

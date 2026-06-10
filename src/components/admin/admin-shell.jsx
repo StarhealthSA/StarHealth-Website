@@ -7,6 +7,7 @@ import { useAdminAuth } from '@/contexts/admin-auth-context';
 
 const NAV_ITEMS = [
   { href: '/admin', label: 'Dashboard' },
+  { href: '/admin/specializations', label: 'Specializations' },
   { href: '/admin/doctors', label: 'Doctors' },
   { href: '/admin/services', label: 'Services' },
 ];

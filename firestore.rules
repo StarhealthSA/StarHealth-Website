@@ -11,13 +11,19 @@ service cloud.firestore {
     }
 
     match /doctors/{doctorId} {
-      allow read: if resource.data.published == true || hasRole(['admin', 'editor', 'viewer']);
+      allow read: if resource.data.status == 'active' || resource.data.published == true || hasRole(['admin', 'editor', 'viewer']);
       allow create, update: if hasRole(['admin', 'editor']);
       allow delete: if hasRole(['admin']);
     }
 
     match /services/{serviceId} {
       allow read: if resource.data.published == true || hasRole(['admin', 'editor', 'viewer']);
+      allow create, update: if hasRole(['admin', 'editor']);
+      allow delete: if hasRole(['admin']);
+    }
+
+    match /specializations/{specId} {
+      allow read: if resource.data.active == true || hasRole(['admin', 'editor', 'viewer']);
       allow create, update: if hasRole(['admin', 'editor']);
       allow delete: if hasRole(['admin']);
     }

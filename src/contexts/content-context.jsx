@@ -4,11 +4,16 @@ import { createContext, useContext, useMemo } from 'react';
 import { getLocalizedText } from '@/lib/content/localized';
 import { resolveDoctorImage } from '@/lib/content/doctor-images';
 import { resolveServiceIcon } from '@/lib/content/service-icons';
+import { getDoctorDisplayLine } from '@/lib/content/normalize-doctor';
+import { findSpecializationName } from '@/lib/content/specialization-utils';
 
-const ContentContext = createContext({ doctors: [], services: [] });
+const ContentContext = createContext({ doctors: [], services: [], specializations: [] });
 
-export function ContentProvider({ doctors = [], services = [], children }) {
-  const value = useMemo(() => ({ doctors, services }), [doctors, services]);
+export function ContentProvider({ doctors = [], services = [], specializations = [], children }) {
+  const value = useMemo(
+    () => ({ doctors, services, specializations }),
+    [doctors, services, specializations]
+  );
   return <ContentContext.Provider value={value}>{children}</ContentContext.Provider>;
 }
 
@@ -17,11 +22,17 @@ export function useContent() {
 }
 
 export function useLocalizedDoctors(language) {
-  const { doctors } = useContent();
+  const { doctors, specializations } = useContent();
   return doctors.map((doctor) => ({
     ...doctor,
     displayName: getLocalizedText(doctor.name, language),
-    displaySpecialty: getLocalizedText(doctor.specialty, language),
+    displaySpecialty: getDoctorDisplayLine(doctor, language),
+    displayQualification: getLocalizedText(doctor.qualification, language),
+    displayDesignation: getLocalizedText(doctor.designation, language),
+    displayShortIntro: getLocalizedText(doctor.shortIntro, language),
+    displayBiography: getLocalizedText(doctor.biography, language),
+    displaySpecialization: findSpecializationName(specializations, doctor.specializationId, language),
+    displaySubSpecialization: findSpecializationName(specializations, doctor.subSpecializationId, language),
     image: resolveDoctorImage(doctor),
   }));
 }
@@ -33,5 +44,13 @@ export function useLocalizedServices(language) {
     displayTitle: getLocalizedText(service.title, language),
     displayDescription: getLocalizedText(service.description, language),
     icon: resolveServiceIcon(service),
+  }));
+}
+
+export function useSpecializations(language) {
+  const { specializations } = useContent();
+  return specializations.map((spec) => ({
+    ...spec,
+    displayName: getLocalizedText(spec.name, language),
   }));
 }

@@ -1,5 +1,5 @@
 /**
- * Seed Firestore with initial doctors and services.
+ * Seed Firestore with initial specializations, doctors, and services.
  * Usage: node scripts/seed-firebase.js
  */
 
@@ -10,22 +10,31 @@ import { getAdminCredential, loadEnv } from './load-env.js';
 loadEnv();
 
 if (!getApps().length) {
-  const credential = getAdminCredential();
-  initializeApp({
-    credential: cert(credential),
-  });
+  initializeApp({ credential: cert(getAdminCredential()) });
 }
 
 const db = getFirestore();
 
 const { FALLBACK_DOCTORS, FALLBACK_SERVICES } = await import('../src/lib/content/fallback-data.js');
+const { FALLBACK_SPECIALIZATIONS } = await import('../src/lib/content/fallback-specializations.js');
+const { normalizeDoctor } = await import('../src/lib/content/normalize-doctor.js');
 
 async function seed() {
   const now = new Date().toISOString();
 
+  for (const spec of FALLBACK_SPECIALIZATIONS) {
+    await db.collection('specializations').doc(spec.id).set({
+      ...spec,
+      createdAt: now,
+      updatedAt: now,
+    });
+    console.log(`Seeded specialization: ${spec.id}`);
+  }
+
   for (const doctor of FALLBACK_DOCTORS) {
+    const normalized = normalizeDoctor(doctor);
     await db.collection('doctors').doc(doctor.id).set({
-      ...doctor,
+      ...normalized,
       createdAt: now,
       updatedAt: now,
     });

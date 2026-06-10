@@ -104,6 +104,32 @@
     "appointment": "Appointment",
     "viewAll": "View All"
   },
+  "doctorDetail": {
+    "biography": "Biography",
+    "expertise": "Areas of Expertise",
+    "certifications": "Certifications",
+    "awards": "Awards & Achievements",
+    "languages": "Languages Known",
+    "gallery": "Gallery",
+    "treatmentsOffered": "Treatments Offered",
+    "relatedServices": "Related Services",
+    "consultation": "Contact & Consultation",
+    "consultationHours": "Consultation Hours",
+    "workingDays": "Working Days",
+    "onlineAvailable": "Online consultation available",
+    "affiliation": "Hospital / Clinic Affiliation",
+    "bookAppointment": "Book an Appointment",
+    "yearsExperience": "years experience",
+    "days": {
+      "sun": "Sunday",
+      "mon": "Monday",
+      "tue": "Tuesday",
+      "wed": "Wednesday",
+      "thu": "Thursday",
+      "fri": "Friday",
+      "sat": "Saturday"
+    }
+  },
   "doctorModal": {
     "title": "Book an Appointment",
     "description": "Select your preferred specialty and doctor, choose a convenient date, provide your personal details, and book your appointment with just a few clicks. Our team will confirm your booking shortly.",
@@ -238,6 +264,8 @@
   "doctorsPage": {
     "title": "Meet Our Dedicated Experts",
     "description": "Trust your health to our dedicated team of experts. We bring together extensive experience and a shared passion the highest quality medical care.",
+    "searchPlaceholder": "Search doctors by name, qualification, or specialty...",
+    "noResults": "No doctors match your search.",
     "all": "All",
     "services": {
       "all": "All",

@@ -15,6 +15,7 @@ export const DOCTOR_IMAGES = {
 };
 
 export function resolveDoctorImage(doctor) {
+  if (doctor?.profilePhotoUrl) return doctor.profilePhotoUrl;
   if (doctor?.imageUrl) return doctor.imageUrl;
   if (doctor?.imageKey && DOCTOR_IMAGES[doctor.imageKey]) {
     return DOCTOR_IMAGES[doctor.imageKey];
