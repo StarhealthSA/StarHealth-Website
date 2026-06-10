@@ -2,6 +2,7 @@
 
 import Reveal, { staggerDelay } from '@/components/reveal';
 import Servicescard from '@/components/services_card';
+import DoctorSectionHeader from './doctor-section-header';
 import { useTranslation } from 'react-i18next';
 import { getLocalizedText } from '@/lib/content/localized';
 import { resolveServiceIcon } from '@/lib/content/service-icons';
@@ -13,43 +14,55 @@ export default function DoctorServices({ doctor, relatedServices = [] }) {
     getLocalizedText(item, i18n.language)
   ).filter(Boolean);
 
-  return (
-    <section className="bg-[#F6F4F3] px-[20px] py-14 md:px-[60px] lg:px-[120px] lg:py-20">
-      <div className="mx-auto max-w-6xl">
-        {treatments.length > 0 && (
-          <Reveal>
-            <h2 className="font-inter text-2xl font-semibold text-[#002333]">{t('doctorDetail.treatmentsOffered')}</h2>
-            <ul className="mt-4 grid gap-2 md:grid-cols-2">
-              {treatments.map((item, i) => (
-                <li key={i} className="flex items-start gap-2 rounded-lg bg-white p-4 font-inter text-[#687276]">
-                  <span className="mt-1.5 h-2 w-2 flex-shrink-0 rounded-full bg-[#037B76]" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-        )}
+  if (!treatments.length && !relatedServices.length) return null;
 
-        {relatedServices.length > 0 && (
-          <div className="mt-10">
-            <Reveal>
-              <h2 className="font-inter text-2xl font-semibold text-[#002333]">{t('doctorDetail.relatedServices')}</h2>
-            </Reveal>
-            <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
-              {relatedServices.map((service, index) => (
-                <Servicescard
-                  key={service.id}
-                  images={resolveServiceIcon(service)}
-                  title={getLocalizedText(service.title, i18n.language)}
-                  description={getLocalizedText(service.description, i18n.language)}
-                  link="/services"
-                  revealDelay={staggerDelay(index)}
-                />
-              ))}
-            </div>
+  return (
+    <div className="space-y-16">
+      {treatments.length > 0 && (
+        <section id="treatments" className="doctor-detail-section scroll-mt-32">
+          <Reveal>
+            <DoctorSectionHeader
+              eyebrow={t('doctorDetail.patientCare')}
+              title={t('doctorDetail.treatmentsOffered')}
+              description={t('doctorDetail.treatmentsLead')}
+            />
+          </Reveal>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2">
+            {treatments.map((item, i) => (
+              <Reveal key={i} delay={staggerDelay(i)}>
+                <div className="doctor-treatment-card flex items-start gap-4">
+                  <span className="doctor-treatment-index">{String(i + 1).padStart(2, '0')}</span>
+                  <p className="font-inter text-base leading-relaxed text-[#586971]">{item}</p>
+                </div>
+              </Reveal>
+            ))}
           </div>
-        )}
-      </div>
-    </section>
+        </section>
+      )}
+
+      {relatedServices.length > 0 && (
+        <section id="services" className="doctor-detail-section scroll-mt-32">
+          <Reveal>
+            <DoctorSectionHeader
+              eyebrow={t('doctorDetail.starHealthServices')}
+              title={t('doctorDetail.relatedServices')}
+              description={t('doctorDetail.relatedServicesLead')}
+            />
+          </Reveal>
+          <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {relatedServices.map((service, index) => (
+              <Servicescard
+                key={service.id}
+                images={resolveServiceIcon(service)}
+                title={getLocalizedText(service.title, i18n.language)}
+                description={getLocalizedText(service.description, i18n.language)}
+                link="/services"
+                revealDelay={staggerDelay(index)}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+    </div>
   );
 }

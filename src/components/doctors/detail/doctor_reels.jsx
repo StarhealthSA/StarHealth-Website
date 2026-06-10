@@ -1,6 +1,7 @@
 'use client';
 
 import Reveal, { staggerDelay } from '@/components/reveal';
+import DoctorSectionHeader from './doctor-section-header';
 import { useTranslation } from 'react-i18next';
 import { getLocalizedText } from '@/lib/content/localized';
 import { getReelEmbedUrl, sortReels } from '@/lib/content/reel-utils';
@@ -11,14 +12,17 @@ function ReelPlayer({ reel, title }) {
 
   if (!embedUrl) return null;
 
-  if (platform === 'upload' || (!embedUrl.includes('instagram.com') && !embedUrl.includes('youtube.com') && !embedUrl.includes('tiktok.com'))) {
+  if (
+    platform === 'upload'
+    || (!embedUrl.includes('instagram.com') && !embedUrl.includes('youtube.com') && !embedUrl.includes('tiktok.com'))
+  ) {
     return (
       <video
         src={embedUrl}
         controls
         playsInline
         poster={reel.thumbnailUrl || undefined}
-        className="h-full w-full rounded-xl bg-black object-cover"
+        className="h-full w-full bg-black object-cover"
       />
     );
   }
@@ -27,7 +31,7 @@ function ReelPlayer({ reel, title }) {
     <iframe
       src={embedUrl}
       title={title}
-      className="h-full w-full rounded-xl border-0 bg-black"
+      className="h-full w-full border-0 bg-black"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
       allowFullScreen
     />
@@ -41,30 +45,32 @@ export default function DoctorReels({ doctor }) {
   if (!reels.length) return null;
 
   return (
-    <section className="bg-[#F6F4F3] px-[20px] py-14 md:px-[60px] lg:px-[120px] lg:py-20">
-      <div className="mx-auto max-w-6xl">
-        <Reveal>
-          <h2 className="font-inter text-2xl font-semibold text-[#002333]">{t('doctorDetail.reels')}</h2>
-          <p className="mt-2 font-inter text-sm text-[#687276]">{t('doctorDetail.reelsDescription')}</p>
-        </Reveal>
+    <section id="reels" className="doctor-detail-section scroll-mt-32">
+      <Reveal>
+        <DoctorSectionHeader
+          eyebrow={t('doctorDetail.watchAndLearn')}
+          title={t('doctorDetail.reels')}
+          description={t('doctorDetail.reelsDescription')}
+        />
+      </Reveal>
 
-        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {reels.map((reel, index) => {
-            const title = getLocalizedText(reel.title, i18n.language) || t('doctorDetail.reelFallback');
-            return (
-              <Reveal key={reel.id || index} delay={staggerDelay(index)}>
-                <article className="overflow-hidden rounded-2xl border border-[#E9E7E6] bg-white shadow-sm">
-                  <div className="aspect-[9/16] w-full bg-[#111]">
-                    <ReelPlayer reel={reel} title={title} />
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-inter text-base font-medium text-[#002333]">{title}</h3>
-                  </div>
-                </article>
-              </Reveal>
-            );
-          })}
-        </div>
+      <div className="doctor-reels-track mt-8 flex gap-5 overflow-x-auto pb-4">
+        {reels.map((reel, index) => {
+          const title = getLocalizedText(reel.title, i18n.language) || t('doctorDetail.reelFallback');
+          return (
+            <Reveal key={reel.id || index} delay={staggerDelay(index)} className="shrink-0">
+              <article className="doctor-reel-card w-[260px] overflow-hidden sm:w-[280px]">
+                <div className="aspect-[9/16] w-full bg-[#111]">
+                  <ReelPlayer reel={reel} title={title} />
+                </div>
+                <div className="border-t border-[#E9E7E6] bg-white p-4">
+                  <p className="font-inter text-sm font-semibold text-[#002333]">{title}</p>
+                  <p className="mt-1 font-inter text-xs text-[#037B76]">{t('doctorDetail.tapToWatch')}</p>
+                </div>
+              </article>
+            </Reveal>
+          );
+        })}
       </div>
     </section>
   );
