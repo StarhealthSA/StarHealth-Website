@@ -104,19 +104,19 @@ html {
 .doctor-detail-container {
   margin-inline: auto;
   width: 100%;
-  max-width: 76rem;
+  max-width: 90rem;
   padding-inline: 20px;
 }
 
 @media (min-width: 768px) {
   .doctor-detail-container {
-    padding-inline: 60px;
+    padding-inline: 48px;
   }
 }
 
 @media (min-width: 1024px) {
   .doctor-detail-container {
-    padding-inline: 120px;
+    padding-inline: 72px;
   }
 }
 
@@ -293,19 +293,19 @@ html {
 .service-detail-container {
   margin-inline: auto;
   width: 100%;
-  max-width: 76rem;
+  max-width: 90rem;
   padding-inline: 20px;
 }
 
 @media (min-width: 768px) {
   .service-detail-container {
-    padding-inline: 60px;
+    padding-inline: 48px;
   }
 }
 
 @media (min-width: 1024px) {
   .service-detail-container {
-    padding-inline: 120px;
+    padding-inline: 72px;
   }
 }
 
