@@ -95,7 +95,9 @@ export const FALLBACK_SERVICES = [
       ar: 'تشعر بالتوعك أو تحتاج فقط لفحص روتيني؟ أطباؤنا هنا للاستماع والإرشاد ومساعدتك على البقاء بصحة جيدة - زيارة واحدة في كل مرة.',
     },
     iconKey: 'generalMedicine',
+    categoryId: 'primary-care',
     order: 1,
+    status: 'active',
     published: true,
   },
   {
@@ -107,7 +109,9 @@ export const FALLBACK_SERVICES = [
       ar: 'طبيب عائلتك الموثوق - من الأطفال إلى الأجداد. يأخذ أطباء العائلة لدينا الوقت الكافي للاستماع والإرشاد والرعاية.',
     },
     iconKey: 'familyMedicine',
+    categoryId: 'primary-care',
     order: 2,
+    status: 'active',
     published: true,
   },
   {
@@ -119,7 +123,9 @@ export const FALLBACK_SERVICES = [
       ar: 'تدير مرض السكري أو ارتفاع ضغط الدم أو حالات طويلة الأمد أخرى؟ سنعمل معك عن كثب ونشرح كل خطوة.',
     },
     iconKey: 'internalMedicine',
+    categoryId: 'primary-care',
     order: 3,
+    status: 'active',
     published: true,
   },
   {
@@ -131,7 +137,9 @@ export const FALLBACK_SERVICES = [
       ar: 'من رعاية الحمل إلى صحة المرأة، يقدم أخصائيو التوليد وأمراض النساء لدينا رعاية موثوقة وخاصة وداعمة.',
     },
     iconKey: 'obg',
+    categoryId: 'womens-health',
     order: 4,
+    status: 'active',
     published: true,
   },
   {
@@ -143,7 +151,9 @@ export const FALLBACK_SERVICES = [
       ar: 'من آلام المفاصل إلى الإصابات، فريق جراحة العظام لدينا على بُعد مكالمة هاتفية فقط.',
     },
     iconKey: 'ortho',
+    categoryId: 'orthopedics',
     order: 5,
+    status: 'active',
     published: true,
   },
   {
@@ -155,7 +165,9 @@ export const FALLBACK_SERVICES = [
       ar: 'الابتسامات الصحية تبدأ هنا. من الفحوصات الروتينية والتنظيف إلى التقويم وتصحيح الابتسامة.',
     },
     iconKey: 'generalDentistry',
+    categoryId: 'dental',
     order: 6,
+    status: 'active',
     published: true,
   },
   {
@@ -167,7 +179,9 @@ export const FALLBACK_SERVICES = [
       ar: 'عندما يتعلق الأمر بصحتك، فإن الثقة أمر بالغ الأهمية. يقدم مختبرنا نتائج دقيقة بكل عناية وصدق.',
     },
     iconKey: 'laboratory',
+    categoryId: 'diagnostics',
     order: 7,
+    status: 'active',
     published: true,
   },
   {
@@ -179,7 +193,9 @@ export const FALLBACK_SERVICES = [
       ar: 'قلق بشأن صحة أو نمو طفلك؟ يعامل أطباء الأطفال لدينا أطفالك الصغار برعاية لطيفة وصبر.',
     },
     iconKey: 'pediatrics',
+    categoryId: 'pediatrics',
     order: 8,
+    status: 'active',
     published: true,
   },
 ];

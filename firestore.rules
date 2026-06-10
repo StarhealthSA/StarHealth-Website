@@ -17,7 +17,15 @@ service cloud.firestore {
     }
 
     match /services/{serviceId} {
-      allow read: if resource.data.published == true || hasRole(['admin', 'editor', 'viewer']);
+      allow read: if resource.data.published == true
+        || resource.data.status == 'active'
+        || hasRole(['admin', 'editor', 'viewer']);
+      allow create, update: if hasRole(['admin', 'editor']);
+      allow delete: if hasRole(['admin']);
+    }
+
+    match /serviceCategories/{categoryId} {
+      allow read: if resource.data.active == true || hasRole(['admin', 'editor', 'viewer']);
       allow create, update: if hasRole(['admin', 'editor']);
       allow delete: if hasRole(['admin']);
     }

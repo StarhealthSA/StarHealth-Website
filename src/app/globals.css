@@ -289,3 +289,41 @@ html {
     linear-gradient(135deg, #025e5a 0%, #037B76 55%, #0d6d67 100%);
   box-shadow: 0 28px 70px rgba(3, 123, 118, 0.22);
 }
+
+.service-detail-container {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 76rem;
+  padding-inline: 20px;
+}
+
+@media (min-width: 768px) {
+  .service-detail-container {
+    padding-inline: 60px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .service-detail-container {
+    padding-inline: 120px;
+  }
+}
+
+.service-detail-page {
+  --service-teal: #037B76;
+  --service-mint: #AED5C6;
+  --service-ink: #002333;
+}
+
+.service-hero {
+  min-height: 420px;
+  background: linear-gradient(135deg, #025e5a 0%, #037B76 42%, #3d9a8d 100%);
+}
+
+.service-hero-overlay {
+  background: linear-gradient(180deg, rgba(0, 35, 51, 0.55) 0%, rgba(0, 35, 51, 0.75) 100%);
+}
+
+.service-detail-section {
+  scroll-margin-top: 8rem;
+}

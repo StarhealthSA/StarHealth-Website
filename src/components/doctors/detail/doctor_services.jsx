@@ -53,10 +53,10 @@ export default function DoctorServices({ doctor, relatedServices = [] }) {
             {relatedServices.map((service, index) => (
               <Servicescard
                 key={service.id}
-                images={resolveServiceIcon(service)}
+                images={service.featuredImageUrl || service.imageUrl || resolveServiceIcon(service)}
                 title={getLocalizedText(service.title, i18n.language)}
-                description={getLocalizedText(service.description, i18n.language)}
-                link="/services"
+                description={getLocalizedText(service.shortDescription || service.description, i18n.language)}
+                link={`/services/${service.slug}`}
                 revealDelay={staggerDelay(index)}
               />
             ))}

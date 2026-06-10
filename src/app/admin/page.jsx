@@ -29,11 +29,18 @@ export default function AdminDashboardPage() {
           <p className="mt-2 text-sm text-[#586971]">Manage doctor profiles, specialties, and visibility.</p>
         </Link>
         <Link
+          href="/admin/service-categories"
+          className="rounded-2xl border border-[#d7e6e2] bg-white p-6 transition-shadow hover:shadow-md"
+        >
+          <h2 className="text-xl font-semibold text-[#037B76]">Service Categories</h2>
+          <p className="mt-2 text-sm text-[#586971]">Organize services into browsable categories.</p>
+        </Link>
+        <Link
           href="/admin/services"
           className="rounded-2xl border border-[#d7e6e2] bg-white p-6 transition-shadow hover:shadow-md"
         >
           <h2 className="text-xl font-semibold text-[#037B76]">Services</h2>
-          <p className="mt-2 text-sm text-[#586971]">Manage service listings shown on the website.</p>
+          <p className="mt-2 text-sm text-[#586971]">Manage service listings and detail pages.</p>
         </Link>
       </div>
     </div>
