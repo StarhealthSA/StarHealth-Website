@@ -166,6 +166,10 @@
   "serviceDetail": {
     "backToServices": "Back to all services",
     "exploreService": "Explore service",
+    "learnMore": "Learn more",
+    "trustExpert": "Expert specialists",
+    "trustFlexible": "Flexible scheduling",
+    "trustCare": "Patient-first care",
     "bookAppointment": "Book an Appointment",
     "bookNow": "Book now",
     "overview": "Overview",

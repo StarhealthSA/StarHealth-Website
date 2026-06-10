@@ -166,6 +166,10 @@
   "serviceDetail": {
     "backToServices": "العودة إلى جميع الخدمات",
     "exploreService": "استكشف الخدمة",
+    "learnMore": "اعرف المزيد",
+    "trustExpert": "أخصائيون خبراء",
+    "trustFlexible": "مواعيد مرنة",
+    "trustCare": "رعاية تضع المريض أولاً",
     "bookAppointment": "احجز موعداً",
     "bookNow": "احجز الآن",
     "overview": "نظرة عامة",

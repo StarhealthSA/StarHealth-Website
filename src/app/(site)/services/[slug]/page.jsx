@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation';
 import ServiceDetailClient from '@/components/services/detail/service-detail-client';
-import Whatnext from '@/components/what_next';
 import { getActiveServiceCategories } from '@/lib/content/service-categories';
 import { getPublishedServices, getServiceBySlug } from '@/lib/content/services';
 import { getLocalizedText } from '@/lib/content/localized';
@@ -40,18 +39,12 @@ export default async function ServiceDetailPage({ params }) {
     (service.recommendedServiceIds || []).includes(s.id)
   );
 
-  const content =
-    'Explore more services, book your appointment, or contact our care team for personalized guidance.';
-
   return (
-    <>
-      <ServiceDetailClient
-        service={service}
-        categories={categories}
-        similarServices={similarServices}
-        recommendedServices={recommendedServices}
-      />
-      <Whatnext text={content} />
-    </>
+    <ServiceDetailClient
+      service={service}
+      categories={categories}
+      similarServices={similarServices}
+      recommendedServices={recommendedServices}
+    />
   );
 }
