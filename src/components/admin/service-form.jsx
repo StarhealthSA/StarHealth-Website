@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { SERVICE_ICONS } from '@/lib/content/service-icons';
+import LocalizedInput from '@/components/admin/localized-input';
+import AutoTranslateBar from '@/components/admin/auto-translate-bar';
 
 const emptyService = {
   id: '',
@@ -38,47 +40,12 @@ export default function ServiceForm({ initial, onSubmit, onCancel, saving }) {
     <form onSubmit={handleSubmit} className="space-y-4 rounded-2xl border border-[#d7e6e2] bg-white p-6">
       <h2 className="text-lg font-semibold text-[#002f3b]">{initial ? 'Edit Service' : 'Add Service'}</h2>
 
+      <AutoTranslateBar form={form} onTranslated={setForm} />
+
+      <LocalizedInput label="Title" value={form.title} onChange={(v) => updateField('title', v)} />
+      <LocalizedInput label="Description" value={form.description} onChange={(v) => updateField('description', v)} multiline />
+
       <div className="grid gap-4 md:grid-cols-2">
-        <label className="block">
-          <span className="text-sm font-medium text-[#586971]">Title (EN)</span>
-          <input
-            required
-            value={form.title.en}
-            onChange={(e) => updateField('title.en', e.target.value)}
-            className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
-          />
-        </label>
-        <label className="block">
-          <span className="text-sm font-medium text-[#586971]">Title (AR)</span>
-          <input
-            required
-            value={form.title.ar}
-            onChange={(e) => updateField('title.ar', e.target.value)}
-            className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
-            dir="rtl"
-          />
-        </label>
-        <label className="block md:col-span-2">
-          <span className="text-sm font-medium text-[#586971]">Description (EN)</span>
-          <textarea
-            required
-            rows={3}
-            value={form.description.en}
-            onChange={(e) => updateField('description.en', e.target.value)}
-            className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
-          />
-        </label>
-        <label className="block md:col-span-2">
-          <span className="text-sm font-medium text-[#586971]">Description (AR)</span>
-          <textarea
-            required
-            rows={3}
-            value={form.description.ar}
-            onChange={(e) => updateField('description.ar', e.target.value)}
-            className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
-            dir="rtl"
-          />
-        </label>
         <label className="block">
           <span className="text-sm font-medium text-[#586971]">Icon Key</span>
           <select

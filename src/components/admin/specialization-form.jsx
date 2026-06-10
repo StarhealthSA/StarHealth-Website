@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import LocalizedInput from '@/components/admin/localized-input';
+import AutoTranslateBar from '@/components/admin/auto-translate-bar';
 
 const emptySpec = {
   id: '',
@@ -36,26 +38,12 @@ export default function SpecializationForm({ initial, parents = [], onSubmit, on
       <h2 className="text-lg font-semibold text-[#002f3b]">
         {initial ? 'Edit Specialization' : 'Add Specialization'}
       </h2>
+
+      <AutoTranslateBar form={form} onTranslated={setForm} />
+
+      <LocalizedInput label="Name" value={form.name} onChange={(v) => updateField('name', v)} />
+
       <div className="grid gap-4 md:grid-cols-2">
-        <label className="block">
-          <span className="text-sm font-medium text-[#586971]">Name (EN)</span>
-          <input
-            required
-            value={form.name.en}
-            onChange={(e) => updateField('name.en', e.target.value)}
-            className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
-          />
-        </label>
-        <label className="block">
-          <span className="text-sm font-medium text-[#586971]">Name (AR)</span>
-          <input
-            required
-            value={form.name.ar}
-            onChange={(e) => updateField('name.ar', e.target.value)}
-            className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
-            dir="rtl"
-          />
-        </label>
         <label className="block">
           <span className="text-sm font-medium text-[#586971]">Parent Specialization</span>
           <select

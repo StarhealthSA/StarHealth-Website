@@ -12,97 +12,9 @@ import {
 import { getSubSpecializations, getTopLevelSpecializations } from '@/lib/content/specialization-utils';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch, uploadAdminFile } from '@/lib/admin-api';
-
-function LocalizedInput({ label, value, onChange, multiline = false, dir }) {
-  const Tag = multiline ? 'textarea' : 'input';
-  return (
-    <div className="grid gap-3 md:grid-cols-2">
-      <label className="block">
-        <span className="text-sm font-medium text-[#586971]">{label} (EN)</span>
-        <Tag
-          value={value?.en || ''}
-          onChange={(e) => onChange({ ...value, en: e.target.value })}
-          rows={multiline ? 3 : undefined}
-          className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
-        />
-      </label>
-      <label className="block">
-        <span className="text-sm font-medium text-[#586971]">{label} (AR)</span>
-        <Tag
-          value={value?.ar || ''}
-          onChange={(e) => onChange({ ...value, ar: e.target.value })}
-          rows={multiline ? 3 : undefined}
-          dir="rtl"
-          className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
-        />
-      </label>
-    </div>
-  );
-}
-
-function ListEditor({ label, items, onChange, fields = ['en', 'ar'] }) {
-  const addItem = () => {
-    const item = fields.reduce((acc, f) => ({ ...acc, [f]: '' }), {});
-    onChange([...items, item]);
-  };
-
-  return (
-    <div className="space-y-3">
-      <div className="flex items-center justify-between">
-        <span className="text-sm font-medium text-[#586971]">{label}</span>
-        <button type="button" onClick={addItem} className="text-sm text-[#037B76] hover:underline">+ Add</button>
-      </div>
-      {items.map((item, index) => (
-        <div key={index} className="grid gap-2 rounded-lg border border-[#eef4f2] p-3 md:grid-cols-2">
-          {fields.includes('en') && (
-            <input
-              placeholder="English"
-              value={item.en || ''}
-              onChange={(e) => {
-                const next = [...items];
-                next[index] = { ...item, en: e.target.value };
-                onChange(next);
-              }}
-              className="rounded-lg border border-[#d7e6e2] px-3 py-2 text-sm"
-            />
-          )}
-          {fields.includes('ar') && (
-            <input
-              placeholder="Arabic"
-              dir="rtl"
-              value={item.ar || ''}
-              onChange={(e) => {
-                const next = [...items];
-                next[index] = { ...item, ar: e.target.value };
-                onChange(next);
-              }}
-              className="rounded-lg border border-[#d7e6e2] px-3 py-2 text-sm"
-            />
-          )}
-          {fields.includes('year') && (
-            <input
-              placeholder="Year"
-              value={item.year || ''}
-              onChange={(e) => {
-                const next = [...items];
-                next[index] = { ...item, year: e.target.value };
-                onChange(next);
-              }}
-              className="rounded-lg border border-[#d7e6e2] px-3 py-2 text-sm"
-            />
-          )}
-          <button
-            type="button"
-            onClick={() => onChange(items.filter((_, i) => i !== index))}
-            className="text-sm text-red-600 md:col-span-2"
-          >
-            Remove
-          </button>
-        </div>
-      ))}
-    </div>
-  );
-}
+import LocalizedInput from '@/components/admin/localized-input';
+import LocalizedListEditor from '@/components/admin/localized-list-editor';
+import AutoTranslateBar from '@/components/admin/auto-translate-bar';
 
 export default function DoctorFormShell({ initial, specializations = [], services = [] }) {
   const router = useRouter();
@@ -221,6 +133,8 @@ export default function DoctorFormShell({ initial, specializations = [], service
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      <AutoTranslateBar form={form} onTranslated={setForm} />
+
       <div className="flex flex-wrap gap-2 border-b border-[#d7e6e2] pb-4">
         {DOCTOR_FORM_TABS.map((t) => (
           <button
@@ -302,9 +216,9 @@ export default function DoctorFormShell({ initial, specializations = [], service
               <input value={form.medicalRegistrationNumber || ''} onChange={(e) => update('medicalRegistrationNumber', e.target.value)} className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2" />
             </label>
             <LocalizedInput label="Hospital/Clinic Affiliation" value={form.affiliation} onChange={(v) => update('affiliation', v)} />
-            <ListEditor label="Certifications" items={form.certifications || []} onChange={(v) => update('certifications', v)} fields={['en', 'ar', 'year']} />
-            <ListEditor label="Awards" items={form.awards || []} onChange={(v) => update('awards', v)} fields={['en', 'ar', 'year']} />
-            <ListEditor label="Languages Known" items={form.languagesKnown || []} onChange={(v) => update('languagesKnown', v)} />
+            <LocalizedListEditor label="Certifications" items={form.certifications || []} onChange={(v) => update('certifications', v)} fields={['en', 'ar', 'year']} />
+            <LocalizedListEditor label="Awards" items={form.awards || []} onChange={(v) => update('awards', v)} fields={['en', 'ar', 'year']} />
+            <LocalizedListEditor label="Languages Known" items={form.languagesKnown || []} onChange={(v) => update('languagesKnown', v)} />
           </div>
         )}
 
@@ -312,8 +226,8 @@ export default function DoctorFormShell({ initial, specializations = [], service
           <div className="space-y-4">
             <LocalizedInput label="Short Introduction" value={form.shortIntro} onChange={(v) => update('shortIntro', v)} multiline />
             <LocalizedInput label="Detailed Biography" value={form.biography} onChange={(v) => update('biography', v)} multiline />
-            <ListEditor label="Areas of Expertise" items={form.areasOfExpertise || []} onChange={(v) => update('areasOfExpertise', v)} />
-            <ListEditor label="Treatments Offered" items={form.treatmentsOffered || []} onChange={(v) => update('treatmentsOffered', v)} />
+            <LocalizedListEditor label="Areas of Expertise" items={form.areasOfExpertise || []} onChange={(v) => update('areasOfExpertise', v)} />
+            <LocalizedListEditor label="Treatments Offered" items={form.treatmentsOffered || []} onChange={(v) => update('treatmentsOffered', v)} />
           </div>
         )}
 
