@@ -1,7 +1,8 @@
 'use client';
 
 import arrow from '../assets/home/arrow_right.svg'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import close from "../assets/contact/close_button.svg"
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
@@ -17,6 +18,7 @@ function DoctorsCard(props) {
   const isRTL = i18n.language === 'ar';
 
   const [showModal, setShowModal] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
 
   const [formData, setFormData] = useState({
@@ -89,6 +91,15 @@ function DoctorsCard(props) {
 
   const doctors = useLocalizedDoctors(i18n.language);
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const handleOpenModal = () => {
+    setFormData((prev) => ({ ...prev, doctor: props.name || '' }));
+    setShowModal(true);
+  };
+
   const Age = [
     { age: "ageRanges.1-10" },
     { age: "ageRanges.11-20" },
@@ -103,6 +114,7 @@ function DoctorsCard(props) {
   ];
 
   return (
+    <>
     <Reveal delay={props.revealDelay ?? 0} className="h-full">
     <div className="flex h-full flex-col justify-between rounded-[12px] border-[1px] border-[#E9E7E6] bg-[#FFFFFF] px-[20px] py-[30px] lg:mb-1">
       <img src={props.imgs} alt='doctor' className="w-full h-auto object-cover" />
@@ -110,10 +122,12 @@ function DoctorsCard(props) {
       <p className='font-medium lg:font-normal text-[12px] lg:text-[16px] text-[#687276] font-inter mt-2'>{props.specialty}</p>
       <div className='flex flex-row justify-between items-center mt-8 md:mt-4 lg:mt-8'>
         <h1 className='text-[14px] lg:text-[16px] text-[#002333] font-medium font-inter'>{t('medicalTeam.appointment')}</h1>
-        <img src={arrow} alt='arrow' onClick={() => setShowModal(true)} className='w-[30px] h-[30px] cursor-pointer hover:filter hover:brightness-90 hover:saturate(0) hover:invert-[0.3]' />
+        <img src={arrow} alt='arrow' onClick={handleOpenModal} className='w-[30px] h-[30px] cursor-pointer hover:filter hover:brightness-90 hover:saturate(0) hover:invert-[0.3]' />
       </div>
-      {showModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+    </div>
+    </Reveal>
+      {showModal && mounted && createPortal(
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[9999]">
           <div className="bg-white flex flex-col rounded-[12px] w-full max-w-4xl max-h-[90vh] overflow-y-auto">
 
             <div className="flex justify-between items-center w-full px-4 py-4 sm:px-6 sm:py-6 lg:px-10 lg:py-8 border-b border-gray-100">
@@ -290,10 +304,10 @@ function DoctorsCard(props) {
               </div>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
-    </div>
-    </Reveal>
+    </>
   )
 }
 
