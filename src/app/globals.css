@@ -222,18 +222,65 @@ html {
   color: #037B76;
 }
 
-.doctor-reels-track {
+.doctor-reels-viewport {
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y;
 }
 
 .doctor-reel-card {
-  scroll-snap-align: start;
   border-radius: 1.5rem;
   border: 1px solid #E9E7E6;
   overflow: hidden;
   background: #fff;
   box-shadow: 0 20px 50px rgba(0, 35, 51, 0.08);
+}
+
+.doctor-reel-media {
+  overflow: hidden;
+}
+
+.doctor-reel-instagram {
+  overflow: hidden;
+}
+
+.doctor-reel-instagram iframe {
+  position: absolute;
+  top: -48px;
+  left: 0;
+  width: 100%;
+  height: calc(100% + 96px);
+  border: 0;
+  overflow: hidden;
+  pointer-events: auto;
+}
+
+.doctor-reel-slide-active {
+  opacity: 1;
+}
+
+.doctor-reel-slide-inactive {
+  opacity: 0.85;
+}
+
+.doctor-reel-nav-btn {
+  display: inline-flex;
+  height: 2.5rem;
+  width: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid #D8E7E4;
+  background: #fff;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: #037B76;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.doctor-reel-nav-btn:hover {
+  border-color: #037B76;
+  background: #F3FAF8;
 }
 
 .doctor-consultation-band {

@@ -1,46 +1,223 @@
 'use client';
 
-import Reveal, { staggerDelay } from '@/components/reveal';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import Reveal from '@/components/reveal';
 import DoctorSectionHeader from './doctor-section-header';
 import { useTranslation } from 'react-i18next';
 import { getLocalizedText } from '@/lib/content/localized';
-import { getReelEmbedUrl, sortReels } from '@/lib/content/reel-utils';
+import {
+  detectReelPlatform,
+  getInstagramEmbedUrl,
+  getReelIframeSrc,
+  getReelThumbnail,
+  isEmbeddableReel,
+  isInlineVideoReel,
+  isInstagramReel,
+  sortReels,
+} from '@/lib/content/reel-utils';
 
-function ReelPlayer({ reel, title }) {
-  const platform = reel.platform || 'upload';
-  const embedUrl = getReelEmbedUrl(reel.url, platform);
+function ReelSlide({
+  reel,
+  title,
+  isActive,
+}) {
+  const { t } = useTranslation();
+  const videoRef = useRef(null);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(false);
+  const platform = reel.platform || detectReelPlatform(reel.url);
+  const isInstagram = isInstagramReel(reel);
+  const instagramEmbed = isInstagram ? getInstagramEmbedUrl(reel.url) : '';
+  const thumbnail = isInstagram ? '' : getReelThumbnail(reel);
+  const isNativeVideo = isInlineVideoReel(reel);
+  const isEmbeddable = isEmbeddableReel(reel);
+  const iframeSrc = getReelIframeSrc(reel);
+  const isPlaying = videoPlaying || isExpanded;
 
-  if (!embedUrl) return null;
+  useEffect(() => {
+    if (!isActive && videoRef.current && !videoRef.current.paused) {
+      videoRef.current.pause();
+      setVideoPlaying(false);
+    }
 
-  if (
-    platform === 'upload'
-    || (!embedUrl.includes('instagram.com') && !embedUrl.includes('youtube.com') && !embedUrl.includes('tiktok.com'))
-  ) {
-    return (
-      <video
-        src={embedUrl}
-        controls
-        playsInline
-        poster={reel.thumbnailUrl || undefined}
-        className="h-full w-full bg-black object-cover"
-      />
-    );
-  }
+    if (!isActive && isExpanded) {
+      setIsExpanded(false);
+    }
+  }, [isActive, isExpanded]);
+
+  const handleClose = () => {
+    if (videoRef.current && !videoRef.current.paused) {
+      videoRef.current.pause();
+    }
+    setVideoPlaying(false);
+    setIsExpanded(false);
+  };
+
+  const handlePlay = () => {
+    if (isNativeVideo && reel.url) {
+      videoRef.current?.play();
+      return;
+    }
+
+    if (isEmbeddable) {
+      setIsExpanded(true);
+      return;
+    }
+
+    if (reel.url) {
+      window.open(reel.url, '_blank', 'noopener,noreferrer');
+    }
+  };
 
   return (
-    <iframe
-      src={embedUrl}
-      title={title}
-      className="h-full w-full border-0 bg-black"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      allowFullScreen
-    />
+    <article
+      className={`doctor-reel-card doctor-reel-slide w-[260px] shrink-0 overflow-hidden sm:w-[280px] ${
+        isActive ? 'doctor-reel-slide-active' : 'doctor-reel-slide-inactive'
+      }`}
+    >
+      <div
+        className={`doctor-reel-media relative aspect-[9/16] w-full bg-[#111] ${
+          isInstagram ? 'doctor-reel-instagram' : ''
+        }`}
+      >
+        {isInstagram && instagramEmbed && (
+          <iframe
+            src={instagramEmbed}
+            title={title}
+            scrolling="no"
+            className="h-full w-full border-0 bg-black"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+          />
+        )}
+
+        {!isInstagram && isNativeVideo && reel.url && (
+          <video
+            ref={videoRef}
+            src={reel.url}
+            controls={videoPlaying}
+            playsInline
+            poster={thumbnail || undefined}
+            className={`absolute inset-0 h-full w-full object-cover ${videoPlaying ? 'z-20' : 'pointer-events-none opacity-0'}`}
+            onPlay={() => setVideoPlaying(true)}
+            onPause={() => setVideoPlaying(false)}
+            onEnded={() => setVideoPlaying(false)}
+          />
+        )}
+
+        {!isInstagram && isEmbeddable && isExpanded && iframeSrc && (
+          <iframe
+            src={`${iframeSrc}&autoplay=1`}
+            title={title}
+            className="absolute inset-0 z-20 h-full w-full border-0 bg-black"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+          />
+        )}
+
+        {!isInstagram && (
+          <>
+            {thumbnail ? (
+              <img
+                src={thumbnail}
+                alt=""
+                className="doctor-reel-thumbnail absolute inset-0 h-full w-full object-cover"
+              />
+            ) : (
+              <div className="absolute inset-0 bg-gradient-to-br from-[#025e5a] via-[#037B76] to-[#063330]" />
+            )}
+
+            {!isPlaying && (
+              <button
+                type="button"
+                onClick={handlePlay}
+                className="absolute inset-0 z-10 flex items-center justify-center bg-black/20 transition hover:bg-black/30"
+                aria-label={title}
+              >
+                <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white/95 text-[#037B76] shadow-lg">
+                  <svg viewBox="0 0 24 24" className="ms-1 h-7 w-7 fill-current" aria-hidden>
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </span>
+              </button>
+            )}
+
+            {isPlaying && (isExpanded || videoPlaying) && (
+              <button
+                type="button"
+                onClick={handleClose}
+                className="absolute end-3 top-3 z-30 rounded-full bg-black/55 px-2.5 py-1 font-inter text-xs font-medium text-white"
+              >
+                Close
+              </button>
+            )}
+          </>
+        )}
+      </div>
+
+      <div className="border-t border-[#E9E7E6] bg-white p-4">
+        <p className="font-inter text-sm font-semibold text-[#002333]">{title}</p>
+        <p className="mt-1 font-inter text-xs text-[#037B76]">
+          {isInstagram
+            ? t('doctorDetail.tapToWatch')
+            : isPlaying
+              ? 'Now playing'
+              : platform === 'tiktok'
+                ? 'Tap to open'
+                : 'Tap to play'}
+        </p>
+      </div>
+    </article>
   );
 }
 
 export default function DoctorReels({ doctor }) {
   const { t, i18n } = useTranslation();
   const reels = sortReels(doctor.reels || []);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const viewportRef = useRef(null);
+  const slideRefs = useRef([]);
+
+  const scrollToIndex = useCallback((index) => {
+    const viewport = viewportRef.current;
+    const slide = slideRefs.current[index];
+    if (!viewport || !slide) return;
+
+    viewport.scrollTo({
+      left: slide.offsetLeft,
+      behavior: 'smooth',
+    });
+    setActiveIndex(index);
+  }, []);
+
+  const goTo = (index) => {
+    scrollToIndex((index + reels.length) % reels.length);
+  };
+
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) return undefined;
+
+    const syncActiveIndex = () => {
+      const scrollLeft = viewport.scrollLeft;
+      let closest = 0;
+      let minDistance = Infinity;
+
+      slideRefs.current.forEach((slide, index) => {
+        if (!slide) return;
+        const distance = Math.abs(slide.offsetLeft - scrollLeft);
+        if (distance < minDistance) {
+          minDistance = distance;
+          closest = index;
+        }
+      });
+
+      setActiveIndex(closest);
+    };
+
+    viewport.addEventListener('scroll', syncActiveIndex, { passive: true });
+    return () => viewport.removeEventListener('scroll', syncActiveIndex);
+  }, [reels.length]);
 
   if (!reels.length) return null;
 
@@ -54,23 +231,66 @@ export default function DoctorReels({ doctor }) {
         />
       </Reveal>
 
-      <div className="doctor-reels-track mt-8 flex gap-5 overflow-x-auto pb-4">
-        {reels.map((reel, index) => {
-          const title = getLocalizedText(reel.title, i18n.language) || t('doctorDetail.reelFallback');
-          return (
-            <Reveal key={reel.id || index} delay={staggerDelay(index)} className="shrink-0">
-              <article className="doctor-reel-card w-[260px] overflow-hidden sm:w-[280px]">
-                <div className="aspect-[9/16] w-full bg-[#111]">
-                  <ReelPlayer reel={reel} title={title} />
-                </div>
-                <div className="border-t border-[#E9E7E6] bg-white p-4">
-                  <p className="font-inter text-sm font-semibold text-[#002333]">{title}</p>
-                  <p className="mt-1 font-inter text-xs text-[#037B76]">{t('doctorDetail.tapToWatch')}</p>
-                </div>
-              </article>
-            </Reveal>
-          );
-        })}
+      <div className="doctor-reels-carousel mt-8">
+        <div
+          ref={viewportRef}
+          className="doctor-reels-viewport scrollbar-hide flex gap-5 overflow-x-auto overflow-y-hidden pb-1"
+        >
+          {reels.map((reel, index) => {
+            const title = getLocalizedText(reel.title, i18n.language) || t('doctorDetail.reelFallback');
+            return (
+              <div
+                key={reel.id || index}
+                ref={(node) => {
+                  slideRefs.current[index] = node;
+                }}
+                className="shrink-0 snap-start"
+              >
+                <ReelSlide
+                  reel={reel}
+                  title={title}
+                  isActive={index === activeIndex}
+                />
+              </div>
+            );
+          })}
+        </div>
+
+        {reels.length > 1 && (
+          <div className="mt-5 flex items-center justify-center gap-4">
+            <button
+              type="button"
+              onClick={() => goTo(activeIndex - 1)}
+              className="doctor-reel-nav-btn"
+              aria-label="Previous reel"
+            >
+              ‹
+            </button>
+
+            <div className="flex gap-2">
+              {reels.map((reel, index) => (
+                <button
+                  key={reel.id || index}
+                  type="button"
+                  onClick={() => scrollToIndex(index)}
+                  className={`h-2.5 rounded-full transition-all ${
+                    index === activeIndex ? 'w-7 bg-[#037B76]' : 'w-2.5 bg-[#D8E7E4]'
+                  }`}
+                  aria-label={`Go to reel ${index + 1}`}
+                />
+              ))}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => goTo(activeIndex + 1)}
+              className="doctor-reel-nav-btn"
+              aria-label="Next reel"
+            >
+              ›
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

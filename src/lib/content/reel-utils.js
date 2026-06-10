@@ -7,22 +7,44 @@ export function detectReelPlatform(url = '') {
   return 'upload';
 }
 
+export function getYoutubeVideoId(url = '') {
+  const shorts = url.match(/shorts\/([^/?#]+)/i);
+  const watch = url.match(/[?&]v=([^&]+)/i);
+  const shortLink = url.match(/youtu\.be\/([^/?#]+)/i);
+  return shorts?.[1] || watch?.[1] || shortLink?.[1] || '';
+}
+
+export function getYoutubeThumbnail(url = '') {
+  const videoId = getYoutubeVideoId(url);
+  return videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : '';
+}
+
+export function getReelThumbnail(reel = {}) {
+  if (reel.thumbnailUrl) return reel.thumbnailUrl;
+
+  const platform = reel.platform || detectReelPlatform(reel.url);
+  if (platform === 'youtube') return getYoutubeThumbnail(reel.url);
+
+  return '';
+}
+
+export function getInstagramEmbedUrl(url = '') {
+  const match = url.match(/instagram\.com\/(?:reel|p|tv)\/([^/?#]+)/i);
+  return match ? `https://www.instagram.com/reel/${match[1]}/embed` : '';
+}
+
 export function getReelEmbedUrl(url, platform) {
   if (!url) return '';
 
   const resolvedPlatform = platform || detectReelPlatform(url);
 
   if (resolvedPlatform === 'instagram') {
-    const match = url.match(/instagram\.com\/(?:reel|p|tv)\/([^/?#]+)/i);
-    if (match) return `https://www.instagram.com/reel/${match[1]}/embed`;
+    return getInstagramEmbedUrl(url);
   }
 
   if (resolvedPlatform === 'youtube') {
-    const shorts = url.match(/shorts\/([^/?#]+)/i);
-    const watch = url.match(/[?&]v=([^&]+)/i);
-    const shortLink = url.match(/youtu\.be\/([^/?#]+)/i);
-    const videoId = shorts?.[1] || watch?.[1] || shortLink?.[1];
-    if (videoId) return `https://www.youtube.com/embed/${videoId}`;
+    const videoId = getYoutubeVideoId(url);
+    if (videoId) return `https://www.youtube.com/embed/${videoId}?playsinline=1&rel=0`;
   }
 
   if (resolvedPlatform === 'tiktok') {
@@ -30,7 +52,34 @@ export function getReelEmbedUrl(url, platform) {
     if (match) return `https://www.tiktok.com/embed/v2/${match[1]}`;
   }
 
-  return url;
+  if (/\.(mp4|webm|mov)(\?|$)/i.test(url)) return url;
+
+  return '';
+}
+
+export function isInlineVideoReel(reel = {}) {
+  const platform = reel.platform || detectReelPlatform(reel.url);
+  return platform === 'upload' || /\.(mp4|webm|mov)(\?|$)/i.test(reel.url || '');
+}
+
+export function isInstagramReel(reel = {}) {
+  const platform = reel.platform || detectReelPlatform(reel.url);
+  return platform === 'instagram' && Boolean(getInstagramEmbedUrl(reel.url));
+}
+
+export function isEmbeddableReel(reel = {}) {
+  const platform = reel.platform || detectReelPlatform(reel.url);
+  if (platform === 'youtube') return Boolean(getYoutubeVideoId(reel.url));
+  if (platform === 'tiktok') return /video\/(\d+)/i.test(reel.url || '');
+  return false;
+}
+
+export function getReelIframeSrc(reel = {}) {
+  const platform = reel.platform || detectReelPlatform(reel.url);
+  if (platform === 'youtube' || platform === 'tiktok') {
+    return getReelEmbedUrl(reel.url, platform);
+  }
+  return '';
 }
 
 export function sortReels(reels = []) {
