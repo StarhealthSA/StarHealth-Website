@@ -177,18 +177,40 @@ export default function DoctorReels({ doctor }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const viewportRef = useRef(null);
   const slideRefs = useRef([]);
+  const isNavigatingRef = useRef(false);
+  const navigateTimerRef = useRef(null);
+
+  const getSlideScrollLeft = useCallback((index) => {
+    const viewport = viewportRef.current;
+    const slide = slideRefs.current[index];
+    if (!viewport || !slide) return 0;
+
+    return slide.getBoundingClientRect().left
+      - viewport.getBoundingClientRect().left
+      + viewport.scrollLeft;
+  }, []);
 
   const scrollToIndex = useCallback((index) => {
     const viewport = viewportRef.current;
     const slide = slideRefs.current[index];
     if (!viewport || !slide) return;
 
+    if (navigateTimerRef.current) {
+      window.clearTimeout(navigateTimerRef.current);
+    }
+
+    isNavigatingRef.current = true;
+    setActiveIndex(index);
+
     viewport.scrollTo({
-      left: slide.offsetLeft,
+      left: getSlideScrollLeft(index),
       behavior: 'smooth',
     });
-    setActiveIndex(index);
-  }, []);
+
+    navigateTimerRef.current = window.setTimeout(() => {
+      isNavigatingRef.current = false;
+    }, 450);
+  }, [getSlideScrollLeft]);
 
   const goTo = (index) => {
     scrollToIndex((index + reels.length) % reels.length);
@@ -198,14 +220,18 @@ export default function DoctorReels({ doctor }) {
     const viewport = viewportRef.current;
     if (!viewport) return undefined;
 
+    let scrollTimer;
+
     const syncActiveIndex = () => {
+      if (isNavigatingRef.current) return;
+
       const scrollLeft = viewport.scrollLeft;
       let closest = 0;
       let minDistance = Infinity;
 
       slideRefs.current.forEach((slide, index) => {
         if (!slide) return;
-        const distance = Math.abs(slide.offsetLeft - scrollLeft);
+        const distance = Math.abs(getSlideScrollLeft(index) - scrollLeft);
         if (distance < minDistance) {
           minDistance = distance;
           closest = index;
@@ -215,9 +241,20 @@ export default function DoctorReels({ doctor }) {
       setActiveIndex(closest);
     };
 
-    viewport.addEventListener('scroll', syncActiveIndex, { passive: true });
-    return () => viewport.removeEventListener('scroll', syncActiveIndex);
-  }, [reels.length]);
+    const handleScroll = () => {
+      window.clearTimeout(scrollTimer);
+      scrollTimer = window.setTimeout(syncActiveIndex, 80);
+    };
+
+    viewport.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      viewport.removeEventListener('scroll', handleScroll);
+      window.clearTimeout(scrollTimer);
+      if (navigateTimerRef.current) {
+        window.clearTimeout(navigateTimerRef.current);
+      }
+    };
+  }, [getSlideScrollLeft, reels.length]);
 
   if (!reels.length) return null;
 
