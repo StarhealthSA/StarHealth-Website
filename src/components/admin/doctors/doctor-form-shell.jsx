@@ -18,6 +18,7 @@ import { adminFetch, uploadAdminFile } from '@/lib/admin-api';
 import LocalizedInput from '@/components/admin/localized-input';
 import LocalizedListEditor from '@/components/admin/localized-list-editor';
 import AutoTranslateBar from '@/components/admin/auto-translate-bar';
+import AdminImagePreview from '@/components/admin/admin-image-preview';
 import DoctorReelsEditor from '@/components/admin/doctors/doctor-reels-editor';
 
 export default function DoctorFormShell({
@@ -244,6 +245,13 @@ export default function DoctorFormShell({
                 </select>
               </label>
             </div>
+            {form.profilePhotoUrl && (
+              <AdminImagePreview
+                src={form.profilePhotoUrl}
+                imageClassName="h-32 w-32 rounded-xl object-cover"
+                onRemove={() => update('profilePhotoUrl', '')}
+              />
+            )}
           </div>
         )}
 
@@ -306,10 +314,13 @@ export default function DoctorFormShell({
             </label>
             <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
               {(form.galleryImages || []).map((url, i) => (
-                <div key={url} className="relative">
-                  <img src={url} alt="" className="h-24 w-full rounded-lg object-cover" />
-                  <button type="button" onClick={() => update('galleryImages', form.galleryImages.filter((_, idx) => idx !== i))} className="absolute right-1 top-1 rounded bg-red-600 px-1.5 py-0.5 text-xs text-white">×</button>
-                </div>
+                <AdminImagePreview
+                  key={`${url}-${i}`}
+                  src={url}
+                  wrapperClassName="w-full"
+                  imageClassName="h-24 w-full rounded-lg object-cover"
+                  onRemove={() => update('galleryImages', form.galleryImages.filter((_, idx) => idx !== i))}
+                />
               ))}
             </div>
           </div>

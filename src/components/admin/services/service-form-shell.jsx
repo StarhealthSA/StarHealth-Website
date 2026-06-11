@@ -9,6 +9,7 @@ import { adminFetch, uploadAdminFile } from '@/lib/admin-api';
 import LocalizedInput from '@/components/admin/localized-input';
 import LocalizedListEditor from '@/components/admin/localized-list-editor';
 import AutoTranslateBar from '@/components/admin/auto-translate-bar';
+import AdminImagePreview from '@/components/admin/admin-image-preview';
 import ServiceFaqsEditor from '@/components/admin/services/service-faqs-editor';
 
 export default function ServiceFormShell({
@@ -180,14 +181,26 @@ export default function ServiceFormShell({
             </label>
           </div>
           {form.iconUrl && (
-            <img src={form.iconUrl} alt="" className="h-16 w-16 rounded-lg object-cover" />
+            <AdminImagePreview
+              src={form.iconUrl}
+              imageClassName="h-16 w-16 rounded-lg object-cover"
+              onRemove={() => update('iconUrl', '')}
+            />
           )}
           <label className="block">
             <span className="text-sm font-medium text-[#586971]">Featured Image</span>
             <input type="file" accept="image/*" onChange={handleFeaturedUpload} disabled={uploading} className="mt-1 block w-full text-sm" />
           </label>
           {form.featuredImageUrl && (
-            <img src={form.featuredImageUrl} alt="" className="h-40 w-full max-w-md rounded-xl object-cover" />
+            <AdminImagePreview
+              src={form.featuredImageUrl}
+              wrapperClassName="block max-w-md"
+              imageClassName="h-40 w-full rounded-xl object-cover"
+              onRemove={() => {
+                update('featuredImageUrl', '');
+                update('imageUrl', '');
+              }}
+            />
           )}
         </div>
       )}
@@ -266,16 +279,12 @@ export default function ServiceFormShell({
           {(form.galleryImages || []).length > 0 && (
             <div className="flex flex-wrap gap-3">
               {form.galleryImages.map((url, index) => (
-                <div key={url} className="relative">
-                  <img src={url} alt="" className="h-24 w-32 rounded-lg object-cover" />
-                  <button
-                    type="button"
-                    onClick={() => update('galleryImages', form.galleryImages.filter((_, i) => i !== index))}
-                    className="absolute -top-2 -right-2 rounded-full bg-red-600 px-1.5 text-xs text-white"
-                  >
-                    ×
-                  </button>
-                </div>
+                <AdminImagePreview
+                  key={`${url}-${index}`}
+                  src={url}
+                  imageClassName="h-24 w-32 rounded-lg object-cover"
+                  onRemove={() => update('galleryImages', form.galleryImages.filter((_, i) => i !== index))}
+                />
               ))}
             </div>
           )}

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import LocalizedInput from '@/components/admin/localized-input';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { uploadAdminFile } from '@/lib/admin-api';
+import AdminImagePreview from '@/components/admin/admin-image-preview';
 import { createEmptyReel, detectReelPlatform } from '@/lib/content/reel-utils';
 
 const PLATFORMS = [
@@ -162,7 +163,11 @@ export default function DoctorReelsEditor({ reels = [], onChange, disabled = fal
           </div>
 
           {reel.thumbnailUrl && (
-            <img src={reel.thumbnailUrl} alt="" className="h-24 w-40 rounded-lg object-cover" />
+            <AdminImagePreview
+              src={reel.thumbnailUrl}
+              imageClassName="h-24 w-40 rounded-lg object-cover"
+              onRemove={() => updateReel(index, { thumbnailUrl: '' })}
+            />
           )}
 
           <div className="flex flex-wrap items-center gap-4">
