@@ -1,11 +1,12 @@
 'use client';
 
-import close from "../assets/contact/close_button.svg"
+import close from "../assets/contact/close_button.svg";
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import calender from '../assets/contact/calder.svg';
 import React, { useState } from 'react';
-import Button from "../components/web_button"
+import Button from "../components/web_button";
+import { useLocalizedDoctors } from '@/contexts/content-context';
 
 
 function appoinmentForm(props) {
@@ -23,14 +24,7 @@ function appoinmentForm(props) {
         { sty: "Laser Treatments" },
     ];
 
-    const Doctors = [
-        { doc: "Dr. Aljazi Al-Baqmi" },
-        { doc: "Dr. Hany Mostafa" },
-        { doc: "Dr. Thanaa Shehab Al-Din" },
-        { doc: "Dr. Asmaa Shawqi" },
-        { doc: "Dr. Haifa Ali Khalid " },
-        { doc: "Dr. Waad Al-Sayed" },
-    ];
+    const doctors = useLocalizedDoctors('en');
 
     const Age = [
         { age: "1-10 years" },
@@ -92,9 +86,9 @@ function appoinmentForm(props) {
                                 <option value="" disabled selected className="text-gray-400">
                                     Select
                                 </option>
-                                {Doctors.map((item, index) => (
-                                    <option key={index} value={item.sty}>
-                                        {item.doc}
+                                {doctors.map((item) => (
+                                    <option key={item.id} value={item.displayName}>
+                                        {item.displayName}
                                     </option>
                                 ))}
                             </select>

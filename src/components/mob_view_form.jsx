@@ -7,6 +7,7 @@ import DatePicker from 'react-datepicker';
 import Reveal from './reveal';
 import { useTranslation } from 'react-i18next';
 import emailjs from '@emailjs/browser';
+import { useLocalizedDoctors } from '@/contexts/content-context';
 
 function Mobviewform() {
   const { t, i18n } = useTranslation();
@@ -76,14 +77,7 @@ function Mobviewform() {
     { sty: "Laser Treatments" },
   ]
 
-  const Doctors = [
-    { doc: "Dr. Aljazi Al-Baqmi" },
-    { doc: "Dr. Hany Mostafa" },
-    { doc: "Dr. Thanaa Shehab Al-Din" },
-    { doc: "Dr. Asmaa Shawqi" },
-    { doc: "Dr. Haifa Ali Khalid " },
-    { doc: "Dr. Waad Al-Sayed" },
-  ];
+  const doctors = useLocalizedDoctors(i18n.language);
 
   const Age = [
     { age: "1-10 years" },
@@ -141,13 +135,13 @@ function Mobviewform() {
                 className={`w-full bg-transparent text-white placeholder-white font-inter text-base p-3 outline-none appearance-none ${isRTL ? 'text-right' : 'text-left'}`}
               >
                 <option value="" disabled className="text-gray-400">{t('bookingForm.selectDoctor')}</option>
-                {Doctors.map((item, index) => (
+                {doctors.map((item) => (
                   <option
-                    key={index}
-                    value={item.doc}
+                    key={item.id}
+                    value={item.displayName}
                     className="text-white bg-[#037B76]"
                   >
-                    {item.doc}
+                    {item.displayName}
                   </option>
                 ))}
               </select>

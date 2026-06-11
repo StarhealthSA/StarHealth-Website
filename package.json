@@ -7,13 +7,19 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "seed:firebase": "node scripts/seed-firebase.js",
+    "seed:specializations": "node scripts/seed-specializations.js",
+    "migrate:doctors": "node scripts/migrate-doctors.js",
+    "admin:set-role": "node scripts/set-admin-role.js"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@portabletext/react": "^6.0.3",
     "@sanity/client": "^7.17.0",
     "@sanity/image-url": "^2.0.3",
+    "firebase": "^12.14.0",
+    "firebase-admin": "^13.10.0",
     "i18next": "^25.6.0",
     "next": "^15.3.3",
     "react": "^19.1.0",
