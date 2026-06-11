@@ -10,16 +10,16 @@ import { resolveServiceIcon } from '@/lib/content/service-icons';
 function ServiceMiniCard({ item, lang, delay }) {
   const title = getLocalizedText(item.title, lang);
   const description = getLocalizedText(item.shortDescription || item.description, lang);
-  const image = item.featuredImageUrl || item.imageUrl || resolveServiceIcon(item);
+  const icon = resolveServiceIcon(item);
 
   return (
     <Reveal delay={delay}>
       <Link href={`/services/${item.slug}`} className="service-landing-related-card group block h-full">
-        <div className="overflow-hidden rounded-xl bg-[#F3FAF8]">
+        <div className="flex h-36 items-center justify-center overflow-hidden rounded-xl bg-[#F3FAF8] p-6">
           <img
-            src={image}
+            src={icon}
             alt=""
-            className="h-36 w-full object-cover transition duration-500 group-hover:scale-105"
+            className="h-16 w-16 object-contain transition duration-500 group-hover:scale-105"
           />
         </div>
         <p className="mt-4 font-inter text-sm font-semibold text-[#002333]">{title}</p>

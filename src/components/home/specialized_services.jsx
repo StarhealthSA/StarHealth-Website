@@ -29,7 +29,7 @@ const SpecializedServices = () => {
       <div className="mb-5 hidden w-full gap-2 pb-[20px] pt-[30px] md:grid md:grid-cols-3 lg:grid-cols-4 lg:gap-4 lg:px-[120px]">
         {services.map((item, index) => (
           <Servicescard
-            images={item.featuredImageUrl || item.icon}
+            images={item.icon}
             title={item.displayTitle}
             description={item.displayDescription}
             link={`/services/${item.slug}`}
@@ -42,7 +42,7 @@ const SpecializedServices = () => {
       <div className="mb-5 grid w-full grid-cols-1 gap-4 pb-[20px] pt-[30px] md:hidden">
         {displayedServices.map((item, index) => (
           <Servicescard
-            images={item.featuredImageUrl || item.icon}
+            images={item.icon}
             title={item.displayTitle}
             description={item.displayDescription}
             link={`/services/${item.slug}`}

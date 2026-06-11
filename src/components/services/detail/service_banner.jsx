@@ -7,7 +7,7 @@ import { getLocalizedText } from '@/lib/content/localized';
 
 export default function ServiceBanner({ service, onBookClick, lang }) {
   const { t } = useTranslation();
-  const bannerImage = service.featuredImageUrl || service.imageUrl || service.icon;
+  const bannerImage = service.bannerImage || service.featuredImageUrl || '';
   const duration = getLocalizedText(service.treatmentDuration, lang);
 
   return (

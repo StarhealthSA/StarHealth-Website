@@ -3,7 +3,7 @@
 import { createContext, useContext, useMemo } from 'react';
 import { getLocalizedText } from '@/lib/content/localized';
 import { resolveDoctorImage } from '@/lib/content/doctor-images';
-import { resolveServiceIcon } from '@/lib/content/service-icons';
+import { resolveServiceBannerImage, resolveServiceIcon } from '@/lib/content/service-icons';
 import { getDoctorDisplayLine } from '@/lib/content/normalize-doctor';
 import { findSpecializationName } from '@/lib/content/specialization-utils';
 import { findServiceCategoryName } from '@/lib/content/service-category-utils';
@@ -59,7 +59,7 @@ export function useLocalizedServices(language) {
     displayFullDescription: getLocalizedText(service.fullDescription, language),
     displayCategory: findServiceCategoryName(serviceCategories, service.categoryId, language),
     icon: resolveServiceIcon(service),
-    cardImage: service.featuredImageUrl || service.imageUrl || resolveServiceIcon(service),
+    bannerImage: resolveServiceBannerImage(service),
   }));
 }
 

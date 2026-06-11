@@ -124,7 +124,7 @@ export default function AdminServicesPage() {
               <tr key={service.id} className="border-b border-[#eef4f2]">
                 <td className="px-4 py-3">
                   <img
-                    src={service.featuredImageUrl || service.imageUrl || resolveServiceIcon(service)}
+                    src={resolveServiceIcon(service)}
                     alt=""
                     className="h-12 w-12 rounded-lg object-cover"
                   />

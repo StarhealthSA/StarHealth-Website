@@ -66,7 +66,7 @@ export default function ServiceCardsGrid({ className = '' }) {
           {filteredServices.map((item, index) => (
             <Servicescard
               key={item.id}
-              images={item.featuredImageUrl || item.icon}
+              images={item.icon}
               title={item.displayTitle}
               description={item.displayDescription}
               link={`/services/${item.slug}`}

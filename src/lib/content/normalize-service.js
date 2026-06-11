@@ -57,7 +57,8 @@ export function normalizeService(raw = {}) {
     recommendedServiceIds: Array.isArray(raw.recommendedServiceIds) ? raw.recommendedServiceIds : [],
     status: raw.status ?? (raw.published !== false ? 'active' : 'inactive'),
     published: raw.published ?? (raw.status !== 'inactive'),
-    imageUrl: raw.imageUrl || raw.featuredImageUrl || '',
+    iconUrl: raw.iconUrl || '',
     featuredImageUrl: raw.featuredImageUrl || raw.imageUrl || '',
+    imageUrl: raw.imageUrl || raw.featuredImageUrl || '',
   };
 }

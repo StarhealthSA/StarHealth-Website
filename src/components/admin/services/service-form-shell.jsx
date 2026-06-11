@@ -43,7 +43,6 @@ export default function ServiceFormShell({
       const token = await getIdToken();
       const url = await uploadAdminFile(file, 'services', token);
       update('featuredImageUrl', url);
-      update('imageUrl', url);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -125,6 +124,7 @@ export default function ServiceFormShell({
   };
 
   const otherServices = allServices.filter((s) => s.id !== form.id);
+  const iconPreview = form.iconUrl || SERVICE_ICONS[form.iconKey] || SERVICE_ICONS.generalMedicine;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -162,46 +162,57 @@ export default function ServiceFormShell({
             onChange={(v) => update('fullDescription', v)}
             multiline
           />
-          <div className="grid gap-4 md:grid-cols-2">
-            <label className="block">
-              <span className="text-sm font-medium text-[#586971]">Icon Key</span>
-              <select
-                value={form.iconKey || ''}
-                onChange={(e) => update('iconKey', e.target.value)}
-                className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
-              >
-                {Object.keys(SERVICE_ICONS).map((key) => (
-                  <option key={key} value={key}>{key}</option>
-                ))}
-              </select>
-            </label>
-            <label className="block">
-              <span className="text-sm font-medium text-[#586971]">Custom Icon Upload</span>
-              <input type="file" accept="image/*" onChange={handleIconUpload} disabled={uploading} className="mt-1 block w-full text-sm" />
-            </label>
+          <div className="rounded-xl border border-[#d7e6e2] bg-[#f8fbfa] p-4">
+            <h3 className="text-sm font-semibold text-[#002f3b]">Card Icon</h3>
+            <p className="mt-1 text-xs text-[#586971]">Shown on service cards across the home page, listing, and doctor pages.</p>
+            <div className="mt-4 grid gap-4 md:grid-cols-2">
+              <label className="block">
+                <span className="text-sm font-medium text-[#586971]">Icon Key</span>
+                <select
+                  value={form.iconKey || ''}
+                  onChange={(e) => update('iconKey', e.target.value)}
+                  className="mt-1 w-full rounded-lg border border-[#d7e6e2] bg-white px-3 py-2"
+                >
+                  {Object.keys(SERVICE_ICONS).map((key) => (
+                    <option key={key} value={key}>{key}</option>
+                  ))}
+                </select>
+              </label>
+              <label className="block">
+                <span className="text-sm font-medium text-[#586971]">Custom Icon Upload</span>
+                <input type="file" accept="image/*" onChange={handleIconUpload} disabled={uploading} className="mt-1 block w-full text-sm" />
+              </label>
+            </div>
+            <div className="mt-4 flex items-center gap-4">
+              <AdminImagePreview
+                src={iconPreview}
+                imageClassName="h-16 w-16 rounded-lg object-contain"
+                onRemove={form.iconUrl ? () => update('iconUrl', '') : undefined}
+              />
+              {!form.iconUrl && (
+                <p className="text-xs text-[#586971]">Using built-in icon from Icon Key. Upload a custom icon to override.</p>
+              )}
+            </div>
           </div>
-          {form.iconUrl && (
-            <AdminImagePreview
-              src={form.iconUrl}
-              imageClassName="h-16 w-16 rounded-lg object-cover"
-              onRemove={() => update('iconUrl', '')}
-            />
-          )}
-          <label className="block">
-            <span className="text-sm font-medium text-[#586971]">Featured Image</span>
-            <input type="file" accept="image/*" onChange={handleFeaturedUpload} disabled={uploading} className="mt-1 block w-full text-sm" />
-          </label>
-          {form.featuredImageUrl && (
-            <AdminImagePreview
-              src={form.featuredImageUrl}
-              wrapperClassName="block max-w-md"
-              imageClassName="h-40 w-full rounded-xl object-cover"
-              onRemove={() => {
-                update('featuredImageUrl', '');
-                update('imageUrl', '');
-              }}
-            />
-          )}
+
+          <div className="rounded-xl border border-[#d7e6e2] bg-[#f8fbfa] p-4">
+            <h3 className="text-sm font-semibold text-[#002f3b]">Banner Image</h3>
+            <p className="mt-1 text-xs text-[#586971]">Shown in the hero area on the service detail page only.</p>
+            <label className="mt-4 block">
+              <span className="text-sm font-medium text-[#586971]">Upload Banner Image</span>
+              <input type="file" accept="image/*" onChange={handleFeaturedUpload} disabled={uploading} className="mt-1 block w-full text-sm" />
+            </label>
+            {form.featuredImageUrl && (
+              <div className="mt-4">
+                <AdminImagePreview
+                  src={form.featuredImageUrl}
+                  wrapperClassName="block max-w-md"
+                  imageClassName="h-40 w-full rounded-xl object-cover"
+                  onRemove={() => update('featuredImageUrl', '')}
+                />
+              </div>
+            )}
+          </div>
         </div>
       )}
 

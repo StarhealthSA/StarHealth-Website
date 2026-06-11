@@ -19,9 +19,13 @@ export const SERVICE_ICONS = {
 };
 
 export function resolveServiceIcon(service) {
-  if (service?.imageUrl) return service.imageUrl;
+  if (service?.iconUrl) return service.iconUrl;
   if (service?.iconKey && SERVICE_ICONS[service.iconKey]) {
     return SERVICE_ICONS[service.iconKey];
   }
   return SERVICE_ICONS.generalMedicine;
+}
+
+export function resolveServiceBannerImage(service) {
+  return service?.featuredImageUrl || service?.imageUrl || '';
 }

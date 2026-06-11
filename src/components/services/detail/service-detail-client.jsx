@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getLocalizedText } from '@/lib/content/localized';
 import { findServiceCategoryName } from '@/lib/content/service-category-utils';
-import { resolveServiceIcon } from '@/lib/content/service-icons';
+import { resolveServiceBannerImage, resolveServiceIcon } from '@/lib/content/service-icons';
 import AppointmentModal from '@/components/doctors/appointment-modal';
 import ServiceBanner from './service_banner';
 import ServiceAbout from './service_about';
@@ -33,6 +33,7 @@ export default function ServiceDetailClient({
     displayFullDescription: getLocalizedText(rawService.fullDescription || rawService.description, lang),
     displayCategory: findServiceCategoryName(categories, rawService.categoryId, lang),
     icon: resolveServiceIcon(rawService),
+    bannerImage: resolveServiceBannerImage(rawService),
   }), [rawService, lang, categories]);
 
   const openBooking = () => setShowModal(true);
