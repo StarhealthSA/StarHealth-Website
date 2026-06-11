@@ -76,4 +76,10 @@ export async function deleteSpecialization(id) {
   await db.collection(COLLECTION).doc(id).delete();
 }
 
-export { getTopLevelSpecializations, getSubSpecializations, findSpecializationName } from './specialization-utils';
+export {
+  getTopLevelSpecializations,
+  getSubSpecializations,
+  getSpecializationsByCategory,
+  getSpecializationCategoryId,
+  findSpecializationName,
+} from './specialization-utils';

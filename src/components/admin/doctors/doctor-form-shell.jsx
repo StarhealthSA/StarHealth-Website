@@ -9,7 +9,10 @@ import {
   GENDERS,
   WORKING_DAYS,
 } from '@/lib/content/doctor-defaults';
-import { getSubSpecializations, getTopLevelSpecializations } from '@/lib/content/specialization-utils';
+import {
+  getSpecializationCategoryId,
+  getSpecializationsByCategory,
+} from '@/lib/content/specialization-utils';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch, uploadAdminFile } from '@/lib/admin-api';
 import LocalizedInput from '@/components/admin/localized-input';
@@ -17,18 +20,32 @@ import LocalizedListEditor from '@/components/admin/localized-list-editor';
 import AutoTranslateBar from '@/components/admin/auto-translate-bar';
 import DoctorReelsEditor from '@/components/admin/doctors/doctor-reels-editor';
 
-export default function DoctorFormShell({ initial, specializations = [], services = [] }) {
+export default function DoctorFormShell({
+  initial,
+  specializations = [],
+  serviceCategories = [],
+  services = [],
+}) {
   const router = useRouter();
   const { getIdToken } = useAdminAuth();
   const [tab, setTab] = useState('basic');
-  const [form, setForm] = useState(initial || createEmptyDoctor());
+  const [form, setForm] = useState(() => {
+    const base = initial || createEmptyDoctor();
+    const activeSpecId = base.subSpecializationId || base.specializationId;
+    const selectedSpec = specializations.find((spec) => spec.id === activeSpecId);
+    const categoryId = base.categoryId || getSpecializationCategoryId(selectedSpec);
+    return {
+      ...base,
+      categoryId: categoryId || '',
+      specializationId: activeSpecId || base.specializationId || '',
+    };
+  });
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
 
-  const topLevel = getTopLevelSpecializations(specializations);
-  const subSpecs = form.specializationId
-    ? getSubSpecializations(specializations, form.specializationId)
+  const categorySpecs = form.categoryId
+    ? getSpecializationsByCategory(specializations, form.categoryId)
     : [];
 
   const update = (path, value) => {
@@ -177,17 +194,37 @@ export default function DoctorFormShell({ initial, specializations = [], service
             </div>
             <div className="grid gap-4 md:grid-cols-2">
               <label className="block">
-                <span className="text-sm font-medium text-[#586971]">Specialization</span>
-                <select value={form.specializationId || ''} onChange={(e) => { update('specializationId', e.target.value); update('subSpecializationId', null); }} className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2">
-                  <option value="">Select</option>
-                  {topLevel.map((s) => <option key={s.id} value={s.id}>{s.name?.en}</option>)}
+                <span className="text-sm font-medium text-[#586971]">Service Category</span>
+                <select
+                  value={form.categoryId || ''}
+                  onChange={(e) => {
+                    update('categoryId', e.target.value);
+                    update('specializationId', '');
+                    update('subSpecializationId', null);
+                  }}
+                  className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
+                >
+                  <option value="">Select category</option>
+                  {serviceCategories.map((category) => (
+                    <option key={category.id} value={category.id}>{category.name?.en}</option>
+                  ))}
                 </select>
               </label>
               <label className="block">
-                <span className="text-sm font-medium text-[#586971]">Sub-Specialization</span>
-                <select value={form.subSpecializationId || ''} onChange={(e) => update('subSpecializationId', e.target.value || null)} className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2" disabled={!subSpecs.length}>
-                  <option value="">None</option>
-                  {subSpecs.map((s) => <option key={s.id} value={s.id}>{s.name?.en}</option>)}
+                <span className="text-sm font-medium text-[#586971]">Specialization</span>
+                <select
+                  value={form.specializationId || ''}
+                  onChange={(e) => {
+                    update('specializationId', e.target.value);
+                    update('subSpecializationId', null);
+                  }}
+                  className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
+                  disabled={!form.categoryId}
+                >
+                  <option value="">Select specialization</option>
+                  {categorySpecs.map((spec) => (
+                    <option key={spec.id} value={spec.id}>{spec.name?.en}</option>
+                  ))}
                 </select>
               </label>
             </div>

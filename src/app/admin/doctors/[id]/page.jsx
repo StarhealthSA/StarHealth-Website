@@ -13,6 +13,7 @@ export default function AdminDoctorEditPage() {
   const { getIdToken } = useAdminAuth();
   const [doctor, setDoctor] = useState(null);
   const [specializations, setSpecializations] = useState([]);
+  const [serviceCategories, setServiceCategories] = useState([]);
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(!isNew);
   const [error, setError] = useState('');
@@ -20,11 +21,13 @@ export default function AdminDoctorEditPage() {
   const load = useCallback(async () => {
     try {
       const token = await getIdToken();
-      const [specs, svcs] = await Promise.all([
+      const [specs, categories, svcs] = await Promise.all([
         adminFetch('/api/admin/specializations', { token }),
+        adminFetch('/api/admin/service-categories', { token }),
         adminFetch('/api/admin/services', { token }),
       ]);
       setSpecializations(specs);
+      setServiceCategories(categories);
       setServices(svcs);
 
       if (!isNew) {
@@ -77,6 +80,7 @@ export default function AdminDoctorEditPage() {
       <DoctorFormShell
         initial={isNew ? null : doctor}
         specializations={specializations}
+        serviceCategories={serviceCategories}
         services={services}
       />
     </div>

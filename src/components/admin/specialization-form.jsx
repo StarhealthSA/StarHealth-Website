@@ -8,13 +8,23 @@ const emptySpec = {
   id: '',
   slug: '',
   name: { en: '', ar: '' },
-  parentId: null,
+  categoryId: null,
   order: 1,
   active: true,
 };
 
-export default function SpecializationForm({ initial, parents = [], onSubmit, onCancel, saving }) {
-  const [form, setForm] = useState(initial || emptySpec);
+export default function SpecializationForm({
+  initial,
+  categories = [],
+  onSubmit,
+  onCancel,
+  saving,
+}) {
+  const [form, setForm] = useState(() => ({
+    ...emptySpec,
+    ...initial,
+    categoryId: initial?.categoryId || null,
+  }));
 
   const updateField = (path, value) => {
     setForm((prev) => {
@@ -30,7 +40,13 @@ export default function SpecializationForm({ initial, parents = [], onSubmit, on
     e.preventDefault();
     const slug = form.slug || form.name.en.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     const id = form.id || slug;
-    onSubmit({ ...form, id, slug, parentId: form.parentId || null });
+    onSubmit({
+      ...form,
+      id,
+      slug,
+      categoryId: form.categoryId || null,
+      parentId: null,
+    });
   };
 
   return (
@@ -45,15 +61,15 @@ export default function SpecializationForm({ initial, parents = [], onSubmit, on
 
       <div className="grid gap-4 md:grid-cols-2">
         <label className="block">
-          <span className="text-sm font-medium text-[#586971]">Parent Specialization</span>
+          <span className="text-sm font-medium text-[#586971]">Service Category</span>
           <select
-            value={form.parentId || ''}
-            onChange={(e) => updateField('parentId', e.target.value || null)}
+            value={form.categoryId || ''}
+            onChange={(e) => updateField('categoryId', e.target.value || null)}
             className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
           >
-            <option value="">Top-level specialization</option>
-            {parents.map((p) => (
-              <option key={p.id} value={p.id}>{p.name?.en}</option>
+            <option value="">Select category</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>{category.name?.en}</option>
             ))}
           </select>
         </label>

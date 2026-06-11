@@ -5,27 +5,34 @@ import DoctorsCard from '../doctors_card';
 import Reveal, { staggerDelay } from '../reveal';
 import { useTranslation } from 'react-i18next';
 import { useMemo, useState } from 'react';
-import { useLocalizedDoctors, useSpecializations } from '@/contexts/content-context';
-import { getTopLevelSpecializations } from '@/lib/content/specialization-utils';
+import { useContent, useLocalizedDoctors, useServiceCategories } from '@/contexts/content-context';
+import { getSpecializationCategoryId } from '@/lib/content/specialization-utils';
 
 function DoctorsListSection() {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
+  const { specializations } = useContent();
   const doctors = useLocalizedDoctors(i18n.language);
-  const specializations = useSpecializations(i18n.language);
-  const topLevel = getTopLevelSpecializations(specializations);
+  const categories = useServiceCategories(i18n.language);
 
-  const [selectedSpec, setSelectedSpec] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState('all');
   const [search, setSearch] = useState('');
 
   const filteredDoctors = useMemo(() => {
     const query = search.trim().toLowerCase();
     return doctors.filter((doctor) => {
+      const selectedSpec = specializations.find((spec) => spec.id === doctor.specializationId);
+      const doctorCategoryId =
+        doctor.categoryId ||
+        getSpecializationCategoryId(selectedSpec) ||
+        doctor.category;
+
       const matchesSpec =
-        selectedSpec === 'all' ||
-        doctor.specializationId === selectedSpec ||
-        doctor.subSpecializationId === selectedSpec ||
-        doctor.category === selectedSpec;
+        selectedCategory === 'all' ||
+        doctorCategoryId === selectedCategory ||
+        doctor.specializationId === selectedCategory ||
+        doctor.subSpecializationId === selectedCategory ||
+        doctor.category === selectedCategory;
 
       if (!query) return matchesSpec;
 
@@ -42,7 +49,7 @@ function DoctorsListSection() {
 
       return matchesSpec && haystack.includes(query);
     });
-  }, [doctors, selectedSpec, search]);
+  }, [doctors, selectedCategory, search, specializations]);
 
   return (
     <section className="w-full bg-[#FFFFFF]">
@@ -61,19 +68,19 @@ function DoctorsListSection() {
 
         <div className="scrollbar-hide flex flex-row space-x-3 overflow-x-auto py-4 sm:whitespace-normal md:py-0 lg:ml-2.5 lg:space-x-5">
           <button
-            onClick={() => setSelectedSpec('all')}
-            className={`${selectedSpec === 'all'
+            onClick={() => setSelectedCategory('all')}
+            className={`${selectedCategory === 'all'
               ? 'bg-gradient-to-tl from-[#037B76] to-[#AED5C6] text-[#FFFFFF]'
               : 'border-[1px] border-[#DAD8D7] text-[#687276] hover:bg-gray-50'
               } w-fit whitespace-nowrap rounded-[8px] px-4 py-2 font-inter text-[14px] font-weight-[400px] transition-all lg:text-[16px]`}
           >
             {t('doctorsPage.services.all')}
           </button>
-          {topLevel.map((item) => (
+          {categories.map((item) => (
             <button
               key={item.id}
-              onClick={() => setSelectedSpec(item.id)}
-              className={`${selectedSpec === item.id
+              onClick={() => setSelectedCategory(item.id)}
+              className={`${selectedCategory === item.id
                 ? 'bg-gradient-to-tl from-[#037B76] to-[#AED5C6] text-[#FFFFFF]'
                 : 'border-[1px] border-[#DAD8D7] text-[#687276] hover:bg-gray-50'
                 } w-fit whitespace-nowrap rounded-[8px] px-4 py-2 font-inter text-[14px] font-weight-[400px] transition-all lg:text-[16px]`}

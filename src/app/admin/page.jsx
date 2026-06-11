@@ -19,7 +19,7 @@ export default function AdminDashboardPage() {
           className="rounded-2xl border border-[#d7e6e2] bg-white p-6 transition-shadow hover:shadow-md"
         >
           <h2 className="text-xl font-semibold text-[#037B76]">Specializations</h2>
-          <p className="mt-2 text-sm text-[#586971]">Manage specializations and sub-specializations.</p>
+          <p className="mt-2 text-sm text-[#586971]">Manage doctor specializations by service category.</p>
         </Link>
         <Link
           href="/admin/doctors"
