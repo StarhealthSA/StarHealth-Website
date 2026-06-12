@@ -16,6 +16,11 @@ i18n
     },
     lng: 'en', // default language
     fallbackLng: 'en',
+    // Inline resources: sync init so SSR and client render the same translated text.
+    initImmediate: false,
+    react: {
+      useSuspense: false,
+    },
     interpolation: {
       escapeValue: false // React already escapes values
     }

@@ -110,6 +110,7 @@ export default function DoctorDetailClient({ doctor: rawDoctor, relatedServices 
         isOpen={showModal}
         onClose={() => setShowModal(false)}
         preselectedDoctor={doctor.displayName}
+        preselectedDoctorId={rawDoctor.id}
       />
     </div>
   );

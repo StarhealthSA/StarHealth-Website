@@ -1,69 +1,77 @@
 'use client';
 
 import calender from '../assets/home/calender.svg'
-import React, { useState } from 'react';
-import "react-datepicker/dist/react-datepicker.css";
-import DatePicker from 'react-datepicker';
+import React, { useMemo, useState } from 'react';
 import Reveal from './reveal';
 import { useTranslation } from 'react-i18next';
-import emailjs from '@emailjs/browser';
+import AppointmentDatePicker from '@/components/booking/appointment-date-picker';
+import AppointmentSlotPicker from '@/components/booking/appointment-slot-picker';
 import { useLocalizedDoctors } from '@/contexts/content-context';
+import { submitAppointmentBooking } from '@/lib/booking/submit-appointment';
+import { useDoctorBookingSchedule } from '@/hooks/use-doctor-booking-schedule';
 
 function Mobviewform() {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
   const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedSlot, setSelectedSlot] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
     phonenumber: '',
     age: '',
     speciality: '',
-    doctor: ''
+    doctorId: '',
   });
 
+  const doctors = useLocalizedDoctors(i18n.language);
+  const selectedDoctor = useMemo(
+    () => doctors.find((doctor) => doctor.id === formData.doctorId),
+    [doctors, formData.doctorId]
+  );
+  const { isConfigured, isOpenSchedule, loading: scheduleLoading } = useDoctorBookingSchedule(formData.doctorId);
+
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (name === 'doctorId') {
+      setSelectedSlot(null);
+      setSelectedDate(null);
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!formData.doctorId || scheduleLoading) return;
 
-    const serviceId = 'service_gr3hz0c';
-    const templateId = 'template_zi5qnzk';
-    const publicKey = '3hR26mPB0OTAoNfhQ';
+    if (isConfigured && (!selectedDate || !selectedSlot)) {
+      alert(t('doctorModal.selectSlotRequired'));
+      return;
+    }
 
-    const formattedDate = selectedDate ? selectedDate.toLocaleDateString() : '';
-
-    const templateParams = {
-      name: formData.name,
-      age: formData.age,
-      phonenumber: formData.phonenumber,
-      doctor: formData.doctor,
-      speciality: formData.speciality,
-      date: formattedDate,
-    };
-
-    emailjs.send(serviceId, templateId, templateParams, publicKey)
-      .then((response) => {
-        console.log('Email sent Successfully!', response);
-        alert('Appointment booked successfully!');
-        setFormData({
-          name: '',
-          phonenumber: '',
-          age: '',
-          speciality: '',
-          doctor: ''
-        });
-        setSelectedDate(null);
-      })
-      .catch((error) => {
-        console.error('Error sending email:', error);
-        alert('Failed to book appointment. Please try again.');
+    try {
+      setSubmitting(true);
+      await submitAppointmentBooking({
+        doctorId: formData.doctorId,
+        doctorName: selectedDoctor?.displayName || '',
+        date: selectedDate,
+        slot: selectedSlot,
+        patientName: formData.name,
+        phone: formData.phonenumber,
+        age: formData.age,
+        speciality: formData.speciality,
+        requiresSchedule: isConfigured,
       });
+      alert(t('doctorModal.bookingSuccess'));
+      setFormData({ name: '', phonenumber: '', age: '', speciality: '', doctorId: '' });
+      setSelectedDate(null);
+      setSelectedSlot(null);
+    } catch (error) {
+      alert(error.message || t('doctorModal.bookingFailed'));
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const Speciality = [
@@ -76,8 +84,6 @@ function Mobviewform() {
     { sty: "Urology (Part-Time)" },
     { sty: "Laser Treatments" },
   ]
-
-  const doctors = useLocalizedDoctors(i18n.language);
 
   const Age = [
     { age: "1-10 years" },
@@ -129,16 +135,17 @@ function Mobviewform() {
           <div className="relative w-full">
             <div className="flex flex-row w-full border border-[#FFFFFF66] rounded-lg">
               <select
-                name='doctor'
-                value={formData.doctor}
+                name='doctorId'
+                value={formData.doctorId}
                 onChange={handleChange}
+                required
                 className={`w-full bg-transparent text-white placeholder-white font-inter text-base p-3 outline-none appearance-none ${isRTL ? 'text-right' : 'text-left'}`}
               >
                 <option value="" disabled className="text-gray-400">{t('bookingForm.selectDoctor')}</option>
                 {doctors.map((item) => (
                   <option
                     key={item.id}
-                    value={item.displayName}
+                    value={item.id}
                     className="text-white bg-[#037B76]"
                   >
                     {item.displayName}
@@ -197,29 +204,46 @@ function Mobviewform() {
               </div>
             </div>
           </div>
-          <div className="relative w-full">
-            <DatePicker
-              name='date'
-              selected={selectedDate}
-              onChange={(date) => setSelectedDate(date)}
-              placeholderText={t('bookingForm.selectDate')}
-              className={`w-full border border-[#FFFFFF66] rounded-lg bg-transparent text-white placeholder-white font-inter text-base p-3 outline-none ${isRTL ? 'text-right pl-35' : 'text-left pr-35'}`}
-              calendarClassName="font-inter bg-[#037B76] text-white border border-[#FFFFFF66] rounded-lg"
-              showPopperArrow={false}
-              popperClassName="!z-50"
-              minDate={new Date()}
-              readOnly={false}
+          {isConfigured && (
+            <AppointmentDatePicker
+              doctorId={formData.doctorId}
+              selectedDate={selectedDate}
+              onChange={(date) => {
+                setSelectedDate(date);
+                setSelectedSlot(null);
+              }}
+              variant="onDark"
+              isRTL={isRTL}
+              inputClassName={`w-full border border-[#FFFFFF66] rounded-lg bg-transparent text-white placeholder-white font-inter text-base p-3 outline-none ${isRTL ? 'text-right pl-35' : 'text-left pr-35'}`}
+              calendarIcon={<img src={calender} alt="Calendar" className="w-6 h-6" />}
             />
-            <div className={`absolute inset-y-0 ${isRTL ? 'left-0' : 'right-0'} flex items-center px-3 pointer-events-none`}>
-              <img src={calender} alt="Calendar" className="w-6 h-6" />
-            </div>
-          </div>
+          )}
+
+          {scheduleLoading && formData.doctorId && (
+            <p className="mt-2 text-sm text-white/80">{t('doctorModal.checkingSchedule')}</p>
+          )}
+
+          {isOpenSchedule && formData.doctorId && !scheduleLoading && (
+            <p className="mt-2 text-sm text-white/80">{t('doctorModal.openScheduleNote')}</p>
+          )}
+
+          {isConfigured && (
+            <AppointmentSlotPicker
+              doctorId={formData.doctorId}
+              date={selectedDate}
+              selectedSlot={selectedSlot?.index ?? null}
+              onSelect={setSelectedSlot}
+              variant="onDark"
+              className="mt-2"
+            />
+          )}
 
           <button
             type="submit"
-            className="bg-white font-inter hover:bg-[#FFFFFFCC] font-semibold text-[#002333] mt-4 w-full h-14 rounded-lg transition-all duration-200"
+            disabled={submitting}
+            className="bg-white font-inter hover:bg-[#FFFFFFCC] font-semibold text-[#002333] mt-4 w-full h-14 rounded-lg transition-all duration-200 disabled:opacity-60"
           >
-            {t('bookingForm.bookNow')}
+            {submitting ? t('doctorModal.booking') : t('bookingForm.bookNow')}
           </button>
         </div>
       </form>

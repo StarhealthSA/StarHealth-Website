@@ -11,11 +11,14 @@ import LocalizedListEditor from '@/components/admin/localized-list-editor';
 import AutoTranslateBar from '@/components/admin/auto-translate-bar';
 import AdminImagePreview from '@/components/admin/admin-image-preview';
 import ServiceFaqsEditor from '@/components/admin/services/service-faqs-editor';
+import ServiceBenefitsEditor from '@/components/admin/services/service-benefits-editor';
+import ServiceMarketingEditor from '@/components/admin/services/service-marketing-editor';
 
 export default function ServiceFormShell({
   initial,
   categories = [],
   allServices = [],
+  doctors = [],
 }) {
   const router = useRouter();
   const { getIdToken } = useAdminAuth();
@@ -27,9 +30,23 @@ export default function ServiceFormShell({
 
   const update = (path, value) => {
     setForm((prev) => {
-      if (path.includes('.')) {
-        const [parent, child] = path.split('.');
+      if (!path.includes('.')) {
+        return { ...prev, [path]: value };
+      }
+      const parts = path.split('.');
+      if (parts.length === 2) {
+        const [parent, child] = parts;
         return { ...prev, [parent]: { ...prev[parent], [child]: value } };
+      }
+      if (parts.length === 3) {
+        const [parent, child, grandchild] = parts;
+        return {
+          ...prev,
+          [parent]: {
+            ...prev[parent],
+            [child]: { ...prev[parent]?.[child], [grandchild]: value },
+          },
+        };
       }
       return { ...prev, [path]: value };
     });
@@ -58,6 +75,24 @@ export default function ServiceFormShell({
       const token = await getIdToken();
       const url = await uploadAdminFile(file, 'services/icons', token);
       update('iconUrl', url);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleHeroVideoUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      setUploading(true);
+      const token = await getIdToken();
+      const url = await uploadAdminFile(file, 'services/videos', token);
+      update('marketing', {
+        ...(form.marketing || {}),
+        heroVideo: { enabled: true, url },
+      });
     } catch (err) {
       setError(err.message);
     } finally {
@@ -216,6 +251,16 @@ export default function ServiceFormShell({
         </div>
       )}
 
+      {tab === 'landing' && (
+        <ServiceMarketingEditor
+          marketing={form.marketing || createEmptyService().marketing}
+          doctors={doctors}
+          onUpdate={update}
+          uploading={uploading}
+          onHeroVideoUpload={handleHeroVideoUpload}
+        />
+      )}
+
       {tab === 'details' && (
         <div className="space-y-4">
           <label className="block">
@@ -231,8 +276,7 @@ export default function ServiceFormShell({
               ))}
             </select>
           </label>
-          <LocalizedListEditor
-            label="Service Benefits"
+          <ServiceBenefitsEditor
             items={form.benefits || []}
             onChange={(v) => update('benefits', v)}
           />

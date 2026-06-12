@@ -112,7 +112,11 @@ export async function updateDoctor(id, data) {
 
   const now = new Date().toISOString();
   const normalized = normalizeDoctor({ ...data, id });
-  const payload = { ...normalized, updatedAt: now };
+  const payload = {
+    ...normalized,
+    dateAvailability: data.dateAvailability ?? normalized.dateAvailability,
+    updatedAt: now,
+  };
   await db.collection(COLLECTION).doc(id).set(payload, { merge: true });
   return { id, ...payload };
 }

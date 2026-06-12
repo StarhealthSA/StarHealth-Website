@@ -1,3 +1,5 @@
+import { createEmptyMarketing } from './service-marketing';
+
 const emptyLocalized = () => ({ en: '', ar: '' });
 
 export function createEmptyService() {
@@ -11,6 +13,7 @@ export function createEmptyService() {
     iconUrl: '',
     featuredImageUrl: '',
     categoryId: '',
+    marketing: createEmptyMarketing(),
     benefits: [],
     procedureOverview: emptyLocalized(),
     treatmentDuration: emptyLocalized(),
@@ -32,6 +35,7 @@ export function createEmptyService() {
 
 export const SERVICE_FORM_TABS = [
   { id: 'basic', label: 'Basic' },
+  { id: 'landing', label: 'Landing' },
   { id: 'details', label: 'Details' },
   { id: 'faqs', label: 'FAQs' },
   { id: 'media', label: 'Media' },

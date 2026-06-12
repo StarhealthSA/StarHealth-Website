@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { DOCTOR_IMAGES } from '@/lib/content/doctor-images';
 import {
   createEmptyDoctor,
   DOCTOR_FORM_TABS,
   GENDERS,
-  WORKING_DAYS,
+  resolveDoctorFormTab,
 } from '@/lib/content/doctor-defaults';
 import {
   getSpecializationCategoryId,
@@ -19,17 +19,19 @@ import LocalizedInput from '@/components/admin/localized-input';
 import LocalizedListEditor from '@/components/admin/localized-list-editor';
 import AutoTranslateBar from '@/components/admin/auto-translate-bar';
 import AdminImagePreview from '@/components/admin/admin-image-preview';
+import DoctorAvailabilityCalendar from '@/components/admin/doctors/doctor-availability-calendar';
 import DoctorReelsEditor from '@/components/admin/doctors/doctor-reels-editor';
 
 export default function DoctorFormShell({
   initial,
+  initialTab = 'basic',
   specializations = [],
   serviceCategories = [],
   services = [],
 }) {
   const router = useRouter();
   const { getIdToken } = useAdminAuth();
-  const [tab, setTab] = useState('basic');
+  const [tab, setTab] = useState(() => resolveDoctorFormTab(initialTab));
   const [form, setForm] = useState(() => {
     const base = initial || createEmptyDoctor();
     const activeSpecId = base.subSpecializationId || base.specializationId;
@@ -44,6 +46,10 @@ export default function DoctorFormShell({
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    setTab(resolveDoctorFormTab(initialTab));
+  }, [initialTab]);
 
   const categorySpecs = form.categoryId
     ? getSpecializationsByCategory(specializations, form.categoryId)
@@ -87,11 +93,6 @@ export default function DoctorFormShell({
     } finally {
       setUploading(false);
     }
-  };
-
-  const toggleWorkingDay = (day) => {
-    const days = form.workingDays || [];
-    update('workingDays', days.includes(day) ? days.filter((d) => d !== day) : [...days, day]);
   };
 
   const toggleService = (serviceId) => {
@@ -280,25 +281,11 @@ export default function DoctorFormShell({
         {tab === 'availability' && (
           <div className="space-y-4">
             <LocalizedInput label="Consultation Timings" value={form.consultationTimings} onChange={(v) => update('consultationTimings', v)} multiline />
-            <div>
-              <span className="text-sm font-medium text-[#586971]">Working Days</span>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {WORKING_DAYS.map((day) => (
-                  <button
-                    key={day.value}
-                    type="button"
-                    onClick={() => toggleWorkingDay(day.value)}
-                    className={`rounded-lg px-3 py-1.5 text-sm ${
-                      (form.workingDays || []).includes(day.value)
-                        ? 'bg-[#037B76] text-white'
-                        : 'border border-[#d7e6e2] text-[#586971]'
-                    }`}
-                  >
-                    {day.label}
-                  </button>
-                ))}
-              </div>
-            </div>
+            <DoctorAvailabilityCalendar
+              dateAvailability={form.dateAvailability || {}}
+              onChange={(dateAvailability) => update('dateAvailability', dateAvailability)}
+              doctorId={form.id}
+            />
             <label className="flex items-center gap-2 text-sm text-[#586971]">
               <input type="checkbox" checked={form.onlineConsultationAvailable} onChange={(e) => update('onlineConsultationAvailable', e.target.checked)} />
               Online Consultation Available

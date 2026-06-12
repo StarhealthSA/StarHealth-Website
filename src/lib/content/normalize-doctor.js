@@ -33,6 +33,8 @@ export function normalizeDoctor(raw = {}) {
     treatmentsOffered: raw.treatmentsOffered ?? [],
     consultationTimings: raw.consultationTimings ?? emptyLocalized(),
     workingDays: raw.workingDays ?? [],
+    dutySchedule: raw.dutySchedule ?? {},
+    dateAvailability: raw.dateAvailability ?? {},
     onlineConsultationAvailable: raw.onlineConsultationAvailable ?? false,
     galleryImages: raw.galleryImages ?? [],
     reels: raw.reels ?? [],

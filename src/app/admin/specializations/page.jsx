@@ -13,6 +13,7 @@ export default function AdminSpecializationsPage() {
   const { getIdToken, canWrite, isAdmin } = useAdminAuth();
   const [specializations, setSpecializations] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [editing, setEditing] = useState(null);
@@ -23,12 +24,14 @@ export default function AdminSpecializationsPage() {
     try {
       setLoading(true);
       const token = await getIdToken();
-      const [specs, cats] = await Promise.all([
+      const [specs, cats, svcs] = await Promise.all([
         adminFetch('/api/admin/specializations', { token }),
         adminFetch('/api/admin/service-categories', { token }),
+        adminFetch('/api/admin/services', { token }),
       ]);
       setSpecializations(specs);
       setCategories(cats);
+      setServices(svcs || []);
       setError('');
     } catch (err) {
       setError(err.message);
@@ -135,7 +138,9 @@ export default function AdminSpecializationsPage() {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-semibold text-[#002f3b]">Specializations</h1>
-          <p className="mt-1 text-sm text-[#586971]">Manage doctor specializations grouped by service category.</p>
+          <p className="mt-1 text-sm text-[#586971]">
+            Manage specialization landing pages linked to parent services and service categories.
+          </p>
         </div>
         {canWrite && (
           <button
@@ -155,6 +160,7 @@ export default function AdminSpecializationsPage() {
           <SpecializationForm
             initial={editing}
             categories={categories}
+            services={services}
             saving={saving}
             onSubmit={handleSave}
             onCancel={() => { setShowForm(false); setEditing(null); }}
