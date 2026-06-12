@@ -24,6 +24,8 @@ export function createEmptyDoctor() {
     treatmentsOffered: [],
     consultationTimings: emptyLocalized(),
     workingDays: [],
+    dutySchedule: {},
+    dateAvailability: {},
     onlineConsultationAvailable: false,
     galleryImages: [],
     reels: [],
@@ -46,6 +48,14 @@ export const DOCTOR_FORM_TABS = [
   { id: 'seo', label: 'SEO' },
   { id: 'status', label: 'Status' },
 ];
+
+export function resolveDoctorFormTab(tab) {
+  return DOCTOR_FORM_TABS.some((item) => item.id === tab) ? tab : 'basic';
+}
+
+export function doctorAvailabilityAdminPath(doctorId) {
+  return `/admin/doctors/${doctorId}?tab=availability`;
+}
 
 export const WORKING_DAYS = [
   { value: 'sun', label: 'Sunday' },

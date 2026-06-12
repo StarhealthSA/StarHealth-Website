@@ -1,4 +1,5 @@
 import { createEmptyService } from './service-defaults';
+import { normalizeBenefits, normalizeMarketing } from './service-marketing';
 
 function normalizeLocalized(value) {
   if (!value) return { en: '', ar: '' };
@@ -49,7 +50,8 @@ export function normalizeService(raw = {}) {
     risksAndPrecautions: normalizeLocalized(raw.risksAndPrecautions),
     metaTitle: normalizeLocalized(raw.metaTitle),
     metaDescription: normalizeLocalized(raw.metaDescription),
-    benefits: normalizeLocalizedList(raw.benefits),
+    marketing: normalizeMarketing(raw.marketing),
+    benefits: normalizeBenefits(raw.benefits),
     suitableFor: normalizeLocalizedList(raw.suitableFor),
     faqs: normalizeFaqs(raw.faqs),
     galleryImages: Array.isArray(raw.galleryImages) ? raw.galleryImages : [],

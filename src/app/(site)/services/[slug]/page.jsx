@@ -1,7 +1,9 @@
 import { notFound } from 'next/navigation';
 import ServiceDetailClient from '@/components/services/detail/service-detail-client';
 import { getActiveServiceCategories } from '@/lib/content/service-categories';
-import { getPublishedServices, getServiceBySlug } from '@/lib/content/services';
+import { getPublishedDoctors } from '@/lib/content/doctors';
+import { getServiceBySlug } from '@/lib/content/services';
+import { getActiveSpecializations } from '@/lib/content/specializations';
 import { getLocalizedText } from '@/lib/content/localized';
 
 export const revalidate = 60;
@@ -27,24 +29,18 @@ export default async function ServiceDetailPage({ params }) {
     notFound();
   }
 
-  const [categories, allServices] = await Promise.all([
+  const [categories, doctors, specializations] = await Promise.all([
     getActiveServiceCategories(),
-    getPublishedServices(),
+    getPublishedDoctors(),
+    getActiveSpecializations(),
   ]);
-
-  const similarServices = allServices.filter((s) =>
-    (service.similarServiceIds || []).includes(s.id)
-  );
-  const recommendedServices = allServices.filter((s) =>
-    (service.recommendedServiceIds || []).includes(s.id)
-  );
 
   return (
     <ServiceDetailClient
       service={service}
       categories={categories}
-      similarServices={similarServices}
-      recommendedServices={recommendedServices}
+      doctors={doctors}
+      specializations={specializations}
     />
   );
 }

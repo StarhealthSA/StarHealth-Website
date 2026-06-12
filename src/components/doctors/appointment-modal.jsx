@@ -1,69 +1,124 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import close from '@/assets/contact/close_button.svg';
 import calender from '@/assets/contact/calder.svg';
 import Button from '@/components/web_button';
+import AppointmentDatePicker from '@/components/booking/appointment-date-picker';
+import AppointmentSlotPicker from '@/components/booking/appointment-slot-picker';
 import { useTranslation } from 'react-i18next';
-import emailjs from '@emailjs/browser';
 import { useLocalizedDoctors } from '@/contexts/content-context';
+import { submitAppointmentBooking } from '@/lib/booking/submit-appointment';
+import { useDoctorBookingSchedule } from '@/hooks/use-doctor-booking-schedule';
 
-export default function AppointmentModal({ isOpen, onClose, preselectedDoctor = '' }) {
+export default function AppointmentModal({
+  isOpen,
+  onClose,
+  preselectedDoctor = '',
+  preselectedDoctorId = '',
+}) {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
   const doctors = useLocalizedDoctors(i18n.language);
   const [mounted, setMounted] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedSlot, setSelectedSlot] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     phonenumber: '',
     age: '',
     speciality: '',
-    doctor: preselectedDoctor,
+    doctorId: preselectedDoctorId || '',
   });
+
+  const selectedDoctor = useMemo(
+    () => doctors.find((doctor) => doctor.id === formData.doctorId),
+    [doctors, formData.doctorId]
+  );
+  const { isConfigured, isOpenSchedule, loading: scheduleLoading } = useDoctorBookingSchedule(formData.doctorId);
+
+  const wasOpenRef = useRef(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   useEffect(() => {
-    if (isOpen) {
-      setFormData((prev) => ({ ...prev, doctor: preselectedDoctor || prev.doctor }));
+    if (isOpen && !wasOpenRef.current) {
+      const matchedDoctor = doctors.find(
+        (doctor) => doctor.id === preselectedDoctorId || doctor.displayName === preselectedDoctor
+      );
+      const doctorId = matchedDoctor?.id || preselectedDoctorId || '';
+
+      setFormData((prev) => (
+        prev.doctorId === doctorId ? prev : { ...prev, doctorId }
+      ));
+      setSelectedDate(null);
+      setSelectedSlot(null);
     }
-  }, [isOpen, preselectedDoctor]);
+
+    wasOpenRef.current = isOpen;
+  }, [isOpen, preselectedDoctor, preselectedDoctorId, doctors]);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (name === 'doctorId') {
+      setSelectedSlot(null);
+      setSelectedDate(null);
+    }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const serviceId = 'service_gr3hz0c';
-    const templateId = 'template_zi5qnzk';
-    const publicKey = '3hR26mPB0OTAoNfhQ';
-    const formattedDate = selectedDate ? selectedDate.toLocaleDateString() : '';
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    setSelectedSlot(null);
+  };
 
-    emailjs
-      .send(serviceId, templateId, {
-        name: formData.name,
+  const resetForm = () => {
+    setFormData({
+      name: '',
+      phonenumber: '',
+      age: '',
+      speciality: '',
+      doctorId: preselectedDoctorId || '',
+    });
+    setSelectedDate(null);
+    setSelectedSlot(null);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!formData.doctorId || scheduleLoading) return;
+
+    if (isConfigured && (!selectedDate || !selectedSlot)) {
+      alert(t('doctorModal.selectSlotRequired'));
+      return;
+    }
+
+    try {
+      setSubmitting(true);
+      await submitAppointmentBooking({
+        doctorId: formData.doctorId,
+        doctorName: selectedDoctor?.displayName || preselectedDoctor,
+        date: selectedDate,
+        slot: selectedSlot,
+        patientName: formData.name,
+        phone: formData.phonenumber,
         age: formData.age,
-        phonenumber: formData.phonenumber,
-        doctor: formData.doctor,
         speciality: formData.speciality,
-        date: formattedDate,
-      }, publicKey)
-      .then(() => {
-        alert('Appointment booked successfully!');
-        setFormData({ name: '', phonenumber: '', age: '', speciality: '', doctor: '' });
-        setSelectedDate(null);
-        onClose();
-      })
-      .catch(() => {
-        alert('Failed to book appointment. Please try again.');
+        requiresSchedule: isConfigured,
       });
+      alert(t('doctorModal.bookingSuccess'));
+      resetForm();
+      onClose();
+    } catch (error) {
+      alert(error.message || t('doctorModal.bookingFailed'));
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (!isOpen || !mounted) return null;
@@ -118,20 +173,18 @@ export default function AppointmentModal({ isOpen, onClose, preselectedDoctor = 
                 <label className="mb-2 block font-inter text-sm font-medium text-[#002333] lg:text-base">
                   {t('doctorModal.specialty')}
                 </label>
-                <div className="relative">
-                  <select
-                    name="speciality"
-                    value={formData.speciality}
-                    onChange={handleChange}
-                    required
-                    className={`w-full appearance-none rounded-lg border border-[#DAD8D7] bg-white px-4 py-3 text-sm text-[#687276] focus:border-[#4A90E2] focus:outline-none focus:ring-1 focus:ring-[#4A90E2] sm:text-base ${isRTL ? 'text-right' : 'text-left'}`}
-                  >
-                    <option value="" disabled>{t('doctorModal.selectSpecialty')}</option>
-                    {Speciality.map((item, index) => (
-                      <option key={index} value={item.sty}>{t(item.sty)}</option>
-                    ))}
-                  </select>
-                </div>
+                <select
+                  name="speciality"
+                  value={formData.speciality}
+                  onChange={handleChange}
+                  required
+                  className={`w-full rounded-lg border border-[#DAD8D7] bg-white px-4 py-3 text-sm text-[#687276] sm:text-base ${isRTL ? 'text-right' : 'text-left'}`}
+                >
+                  <option value="" disabled>{t('doctorModal.selectSpecialty')}</option>
+                  {Speciality.map((item, index) => (
+                    <option key={index} value={t(item.sty)}>{t(item.sty)}</option>
+                  ))}
+                </select>
               </div>
 
               <div className="sm:col-span-2 lg:col-span-1">
@@ -139,15 +192,15 @@ export default function AppointmentModal({ isOpen, onClose, preselectedDoctor = 
                   {t('doctorModal.doctor')}
                 </label>
                 <select
-                  name="doctor"
-                  value={formData.doctor}
+                  name="doctorId"
+                  value={formData.doctorId}
                   onChange={handleChange}
                   required
                   className={`w-full rounded-lg border border-[#DAD8D7] bg-white px-4 py-3 text-sm text-[#687276] sm:text-base ${isRTL ? 'text-right' : 'text-left'}`}
                 >
                   <option value="" disabled>{t('doctorModal.selectDoctor')}</option>
                   {doctors.map((item) => (
-                    <option key={item.id} value={item.displayName}>{item.displayName}</option>
+                    <option key={item.id} value={item.id}>{item.displayName}</option>
                   ))}
                 </select>
               </div>
@@ -163,7 +216,7 @@ export default function AppointmentModal({ isOpen, onClose, preselectedDoctor = 
                   type="text"
                   required
                   placeholder={t('doctorModal.enterFullName')}
-                  className={`w-full rounded-lg border border-[#DAD8D7] px-4 py-3 text-sm text-[#687276] placeholder-gray-400 focus:border-[#4A90E2] focus:outline-none focus:ring-1 focus:ring-[#4A90E2] sm:text-base ${isRTL ? 'text-right' : 'text-left'}`}
+                  className={`w-full rounded-lg border border-[#DAD8D7] px-4 py-3 text-sm text-[#687276] placeholder-gray-400 sm:text-base ${isRTL ? 'text-right' : 'text-left'}`}
                 />
               </div>
 
@@ -195,33 +248,55 @@ export default function AppointmentModal({ isOpen, onClose, preselectedDoctor = 
                 >
                   <option value="" disabled>{t('doctorModal.selectAge')}</option>
                   {Age.map((item, index) => (
-                    <option key={index} value={item.age}>{t(item.age)}</option>
+                    <option key={index} value={t(item.age)}>{t(item.age)}</option>
                   ))}
                 </select>
               </div>
 
-              <div>
-                <label className="mb-2 block font-inter text-sm font-medium text-[#002333] lg:text-base">
-                  {t('doctorModal.date')}
-                </label>
-                <div className="relative">
-                  <DatePicker
-                    selected={selectedDate}
-                    onChange={(date) => setSelectedDate(date)}
-                    placeholderText={t('doctorModal.selectDate')}
-                    className={`w-full rounded-lg border border-[#DAD8D7] py-2 text-base font-normal text-[#687276] lg:py-3 ${isRTL ? 'pr-4 pl-50 lg:pl-30' : 'pl-4 pr-50 lg:pr-30'}`}
-                    minDate={new Date()}
-                    required
+              {isConfigured && (
+                <div>
+                  <label className="mb-2 block font-inter text-sm font-medium text-[#002333] lg:text-base">
+                    {t('doctorModal.date')}
+                  </label>
+                  <AppointmentDatePicker
+                    doctorId={formData.doctorId}
+                    selectedDate={selectedDate}
+                    onChange={handleDateChange}
+                    isRTL={isRTL}
+                    inputClassName={`w-full rounded-lg border border-[#DAD8D7] py-2 text-base font-normal text-[#687276] lg:py-3 ${isRTL ? 'pr-4 pl-50 lg:pl-30' : 'pl-4 pr-50 lg:pr-30'}`}
+                    calendarIcon={<img src={calender} alt="Calendar" className="h-5 w-5" />}
                   />
-                  <div className={`pointer-events-none absolute inset-y-0 ${isRTL ? 'left-0' : 'right-0'} flex items-center px-3`}>
-                    <img src={calender} alt="Calendar" className="h-5 w-5" />
-                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
+            {scheduleLoading && formData.doctorId && (
+              <p className="mt-4 text-sm text-[#687276]">{t('doctorModal.checkingSchedule')}</p>
+            )}
+
+            {isOpenSchedule && formData.doctorId && !scheduleLoading && (
+              <p className="mt-4 rounded-lg border border-[#E9E7E6] bg-[#F8FBFA] px-4 py-3 text-sm text-[#687276]">
+                {t('doctorModal.openScheduleNote')}
+              </p>
+            )}
+
+            {isConfigured && (
+              <div className="mt-6">
+                <AppointmentSlotPicker
+                  doctorId={formData.doctorId}
+                  date={selectedDate}
+                  selectedSlot={selectedSlot?.index ?? null}
+                  onSelect={setSelectedSlot}
+                />
+              </div>
+            )}
+
             <div className={`mt-6 flex sm:mt-8 ${isRTL ? 'justify-start' : 'justify-end'}`}>
-              <Button text={t('doctorModal.bookNow')} onClick={handleSubmit} className="w-full px-8 py-3 sm:w-auto" />
+              <Button
+                text={submitting ? t('doctorModal.booking') : t('doctorModal.bookNow')}
+                onClick={handleSubmit}
+                className="w-full px-8 py-3 sm:w-auto"
+              />
             </div>
           </div>
         </form>

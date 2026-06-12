@@ -7,6 +7,7 @@ export const ROLES = {
 };
 
 export const WRITE_ROLES = [ROLES.ADMIN, ROLES.EDITOR];
+export const READ_ROLES = [ROLES.ADMIN, ROLES.EDITOR, ROLES.VIEWER];
 export const DELETE_ROLES = [ROLES.ADMIN];
 
 export async function verifyAdminToken(request) {

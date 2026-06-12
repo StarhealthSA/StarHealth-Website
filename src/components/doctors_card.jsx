@@ -39,6 +39,7 @@ function DoctorsCard(props) {
         isOpen={showModal}
         onClose={() => setShowModal(false)}
         preselectedDoctor={props.name}
+        preselectedDoctorId={props.doctorId}
       />
     </>
   );
