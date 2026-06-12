@@ -1,14 +1,16 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import DoctorFormShell from '@/components/admin/doctors/doctor-form-shell';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
-import { createEmptyDoctor } from '@/lib/content/doctor-defaults';
+import { createEmptyDoctor, resolveDoctorFormTab } from '@/lib/content/doctor-defaults';
 
 export default function AdminDoctorEditPage() {
   const { id } = useParams();
+  const searchParams = useSearchParams();
+  const initialTab = resolveDoctorFormTab(searchParams.get('tab'));
   const isNew = id === 'new';
   const { getIdToken } = useAdminAuth();
   const [doctor, setDoctor] = useState(null);
@@ -79,6 +81,7 @@ export default function AdminDoctorEditPage() {
       </p>
       <DoctorFormShell
         initial={isNew ? null : doctor}
+        initialTab={initialTab}
         specializations={specializations}
         serviceCategories={serviceCategories}
         services={services}

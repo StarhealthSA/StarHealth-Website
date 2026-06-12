@@ -15,7 +15,7 @@
   "hero": {
     "title": "يتم التعامل معها بعناية فائقة، دائماً!",
     "subtitle": "الرعاية الرحيمة والمتخصصة على بُعد نقرة واحدة فقط.",
-    "cta": "تحدث إلينا!"
+    "cta": "استكشف"
   },
   "bookingForm": {
     "title": "احجز موعداً",
@@ -207,7 +207,30 @@
     "readyToStart": "جاهز للبدء؟",
     "consultationNote": "احجز موعدك في دقائق. سيقوم فريق الرعاية بتأكيد موعدك قريباً.",
     "quickInfo": "معلومات سريعة",
-    "category": "الفئة"
+    "category": "الفئة",
+    "whatsappCta": "واتساب",
+    "whatsappMessage": "مرحباً، أود حجز موعد لـ {{service}} في ستار هيلث.",
+    "meetDoctors": "تعرّف على أخصائيينا",
+    "meetDoctorsLead": "أطباء ذوو خبرة مكرسون لرعايتك.",
+    "specialists": "الأخصائيون",
+    "patientStories": "قصص المرضى",
+    "testimonialsTitle": "ماذا يقول مرضانا",
+    "testimonialsLead": "تجارب حقيقية من عائلات تثق في ستار هيلث.",
+    "viewService": "عرض الخدمة",
+    "quickBook": "حجز سريع",
+    "callUs": "اتصل بنا",
+    "carouselPrev": "الصورة السابقة",
+    "carouselNext": "الصورة التالية",
+    "carouselGoTo": "الانتقال إلى الصورة {{n}}",
+    "closeLightbox": "إغلاق المعرض",
+    "specializationsLabel": "التخصصات",
+    "specializationsTitle": "علاجات متخصصة",
+    "specializationsLead": "استكشف خيارات الرعاية المركزة ضمن هذه الخدمة.",
+    "viewSpecialization": "عرض التفاصيل"
+  },
+  "specializationDetail": {
+    "backToServices": "العودة إلى جميع الخدمات",
+    "backToService": "العودة إلى {{service}}"
   },
   "doctorModal": {
     "title": "احجز موعداً",
@@ -225,7 +248,21 @@
     "selectDate": "اختر التاريخ",
     "enterFullName": "أدخل اسمك الكامل",
     "enterPhone": "أدخل رقم الهاتف",
-    "bookNow": "احجز الآن"
+    "bookNow": "احجز الآن",
+    "timeSlot": "الموعد",
+    "selectDoctorFirst": "اختر الطبيب لعرض التواريخ المتاحة.",
+    "loadingDates": "جاري تحميل التواريخ المتاحة...",
+    "noAvailableDates": "لا توجد تواريخ قابلة للحجز لهذا الطبيب حالياً. يرجى المحاولة لاحقاً.",
+    "openScheduleNote": "أرسل بياناتك وسيتواصل معك فريقنا لتأكيد تاريخ ووقت الموعد.",
+    "checkingSchedule": "جاري التحقق من مواعيد الطبيب...",
+    "selectDoctorAndDate": "اختر الطبيب والتاريخ لعرض المواعيد المتاحة لمدة 30 دقيقة.",
+    "loadingSlots": "جاري تحميل المواعيد المتاحة...",
+    "noSlotsAvailable": "لا توجد مواعيد متاحة لهذا الطبيب في التاريخ المحدد.",
+    "slotBooked": "محجوز",
+    "selectSlotRequired": "يرجى اختيار موعد متاح.",
+    "booking": "جاري الحجز...",
+    "bookingSuccess": "تم حجز الموعد بنجاح!",
+    "bookingFailed": "فشل حجز الموعد. يرجى المحاولة مرة أخرى."
   },
   "specialties": {
     "generalMedicine": "الطب العام",

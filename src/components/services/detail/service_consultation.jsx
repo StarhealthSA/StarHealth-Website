@@ -7,18 +7,18 @@ export default function ServiceConsultation({ service, onBookClick }) {
   const { t } = useTranslation();
 
   return (
-    <section id="book" className="service-landing-section pb-20 md:pb-24">
+    <section id="book" className="service-landing-section service-landing-section--cta pb-20 md:pb-24">
       <div className="service-detail-container">
         <Reveal>
           <div className="service-landing-final-cta">
             <div className="service-landing-final-cta-content">
-              <p className="font-inter text-xs font-semibold uppercase tracking-[0.2em] text-[#037B76]">
+              <p className="service-landing-final-cta-label font-inter text-xs font-semibold uppercase tracking-[0.2em]">
                 {t('serviceDetail.readyToStart')}
               </p>
-              <h2 className="service-display-title mt-3 text-2xl font-semibold text-[#002333] md:text-4xl">
+              <h2 className="service-landing-final-cta-title service-display-title mt-3 text-2xl font-semibold md:text-4xl">
                 {service.displayTitle}
               </h2>
-              <p className="mt-4 max-w-xl font-inter text-base leading-relaxed text-[#586971]">
+              <p className="service-landing-final-cta-note mx-auto mt-4 max-w-xl font-inter text-base leading-relaxed">
                 {t('serviceDetail.consultationNote')}
               </p>
               <button

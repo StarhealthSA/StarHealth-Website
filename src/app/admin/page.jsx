@@ -42,6 +42,20 @@ export default function AdminDashboardPage() {
           <h2 className="text-xl font-semibold text-[#037B76]">Services</h2>
           <p className="mt-2 text-sm text-[#586971]">Manage service listings and detail pages.</p>
         </Link>
+        <Link
+          href="/admin/appointments"
+          className="rounded-2xl border border-[#d7e6e2] bg-white p-6 transition-shadow hover:shadow-md"
+        >
+          <h2 className="text-xl font-semibold text-[#037B76]">Bookings</h2>
+          <p className="mt-2 text-sm text-[#586971]">View appointments, mark as read, and create or cancel bookings.</p>
+        </Link>
+        <Link
+          href="/admin/homepage"
+          className="rounded-2xl border border-[#d7e6e2] bg-white p-6 transition-shadow hover:shadow-md"
+        >
+          <h2 className="text-xl font-semibold text-[#037B76]">Homepage</h2>
+          <p className="mt-2 text-sm text-[#586971]">Edit hero title, subtitle, and banner video for the homepage.</p>
+        </Link>
       </div>
     </div>
   );

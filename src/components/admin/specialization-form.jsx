@@ -1,39 +1,73 @@
 'use client';
 
 import { useState } from 'react';
+import { SERVICE_ICONS } from '@/lib/content/service-icons';
+import { createEmptySpecialization } from '@/lib/content/specialization-defaults';
+import { useAdminAuth } from '@/contexts/admin-auth-context';
+import { uploadAdminFile } from '@/lib/admin-api';
 import LocalizedInput from '@/components/admin/localized-input';
+import LocalizedListEditor from '@/components/admin/localized-list-editor';
 import AutoTranslateBar from '@/components/admin/auto-translate-bar';
-
-const emptySpec = {
-  id: '',
-  slug: '',
-  name: { en: '', ar: '' },
-  categoryId: null,
-  order: 1,
-  active: true,
-};
+import AdminImagePreview from '@/components/admin/admin-image-preview';
+import ServiceBenefitsEditor from '@/components/admin/services/service-benefits-editor';
+import ServiceFaqsEditor from '@/components/admin/services/service-faqs-editor';
 
 export default function SpecializationForm({
   initial,
   categories = [],
+  services = [],
   onSubmit,
   onCancel,
   saving,
 }) {
+  const { getIdToken } = useAdminAuth();
   const [form, setForm] = useState(() => ({
-    ...emptySpec,
+    ...createEmptySpecialization(),
     ...initial,
     categoryId: initial?.categoryId || null,
+    parentServiceId: initial?.parentServiceId || '',
   }));
+  const [uploading, setUploading] = useState(false);
+  const [tab, setTab] = useState('basic');
 
   const updateField = (path, value) => {
     setForm((prev) => {
-      if (path.includes('.')) {
-        const [parent, child] = path.split('.');
+      if (!path.includes('.')) {
+        return { ...prev, [path]: value };
+      }
+      const parts = path.split('.');
+      if (parts.length === 2) {
+        const [parent, child] = parts;
         return { ...prev, [parent]: { ...prev[parent], [child]: value } };
       }
       return { ...prev, [path]: value };
     });
+  };
+
+  const handleFeaturedUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      setUploading(true);
+      const token = await getIdToken();
+      const url = await uploadAdminFile(file, 'specializations', token);
+      updateField('featuredImageUrl', url);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleGalleryUpload = async (e) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+    try {
+      setUploading(true);
+      const token = await getIdToken();
+      const urls = await Promise.all(files.map((f) => uploadAdminFile(f, 'specializations/gallery', token)));
+      updateField('galleryImages', [...(form.galleryImages || []), ...urls]);
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -45,9 +79,17 @@ export default function SpecializationForm({
       id,
       slug,
       categoryId: form.categoryId || null,
+      parentServiceId: form.parentServiceId || '',
       parentId: null,
     });
   };
+
+  const tabs = [
+    { id: 'basic', label: 'Basic' },
+    { id: 'content', label: 'Content' },
+    { id: 'media', label: 'Media' },
+    { id: 'seo', label: 'SEO' },
+  ];
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 rounded-2xl border border-[#d7e6e2] bg-white p-6">
@@ -55,46 +97,201 @@ export default function SpecializationForm({
         {initial ? 'Edit Specialization' : 'Add Specialization'}
       </h2>
 
+      <div className="flex flex-wrap gap-2 border-b border-[#d7e6e2] pb-4">
+        {tabs.map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            onClick={() => setTab(item.id)}
+            className={`rounded-lg px-4 py-2 text-sm font-medium ${
+              tab === item.id ? 'bg-[#037B76] text-white' : 'bg-[#f0f6f4] text-[#586971]'
+            }`}
+          >
+            {item.label}
+          </button>
+        ))}
+      </div>
+
       <AutoTranslateBar form={form} onTranslated={setForm} />
 
-      <LocalizedInput label="Name" value={form.name} onChange={(v) => updateField('name', v)} />
+      {tab === 'basic' && (
+        <div className="space-y-4">
+          <LocalizedInput label="Name" value={form.name} onChange={(v) => updateField('name', v)} />
+          <label className="block">
+            <span className="text-sm font-medium text-[#586971]">Parent Service</span>
+            <select
+              value={form.parentServiceId || ''}
+              onChange={(e) => updateField('parentServiceId', e.target.value)}
+              className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
+            >
+              <option value="">None (match by category only)</option>
+              {services.map((service) => (
+                <option key={service.id} value={service.id}>
+                  {service.title?.en || service.id}
+                </option>
+              ))}
+            </select>
+          </label>
+          <div className="grid gap-4 md:grid-cols-2">
+            <label className="block">
+              <span className="text-sm font-medium text-[#586971]">Service Category</span>
+              <select
+                value={form.categoryId || ''}
+                onChange={(e) => updateField('categoryId', e.target.value || null)}
+                className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
+              >
+                <option value="">Select category</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>{category.name?.en}</option>
+                ))}
+              </select>
+            </label>
+            <label className="block">
+              <span className="text-sm font-medium text-[#586971]">Order</span>
+              <input
+                type="number"
+                value={form.order}
+                onChange={(e) => updateField('order', Number(e.target.value))}
+                className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
+              />
+            </label>
+          </div>
+          <label className="flex items-center gap-2 text-sm text-[#586971]">
+            <input
+              type="checkbox"
+              checked={form.active}
+              onChange={(e) => updateField('active', e.target.checked)}
+            />
+            Active
+          </label>
+        </div>
+      )}
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <label className="block">
-          <span className="text-sm font-medium text-[#586971]">Service Category</span>
-          <select
-            value={form.categoryId || ''}
-            onChange={(e) => updateField('categoryId', e.target.value || null)}
-            className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
-          >
-            <option value="">Select category</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>{category.name?.en}</option>
-            ))}
-          </select>
-        </label>
-        <label className="block">
-          <span className="text-sm font-medium text-[#586971]">Order</span>
-          <input
-            type="number"
-            value={form.order}
-            onChange={(e) => updateField('order', Number(e.target.value))}
-            className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
+      {tab === 'content' && (
+        <div className="space-y-4">
+          <LocalizedInput
+            label="Short Description"
+            value={form.shortDescription}
+            onChange={(v) => updateField('shortDescription', v)}
+            multiline
           />
-        </label>
-      </div>
-      <label className="flex items-center gap-2 text-sm text-[#586971]">
-        <input
-          type="checkbox"
-          checked={form.active}
-          onChange={(e) => updateField('active', e.target.checked)}
-        />
-        Active
-      </label>
-      <div className="flex gap-3">
+          <LocalizedInput
+            label="Full Description"
+            value={form.fullDescription}
+            onChange={(v) => updateField('fullDescription', v)}
+            multiline
+          />
+          <ServiceBenefitsEditor
+            items={form.benefits || []}
+            onChange={(v) => updateField('benefits', v)}
+          />
+          <LocalizedInput
+            label="Procedure Overview"
+            value={form.procedureOverview}
+            onChange={(v) => updateField('procedureOverview', v)}
+            multiline
+          />
+          <LocalizedInput
+            label="Treatment Duration"
+            value={form.treatmentDuration}
+            onChange={(v) => updateField('treatmentDuration', v)}
+          />
+          <LocalizedInput
+            label="Recovery Information"
+            value={form.recoveryInfo}
+            onChange={(v) => updateField('recoveryInfo', v)}
+            multiline
+          />
+          <LocalizedListEditor
+            label="Suitable For"
+            items={form.suitableFor || []}
+            onChange={(v) => updateField('suitableFor', v)}
+          />
+          <ServiceFaqsEditor
+            faqs={form.faqs || []}
+            onChange={(v) => updateField('faqs', v)}
+            disabled={saving}
+          />
+        </div>
+      )}
+
+      {tab === 'media' && (
+        <div className="space-y-4">
+          <label className="block">
+            <span className="text-sm font-medium text-[#586971]">Icon Key</span>
+            <select
+              value={form.iconKey || ''}
+              onChange={(e) => updateField('iconKey', e.target.value)}
+              className="mt-1 w-full rounded-lg border border-[#d7e6e2] bg-white px-3 py-2"
+            >
+              {Object.keys(SERVICE_ICONS).map((key) => (
+                <option key={key} value={key}>{key}</option>
+              ))}
+            </select>
+          </label>
+          <label className="block">
+            <span className="text-sm font-medium text-[#586971]">Featured Image</span>
+            <input type="file" accept="image/*" onChange={handleFeaturedUpload} disabled={uploading} className="mt-1 block w-full text-sm" />
+          </label>
+          {form.featuredImageUrl && (
+            <AdminImagePreview
+              src={form.featuredImageUrl}
+              imageClassName="h-40 w-full max-w-md rounded-xl object-cover"
+              onRemove={() => updateField('featuredImageUrl', '')}
+            />
+          )}
+          <label className="block">
+            <span className="text-sm font-medium text-[#586971]">Gallery Images</span>
+            <input type="file" accept="image/*" multiple onChange={handleGalleryUpload} disabled={uploading} className="mt-1 block w-full text-sm" />
+          </label>
+          {(form.galleryImages || []).length > 0 && (
+            <div className="flex flex-wrap gap-3">
+              {form.galleryImages.map((url, index) => (
+                <AdminImagePreview
+                  key={`${url}-${index}`}
+                  src={url}
+                  imageClassName="h-24 w-32 rounded-lg object-cover"
+                  onRemove={() => updateField('galleryImages', form.galleryImages.filter((_, i) => i !== index))}
+                />
+              ))}
+            </div>
+          )}
+          <label className="block">
+            <span className="text-sm font-medium text-[#586971]">Video URL (optional)</span>
+            <input
+              value={form.videoUrl || ''}
+              onChange={(e) => updateField('videoUrl', e.target.value)}
+              placeholder="https://youtube.com/..."
+              className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
+            />
+          </label>
+        </div>
+      )}
+
+      {tab === 'seo' && (
+        <div className="space-y-4">
+          <label className="block">
+            <span className="text-sm font-medium text-[#586971]">URL Slug</span>
+            <input
+              value={form.slug || ''}
+              onChange={(e) => updateField('slug', e.target.value)}
+              className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
+            />
+          </label>
+          <LocalizedInput label="Meta Title" value={form.metaTitle} onChange={(v) => updateField('metaTitle', v)} />
+          <LocalizedInput
+            label="Meta Description"
+            value={form.metaDescription}
+            onChange={(v) => updateField('metaDescription', v)}
+            multiline
+          />
+        </div>
+      )}
+
+      <div className="flex gap-3 border-t border-[#d7e6e2] pt-4">
         <button
           type="submit"
-          disabled={saving}
+          disabled={saving || uploading}
           className="rounded-lg bg-[#037B76] px-5 py-2 text-sm font-medium text-white disabled:opacity-60"
         >
           {saving ? 'Saving...' : 'Save'}

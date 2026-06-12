@@ -5,13 +5,16 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import logo from '@/assets/doctors/logo1.svg';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
+import { adminFetch } from '@/lib/admin-api';
 
 const NAV_ITEMS = [
   { href: '/admin', label: 'Dashboard', exact: true },
+  { href: '/admin/appointments', label: 'Bookings', badgeKey: 'bookings' },
   { href: '/admin/specializations', label: 'Specializations' },
   { href: '/admin/service-categories', label: 'Service Categories' },
   { href: '/admin/doctors', label: 'Doctors' },
   { href: '/admin/services', label: 'Services' },
+  { href: '/admin/homepage', label: 'Homepage' },
 ];
 
 function isNavActive(pathname, item) {
@@ -22,8 +25,9 @@ function isNavActive(pathname, item) {
 export default function AdminShell({ children }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, role, loading, logout, configured } = useAdminAuth();
+  const { user, role, loading, logout, configured, getIdToken } = useAdminAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [unreadBookings, setUnreadBookings] = useState(0);
   const isLoginPage = pathname === '/admin/login';
 
   useEffect(() => {
@@ -37,6 +41,29 @@ export default function AdminShell({ children }) {
   useEffect(() => {
     setSidebarOpen(false);
   }, [pathname]);
+
+  useEffect(() => {
+    if (!user || isLoginPage) return undefined;
+
+    let cancelled = false;
+
+    async function loadUnread() {
+      try {
+        const token = await getIdToken();
+        const data = await adminFetch('/api/admin/appointments/unread-count', { token });
+        if (!cancelled) setUnreadBookings(data.count || 0);
+      } catch {
+        if (!cancelled) setUnreadBookings(0);
+      }
+    }
+
+    loadUnread();
+    const interval = setInterval(loadUnread, 30000);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
+  }, [user, isLoginPage, getIdToken, pathname]);
 
   if (isLoginPage) {
     return <div className="min-h-screen bg-[#f4f8f7]">{children}</div>;
@@ -83,13 +110,21 @@ export default function AdminShell({ children }) {
             <Link
               key={item.href}
               href={item.href}
-              className={`block rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+              className={`flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                 active
                   ? 'bg-[#037B76] text-white'
                   : 'text-[#586971] hover:bg-[#f0f6f4] hover:text-[#002f3b]'
               }`}
             >
-              {item.label}
+              <span>{item.label}</span>
+              {item.badgeKey === 'bookings' && unreadBookings > 0 && (
+                <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
+                  active ? 'bg-white text-[#037B76]' : 'bg-amber-100 text-amber-800'
+                }`}
+                >
+                  {unreadBookings}
+                </span>
+              )}
             </Link>
           );
         })}

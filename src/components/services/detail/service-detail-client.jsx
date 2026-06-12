@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { getLocalizedText } from '@/lib/content/localized';
 import { findServiceCategoryName } from '@/lib/content/service-category-utils';
 import { resolveServiceBannerImage, resolveServiceIcon } from '@/lib/content/service-icons';
+import { normalizeMarketing } from '@/lib/content/service-marketing';
+import { getServiceMatchedDoctors } from '@/lib/content/service-doctors';
 import AppointmentModal from '@/components/doctors/appointment-modal';
 import ServiceBanner from './service_banner';
 import ServiceAbout from './service_about';
@@ -13,46 +15,88 @@ import ServiceProcedure from './service_procedure';
 import ServiceRecovery from './service_recovery';
 import ServiceFaqs from './service_faqs';
 import ServiceGallery from './service_gallery';
-import ServiceRelated from './service_related';
 import ServiceConsultation from './service_consultation';
+import ServiceDoctors from './service-doctors';
+import ServiceTestimonials from './service-testimonials';
+import ServiceSpecializations from './service-specializations';
+import { getSpecializationsForService } from '@/lib/content/specialization-utils';
 
 export default function ServiceDetailClient({
   service: rawService,
   categories = [],
-  similarServices = [],
-  recommendedServices = [],
+  doctors = [],
+  specializations = [],
+  childSpecializations = [],
 }) {
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
   const [showModal, setShowModal] = useState(false);
 
+  const marketing = useMemo(
+    () => normalizeMarketing(rawService.marketing),
+    [rawService.marketing]
+  );
+
   const service = useMemo(() => ({
     ...rawService,
+    marketing,
     displayTitle: getLocalizedText(rawService.title, lang),
     displayShortDescription: getLocalizedText(rawService.shortDescription || rawService.description, lang),
     displayFullDescription: getLocalizedText(rawService.fullDescription || rawService.description, lang),
     displayCategory: findServiceCategoryName(categories, rawService.categoryId, lang),
     icon: resolveServiceIcon(rawService),
     bannerImage: resolveServiceBannerImage(rawService),
-  }), [rawService, lang, categories]);
+  }), [rawService, lang, categories, marketing]);
+
+  const matchedDoctors = useMemo(
+    () => getServiceMatchedDoctors({
+      doctors,
+      specializations,
+      categoryId: rawService.categoryId,
+    }),
+    [doctors, specializations, rawService.categoryId]
+  );
+
+  const serviceSpecializations = useMemo(
+    () => childSpecializations.length
+      ? childSpecializations
+      : getSpecializationsForService(specializations, rawService),
+    [childSpecializations, specializations, rawService]
+  );
+
+  const showWhatsApp = marketing.whatsappEnabled !== false;
+
+  const hasTestimonials =
+    (marketing.testimonials || []).some(
+      (item) => getLocalizedText(item.quote, lang) && getLocalizedText(item.name, lang)
+    )
+    || marketing.showGlobalTestimonials !== false;
 
   const openBooking = () => setShowModal(true);
 
   return (
     <div className="service-landing-page bg-[#FAFAF9]">
-      <ServiceBanner service={service} onBookClick={openBooking} lang={lang} />
+      <ServiceBanner
+        service={service}
+        marketing={marketing}
+        onBookClick={openBooking}
+        lang={lang}
+        showWhatsApp={showWhatsApp}
+      />
 
       <ServiceBenefits service={service} lang={lang} />
+      {serviceSpecializations.length > 0 && (
+        <ServiceSpecializations items={serviceSpecializations} lang={lang} />
+      )}
       <ServiceAbout service={service} />
+      {matchedDoctors.length > 0 && (
+        <ServiceDoctors matchedDoctors={matchedDoctors} lang={lang} />
+      )}
       <ServiceProcedure service={service} lang={lang} />
       <ServiceRecovery service={service} lang={lang} />
       <ServiceGallery service={service} />
+      {hasTestimonials && <ServiceTestimonials marketing={marketing} lang={lang} />}
       <ServiceFaqs service={service} lang={lang} />
-      <ServiceRelated
-        similarServices={similarServices}
-        recommendedServices={recommendedServices}
-        lang={lang}
-      />
       <ServiceConsultation service={service} onBookClick={openBooking} />
 
       <div className="service-landing-mobile-cta fixed inset-x-0 bottom-0 z-40 border-t border-[#E9E7E6] bg-white/95 p-4 backdrop-blur-md lg:hidden">

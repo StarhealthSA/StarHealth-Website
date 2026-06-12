@@ -36,3 +36,21 @@ export function findSpecializationName(specializations, id, language = 'en') {
   if (!spec) return '';
   return spec.name?.[language] || spec.name?.en || '';
 }
+
+export function getSpecializationsForService(specializations, service) {
+  if (!service?.id) return [];
+
+  const byParent = specializations.filter(
+    (spec) => spec.active !== false && spec.parentServiceId === service.id
+  );
+  if (byParent.length) return byParent;
+
+  if (!service.categoryId) return [];
+
+  return specializations.filter(
+    (spec) =>
+      spec.active !== false
+      && !spec.parentServiceId
+      && getSpecializationCategoryId(spec) === service.categoryId
+  );
+}

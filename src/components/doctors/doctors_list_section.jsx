@@ -104,6 +104,7 @@ function DoctorsListSection() {
               specialty={item.displaySpecialty}
               specialization={item.displaySpecialization}
               slug={item.slug}
+              doctorId={item.id}
               revealDelay={staggerDelay(index)}
               key={item.id}
             />

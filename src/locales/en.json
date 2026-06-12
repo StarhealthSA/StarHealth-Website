@@ -15,7 +15,7 @@
   "hero": {
     "title": "Treated with Care, Always!",
     "subtitle": "Compassionate and Expert Care is just a click away",
-    "cta": "Talk to Us!"
+    "cta": "Explore"
   },
   "bookingForm": {
     "title": "Book an Appointment",
@@ -207,7 +207,30 @@
     "readyToStart": "Ready to get started?",
     "consultationNote": "Book your appointment in minutes. Our care team will confirm your slot shortly.",
     "quickInfo": "Quick info",
-    "category": "Category"
+    "category": "Category",
+    "whatsappCta": "WhatsApp",
+    "whatsappMessage": "Hi, I'd like to book an appointment for {{service}} at Star Health.",
+    "meetDoctors": "Meet our specialists",
+    "meetDoctorsLead": "Experienced doctors dedicated to your care.",
+    "specialists": "Specialists",
+    "patientStories": "Patient stories",
+    "testimonialsTitle": "What our patients say",
+    "testimonialsLead": "Real experiences from families who trust Star Health.",
+    "viewService": "View service",
+    "quickBook": "Quick book",
+    "callUs": "Call us",
+    "carouselPrev": "Previous image",
+    "carouselNext": "Next image",
+    "carouselGoTo": "Go to image {{n}}",
+    "closeLightbox": "Close gallery",
+    "specializationsLabel": "Specializations",
+    "specializationsTitle": "Specialized treatments",
+    "specializationsLead": "Explore focused care options within this service.",
+    "viewSpecialization": "View details"
+  },
+  "specializationDetail": {
+    "backToServices": "Back to all services",
+    "backToService": "Back to {{service}}"
   },
   "doctorModal": {
     "title": "Book an Appointment",
@@ -225,7 +248,21 @@
     "selectDate": "Select Date",
     "enterFullName": "Enter your full name",
     "enterPhone": "Enter phone number",
-    "bookNow": "Book Now"
+    "bookNow": "Book Now",
+    "timeSlot": "Time Slot",
+    "selectDoctorFirst": "Select a doctor to view available dates.",
+    "loadingDates": "Loading available dates...",
+    "noAvailableDates": "No bookable dates for this doctor yet. Please check back soon.",
+    "openScheduleNote": "Submit your details and our team will contact you to confirm the appointment date and time.",
+    "checkingSchedule": "Checking doctor availability...",
+    "selectDoctorAndDate": "Select a doctor and date to view available 30-minute slots.",
+    "loadingSlots": "Loading available slots...",
+    "noSlotsAvailable": "No slots available for this doctor on the selected date.",
+    "slotBooked": "Booked",
+    "selectSlotRequired": "Please select an available time slot.",
+    "booking": "Booking...",
+    "bookingSuccess": "Appointment booked successfully!",
+    "bookingFailed": "Failed to book appointment. Please try again."
   },
   "specialties": {
     "generalMedicine": "General Medicine",
