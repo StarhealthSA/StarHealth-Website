@@ -15,6 +15,7 @@ import {
   slotIndexToMinutes,
   SLOTS_PER_DAY,
 } from '@/lib/appointments/slot-utils';
+import AdminPageLoader from '@/components/admin/admin-page-loader';
 
 const SLOT_OPTIONS = getAllSlotOptions();
 const UPCOMING_DAYS = 30;
@@ -211,7 +212,11 @@ export default function DoctorAvailabilityCalendar({
               <div className="mt-4 border-t border-[#eef4f2] pt-4">
                 <p className="text-xs font-medium text-[#586971]">Booked slots on this date</p>
                 {loadingBooked ? (
-                  <p className="mt-2 text-xs text-[#586971]">Loading...</p>
+                  <AdminPageLoader
+                    variant="inline"
+                    label="Loading booked slots..."
+                    className="justify-start py-2"
+                  />
                 ) : bookedSlots.length ? (
                   <div className="mt-2 flex flex-wrap gap-2">
                     {bookedSlots.map((slot) => (

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
+import AdminPageLoader from '@/components/admin/admin-page-loader';
 import { formatDateLabel } from '@/lib/appointments/slot-utils';
 
 function StatusBadge({ status, read }) {
@@ -169,7 +170,15 @@ export default function AdminAppointmentsPage() {
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={6} className="px-4 py-6 text-[#586971]">Loading...</td></tr>
+              <tr>
+                <td colSpan={6}>
+                  <AdminPageLoader
+                    variant="table"
+                    label="Loading bookings..."
+                    description="Fetching appointments from the database."
+                  />
+                </td>
+              </tr>
             ) : appointments.length === 0 ? (
               <tr><td colSpan={6} className="px-4 py-6 text-[#586971]">No appointments found.</td></tr>
             ) : appointments.map((item) => (

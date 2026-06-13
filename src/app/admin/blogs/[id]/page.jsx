@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import BlogFormShell from '@/components/admin/blogs/blog-form-shell';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
+import AdminPageLoader from '@/components/admin/admin-page-loader';
 import { createEmptyBlog } from '@/lib/content/blog-defaults';
 
 export default function AdminBlogEditPage() {
@@ -40,7 +41,19 @@ export default function AdminBlogEditPage() {
   }, [load]);
 
   if (loading) {
-    return <p className="text-[#586971]">Loading...</p>;
+    return (
+      <div>
+        <h1 className="text-3xl font-semibold text-[#002f3b]">
+          {isNew ? 'Add blog' : 'Edit blog'}
+        </h1>
+        <div className="mt-6">
+          <AdminPageLoader
+            label={isNew ? 'Preparing blog form...' : 'Loading blog post...'}
+            description="Fetching blog content from the database."
+          />
+        </div>
+      </div>
+    );
   }
 
   if (error && !blog) {

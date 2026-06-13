@@ -5,6 +5,7 @@ import { useParams, useSearchParams } from 'next/navigation';
 import DoctorFormShell from '@/components/admin/doctors/doctor-form-shell';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
+import AdminPageLoader from '@/components/admin/admin-page-loader';
 import { createEmptyDoctor, resolveDoctorFormTab } from '@/lib/content/doctor-defaults';
 
 export default function AdminDoctorEditPage() {
@@ -64,7 +65,19 @@ export default function AdminDoctorEditPage() {
   }, [load]);
 
   if (loading) {
-    return <p className="text-[#586971]">Loading...</p>;
+    return (
+      <div>
+        <h1 className="text-3xl font-semibold text-[#002f3b]">
+          {isNew ? 'Add Doctor' : 'Edit Doctor'}
+        </h1>
+        <div className="mt-6">
+          <AdminPageLoader
+            label={isNew ? 'Preparing doctor form...' : 'Loading doctor...'}
+            description="Fetching doctor details and related data from the database."
+          />
+        </div>
+      </div>
+    );
   }
 
   if (error && !doctor) {

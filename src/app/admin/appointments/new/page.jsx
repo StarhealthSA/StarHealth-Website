@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
 import AdminAppointmentForm from '@/components/admin/appointments/admin-appointment-form';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
+import AdminPageLoader from '@/components/admin/admin-page-loader';
 
 export default function AdminNewAppointmentPage() {
   const { getIdToken } = useAdminAuth();
@@ -42,7 +43,12 @@ export default function AdminNewAppointmentPage() {
       {error && <p className="mt-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
 
       {loading ? (
-        <p className="mt-6 text-[#586971]">Loading doctors...</p>
+        <div className="mt-6">
+          <AdminPageLoader
+            label="Loading doctors..."
+            description="Fetching available doctors for this booking."
+          />
+        </div>
       ) : (
         <div className="mt-6">
           <AdminAppointmentForm doctors={doctors} />

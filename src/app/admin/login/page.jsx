@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
+import AdminPageLoader from '@/components/admin/admin-page-loader';
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -29,8 +30,12 @@ export default function AdminLoginPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-[#586971]">Loading...</p>
+      <div className="flex min-h-screen items-center justify-center px-6">
+        <AdminPageLoader
+          label="Loading sign in..."
+          description="Preparing the admin login page."
+          className="w-full max-w-md border-none bg-transparent"
+        />
       </div>
     );
   }

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
+import AdminPageLoader from '@/components/admin/admin-page-loader';
 import { resolveDoctorImage } from '@/lib/content/doctor-images';
 
 export default function AdminDoctorsPage() {
@@ -73,7 +74,15 @@ export default function AdminDoctorsPage() {
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={5} className="px-4 py-6 text-[#586971]">Loading...</td></tr>
+              <tr>
+                <td colSpan={5}>
+                  <AdminPageLoader
+                    variant="table"
+                    label="Loading doctors..."
+                    description="Fetching doctor profiles from the database."
+                  />
+                </td>
+              </tr>
             ) : doctors.map((doctor) => (
               <tr key={doctor.id} className="border-b border-[#eef4f2]">
                 <td className="px-4 py-3">

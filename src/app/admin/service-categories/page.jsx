@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import ServiceCategoryForm from '@/components/admin/service-category-form';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
+import AdminPageLoader from '@/components/admin/admin-page-loader';
 
 export default function AdminServiceCategoriesPage() {
   const { getIdToken, canWrite, canDeleteContent } = useAdminAuth();
@@ -114,7 +115,15 @@ export default function AdminServiceCategoriesPage() {
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={5} className="px-4 py-6 text-[#586971]">Loading...</td></tr>
+              <tr>
+                <td colSpan={5}>
+                  <AdminPageLoader
+                    variant="table"
+                    label="Loading service categories..."
+                    description="Fetching categories from the database."
+                  />
+                </td>
+              </tr>
             ) : categories.map((category) => (
               <tr key={category.id} className="border-b border-[#eef4f2]">
                 <td className="px-4 py-3">

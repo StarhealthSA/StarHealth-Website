@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import logo from '@/assets/doctors/logo1.svg';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
+import AdminPageLoader from '@/components/admin/admin-page-loader';
 import { ROLE_LABELS } from '@/lib/firebase/roles';
 
 const NAV_ITEMS = [
@@ -74,8 +75,12 @@ export default function AdminShell({ children }) {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#f4f8f7]">
-        <p className="text-[#586971]">Loading admin panel...</p>
+      <div className="flex min-h-screen items-center justify-center bg-[#f4f8f7] px-6">
+        <AdminPageLoader
+          label="Loading admin panel..."
+          description="Checking your session and permissions."
+          className="w-full max-w-md border-none bg-transparent"
+        />
       </div>
     );
   }

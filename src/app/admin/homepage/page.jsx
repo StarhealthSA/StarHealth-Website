@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import HomepageSettingsForm from '@/components/admin/homepage-settings-form';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
+import AdminPageLoader from '@/components/admin/admin-page-loader';
 
 export default function AdminHomepagePage() {
   const { getIdToken } = useAdminAuth();
@@ -30,7 +31,17 @@ export default function AdminHomepagePage() {
   }, [load]);
 
   if (loading) {
-    return <p className="text-[#586971]">Loading...</p>;
+    return (
+      <div>
+        <h1 className="text-3xl font-semibold text-[#002f3b]">Homepage</h1>
+        <div className="mt-6">
+          <AdminPageLoader
+            label="Loading homepage settings..."
+            description="Fetching homepage hero and banner settings from the database."
+          />
+        </div>
+      </div>
+    );
   }
 
   if (error && !settings) {

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
+import AdminPageLoader from '@/components/admin/admin-page-loader';
 import { resolveServiceIcon } from '@/lib/content/service-icons';
 
 export default function AdminServicesPage() {
@@ -119,7 +120,15 @@ export default function AdminServicesPage() {
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={6} className="px-4 py-6 text-[#586971]">Loading...</td></tr>
+              <tr>
+                <td colSpan={6}>
+                  <AdminPageLoader
+                    variant="table"
+                    label="Loading services..."
+                    description="Fetching services and categories from the database."
+                  />
+                </td>
+              </tr>
             ) : filteredServices.map((service) => (
               <tr key={service.id} className="border-b border-[#eef4f2]">
                 <td className="px-4 py-3">

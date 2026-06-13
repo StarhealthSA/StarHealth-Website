@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
+import AdminPageLoader from '@/components/admin/admin-page-loader';
 import { formatDateLabel } from '@/lib/appointments/slot-utils';
 import { doctorAvailabilityAdminPath } from '@/lib/content/doctor-defaults';
 
@@ -64,7 +65,12 @@ export default function AdminAppointmentDetailPage() {
   };
 
   if (loading) {
-    return <p className="text-[#586971]">Loading...</p>;
+    return (
+      <AdminPageLoader
+        label="Loading booking..."
+        description="Fetching appointment details from the database."
+      />
+    );
   }
 
   if (error && !appointment) {

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import AppointmentSlotPicker from '@/components/booking/appointment-slot-picker';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
+import AdminPageLoader from '@/components/admin/admin-page-loader';
 import { doctorAvailabilityAdminPath } from '@/lib/content/doctor-defaults';
 import { formatDateLabel, parseDateKey } from '@/lib/appointments/slot-utils';
 
@@ -185,6 +186,15 @@ export default function AdminAppointmentForm({ doctors = [], appointment = null 
             ))}
           </select>
         </label>
+
+        {scheduleMode === 'configured' && loadingDates && form.doctorId && (
+          <AdminPageLoader
+            variant="inline"
+            label="Loading available dates..."
+            description=""
+            className="justify-start py-1"
+          />
+        )}
 
         {scheduleMode === 'configured' && (
           <label className="block">

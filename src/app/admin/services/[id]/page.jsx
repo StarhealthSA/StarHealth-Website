@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import ServiceFormShell from '@/components/admin/services/service-form-shell';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
+import AdminPageLoader from '@/components/admin/admin-page-loader';
 import { createEmptyService } from '@/lib/content/service-defaults';
 
 export default function AdminServiceEditPage() {
@@ -49,7 +50,19 @@ export default function AdminServiceEditPage() {
   }, [load]);
 
   if (loading) {
-    return <p className="text-[#586971]">Loading...</p>;
+    return (
+      <div>
+        <h1 className="text-3xl font-semibold text-[#002f3b]">
+          {isNew ? 'Add Service' : 'Edit Service'}
+        </h1>
+        <div className="mt-6">
+          <AdminPageLoader
+            label={isNew ? 'Preparing service form...' : 'Loading service...'}
+            description="Fetching service content and related data from the database."
+          />
+        </div>
+      </div>
+    );
   }
 
   if (error && !service) {

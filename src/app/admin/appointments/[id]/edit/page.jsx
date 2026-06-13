@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation';
 import AdminAppointmentForm from '@/components/admin/appointments/admin-appointment-form';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
+import AdminPageLoader from '@/components/admin/admin-page-loader';
 
 export default function AdminEditAppointmentPage() {
   const { id } = useParams();
@@ -42,7 +43,19 @@ export default function AdminEditAppointmentPage() {
   }
 
   if (loading) {
-    return <p className="text-[#586971]">Loading...</p>;
+    return (
+      <div>
+        <Link href={`/admin/appointments/${id}`} className="text-sm text-[#037B76] hover:underline">
+          ← Back to booking
+        </Link>
+        <div className="mt-6">
+          <AdminPageLoader
+            label="Loading booking..."
+            description="Fetching appointment and doctor data from the database."
+          />
+        </div>
+      </div>
+    );
   }
 
   if (error && !appointment) {

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import SpecializationForm from '@/components/admin/specialization-form';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
+import AdminPageLoader from '@/components/admin/admin-page-loader';
 import {
   getSpecializationsByCategory,
   getTopLevelSpecializations,
@@ -170,7 +171,10 @@ export default function AdminSpecializationsPage() {
 
       <div className="mt-8 space-y-4">
         {loading ? (
-          <p className="text-[#586971]">Loading...</p>
+          <AdminPageLoader
+            label="Loading specializations..."
+            description="Fetching specializations, categories, and services from the database."
+          />
         ) : (
           <>
             {groupedByCategory.map(({ category, specializations: specs }) => (

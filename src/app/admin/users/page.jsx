@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import UserForm from '@/components/admin/users/user-form';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
+import AdminPageLoader from '@/components/admin/admin-page-loader';
 import { canModifyUser, ROLE_LABELS } from '@/lib/firebase/roles';
 
 function formatDate(value) {
@@ -183,7 +184,13 @@ export default function AdminUsersPage() {
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan={5} className="px-4 py-6 text-[#586971]">Loading...</td>
+                <td colSpan={5}>
+                  <AdminPageLoader
+                    variant="table"
+                    label="Loading users..."
+                    description="Fetching admin users from Firebase Auth."
+                  />
+                </td>
               </tr>
             ) : users.length === 0 ? (
               <tr>

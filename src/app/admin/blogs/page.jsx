@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
+import AdminPageLoader from '@/components/admin/admin-page-loader';
 
 export default function AdminBlogsPage() {
   const { getIdToken, canWrite, canDeleteContent } = useAdminAuth();
@@ -96,7 +97,15 @@ export default function AdminBlogsPage() {
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={5} className="px-4 py-6 text-[#586971]">Loading...</td></tr>
+              <tr>
+                <td colSpan={5}>
+                  <AdminPageLoader
+                    variant="table"
+                    label="Loading blog posts..."
+                    description="Fetching blog content from the database."
+                  />
+                </td>
+              </tr>
             ) : filteredBlogs.length === 0 ? (
               <tr><td colSpan={5} className="px-4 py-6 text-[#586971]">No blog posts yet.</td></tr>
             ) : (
