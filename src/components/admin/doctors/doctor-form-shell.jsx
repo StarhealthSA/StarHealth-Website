@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { DOCTOR_IMAGES } from '@/lib/content/doctor-images';
 import {
   createEmptyDoctor,
   DOCTOR_FORM_TABS,
@@ -19,6 +18,7 @@ import LocalizedInput from '@/components/admin/localized-input';
 import LocalizedListEditor from '@/components/admin/localized-list-editor';
 import AutoTranslateBar from '@/components/admin/auto-translate-bar';
 import AdminImagePreview from '@/components/admin/admin-image-preview';
+import AdminUploadLoader from '@/components/admin/admin-upload-loader';
 import DoctorAvailabilityCalendar from '@/components/admin/doctors/doctor-availability-calendar';
 import DoctorReelsEditor from '@/components/admin/doctors/doctor-reels-editor';
 
@@ -152,7 +152,8 @@ export default function DoctorFormShell({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="relative space-y-6">
+      <AdminUploadLoader show={uploading} label="Uploading image..." />
       <AutoTranslateBar form={form} onTranslated={setForm} />
 
       <div className="flex flex-wrap gap-2 border-b border-[#d7e6e2] pb-4">
@@ -238,12 +239,9 @@ export default function DoctorFormShell({
               <label className="block">
                 <span className="text-sm font-medium text-[#586971]">Upload Photo</span>
                 <input type="file" accept="image/*" onChange={handlePhotoUpload} disabled={uploading} className="mt-1 w-full text-sm" />
-              </label>
-              <label className="block">
-                <span className="text-sm font-medium text-[#586971]">Fallback Image Key</span>
-                <select value={form.imageKey || ''} onChange={(e) => update('imageKey', e.target.value)} className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2">
-                  {Object.keys(DOCTOR_IMAGES).map((key) => <option key={key} value={key}>{key}</option>)}
-                </select>
+                {uploading && (
+                  <p className="mt-1 text-xs text-[#037B76]">Uploading...</p>
+                )}
               </label>
             </div>
             {form.profilePhotoUrl && (
@@ -298,6 +296,9 @@ export default function DoctorFormShell({
             <label className="block">
               <span className="text-sm font-medium text-[#586971]">Upload Gallery Images</span>
               <input type="file" accept="image/*" multiple onChange={handleGalleryUpload} disabled={uploading} className="mt-1 w-full text-sm" />
+              {uploading && (
+                <p className="mt-1 text-xs text-[#037B76]">Uploading...</p>
+              )}
             </label>
             <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
               {(form.galleryImages || []).map((url, i) => (
@@ -318,6 +319,7 @@ export default function DoctorFormShell({
             reels={form.reels || []}
             onChange={(reels) => update('reels', reels)}
             disabled={uploading}
+            onUploadingChange={setUploading}
           />
         )}
 

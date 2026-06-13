@@ -14,7 +14,7 @@ const PLATFORMS = [
   { value: 'upload', label: 'Uploaded Video' },
 ];
 
-export default function DoctorReelsEditor({ reels = [], onChange, disabled = false }) {
+export default function DoctorReelsEditor({ reels = [], onChange, disabled = false, onUploadingChange }) {
   const { getIdToken } = useAdminAuth();
   const [uploadingId, setUploadingId] = useState(null);
 
@@ -42,6 +42,7 @@ export default function DoctorReelsEditor({ reels = [], onChange, disabled = fal
   const handleVideoUpload = async (index, file) => {
     if (!file) return;
     try {
+      onUploadingChange?.(true);
       setUploadingId(reels[index]?.id || index);
       const token = await getIdToken();
       const videoUrl = await uploadAdminFile(file, 'doctors/reels', token);
@@ -54,12 +55,14 @@ export default function DoctorReelsEditor({ reels = [], onChange, disabled = fal
       alert(error.message || 'Video upload failed');
     } finally {
       setUploadingId(null);
+      onUploadingChange?.(false);
     }
   };
 
   const handleThumbnailUpload = async (index, file) => {
     if (!file) return;
     try {
+      onUploadingChange?.(true);
       setUploadingId(reels[index]?.id || index);
       const token = await getIdToken();
       const imageUrl = await uploadAdminFile(file, 'doctors/reels/thumbnails', token);
@@ -68,6 +71,7 @@ export default function DoctorReelsEditor({ reels = [], onChange, disabled = fal
       alert(error.message || 'Thumbnail upload failed');
     } finally {
       setUploadingId(null);
+      onUploadingChange?.(false);
     }
   };
 
