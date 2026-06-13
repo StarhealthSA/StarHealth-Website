@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  serverExternalPackages: ['sharp', 'firebase-admin', '@google-cloud/storage'],
   eslint: {
     ignoreDuringBuilds: true,
   },

@@ -34,9 +34,9 @@ export async function uploadAdminFile(file, folder, token) {
     body: formData,
   });
 
-  const data = await response.json();
+  const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    throw new Error(data.error || 'Upload failed');
+    throw new Error(data.error || `Upload failed (${response.status})`);
   }
 
   return data.imageUrl;

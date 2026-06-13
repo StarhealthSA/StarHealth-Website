@@ -1,5 +1,3 @@
-import sharp from 'sharp';
-
 const CONVERTIBLE_IMAGE_TYPES = new Set([
   'image/jpeg',
   'image/jpg',
@@ -29,6 +27,7 @@ export async function prepareUploadBuffer(buffer, mimeType) {
   }
 
   try {
+    const sharp = (await import('sharp')).default;
     const isAnimated = normalizedType === 'image/gif';
     const webpBuffer = await sharp(buffer, { animated: isAnimated })
       .webp({ quality: 85, effort: 4 })
@@ -40,7 +39,7 @@ export async function prepareUploadBuffer(buffer, mimeType) {
       extension: 'webp',
     };
   } catch (error) {
-    console.error('Image conversion failed, uploading original file:', error.message);
+    console.error('Image conversion failed, uploading original file:', error?.message || error);
     return {
       buffer,
       contentType: mimeType || 'application/octet-stream',
