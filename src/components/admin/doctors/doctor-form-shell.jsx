@@ -122,6 +122,8 @@ export default function DoctorFormShell({
         ...form,
         id,
         slug,
+        categoryId: form.categoryId || null,
+        specializationId: form.specializationId || null,
         subSpecializationId: form.subSpecializationId || null,
         certifications: normalizeListItems(form.certifications).map((c) => ({
           title: { en: c.en, ar: c.ar },

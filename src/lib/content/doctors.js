@@ -114,6 +114,7 @@ export async function updateDoctor(id, data) {
   const normalized = normalizeDoctor({ ...data, id });
   const payload = {
     ...normalized,
+    categoryId: data.categoryId ?? normalized.categoryId ?? null,
     dateAvailability: data.dateAvailability ?? normalized.dateAvailability,
     updatedAt: now,
   };

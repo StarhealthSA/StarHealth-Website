@@ -5,8 +5,8 @@ const emptyLocalized = () => ({ en: '', ar: '' });
 export function normalizeDoctor(raw = {}) {
   const status = raw.status ?? (raw.published === false ? 'inactive' : 'active');
   const specializationId =
-    raw.specializationId ??
-    LEGACY_CATEGORY_TO_SPEC[raw.category] ??
+    raw.specializationId ||
+    LEGACY_CATEGORY_TO_SPEC[raw.category] ||
     null;
 
   return {
@@ -19,8 +19,9 @@ export function normalizeDoctor(raw = {}) {
     qualification: raw.qualification ?? emptyLocalized(),
     experienceYears: raw.experienceYears ?? null,
     designation: raw.designation ?? emptyLocalized(),
+    categoryId: raw.categoryId || null,
     specializationId,
-    subSpecializationId: raw.subSpecializationId ?? null,
+    subSpecializationId: raw.subSpecializationId || null,
     specialty: raw.specialty ?? emptyLocalized(),
     medicalRegistrationNumber: raw.medicalRegistrationNumber ?? '',
     certifications: raw.certifications ?? [],

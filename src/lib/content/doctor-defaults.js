@@ -11,6 +11,7 @@ export function createEmptyDoctor() {
     qualification: emptyLocalized(),
     experienceYears: null,
     designation: emptyLocalized(),
+    categoryId: '',
     specializationId: '',
     subSpecializationId: null,
     medicalRegistrationNumber: '',
