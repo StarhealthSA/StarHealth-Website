@@ -15,6 +15,7 @@ const NAV_ITEMS = [
   { href: '/admin/service-categories', label: 'Service Categories' },
   { href: '/admin/doctors', label: 'Doctors' },
   { href: '/admin/services', label: 'Services' },
+  { href: '/admin/blogs', label: 'Blogs' },
   { href: '/admin/homepage', label: 'Homepage' },
   { href: '/admin/users', label: 'Users', requiresUserManagement: true },
 ];

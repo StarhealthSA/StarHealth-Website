@@ -11,29 +11,37 @@ service cloud.firestore {
     }
 
     match /doctors/{doctorId} {
-      allow read: if resource.data.status == 'active' || resource.data.published == true || hasRole(['admin', 'editor', 'viewer']);
-      allow create, update: if hasRole(['admin', 'editor']);
-      allow delete: if hasRole(['admin']);
+      allow read: if resource.data.status == 'active' || resource.data.published == true || hasRole(['super_admin', 'admin', 'editor', 'viewer']);
+      allow create, update: if hasRole(['super_admin', 'admin', 'editor']);
+      allow delete: if hasRole(['super_admin', 'admin']);
     }
 
     match /services/{serviceId} {
       allow read: if resource.data.published == true
         || resource.data.status == 'active'
-        || hasRole(['admin', 'editor', 'viewer']);
-      allow create, update: if hasRole(['admin', 'editor']);
-      allow delete: if hasRole(['admin']);
+        || hasRole(['super_admin', 'admin', 'editor', 'viewer']);
+      allow create, update: if hasRole(['super_admin', 'admin', 'editor']);
+      allow delete: if hasRole(['super_admin', 'admin']);
     }
 
     match /serviceCategories/{categoryId} {
-      allow read: if resource.data.active == true || hasRole(['admin', 'editor', 'viewer']);
-      allow create, update: if hasRole(['admin', 'editor']);
-      allow delete: if hasRole(['admin']);
+      allow read: if resource.data.active == true || hasRole(['super_admin', 'admin', 'editor', 'viewer']);
+      allow create, update: if hasRole(['super_admin', 'admin', 'editor']);
+      allow delete: if hasRole(['super_admin', 'admin']);
     }
 
     match /specializations/{specId} {
-      allow read: if resource.data.active == true || hasRole(['admin', 'editor', 'viewer']);
-      allow create, update: if hasRole(['admin', 'editor']);
-      allow delete: if hasRole(['admin']);
+      allow read: if resource.data.active == true || hasRole(['super_admin', 'admin', 'editor', 'viewer']);
+      allow create, update: if hasRole(['super_admin', 'admin', 'editor']);
+      allow delete: if hasRole(['super_admin', 'admin']);
+    }
+
+    match /blogs/{blogId} {
+      allow read: if resource.data.status == 'active'
+        || resource.data.published == true
+        || hasRole(['super_admin', 'admin', 'editor', 'viewer']);
+      allow create, update: if hasRole(['super_admin', 'admin', 'editor']);
+      allow delete: if hasRole(['super_admin', 'admin']);
     }
 
     match /appointments/{appointmentId} {

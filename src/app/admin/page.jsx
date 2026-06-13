@@ -45,6 +45,13 @@ export default function AdminDashboardPage() {
           <p className="mt-2 text-sm text-[#586971]">Manage service listings and detail pages.</p>
         </Link>
         <Link
+          href="/admin/blogs"
+          className="rounded-2xl border border-[#d7e6e2] bg-white p-6 transition-shadow hover:shadow-md"
+        >
+          <h2 className="text-xl font-semibold text-[#037B76]">Blogs</h2>
+          <p className="mt-2 text-sm text-[#586971]">Create SEO blog posts for the public blog listing and detail pages.</p>
+        </Link>
+        <Link
           href="/admin/appointments"
           className="rounded-2xl border border-[#d7e6e2] bg-white p-6 transition-shadow hover:shadow-md"
         >

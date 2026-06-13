@@ -623,6 +623,11 @@
   },
   "blogs":{
     "title" : "Expert Advice And Updates",
-    "description":"Our blog shares valuable knowledge, real-world strategies, and actionable insights to support your personal and business growth journey."
+    "description":"Our blog shares valuable knowledge, real-world strategies, and actionable insights to support your personal and business growth journey.",
+    "readMore": "Read more",
+    "allPosts": "All Events & News",
+    "viewAll": "View All",
+    "related": "You May Also Like",
+    "notFound": "Post not found."
   }
 }
