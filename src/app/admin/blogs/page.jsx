@@ -91,6 +91,7 @@ export default function AdminBlogsPage() {
               <th className="px-4 py-3 font-medium text-[#586971]">Title</th>
               <th className="px-4 py-3 font-medium text-[#586971]">Category</th>
               <th className="px-4 py-3 font-medium text-[#586971]">Status</th>
+              <th className="px-4 py-3 font-medium text-[#586971]">Author</th>
               <th className="px-4 py-3 font-medium text-[#586971]">Published</th>
               <th className="px-4 py-3 font-medium text-[#586971]">Actions</th>
             </tr>
@@ -98,7 +99,7 @@ export default function AdminBlogsPage() {
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan={5}>
+                <td colSpan={6}>
                   <AdminPageLoader
                     variant="table"
                     label="Loading blog posts..."
@@ -107,7 +108,7 @@ export default function AdminBlogsPage() {
                 </td>
               </tr>
             ) : filteredBlogs.length === 0 ? (
-              <tr><td colSpan={5} className="px-4 py-6 text-[#586971]">No blog posts yet.</td></tr>
+              <tr><td colSpan={6} className="px-4 py-6 text-[#586971]">No blog posts yet.</td></tr>
             ) : (
               filteredBlogs.map((blog) => (
                 <tr key={blog.id} className="border-b border-[#eef4f2]">
@@ -132,6 +133,7 @@ export default function AdminBlogsPage() {
                       </span>
                     )}
                   </td>
+                  <td className="px-4 py-3 text-[#586971]">{blog.author?.en || '—'}</td>
                   <td className="px-4 py-3 text-[#586971]">
                     {blog.publishedAt ? new Date(blog.publishedAt).toLocaleDateString() : '—'}
                   </td>

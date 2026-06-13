@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import Button from '../web_button';
 import Reveal, { staggerDelay } from '../reveal';
 import { toPublicBlogPost } from '@/lib/content/blog-public';
+import BlogMeta from '@/components/blogs/blog_meta';
 
 function AllEvents({ blogs = [], showButton = false }) {
   const { t, i18n } = useTranslation();
@@ -47,6 +48,7 @@ function AllEvents({ blogs = [], showButton = false }) {
                 <h3 className="text-[#002333] font-semibold font-inter text-[16px] lg:text-[20px] hover:text-[#027B76] transition-colors">
                   {post.title}
                 </h3>
+                <BlogMeta post={post} variant="compact" className="mt-2" />
               </div>
             </Link>
           </Reveal>

@@ -628,6 +628,9 @@
     "allPosts": "All Events & News",
     "viewAll": "View All",
     "related": "You May Also Like",
-    "notFound": "Post not found."
+    "notFound": "Post not found.",
+    "publishedOn": "Published on",
+    "publishedBy": "Published by",
+    "author": "Author"
   }
 }

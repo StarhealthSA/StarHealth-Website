@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { toPublicBlogPost } from '@/lib/content/blog-public';
+import BlogMeta from '@/components/blogs/blog_meta';
 
 function BlogDetailBody({ blog, relatedBlogs = [] }) {
   const { t, i18n } = useTranslation();
@@ -22,6 +23,7 @@ function BlogDetailBody({ blog, relatedBlogs = [] }) {
   return (
     <div className="bg-[#FFFFFF] flex flex-col lg:flex-row items-start px-[30px] lg:px-[120px] lg:gap-12 py-8">
       <article className="flex flex-col w-full lg:w-[80%] blog-content">
+        <BlogMeta post={post} variant="detail" className="mb-6 border-b border-[#eef4f2] pb-4 lg:hidden" />
         {post.body ? (
           <div
             className="space-y-4 text-[14px] lg:text-[18px] text-[#687276] font-inter [&_h1]:text-[#002333] [&_h1]:text-[28px] [&_h1]:lg:text-[40px] [&_h1]:font-semibold [&_h2]:text-[#002333] [&_h2]:text-[22px] [&_h2]:lg:text-[32px] [&_h2]:font-semibold [&_h3]:text-[#002333] [&_h3]:text-[18px] [&_h3]:lg:text-[24px] [&_h3]:font-semibold [&_ul]:list-disc [&_ul]:ml-5 [&_ol]:list-decimal [&_ol]:ml-5 [&_a]:text-[#027B76] [&_a]:underline"
@@ -66,6 +68,7 @@ function BlogDetailBody({ blog, relatedBlogs = [] }) {
               <h3 className="text-[#002333] font-semibold font-inter text-[16px] mb-2 hover:text-[#027B76] transition-colors">
                 {related.title}
               </h3>
+              <BlogMeta post={related} variant="compact" />
             </Link>
           ))}
         </aside>

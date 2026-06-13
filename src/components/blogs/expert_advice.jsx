@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import Reveal, { staggerDelay } from '../reveal';
 import { toPublicBlogPost } from '@/lib/content/blog-public';
+import BlogMeta from '@/components/blogs/blog_meta';
 
 function ExpertAdvice({ blogs = [] }) {
   const { t, i18n } = useTranslation();
@@ -55,6 +56,7 @@ function ExpertAdvice({ blogs = [] }) {
           <p className="text-[14px] lg:text-[16px] text-[#687276] font-inter mb-[8px] lg:mb-[12px]">
             {featuredPost.excerpt}
           </p>
+          <BlogMeta post={featuredPost} variant="compact" className="mb-[8px] lg:mb-[12px]" />
           <Link href={`/blog/${featuredPost.slug}`}>
             <p className="text-[14px] lg:text-[16px] text-[#687276] font-inter decoration-solid underline cursor-pointer hover:text-[#027B76]">
               {t('blogs.readMore', { defaultValue: 'Read more' })}
@@ -93,6 +95,7 @@ function ExpertAdvice({ blogs = [] }) {
                   <p className="text-[14px] lg:text-[16px] text-[#687276] font-inter leading-[20px] line-clamp-2">
                     {post.excerpt}
                   </p>
+                  <BlogMeta post={post} variant="compact" className="mt-2" />
                 </div>
               </Link>
             </Reveal>

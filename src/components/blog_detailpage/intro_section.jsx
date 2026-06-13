@@ -2,6 +2,7 @@
 
 import { useTranslation } from 'react-i18next';
 import { toPublicBlogPost } from '@/lib/content/blog-public';
+import BlogMeta from '@/components/blogs/blog_meta';
 
 function IntroSection({ blog }) {
   const { i18n } = useTranslation();
@@ -37,15 +38,7 @@ function IntroSection({ blog }) {
           <p className="text-[14px] lg:text-[16px] text-[#687276] font-inter mb-[8px] lg:mb-[12px]">
             {post.excerpt}
           </p>
-          {post.publishedAt && (
-            <p className="text-xs text-[#687276]">
-              {new Date(post.publishedAt).toLocaleDateString(i18n.language === 'ar' ? 'ar-SA' : 'en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </p>
-          )}
+          <BlogMeta post={post} variant="detail" className="mt-1" />
         </div>
       </div>
     </section>

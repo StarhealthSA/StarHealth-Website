@@ -1,5 +1,14 @@
 import { getLocalizedText } from './localized';
 
+export function formatBlogPublishedDate(value, language = 'en') {
+  if (!value) return '';
+  return new Date(value).toLocaleDateString(language === 'ar' ? 'ar-SA' : 'en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+
 export function toPublicBlogPost(blog, language = 'en') {
   if (!blog) return null;
 
