@@ -7,7 +7,7 @@ import { adminFetch } from '@/lib/admin-api';
 import { resolveServiceIcon } from '@/lib/content/service-icons';
 
 export default function AdminServicesPage() {
-  const { getIdToken, canWrite, isAdmin } = useAdminAuth();
+  const { getIdToken, canWrite, canDeleteContent } = useAdminAuth();
   const [services, setServices] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -152,7 +152,7 @@ export default function AdminServicesPage() {
                         Edit
                       </Link>
                     )}
-                    {isAdmin && (
+                    {canDeleteContent && (
                       <button
                         type="button"
                         onClick={() => handleDelete(service.id)}

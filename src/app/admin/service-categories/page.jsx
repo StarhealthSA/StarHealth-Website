@@ -6,7 +6,7 @@ import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
 
 export default function AdminServiceCategoriesPage() {
-  const { getIdToken, canWrite, isAdmin } = useAdminAuth();
+  const { getIdToken, canWrite, canDeleteContent } = useAdminAuth();
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -138,7 +138,7 @@ export default function AdminServiceCategoriesPage() {
                       >
                         Edit
                       </button>
-                      {isAdmin && (
+                      {canDeleteContent && (
                         <button
                           type="button"
                           onClick={() => handleDelete(category.id)}

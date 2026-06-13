@@ -3,6 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { getFirebaseAuth, isFirebaseClientConfigured } from '@/lib/firebase/client';
+import { getAssignableRoles, ROLES } from '@/lib/firebase/roles';
 
 const AdminAuthContext = createContext(null);
 
@@ -30,9 +31,19 @@ export function AdminAuthProvider({ children }) {
         return;
       }
 
-      const tokenResult = await firebaseUser.getIdTokenResult();
+      const tokenResult = await firebaseUser.getIdTokenResult(true);
+      const userRole = tokenResult.claims.role || null;
+
+      if (!userRole) {
+        await signOut(auth);
+        setUser(null);
+        setRole(null);
+        setLoading(false);
+        return;
+      }
+
       setUser(firebaseUser);
-      setRole(tokenResult.claims.role || null);
+      setRole(userRole);
       setLoading(false);
     });
 
@@ -42,7 +53,7 @@ export function AdminAuthProvider({ children }) {
   const login = useCallback(async (email, password) => {
     const auth = getFirebaseAuth();
     const credential = await signInWithEmailAndPassword(auth, email, password);
-    const tokenResult = await credential.user.getIdTokenResult();
+    const tokenResult = await credential.user.getIdTokenResult(true);
     const userRole = tokenResult.claims.role;
 
     if (!userRole) {
@@ -63,11 +74,18 @@ export function AdminAuthProvider({ children }) {
 
   const getIdToken = useCallback(async () => {
     if (!user) return null;
-    return user.getIdToken();
+    return user.getIdToken(true);
   }, [user]);
 
-  const value = useMemo(
-    () => ({
+  const value = useMemo(() => {
+    const isSuperAdmin = role === ROLES.SUPER_ADMIN;
+    const isAdmin = role === ROLES.ADMIN;
+    const canManageUsers = isSuperAdmin || isAdmin;
+    const canDeleteContent = isSuperAdmin || isAdmin;
+    const canWrite = isSuperAdmin || isAdmin || role === ROLES.EDITOR;
+    const assignableRoles = role ? getAssignableRoles(role) : [];
+
+    return {
       user,
       role,
       loading,
@@ -75,11 +93,14 @@ export function AdminAuthProvider({ children }) {
       login,
       logout,
       getIdToken,
-      isAdmin: role === 'admin',
-      canWrite: role === 'admin' || role === 'editor',
-    }),
-    [user, role, loading, configured, login, logout, getIdToken]
-  );
+      isSuperAdmin,
+      isAdmin,
+      canManageUsers,
+      canDeleteContent,
+      canWrite,
+      assignableRoles,
+    };
+  }, [user, role, loading, configured, login, logout, getIdToken]);
 
   return <AdminAuthContext.Provider value={value}>{children}</AdminAuthContext.Provider>;
 }

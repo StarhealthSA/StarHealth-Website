@@ -10,7 +10,7 @@ import {
 } from '@/lib/content/specialization-utils';
 
 export default function AdminSpecializationsPage() {
-  const { getIdToken, canWrite, isAdmin } = useAdminAuth();
+  const { getIdToken, canWrite, canDeleteContent } = useAdminAuth();
   const [specializations, setSpecializations] = useState([]);
   const [categories, setCategories] = useState([]);
   const [services, setServices] = useState([]);
@@ -118,7 +118,7 @@ export default function AdminSpecializationsPage() {
             >
               Edit
             </button>
-            {isAdmin && (
+            {canDeleteContent && (
               <button
                 type="button"
                 onClick={() => handleDelete(spec.id)}

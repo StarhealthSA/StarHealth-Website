@@ -1,14 +1,26 @@
 import { getAdminAuth } from './admin';
+import {
+  DELETE_ROLES,
+  READ_ROLES,
+  ROLES,
+  USER_MANAGEMENT_ROLES,
+  WRITE_ROLES,
+} from './roles';
 
-export const ROLES = {
-  ADMIN: 'admin',
-  EDITOR: 'editor',
-  VIEWER: 'viewer',
-};
-
-export const WRITE_ROLES = [ROLES.ADMIN, ROLES.EDITOR];
-export const READ_ROLES = [ROLES.ADMIN, ROLES.EDITOR, ROLES.VIEWER];
-export const DELETE_ROLES = [ROLES.ADMIN];
+export {
+  ROLES,
+  ALL_ROLES,
+  WRITE_ROLES,
+  READ_ROLES,
+  DELETE_ROLES,
+  USER_MANAGEMENT_ROLES,
+  getAssignableRoles,
+  getRoleRank,
+  canModifyUser,
+  assertCanAssignRole,
+  assertCanModifyUser,
+  assertNoSelfRoleElevation,
+} from './roles';
 
 export async function verifyAdminToken(request) {
   const authHeader = request.headers.get('authorization');
@@ -37,5 +49,5 @@ export function requireRole(decodedToken, allowedRoles) {
 export async function authenticateRequest(request, allowedRoles) {
   const decoded = await verifyAdminToken(request);
   const role = requireRole(decoded, allowedRoles);
-  return { decoded, role };
+  return { decoded, role, uid: decoded.uid };
 }

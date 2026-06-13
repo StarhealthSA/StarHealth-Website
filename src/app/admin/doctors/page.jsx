@@ -7,7 +7,7 @@ import { adminFetch } from '@/lib/admin-api';
 import { resolveDoctorImage } from '@/lib/content/doctor-images';
 
 export default function AdminDoctorsPage() {
-  const { getIdToken, canWrite, isAdmin } = useAdminAuth();
+  const { getIdToken, canWrite, canDeleteContent } = useAdminAuth();
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -97,7 +97,7 @@ export default function AdminDoctorsPage() {
                     <Link href={`/admin/doctors/${doctor.id}`} className="text-[#037B76] hover:underline">
                       Edit
                     </Link>
-                    {isAdmin && (
+                    {canDeleteContent && (
                       <button type="button" onClick={() => handleDelete(doctor.id)} className="text-red-600 hover:underline">
                         Delete
                       </button>

@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import logo from '@/assets/doctors/logo1.svg';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
+import { ROLE_LABELS } from '@/lib/firebase/roles';
 
 const NAV_ITEMS = [
   { href: '/admin', label: 'Dashboard', exact: true },
@@ -15,6 +16,7 @@ const NAV_ITEMS = [
   { href: '/admin/doctors', label: 'Doctors' },
   { href: '/admin/services', label: 'Services' },
   { href: '/admin/homepage', label: 'Homepage' },
+  { href: '/admin/users', label: 'Users', requiresUserManagement: true },
 ];
 
 function isNavActive(pathname, item) {
@@ -25,7 +27,7 @@ function isNavActive(pathname, item) {
 export default function AdminShell({ children }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, role, loading, logout, configured, getIdToken } = useAdminAuth();
+  const { user, role, loading, logout, configured, getIdToken, canManageUsers } = useAdminAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [unreadBookings, setUnreadBookings] = useState(0);
   const isLoginPage = pathname === '/admin/login';
@@ -104,7 +106,7 @@ export default function AdminShell({ children }) {
       </div>
 
       <nav className="flex-1 space-y-1 px-3 py-4">
-        {NAV_ITEMS.map((item) => {
+        {NAV_ITEMS.filter((item) => !item.requiresUserManagement || canManageUsers).map((item) => {
           const active = isNavActive(pathname, item);
           return (
             <Link
@@ -132,7 +134,7 @@ export default function AdminShell({ children }) {
 
       <div className="border-t border-[#eef4f2] px-4 py-4">
         <p className="truncate text-sm font-medium text-[#002f3b]">{user.email}</p>
-        <p className="mt-0.5 text-xs capitalize text-[#586971]">{role}</p>
+        <p className="mt-0.5 text-xs text-[#586971]">{ROLE_LABELS[role] || role}</p>
         <button
           type="button"
           onClick={logout}
