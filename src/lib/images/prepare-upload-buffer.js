@@ -28,14 +28,23 @@ export async function prepareUploadBuffer(buffer, mimeType) {
     };
   }
 
-  const isAnimated = normalizedType === 'image/gif';
-  const webpBuffer = await sharp(buffer, { animated: isAnimated })
-    .webp({ quality: 85, effort: 4 })
-    .toBuffer();
+  try {
+    const isAnimated = normalizedType === 'image/gif';
+    const webpBuffer = await sharp(buffer, { animated: isAnimated })
+      .webp({ quality: 85, effort: 4 })
+      .toBuffer();
 
-  return {
-    buffer: webpBuffer,
-    contentType: 'image/webp',
-    extension: 'webp',
-  };
+    return {
+      buffer: webpBuffer,
+      contentType: 'image/webp',
+      extension: 'webp',
+    };
+  } catch (error) {
+    console.error('Image conversion failed, uploading original file:', error.message);
+    return {
+      buffer,
+      contentType: mimeType || 'application/octet-stream',
+      extension: null,
+    };
+  }
 }

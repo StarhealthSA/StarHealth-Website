@@ -21,6 +21,10 @@ function getAdminApp() {
   }
 
   const privateKey = process.env.FIREBASE_ADMIN_PRIVATE_KEY?.replace(/\\n/g, '\n');
+  const storageBucket =
+    process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+    || process.env.FIREBASE_STORAGE_BUCKET
+    || `${process.env.FIREBASE_ADMIN_PROJECT_ID}.appspot.com`;
 
   return initializeApp({
     credential: cert({
@@ -28,7 +32,7 @@ function getAdminApp() {
       clientEmail: process.env.FIREBASE_ADMIN_CLIENT_EMAIL,
       privateKey,
     }),
-    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    storageBucket,
   });
 }
 
