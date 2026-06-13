@@ -225,7 +225,13 @@ export default function BlogFormShell({ initial }) {
                 className="mt-1 block w-full text-sm"
               />
             </label>
-            {form.seo.ogImage && <AdminImagePreview src={form.seo.ogImage} alt="OG preview" />}
+            {form.seo.ogImage && (
+              <AdminImagePreview
+                src={form.seo.ogImage}
+                alt="OG preview"
+                onRemove={() => updateField('seo.ogImage', '')}
+              />
+            )}
           </div>
         )}
 
@@ -251,7 +257,11 @@ export default function BlogFormShell({ initial }) {
               />
             </label>
             {form.featuredImageUrl && (
-              <AdminImagePreview src={form.featuredImageUrl} alt="Featured preview" />
+              <AdminImagePreview
+                src={form.featuredImageUrl}
+                alt="Featured preview"
+                onRemove={() => updateField('featuredImageUrl', '')}
+              />
             )}
           </div>
         )}
