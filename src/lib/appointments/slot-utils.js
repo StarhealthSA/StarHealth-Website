@@ -122,40 +122,82 @@ export const DEFAULT_DUTY_SCHEDULE = {
 };
 
 export const DEFAULT_SCHEDULE_BREAK = {
-  enabled: false,
-  breakStartSlot: 24,
-  breakEndSlot: 26,
+  breaks: [],
 };
 
-export function normalizeScheduleBreak(breakConfig) {
-  if (!breakConfig) return { ...DEFAULT_SCHEDULE_BREAK };
+export function normalizeBreakPeriod(period) {
+  const start = Number(period?.breakStartSlot);
+  const end = Number(period?.breakEndSlot);
+  if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start) return null;
+
   return {
-    enabled: Boolean(breakConfig.enabled),
-    breakStartSlot: Number.isFinite(Number(breakConfig.breakStartSlot))
-      ? Number(breakConfig.breakStartSlot)
-      : DEFAULT_SCHEDULE_BREAK.breakStartSlot,
-    breakEndSlot: Number.isFinite(Number(breakConfig.breakEndSlot))
-      ? Number(breakConfig.breakEndSlot)
-      : DEFAULT_SCHEDULE_BREAK.breakEndSlot,
+    id: period?.id || `break-${start}-${end}`,
+    breakStartSlot: start,
+    breakEndSlot: end,
   };
 }
 
+export function normalizeScheduleBreak(breakConfig) {
+  if (!breakConfig) return { breaks: [] };
+
+  if (Array.isArray(breakConfig.breaks)) {
+    return {
+      breaks: breakConfig.breaks.map(normalizeBreakPeriod).filter(Boolean),
+    };
+  }
+
+  if (
+    breakConfig.enabled &&
+    (breakConfig.breakStartSlot != null || breakConfig.breakEndSlot != null)
+  ) {
+    const legacyBreak = normalizeBreakPeriod(breakConfig);
+    return { breaks: legacyBreak ? [legacyBreak] : [] };
+  }
+
+  return { breaks: [] };
+}
+
+export function createDefaultBreakPeriod(existingBreaks = []) {
+  const lastBreak = existingBreaks[existingBreaks.length - 1];
+  const start = lastBreak
+    ? Math.min(lastBreak.breakEndSlot + 2, SLOTS_PER_DAY - 2)
+    : 24;
+
+  return {
+    id: `break-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+    breakStartSlot: start,
+    breakEndSlot: Math.min(start + 2, SLOTS_PER_DAY),
+  };
+}
+
+export function getBreakSlotIndicesFromBreaks(breaks = []) {
+  const indices = new Set();
+
+  breaks.forEach((period) => {
+    const start = Number(period?.breakStartSlot);
+    const end = Number(period?.breakEndSlot);
+    if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start) return;
+
+    for (let index = start; index < end; index += 1) {
+      indices.add(index);
+    }
+  });
+
+  return [...indices].sort((a, b) => a - b);
+}
+
+export function formatBreakPeriodLabel(period) {
+  const normalized = normalizeBreakPeriod(period);
+  if (!normalized) return '';
+  return `${formatSlotLabel(normalized.breakStartSlot)} – ${formatTime12h(slotIndexToMinutes(normalized.breakEndSlot))}`;
+}
+
 export function getBreakSlotIndicesFromEntry(entry, scheduleBreak) {
-  const breakConfig = entry?.breakEnabled != null
-    ? {
-        enabled: Boolean(entry.breakEnabled),
-        breakStartSlot: entry.breakStartSlot,
-        breakEndSlot: entry.breakEndSlot,
-      }
-    : normalizeScheduleBreak(scheduleBreak);
+  const breaks = entry?.breaks != null
+    ? normalizeScheduleBreak({ breaks: entry.breaks }).breaks
+    : normalizeScheduleBreak(scheduleBreak).breaks;
 
-  if (!breakConfig.enabled) return [];
-
-  const start = Number(breakConfig.breakStartSlot);
-  const end = Number(breakConfig.breakEndSlot);
-  if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start) return [];
-
-  return Array.from({ length: end - start }, (_, offset) => start + offset);
+  return getBreakSlotIndicesFromBreaks(breaks);
 }
 
 export function getBookableSlotIndicesFromEntry(entry, scheduleBreak) {

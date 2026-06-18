@@ -6,13 +6,15 @@ import 'react-datepicker/dist/react-datepicker.css';
 import {
   DEFAULT_DUTY_SCHEDULE,
   DEFAULT_SCHEDULE_BREAK,
+  createDefaultBreakPeriod,
+  formatBreakPeriodLabel,
   formatDateKey,
   formatDateLabel,
   formatTime12h,
   getAllSlotOptions,
   getBookableSlotIndicesFromEntry,
-  getBreakSlotIndicesFromEntry,
   getUpcomingDateKeys,
+  normalizeScheduleBreak,
   parseDateKey,
   slotIndexToMinutes,
   SLOTS_PER_DAY,
@@ -52,9 +54,7 @@ export default function DoctorAvailabilityCalendar({
   const isSelectedEnabled = Boolean(selectedEntry?.enabled);
   const startSlot = selectedEntry?.startSlot ?? DEFAULT_DUTY_SCHEDULE.startSlot;
   const endSlot = selectedEntry?.endSlot ?? DEFAULT_DUTY_SCHEDULE.endSlot;
-  const breakEnabled = Boolean(scheduleBreak?.enabled);
-  const breakStartSlot = scheduleBreak?.breakStartSlot ?? DEFAULT_SCHEDULE_BREAK.breakStartSlot;
-  const breakEndSlot = scheduleBreak?.breakEndSlot ?? DEFAULT_SCHEDULE_BREAK.breakEndSlot;
+  const breaks = normalizeScheduleBreak(scheduleBreak).breaks;
 
   const slotPreview = useMemo(() => {
     if (!isSelectedEnabled) return [];
@@ -66,13 +66,9 @@ export default function DoctorAvailabilityCalendar({
   }, [isSelectedEnabled, startSlot, endSlot, scheduleBreak]);
 
   const breakPreview = useMemo(() => {
-    if (!isSelectedEnabled || !breakEnabled) return [];
-    const entry = { enabled: true, startSlot, endSlot };
-    return getBreakSlotIndicesFromEntry(entry, scheduleBreak).map((index) => {
-      const option = SLOT_OPTIONS.find((slot) => slot.index === index);
-      return option?.label || '';
-    });
-  }, [isSelectedEnabled, startSlot, endSlot, scheduleBreak, breakEnabled]);
+    if (!isSelectedEnabled || !breaks.length) return [];
+    return breaks.map((period) => formatBreakPeriodLabel(period)).filter(Boolean);
+  }, [isSelectedEnabled, breaks]);
 
   useEffect(() => {
     if (!doctorId || !isSelectedEnabled) {
@@ -132,6 +128,26 @@ export default function DoctorAvailabilityCalendar({
     });
   };
 
+  const updateBreak = (breakId, patch) => {
+    onScheduleBreakChange?.({
+      breaks: breaks.map((period) => (
+        period.id === breakId ? { ...period, ...patch } : period
+      )),
+    });
+  };
+
+  const addBreak = () => {
+    onScheduleBreakChange?.({
+      breaks: [...breaks, createDefaultBreakPeriod(breaks)],
+    });
+  };
+
+  const removeBreak = (breakId) => {
+    onScheduleBreakChange?.({
+      breaks: breaks.filter((period) => period.id !== breakId),
+    });
+  };
+
   const selectDateKey = (dateKey) => {
     setSelectedDate(parseDateKey(dateKey));
   };
@@ -141,71 +157,83 @@ export default function DoctorAvailabilityCalendar({
       <div>
         <h3 className="text-sm font-semibold text-[#002f3b]">Availability calendar</h3>
         <p className="mt-1 text-xs text-[#586971]">
-          Enable specific upcoming dates, set consultation hours, and configure a daily break that is hidden from booking.
+          Enable specific upcoming dates, set consultation hours, and configure daily breaks that are hidden from booking.
         </p>
       </div>
 
       <div className="rounded-xl border border-[#d7e6e2] bg-white p-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <p className="text-sm font-medium text-[#002f3b]">Daily break time</p>
-            <p className="mt-0.5 text-xs text-[#586971]">Applied to every enabled date. Break slots are not shown to patients.</p>
+            <p className="text-sm font-medium text-[#002f3b]">Daily break times</p>
+            <p className="mt-0.5 text-xs text-[#586971]">
+              Add one or more breaks per doctor. These slots are hidden from all enabled dates.
+            </p>
           </div>
-          <label className="flex items-center gap-2 text-sm text-[#002f3b]">
-            <input
-              type="checkbox"
-              checked={breakEnabled}
-              onChange={(e) => onScheduleBreakChange?.({
-                ...scheduleBreak,
-                enabled: e.target.checked,
-              })}
-              className="h-4 w-4 rounded border-[#d7e6e2] text-[#037B76]"
-            />
-            Enable daily break
-          </label>
+          <button
+            type="button"
+            onClick={addBreak}
+            className="rounded-lg border border-[#037B76] px-3 py-1.5 text-sm font-medium text-[#037B76] hover:bg-[#f3faf8]"
+          >
+            Add break
+          </button>
         </div>
 
-        {breakEnabled && (
-          <div className="mt-4 grid gap-4 md:grid-cols-2">
-            <label className="block">
-              <span className="text-xs font-medium text-[#586971]">Break starts at</span>
-              <select
-                value={breakStartSlot}
-                onChange={(e) => {
-                  const nextStart = Number(e.target.value);
-                  const nextEnd = breakEndSlot <= nextStart
-                    ? Math.min(nextStart + 1, SLOTS_PER_DAY)
-                    : breakEndSlot;
-                  onScheduleBreakChange?.({
-                    ...scheduleBreak,
-                    enabled: true,
-                    breakStartSlot: nextStart,
-                    breakEndSlot: nextEnd,
-                  });
-                }}
-                className="mt-1 w-full rounded-lg border border-[#d7e6e2] bg-white px-3 py-2 text-sm"
+        {!breaks.length ? (
+          <p className="mt-4 text-xs text-[#586971]">No breaks configured for this doctor.</p>
+        ) : (
+          <div className="mt-4 space-y-3">
+            {breaks.map((period, index) => (
+              <div
+                key={period.id}
+                className="grid gap-3 rounded-lg border border-[#eef4f2] bg-[#f8fbfa] p-3 md:grid-cols-[1fr_1fr_auto]"
               >
-                {SLOT_OPTIONS.map((slot) => (
-                  <option key={slot.index} value={slot.index}>{slot.label}</option>
-                ))}
-              </select>
-            </label>
-            <label className="block">
-              <span className="text-xs font-medium text-[#586971]">Break ends at</span>
-              <select
-                value={breakEndSlot}
-                onChange={(e) => onScheduleBreakChange?.({
-                  ...scheduleBreak,
-                  enabled: true,
-                  breakEndSlot: Number(e.target.value),
-                })}
-                className="mt-1 w-full rounded-lg border border-[#d7e6e2] bg-white px-3 py-2 text-sm"
-              >
-                {Array.from({ length: SLOTS_PER_DAY - breakStartSlot }, (_, offset) => breakStartSlot + offset + 1).map((index) => (
-                  <option key={index} value={index}>{getEndTimeLabel(index)}</option>
-                ))}
-              </select>
-            </label>
+                <label className="block">
+                  <span className="text-xs font-medium text-[#586971]">Break {index + 1} starts at</span>
+                  <select
+                    value={period.breakStartSlot}
+                    onChange={(e) => {
+                      const nextStart = Number(e.target.value);
+                      const nextEnd = period.breakEndSlot <= nextStart
+                        ? Math.min(nextStart + 1, SLOTS_PER_DAY)
+                        : period.breakEndSlot;
+                      updateBreak(period.id, {
+                        breakStartSlot: nextStart,
+                        breakEndSlot: nextEnd,
+                      });
+                    }}
+                    className="mt-1 w-full rounded-lg border border-[#d7e6e2] bg-white px-3 py-2 text-sm"
+                  >
+                    {SLOT_OPTIONS.map((slot) => (
+                      <option key={slot.index} value={slot.index}>{slot.label}</option>
+                    ))}
+                  </select>
+                </label>
+                <label className="block">
+                  <span className="text-xs font-medium text-[#586971]">Break {index + 1} ends at</span>
+                  <select
+                    value={period.breakEndSlot}
+                    onChange={(e) => updateBreak(period.id, { breakEndSlot: Number(e.target.value) })}
+                    className="mt-1 w-full rounded-lg border border-[#d7e6e2] bg-white px-3 py-2 text-sm"
+                  >
+                    {Array.from(
+                      { length: SLOTS_PER_DAY - period.breakStartSlot },
+                      (_, offset) => period.breakStartSlot + offset + 1
+                    ).map((slotIndex) => (
+                      <option key={slotIndex} value={slotIndex}>{getEndTimeLabel(slotIndex)}</option>
+                    ))}
+                  </select>
+                </label>
+                <div className="flex items-end">
+                  <button
+                    type="button"
+                    onClick={() => removeBreak(period.id)}
+                    className="w-full rounded-lg border border-red-200 px-3 py-2 text-sm text-red-600 hover:bg-red-50 md:w-auto"
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </div>
@@ -292,7 +320,7 @@ export default function DoctorAvailabilityCalendar({
 
             {isSelectedEnabled && breakPreview.length > 0 && (
               <p className="mt-2 text-xs text-[#586971]">
-                Daily break (hidden from booking): {breakPreview[0]} … {breakPreview[breakPreview.length - 1]}
+                Daily breaks (hidden from booking): {breakPreview.join(', ')}
               </p>
             )}
 
