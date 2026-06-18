@@ -113,6 +113,7 @@ export async function updateDoctor(id, data) {
     ...normalized,
     categoryId: data.categoryId ?? normalized.categoryId ?? null,
     dateAvailability: data.dateAvailability ?? normalized.dateAvailability,
+    scheduleBreak: data.scheduleBreak ?? normalized.scheduleBreak,
     updatedAt: now,
   };
   await db.collection(COLLECTION).doc(id).set(payload, { merge: true });

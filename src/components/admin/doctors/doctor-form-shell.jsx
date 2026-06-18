@@ -8,6 +8,7 @@ import {
   GENDERS,
   resolveDoctorFormTab,
 } from '@/lib/content/doctor-defaults';
+import { DEFAULT_SCHEDULE_BREAK } from '@/lib/appointments/slot-utils';
 import {
   getSpecializationCategoryId,
   getSpecializationsByCategory,
@@ -284,6 +285,8 @@ export default function DoctorFormShell({
             <DoctorAvailabilityCalendar
               dateAvailability={form.dateAvailability || {}}
               onChange={(dateAvailability) => update('dateAvailability', dateAvailability)}
+              scheduleBreak={form.scheduleBreak || DEFAULT_SCHEDULE_BREAK}
+              onScheduleBreakChange={(scheduleBreak) => update('scheduleBreak', scheduleBreak)}
               doctorId={form.id}
             />
             <label className="flex items-center gap-2 text-sm text-[#586971]">

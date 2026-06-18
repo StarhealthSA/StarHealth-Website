@@ -1,3 +1,4 @@
+import { normalizeScheduleBreak } from '../appointments/slot-utils';
 import { LEGACY_CATEGORY_TO_SPEC } from './fallback-specializations.js';
 
 const emptyLocalized = () => ({ en: '', ar: '' });
@@ -36,6 +37,7 @@ export function normalizeDoctor(raw = {}) {
     workingDays: raw.workingDays ?? [],
     dutySchedule: raw.dutySchedule ?? {},
     dateAvailability: raw.dateAvailability ?? {},
+    scheduleBreak: normalizeScheduleBreak(raw.scheduleBreak),
     onlineConsultationAvailable: raw.onlineConsultationAvailable ?? false,
     galleryImages: raw.galleryImages ?? [],
     reels: raw.reels ?? [],

@@ -27,6 +27,11 @@ export function createEmptyDoctor() {
     workingDays: [],
     dutySchedule: {},
     dateAvailability: {},
+    scheduleBreak: {
+      enabled: false,
+      breakStartSlot: 24,
+      breakEndSlot: 26,
+    },
     onlineConsultationAvailable: false,
     galleryImages: [],
     reels: [],

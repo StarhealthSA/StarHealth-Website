@@ -79,7 +79,7 @@ export function getDateAvailabilityEntry(doctor, date) {
 
 export function getDoctorDutySlotIndices(doctor, date) {
   const entry = getDateAvailabilityEntry(doctor, date);
-  return getDutySlotIndicesFromEntry(entry);
+  return getBookableSlotIndicesFromEntry(entry, doctor?.scheduleBreak);
 }
 
 export function getUpcomingDateKeys(days = 30, fromDate = new Date()) {
@@ -120,3 +120,46 @@ export const DEFAULT_DUTY_SCHEDULE = {
   startSlot: 18,
   endSlot: 34,
 };
+
+export const DEFAULT_SCHEDULE_BREAK = {
+  enabled: false,
+  breakStartSlot: 24,
+  breakEndSlot: 26,
+};
+
+export function normalizeScheduleBreak(breakConfig) {
+  if (!breakConfig) return { ...DEFAULT_SCHEDULE_BREAK };
+  return {
+    enabled: Boolean(breakConfig.enabled),
+    breakStartSlot: Number.isFinite(Number(breakConfig.breakStartSlot))
+      ? Number(breakConfig.breakStartSlot)
+      : DEFAULT_SCHEDULE_BREAK.breakStartSlot,
+    breakEndSlot: Number.isFinite(Number(breakConfig.breakEndSlot))
+      ? Number(breakConfig.breakEndSlot)
+      : DEFAULT_SCHEDULE_BREAK.breakEndSlot,
+  };
+}
+
+export function getBreakSlotIndicesFromEntry(entry, scheduleBreak) {
+  const breakConfig = entry?.breakEnabled != null
+    ? {
+        enabled: Boolean(entry.breakEnabled),
+        breakStartSlot: entry.breakStartSlot,
+        breakEndSlot: entry.breakEndSlot,
+      }
+    : normalizeScheduleBreak(scheduleBreak);
+
+  if (!breakConfig.enabled) return [];
+
+  const start = Number(breakConfig.breakStartSlot);
+  const end = Number(breakConfig.breakEndSlot);
+  if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start) return [];
+
+  return Array.from({ length: end - start }, (_, offset) => start + offset);
+}
+
+export function getBookableSlotIndicesFromEntry(entry, scheduleBreak) {
+  const dutySlots = getDutySlotIndicesFromEntry(entry);
+  const breakSlots = new Set(getBreakSlotIndicesFromEntry(entry, scheduleBreak));
+  return dutySlots.filter((index) => !breakSlots.has(index));
+}
