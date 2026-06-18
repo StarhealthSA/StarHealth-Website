@@ -52,7 +52,7 @@ export default function AdminHomepagePage() {
     <div>
       <h1 className="text-3xl font-semibold text-[#002f3b]">Homepage</h1>
       <p className="mt-1 mb-6 text-sm text-[#586971]">
-        Manage homepage hero text and banner video shown on the public site.
+        Manage homepage hero text and banner carousel (images or videos) shown on the public site.
       </p>
       <HomepageSettingsForm initial={settings} />
     </div>

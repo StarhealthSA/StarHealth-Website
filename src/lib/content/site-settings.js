@@ -3,6 +3,12 @@ import {
   detectBannerVideoPlatform,
   resolveBannerVideo,
 } from '@/lib/video/banner-video';
+import {
+  migrateHeroSlidesFromLegacy,
+  normalizeHeroSlide,
+  normalizeHeroSlidesList,
+  validateHeroSlideInput,
+} from '@/lib/content/hero-slides';
 
 const COLLECTION = 'siteSettings';
 const HOME_DOC_ID = 'home';
@@ -12,6 +18,7 @@ const emptyLocalized = () => ({ en: '', ar: '' });
 export const DEFAULT_HOME_SETTINGS = {
   heroTitle: emptyLocalized(),
   heroSubtitle: emptyLocalized(),
+  heroSlides: [],
   heroVideo: {
     enabled: false,
     url: '',
@@ -40,11 +47,27 @@ function normalizeHeroVideo(raw = {}) {
   };
 }
 
+function serializeHeroSlides(slides = []) {
+  return slides.map((slide) => ({
+    id: slide.id,
+    type: slide.type,
+    url: slide.url,
+    order: slide.order,
+    enabled: slide.enabled,
+    durationSeconds: slide.durationSeconds,
+  }));
+}
+
 export function normalizeHomeSettings(raw = {}) {
+  const migratedSlides = migrateHeroSlidesFromLegacy(raw);
+  const carouselMode = migratedSlides.filter((slide) => slide.enabled !== false && slide.url?.trim()).length > 1;
+  const heroSlides = normalizeHeroSlidesList(migratedSlides, { carouselMode });
+
   return {
     id: HOME_DOC_ID,
     heroTitle: normalizeLocalizedField(raw.heroTitle),
     heroSubtitle: normalizeLocalizedField(raw.heroSubtitle),
+    heroSlides,
     heroVideo: normalizeHeroVideo(raw.heroVideo),
     updatedAt: raw.updatedAt || null,
   };
@@ -69,18 +92,23 @@ export async function updateHomeSettings(payload = {}) {
   if (!db) throw new Error('Firebase Admin is not configured');
 
   const existing = await getHomeSettings();
-  const url = (payload.heroVideo?.url ?? existing.heroVideo.url).trim();
-  const enabled = payload.heroVideo?.enabled ?? existing.heroVideo.enabled;
+  const rawSlides = payload.heroSlides ?? migrateHeroSlidesFromLegacy(existing);
+  const slideList = Array.isArray(rawSlides) ? rawSlides : [];
 
-  const heroVideo = normalizeHeroVideo({
-    enabled,
-    url,
-    platform: detectBannerVideoPlatform(url),
+  slideList.forEach((slide, index) => {
+    const message = validateHeroSlideInput(slide);
+    if (message && slide.url?.trim()) {
+      throw new Error(`Slide ${index + 1}: ${message}`);
+    }
   });
 
-  if (enabled && url && !heroVideo.playback) {
-    throw new Error('Unsupported video link. Use YouTube, Vimeo, or a direct MP4/WebM URL.');
-  }
+  const carouselMode = slideList.filter((slide) => slide.enabled !== false && slide.url?.trim()).length > 1;
+  const normalizedSlides = slideList
+    .map((slide, index) => normalizeHeroSlide(
+      { ...slide, order: slide.order ?? index + 1 },
+      { carouselMode }
+    ))
+    .sort((a, b) => a.order - b.order);
 
   const heroTitle = normalizeLocalizedField(payload.heroTitle ?? existing.heroTitle);
   const heroSubtitle = normalizeLocalizedField(payload.heroSubtitle ?? existing.heroSubtitle);
@@ -90,11 +118,7 @@ export async function updateHomeSettings(payload = {}) {
     id: HOME_DOC_ID,
     heroTitle,
     heroSubtitle,
-    heroVideo: {
-      enabled: heroVideo.enabled,
-      url: heroVideo.url,
-      platform: heroVideo.platform,
-    },
+    heroSlides: serializeHeroSlides(normalizedSlides),
     updatedAt: now,
   };
 

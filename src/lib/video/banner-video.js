@@ -19,7 +19,7 @@ export function detectBannerVideoPlatform(url = '') {
   return '';
 }
 
-export function resolveBannerVideo(url = '') {
+export function resolveBannerVideo(url = '', { loop = true } = {}) {
   const trimmed = url.trim();
   if (!trimmed) return null;
 
@@ -31,8 +31,6 @@ export function resolveBannerVideo(url = '') {
     const params = new URLSearchParams({
       autoplay: '1',
       mute: '1',
-      loop: '1',
-      playlist: videoId,
       controls: '0',
       rel: '0',
       modestbranding: '1',
@@ -41,8 +39,15 @@ export function resolveBannerVideo(url = '') {
       cc_load_policy: '0',
       disablekb: '1',
       fs: '0',
-      enablejsapi: '0',
+      enablejsapi: loop ? '0' : '1',
+      origin: typeof window !== 'undefined' ? window.location.origin : '',
     });
+
+    if (loop) {
+      params.set('loop', '1');
+      params.set('playlist', videoId);
+    }
+
     return {
       platform,
       type: 'iframe',
@@ -54,9 +59,8 @@ export function resolveBannerVideo(url = '') {
     const videoId = getVimeoVideoId(trimmed);
     if (!videoId) return null;
     const params = new URLSearchParams({
-      background: '1',
+      background: loop ? '1' : '0',
       autoplay: '1',
-      loop: '1',
       muted: '1',
       playsinline: '1',
       controls: '0',
@@ -65,6 +69,11 @@ export function resolveBannerVideo(url = '') {
       portrait: '0',
       dnt: '1',
     });
+
+    if (loop) {
+      params.set('loop', '1');
+    }
+
     return {
       platform,
       type: 'iframe',
@@ -77,6 +86,7 @@ export function resolveBannerVideo(url = '') {
       platform,
       type: 'video',
       src: trimmed,
+      loop,
     };
   }
 

@@ -8,15 +8,69 @@
 }
 
 @media (max-width: 640px) {
-  .home-header:not(.hero-header--video) {
+  .home-header:not(.hero-header--media) {
     background-image: url(../assets/home/Mobview-bg.png);
     background-position: center;
     background-size: cover;
   }
 }
 
-.hero-header--video {
+.hero-header--video,
+.hero-header--media {
   background-color: #002333;
+}
+
+.hero-banner-carousel {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.hero-banner-carousel__slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  pointer-events: none;
+}
+
+.hero-banner-carousel__slide.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.hero-banner-carousel__image {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.hero-banner-carousel__dots {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 50%;
+  z-index: 5;
+  display: flex;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  gap: 0.5rem;
+}
+
+.hero-banner-carousel__dots button {
+  height: 0.55rem;
+  width: 0.55rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.35);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.hero-banner-carousel__dots button.is-active {
+  background: #ffffff;
+  -webkit-transform: scale(1.15);
+  transform: scale(1.15);
 }
 
 .hero-banner-video {
