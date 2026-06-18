@@ -6,10 +6,12 @@ import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
 import AdminPageLoader from '@/components/admin/admin-page-loader';
 import { resolveDoctorImage } from '@/lib/content/doctor-images';
+import { findServiceCategoryName } from '@/lib/content/service-category-utils';
 
 export default function AdminDoctorsPage() {
   const { getIdToken, canWrite, canDeleteContent } = useAdminAuth();
   const [doctors, setDoctors] = useState([]);
+  const [serviceCategories, setServiceCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -17,8 +19,12 @@ export default function AdminDoctorsPage() {
     try {
       setLoading(true);
       const token = await getIdToken();
-      const data = await adminFetch('/api/admin/doctors', { token });
+      const [data, categories] = await Promise.all([
+        adminFetch('/api/admin/doctors', { token }),
+        adminFetch('/api/admin/service-categories', { token }),
+      ]);
       setDoctors(data);
+      setServiceCategories(categories);
       setError('');
     } catch (err) {
       setError(err.message);
@@ -67,7 +73,7 @@ export default function AdminDoctorsPage() {
             <tr>
               <th className="px-4 py-3 font-medium text-[#586971]">Photo</th>
               <th className="px-4 py-3 font-medium text-[#586971]">Name</th>
-              <th className="px-4 py-3 font-medium text-[#586971]">Specialization</th>
+              <th className="px-4 py-3 font-medium text-[#586971]">Service Category</th>
               <th className="px-4 py-3 font-medium text-[#586971]">Status</th>
               <th className="px-4 py-3 font-medium text-[#586971]">Actions</th>
             </tr>
@@ -92,7 +98,9 @@ export default function AdminDoctorsPage() {
                   <p className="font-medium text-[#002f3b]">{doctor.name?.en}</p>
                   <p className="text-xs text-[#586971]">{doctor.designation?.en || doctor.qualification?.en}</p>
                 </td>
-                <td className="px-4 py-3 text-[#586971]">{doctor.specializationId || doctor.category || '—'}</td>
+                <td className="px-4 py-3 text-[#586971]">
+                  {findServiceCategoryName(serviceCategories, doctor.categoryId) || '—'}
+                </td>
                 <td className="px-4 py-3">
                   <span className={`rounded-full px-2 py-1 text-xs ${doctor.status === 'active' ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-600'}`}>
                     {doctor.status === 'active' ? 'Active' : 'Inactive'}
