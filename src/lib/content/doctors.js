@@ -33,17 +33,14 @@ export async function getActiveDoctors() {
 export async function getPublishedDoctors() {
   try {
     if (!isFirebaseAdminConfigured()) {
-      return normalizeList(FALLBACK_DOCTORS.filter((d) => d.published !== false));
+      return normalizeList(FALLBACK_DOCTORS.filter((d) => d.published !== false && d.categoryId));
     }
 
     const doctors = await fetchDoctorsFromFirestore({ activeOnly: true });
-    if (!doctors?.length) {
-      return normalizeList(FALLBACK_DOCTORS.filter((d) => d.published !== false));
-    }
-    return doctors;
+    return doctors ?? [];
   } catch (error) {
     console.error('Failed to fetch doctors:', error);
-    return normalizeList(FALLBACK_DOCTORS.filter((d) => d.published !== false));
+    return [];
   }
 }
 

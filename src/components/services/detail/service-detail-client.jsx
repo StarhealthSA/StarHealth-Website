@@ -51,10 +51,9 @@ export default function ServiceDetailClient({
   const matchedDoctors = useMemo(
     () => getServiceMatchedDoctors({
       doctors,
-      specializations,
       categoryId: rawService.categoryId,
     }),
-    [doctors, specializations, rawService.categoryId]
+    [doctors, rawService.categoryId]
   );
 
   const serviceSpecializations = useMemo(
