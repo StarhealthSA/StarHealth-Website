@@ -108,6 +108,7 @@ export default function SpecializationDetailClient({
       <AppointmentModal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
+        preselectedCategoryId={rawSpec.categoryId}
       />
     </div>
   );

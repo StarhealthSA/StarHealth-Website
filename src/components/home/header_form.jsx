@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import calender from '../../assets/home/calender.svg';
 import { useTranslation } from 'react-i18next';
 import AppointmentDatePicker from '@/components/booking/appointment-date-picker';
 import AppointmentSlotPicker from '@/components/booking/appointment-slot-picker';
-import { useLocalizedDoctors } from '@/contexts/content-context';
+import { useBookingCategoryDoctors } from '@/hooks/use-booking-category-doctors';
 import { submitAppointmentBooking } from '@/lib/booking/submit-appointment';
 import { useDoctorBookingSchedule } from '@/hooks/use-doctor-booking-schedule';
 
@@ -20,29 +20,41 @@ function HeaderForm() {
     name: '',
     phonenumber: '',
     age: '',
-    speciality: '',
-    doctorId: '',
   });
 
-  const doctors = useLocalizedDoctors(i18n.language);
-  const selectedDoctor = useMemo(
-    () => doctors.find((doctor) => doctor.id === formData.doctorId),
-    [doctors, formData.doctorId]
-  );
-  const { isConfigured, isOpenSchedule, loading: scheduleLoading } = useDoctorBookingSchedule(formData.doctorId);
+  const {
+    categories,
+    filteredDoctors,
+    categoryId,
+    doctorId,
+    setCategoryId,
+    setDoctorId,
+    selectedDoctor,
+    selectedCategoryName,
+  } = useBookingCategoryDoctors();
+
+  const { isConfigured, isOpenSchedule, loading: scheduleLoading } = useDoctorBookingSchedule(doctorId);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    if (name === 'doctorId') {
-      setSelectedSlot(null);
-      setSelectedDate(null);
-    }
+  };
+
+  const handleCategoryChange = (value) => {
+    setCategoryId(value);
+    setSelectedSlot(null);
+    setSelectedDate(null);
+  };
+
+  const handleDoctorChange = (value) => {
+    setDoctorId(value);
+    setSelectedSlot(null);
+    setSelectedDate(null);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.doctorId || scheduleLoading) return;
+    if (!doctorId || !categoryId || scheduleLoading) return;
 
     if (isConfigured && (!selectedDate || !selectedSlot)) {
       alert(t('doctorModal.selectSlotRequired'));
@@ -52,18 +64,20 @@ function HeaderForm() {
     try {
       setSubmitting(true);
       await submitAppointmentBooking({
-        doctorId: formData.doctorId,
+        doctorId,
         doctorName: selectedDoctor?.displayName || '',
         date: selectedDate,
         slot: selectedSlot,
         patientName: formData.name,
         phone: formData.phonenumber,
         age: formData.age,
-        speciality: formData.speciality,
+        speciality: selectedCategoryName,
         requiresSchedule: isConfigured,
       });
       alert(t('doctorModal.bookingSuccess'));
-      setFormData({ name: '', phonenumber: '', age: '', speciality: '', doctorId: '' });
+      setFormData({ name: '', phonenumber: '', age: '' });
+      setCategoryId('');
+      setDoctorId('');
       setSelectedDate(null);
       setSelectedSlot(null);
     } catch (error) {
@@ -72,17 +86,6 @@ function HeaderForm() {
       setSubmitting(false);
     }
   };
-
-  const Speciality = [
-    { sty: "General Medicine" },
-    { sty: "Internal Medicine" },
-    { sty: "Pediatrics" },
-    { sty: "Obstetrics & Gynecology (OBG)" },
-    { sty: "General Dentistry" },
-    { sty: "Orthodontics" },
-    { sty: "Urology (Part-Time)" },
-    { sty: "Laser Treatments" },
-  ];
 
   const Age = [
     { age: "1-10 years" },
@@ -109,15 +112,15 @@ function HeaderForm() {
             <div className="relative w-1/2">
               <div className="flex flex-row w-full border border-[#FFFFFF66] rounded-lg">
                 <select
-                  name='speciality'
-                  value={formData.speciality}
-                  onChange={handleChange}
+                  value={categoryId}
+                  onChange={(e) => handleCategoryChange(e.target.value)}
+                  required
                   className={`w-full bg-transparent text-white placeholder-white font-inter md:text-[14px] lg:px-[16px] p-3 outline-none appearance-none ${isRTL ? 'text-right' : 'text-left'}`}
                 >
-                  <option value="" disabled className="text-gray-400">{t('bookingForm.selectSpeciality')}</option>
-                  {Speciality.map((item, index) => (
-                    <option key={index} value={item.sty} className="text-white bg-[#037B76]">
-                      {item.sty}
+                  <option value="" disabled className="text-gray-400">{t('doctorModal.selectServiceCategory')}</option>
+                  {categories.map((item) => (
+                    <option key={item.id} value={item.id} className="text-white bg-[#037B76]">
+                      {item.displayName}
                     </option>
                   ))}
                 </select>
@@ -132,14 +135,16 @@ function HeaderForm() {
             <div className="relative w-1/2">
               <div className="flex flex-row w-full border border-[#FFFFFF66] rounded-lg">
                 <select
-                  name='doctorId'
-                  value={formData.doctorId}
-                  onChange={handleChange}
+                  value={doctorId}
+                  onChange={(e) => handleDoctorChange(e.target.value)}
                   required
-                  className={`w-full bg-transparent text-white placeholder-white font-inter md:text-[14px] lg:px-[16px] p-3 outline-none appearance-none ${isRTL ? 'text-right' : 'text-left'}`}
+                  disabled={!categoryId}
+                  className={`w-full bg-transparent text-white placeholder-white font-inter md:text-[14px] lg:px-[16px] p-3 outline-none appearance-none disabled:opacity-70 ${isRTL ? 'text-right' : 'text-left'}`}
                 >
-                  <option value="" disabled className="text-gray-400">{t('bookingForm.selectDoctor')}</option>
-                  {doctors.map((item) => (
+                  <option value="" disabled className="text-gray-400">
+                    {categoryId ? t('bookingForm.selectDoctor') : t('doctorModal.selectCategoryFirst')}
+                  </option>
+                  {filteredDoctors.map((item) => (
                     <option key={item.id} value={item.id} className="text-white bg-[#037B76]">
                       {item.displayName}
                     </option>
@@ -201,7 +206,7 @@ function HeaderForm() {
             {isConfigured && (
               <div className="relative w-1/2">
                 <AppointmentDatePicker
-                  doctorId={formData.doctorId}
+                  doctorId={doctorId}
                   selectedDate={selectedDate}
                   onChange={(date) => {
                     setSelectedDate(date);
@@ -216,17 +221,17 @@ function HeaderForm() {
             )}
           </div>
 
-          {scheduleLoading && formData.doctorId && (
+          {scheduleLoading && doctorId && (
             <p className="mt-2 text-sm text-white/80">{t('doctorModal.checkingSchedule')}</p>
           )}
 
-          {isOpenSchedule && formData.doctorId && !scheduleLoading && (
+          {isOpenSchedule && doctorId && !scheduleLoading && (
             <p className="mt-2 text-sm text-white/80">{t('doctorModal.openScheduleNote')}</p>
           )}
 
           {isConfigured && (
             <AppointmentSlotPicker
-              doctorId={formData.doctorId}
+              doctorId={doctorId}
               date={selectedDate}
               selectedSlot={selectedSlot?.index ?? null}
               onSelect={setSelectedSlot}

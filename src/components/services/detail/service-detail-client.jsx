@@ -113,6 +113,7 @@ export default function ServiceDetailClient({
       <AppointmentModal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
+        preselectedCategoryId={rawService.categoryId}
       />
     </div>
   );

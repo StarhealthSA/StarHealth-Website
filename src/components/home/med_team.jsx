@@ -35,6 +35,7 @@ function medTeam() {
                 specialization={item.displaySpecialization}
                 slug={item.slug}
                 doctorId={item.id}
+                categoryId={item.categoryId}
                 revealDelay={staggerDelay(index)}
               />
             </div>

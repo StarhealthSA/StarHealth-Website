@@ -1,19 +1,22 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import calender from '@/assets/contact/calder.svg';
 import Button from '@/components/web_button';
 import AppointmentDatePicker from '@/components/booking/appointment-date-picker';
 import AppointmentSlotPicker from '@/components/booking/appointment-slot-picker';
 import { useTranslation } from 'react-i18next';
-import { useLocalizedDoctors } from '@/contexts/content-context';
 import { submitAppointmentBooking } from '@/lib/booking/submit-appointment';
 import { useDoctorBookingSchedule } from '@/hooks/use-doctor-booking-schedule';
+import { useBookingCategoryDoctors } from '@/hooks/use-booking-category-doctors';
 
-export default function AppointmentBookingForm({ preselectedDoctorId = '' }) {
+export default function AppointmentBookingForm({
+  preselectedDoctorId = '',
+  preselectedCategoryId = '',
+  lockSelection = false,
+}) {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
-  const doctors = useLocalizedDoctors(i18n.language);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -21,28 +24,36 @@ export default function AppointmentBookingForm({ preselectedDoctorId = '' }) {
     name: '',
     phonenumber: '',
     age: '',
-    speciality: '',
-    doctorId: preselectedDoctorId || '',
   });
 
-  const selectedDoctor = useMemo(
-    () => doctors.find((doctor) => doctor.id === formData.doctorId),
-    [doctors, formData.doctorId]
-  );
-  const { isConfigured, isOpenSchedule, loading: scheduleLoading } = useDoctorBookingSchedule(formData.doctorId);
+  const {
+    categories,
+    filteredDoctors,
+    categoryId,
+    doctorId,
+    setCategoryId,
+    setDoctorId,
+    selectedDoctor,
+    selectedCategoryName,
+    isDoctorLocked,
+    isCategoryLocked,
+    resetSelection,
+  } = useBookingCategoryDoctors({
+    preselectedDoctorId,
+    preselectedCategoryId,
+    lockSelection,
+  });
+
+  const { isConfigured, isOpenSchedule, loading: scheduleLoading } = useDoctorBookingSchedule(doctorId);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    if (name === 'doctorId') {
-      setSelectedSlot(null);
-      setSelectedDate(null);
-    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.doctorId || scheduleLoading) return;
+    if (!doctorId || !categoryId || scheduleLoading) return;
 
     if (isConfigured && (!selectedDate || !selectedSlot)) {
       alert(t('doctorModal.selectSlotRequired'));
@@ -52,37 +63,27 @@ export default function AppointmentBookingForm({ preselectedDoctorId = '' }) {
     try {
       setSubmitting(true);
       await submitAppointmentBooking({
-        doctorId: formData.doctorId,
+        doctorId,
         doctorName: selectedDoctor?.displayName || '',
         date: selectedDate,
         slot: selectedSlot,
         patientName: formData.name,
         phone: formData.phonenumber,
         age: formData.age,
-        speciality: formData.speciality,
+        speciality: selectedCategoryName,
         requiresSchedule: isConfigured,
       });
       alert(t('doctorModal.bookingSuccess'));
-      setFormData({ name: '', phonenumber: '', age: '', speciality: '', doctorId: preselectedDoctorId || '' });
+      setFormData({ name: '', phonenumber: '', age: '' });
       setSelectedDate(null);
       setSelectedSlot(null);
+      resetSelection();
     } catch (error) {
       alert(error.message || t('doctorModal.bookingFailed'));
     } finally {
       setSubmitting(false);
     }
   };
-
-  const Speciality = [
-    'specialties.generalMedicine',
-    'specialties.internalMedicine',
-    'specialties.pediatrics',
-    'specialties.obg',
-    'specialties.generalDentistry',
-    'specialties.orthodontics',
-    'specialties.urology',
-    'specialties.laserTreatments',
-  ];
 
   const Age = [
     'ageRanges.1-10',
@@ -109,17 +110,17 @@ export default function AppointmentBookingForm({ preselectedDoctorId = '' }) {
       <form onSubmit={handleSubmit} className="mt-8">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <label className="block sm:col-span-2 lg:col-span-1">
-            <span className="mb-2 block text-sm font-medium text-[#002333]">{t('doctorModal.specialty')}</span>
+            <span className="mb-2 block text-sm font-medium text-[#002333]">{t('doctorModal.serviceCategory')}</span>
             <select
-              name="speciality"
-              value={formData.speciality}
-              onChange={handleChange}
+              value={categoryId}
+              onChange={(e) => setCategoryId(e.target.value)}
               required
-              className={`w-full rounded-lg border border-[#DAD8D7] px-4 py-3 text-sm text-[#687276] ${isRTL ? 'text-right' : 'text-left'}`}
+              disabled={isCategoryLocked}
+              className={`w-full rounded-lg border border-[#DAD8D7] px-4 py-3 text-sm text-[#687276] disabled:bg-[#F6F4F3] ${isRTL ? 'text-right' : 'text-left'}`}
             >
-              <option value="" disabled>{t('doctorModal.selectSpecialty')}</option>
-              {Speciality.map((key) => (
-                <option key={key} value={t(key)}>{t(key)}</option>
+              <option value="" disabled>{t('doctorModal.selectServiceCategory')}</option>
+              {categories.map((item) => (
+                <option key={item.id} value={item.id}>{item.displayName}</option>
               ))}
             </select>
           </label>
@@ -127,14 +128,16 @@ export default function AppointmentBookingForm({ preselectedDoctorId = '' }) {
           <label className="block sm:col-span-2 lg:col-span-1">
             <span className="mb-2 block text-sm font-medium text-[#002333]">{t('doctorModal.doctor')}</span>
             <select
-              name="doctorId"
-              value={formData.doctorId}
-              onChange={handleChange}
+              value={doctorId}
+              onChange={(e) => setDoctorId(e.target.value)}
               required
-              className={`w-full rounded-lg border border-[#DAD8D7] px-4 py-3 text-sm text-[#687276] ${isRTL ? 'text-right' : 'text-left'}`}
+              disabled={isDoctorLocked || !categoryId}
+              className={`w-full rounded-lg border border-[#DAD8D7] px-4 py-3 text-sm text-[#687276] disabled:bg-[#F6F4F3] ${isRTL ? 'text-right' : 'text-left'}`}
             >
-              <option value="" disabled>{t('doctorModal.selectDoctor')}</option>
-              {doctors.map((item) => (
+              <option value="" disabled>
+                {categoryId ? t('doctorModal.selectDoctor') : t('doctorModal.selectCategoryFirst')}
+              </option>
+              {filteredDoctors.map((item) => (
                 <option key={item.id} value={item.id}>{item.displayName}</option>
               ))}
             </select>
@@ -186,7 +189,7 @@ export default function AppointmentBookingForm({ preselectedDoctorId = '' }) {
             <label className="block">
               <span className="mb-2 block text-sm font-medium text-[#002333]">{t('doctorModal.date')}</span>
               <AppointmentDatePicker
-                doctorId={formData.doctorId}
+                doctorId={doctorId}
                 selectedDate={selectedDate}
                 onChange={(date) => {
                   setSelectedDate(date);
@@ -200,11 +203,11 @@ export default function AppointmentBookingForm({ preselectedDoctorId = '' }) {
           )}
         </div>
 
-        {scheduleLoading && formData.doctorId && (
+        {scheduleLoading && doctorId && (
           <p className="mt-4 text-sm text-[#687276]">{t('doctorModal.checkingSchedule')}</p>
         )}
 
-        {isOpenSchedule && formData.doctorId && !scheduleLoading && (
+        {isOpenSchedule && doctorId && !scheduleLoading && (
           <p className="mt-4 rounded-lg border border-[#E9E7E6] bg-[#F8FBFA] px-4 py-3 text-sm text-[#687276]">
             {t('doctorModal.openScheduleNote')}
           </p>
@@ -213,7 +216,7 @@ export default function AppointmentBookingForm({ preselectedDoctorId = '' }) {
         {isConfigured && (
           <div className="mt-6">
             <AppointmentSlotPicker
-              doctorId={formData.doctorId}
+              doctorId={doctorId}
               date={selectedDate}
               selectedSlot={selectedSlot?.index ?? null}
               onSelect={setSelectedSlot}
