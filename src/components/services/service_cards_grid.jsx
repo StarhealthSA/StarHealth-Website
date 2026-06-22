@@ -62,7 +62,7 @@ export default function ServiceCardsGrid({ className = '' }) {
       {filteredServices.length === 0 ? (
         <p className="font-inter text-sm text-[#586971]">{t('serviceListing.noResults')}</p>
       ) : (
-        <div className="grid grid-cols-1 gap-2 md:grid-cols-3 md:gap-4 lg:grid-cols-4 lg:gap-4">
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-3 md:items-stretch md:gap-4 lg:grid-cols-4 lg:gap-4">
           {filteredServices.map((item, index) => (
             <Servicescard
               key={item.id}

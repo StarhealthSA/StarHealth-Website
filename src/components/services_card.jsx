@@ -23,7 +23,7 @@ function servicescard(props) {
             {props.title}
           </h1>
         </div>
-        <p className="mt-2 font-inter text-[14px] font-normal leading-[22px] text-[#687276] md:mt-2 lg:text-[16px] lg:leading-[24px]">
+        <p className="mt-2 flex-1 font-inter text-[14px] font-normal leading-[22px] text-[#687276] md:mt-2 lg:text-[16px] lg:leading-[24px]">
           {props.description}
         </p>
       </div>
