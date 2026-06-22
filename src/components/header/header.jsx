@@ -34,7 +34,11 @@ function Header() {
           <ul className="text-[#002333] flex flex-row sm:text-[14px] md:text-[16px] lg:text-[16px] font-medium">
             {HEADER_NAV_LINKS.map((link) => (
               <li key={link.href}>
-                <NavLink href={link.href} className="md:pr-[20px] hover:text-[#687276]">
+                <NavLink
+                  href={link.href}
+                  className="border-b-2 border-transparent pb-0.5 transition-colors md:pr-[20px] hover:text-[#687276]"
+                  activeClassName="border-[#037B76] font-semibold text-[#037B76]"
+                >
                   {t(link.labelKey)}
                 </NavLink>
               </li>

@@ -17,6 +17,32 @@ export const HEADER_NAV_LINKS = [
   { href: '/contact', labelKey: 'navigation.contact' },
 ];
 
+export function isNavLinkActive(href, pathname = '') {
+  if (!pathname) return false;
+
+  if (href === '/') {
+    return pathname === '/';
+  }
+
+  if (href === '/blogs') {
+    return pathname === '/blogs' || pathname.startsWith('/blog/');
+  }
+
+  if (href === '/services') {
+    return (
+      pathname === '/services'
+      || pathname.startsWith('/services/')
+      || pathname.startsWith('/specializations/')
+    );
+  }
+
+  if (href === '/doctors') {
+    return pathname === '/doctors' || pathname.startsWith('/doctors/');
+  }
+
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export const FOOTER_QUICK_LINKS = [
   { href: '/', labelKey: 'footer.quickLink.home' },
   { href: '/about', labelKey: 'footer.quickLink.aboutUs' },

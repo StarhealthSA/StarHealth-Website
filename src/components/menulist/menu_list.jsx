@@ -60,7 +60,8 @@ function Menulist({ open, setOpen }) {
                         <NavLink
                             href={link.href}
                             onClick={() => setOpen(false)}
-                            className='hover:text-[#FFFFFF99]'
+                            className='transition-colors hover:text-[#FFFFFF99]'
+                            activeClassName='font-semibold text-[#AED5C6]'
                         >
                             {t(link.labelKey)}
                         </NavLink>
