@@ -429,6 +429,60 @@
       }
     }
   },
+  "aboutPage": {
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "questions": {
+        "q1": {
+          "question": "What makes Star Health different?",
+          "answer": "We combine compassionate care, experienced doctors, and practical convenience in one integrated clinic environment."
+        },
+        "q2": {
+          "question": "Do you support insured and cash patients?",
+          "answer": "Yes. We support major insurance workflows and also provide clear options for self-pay patients."
+        },
+        "q3": {
+          "question": "Can families access multiple specialties in one visit cycle?",
+          "answer": "Yes. Our setup is optimized for family healthcare, reducing the need to visit multiple facilities."
+        },
+        "q4": {
+          "question": "What insurance plans do you accept?",
+          "answer": "We accept most major insurance plans. If your provider isn't listed on our Insurance page, feel free to call and confirm. We also offer affordable care options to ensure everyone gets the treatment they need."
+        },
+        "q5": {
+          "question": "Do you provide follow-up care?",
+          "answer": "Yes, we offer follow-up consultations to monitor recovery and ensure optimal outcomes. Our team will guide you through the necessary post-treatment or post-surgery care."
+        }
+      }
+    }
+  },
+  "servicesPage": {
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "questions": {
+        "q1": {
+          "question": "Which specialties are available at Star Health?",
+          "answer": "Our key specialties include general medicine, family medicine, pediatrics, OBG, dentistry, orthodontics, orthopedics, internal medicine, and laboratory diagnostics."
+        },
+        "q2": {
+          "question": "Can I book services for multiple family members?",
+          "answer": "Yes. Our workflow supports family scheduling and coordinated specialist access."
+        },
+        "q3": {
+          "question": "Do you offer preventive and chronic care services?",
+          "answer": "Yes. We provide preventive screenings, routine monitoring, and long-term chronic disease management plans."
+        },
+        "q4": {
+          "question": "How can I book an appointment and check doctor availability?",
+          "answer": "You can book a specialist appointment through our website's online portal. Alternatively, call our appointment helpline at +966 505 730 003. Our coordinators will assist you with available slots."
+        },
+        "q5": {
+          "question": "How do you ensure patient privacy and data security?",
+          "answer": "We follow strict privacy protocols and comply with healthcare regulations to ensure all personal and medical information remains confidential and secure."
+        }
+      }
+    }
+  },
   "contactPage": {
     "header": {
       "title": "Connect With Us",

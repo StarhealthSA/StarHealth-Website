@@ -1,17 +1,24 @@
 'use client';
 
-import { useState } from 'react';
-import Reveal, { staggerDelay } from '@/components/reveal';
-import ServiceSectionHeader from './service-section-header';
+import Reveal from '@/components/reveal';
+import FaqAccordion, { FaqSectionTitle } from '@/components/shared/faq-accordion';
+import { getFaqItemsFromTranslations } from '@/lib/faq/get-faq-items';
 import { useTranslation } from 'react-i18next';
 import { getLocalizedText } from '@/lib/content/localized';
 
 export default function ServiceFaqs({ service, lang }) {
   const { t } = useTranslation();
-  const [activeIndex, setActiveIndex] = useState(0);
-  const faqs = (service.faqs || []).filter(
-    (faq) => getLocalizedText(faq.question, lang) && getLocalizedText(faq.answer, lang)
-  );
+
+  const cmsFaqs = (service.faqs || [])
+    .filter((faq) => getLocalizedText(faq.question, lang) && getLocalizedText(faq.answer, lang))
+    .map((faq, index) => ({
+      id: `cms-${index}`,
+      question: getLocalizedText(faq.question, lang),
+      answer: getLocalizedText(faq.answer, lang),
+    }));
+
+  const fallbackFaqs = getFaqItemsFromTranslations(t, 'contactPage.faq');
+  const faqs = cmsFaqs.length ? cmsFaqs : fallbackFaqs;
 
   if (!faqs.length) return null;
 
@@ -19,40 +26,20 @@ export default function ServiceFaqs({ service, lang }) {
     <section id="faqs" className="service-landing-section">
       <div className="service-detail-container">
         <Reveal>
-          <ServiceSectionHeader
-            label={t('serviceDetail.questions')}
-            title={t('serviceDetail.faqs')}
-            description={t('serviceDetail.faqsLead')}
-            align="center"
-            className="max-w-2xl"
-          />
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="font-inter text-xs font-semibold uppercase tracking-[0.18em] text-[#037B76]">
+              {t('serviceDetail.questions')}
+            </p>
+            <FaqSectionTitle className="mt-2">
+              {t('serviceDetail.faqs')}
+            </FaqSectionTitle>
+            <p className="mt-3 font-inter text-[14px] font-normal leading-[22px] text-[#687276] lg:text-[16px] lg:leading-[24px]">
+              {t('serviceDetail.faqsLead')}
+            </p>
+          </div>
         </Reveal>
-        <div className="mx-auto mt-10 max-w-2xl space-y-3">
-          {faqs.map((faq, index) => (
-            <Reveal key={index} delay={staggerDelay(index)}>
-              <div className="service-landing-faq">
-                <button
-                  type="button"
-                  onClick={() => setActiveIndex(activeIndex === index ? -1 : index)}
-                  className="flex w-full items-center justify-between gap-4 px-5 py-4 text-start"
-                >
-                  <span className="font-inter text-sm font-semibold text-[#002333]">
-                    {getLocalizedText(faq.question, lang)}
-                  </span>
-                  <span className="service-landing-faq-toggle">{activeIndex === index ? '−' : '+'}</span>
-                </button>
-                <div
-                  className={`overflow-hidden transition-all duration-300 ${
-                    activeIndex === index ? 'max-h-96' : 'max-h-0'
-                  }`}
-                >
-                  <p className="border-t border-[#EEF2F1] px-5 py-4 font-inter text-sm leading-relaxed text-[#586971]">
-                    {getLocalizedText(faq.answer, lang)}
-                  </p>
-                </div>
-              </div>
-            </Reveal>
-          ))}
+        <div className="mx-auto mt-10 w-full max-w-3xl">
+          <FaqAccordion items={faqs} />
         </div>
       </div>
     </section>

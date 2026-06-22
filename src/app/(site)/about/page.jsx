@@ -1,6 +1,7 @@
 import IntroSection from '@/components/about/intro_section';
 import Whatnext from '@/components/what_next';
 import Reveal from '@/components/reveal';
+import FaqPageSection from '@/components/shared/faq-page-section';
 import { staggerDelay } from '@/lib/stagger_delay';
 
 export const metadata = {
@@ -47,21 +48,6 @@ export default function AboutPage() {
     {
       title: '4. Follow-up and Prevention',
       body: 'We do not stop at treatment. Preventive guidance and long-term monitoring protect your health outcomes.',
-    },
-  ];
-
-  const faq = [
-    {
-      q: 'What makes Star Health different?',
-      a: 'We combine compassionate care, experienced doctors, and practical convenience in one integrated clinic environment.',
-    },
-    {
-      q: 'Do you support insured and cash patients?',
-      a: 'Yes. We support major insurance workflows and also provide clear options for self-pay patients.',
-    },
-    {
-      q: 'Can families access multiple specialties in one visit cycle?',
-      a: 'Yes. Our setup is optimized for family healthcare, reducing the need to visit multiple facilities.',
     },
   ];
 
@@ -150,21 +136,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="px-[20px] md:px-[30px] lg:px-[120px] pb-16 lg:pb-20">
-        <Reveal>
-          <h2 className="text-[28px] font-semibold text-[#002333]">Frequently Asked Questions</h2>
-        </Reveal>
-        <div className="mt-6 space-y-4">
-          {faq.map((item, index) => (
-            <Reveal key={item.q} delay={staggerDelay(index, 80)}>
-              <article className="rounded-2xl border border-[#dbe8e4] bg-white p-6">
-                <h3 className="text-[18px] font-semibold text-[#033a45]">{item.q}</h3>
-                <p className="mt-2 text-[15px] leading-[25px] text-[#607179]">{item.a}</p>
-              </article>
-            </Reveal>
-          ))}
-        </div>
-      </section>
+      <FaqPageSection titleKey="aboutPage.faq.title" faqPrefix="aboutPage.faq" />
 
       <Whatnext text={content} />
     </div>
