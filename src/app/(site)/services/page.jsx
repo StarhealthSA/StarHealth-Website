@@ -99,12 +99,12 @@ export default function ServicesPage() {
         <Reveal>
           <h2 className="text-[28px] font-semibold text-[#002333]">SEO-Focused Healthcare Information</h2>
         </Reveal>
-        <div className="mt-6 grid gap-4 lg:grid-cols-3">
+        <div className="mt-6 grid gap-4 lg:grid-cols-3 lg:items-stretch">
           {seoContentBlocks.map((item, index) => (
-            <Reveal key={item.title} delay={staggerDelay(index)}>
-              <article className="rounded-2xl border border-[#d7e5e1] bg-white p-6">
-                <h3 className="text-[20px] leading-[28px] font-semibold text-[#0a3944]">{item.title}</h3>
-                <p className="mt-3 text-[15px] leading-[25px] text-[#5e6f77]">{item.text}</p>
+            <Reveal key={item.title} delay={staggerDelay(index)} className="h-full">
+              <article className="flex h-full flex-col rounded-2xl border border-[#d7e5e1] bg-white p-6">
+                <h3 className="text-[20px] font-semibold leading-[28px] text-[#0a3944]">{item.title}</h3>
+                <p className="mt-3 flex-1 text-[15px] leading-[25px] text-[#5e6f77]">{item.text}</p>
               </article>
             </Reveal>
           ))}
