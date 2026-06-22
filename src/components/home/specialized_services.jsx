@@ -39,7 +39,7 @@ const SpecializedServices = () => {
         ))}
       </div>
 
-      <div className="mb-5 grid w-full grid-cols-1 gap-4 pb-[20px] pt-[30px] md:hidden">
+      <div className="mb-5 grid w-full grid-cols-1 gap-2 pb-[20px] pt-[30px] md:hidden">
         {displayedServices.map((item, index) => (
           <Servicescard
             images={item.icon}
