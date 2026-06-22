@@ -66,7 +66,7 @@ export default async function BlogDetailPage({ params }) {
       />
       <IntroSection blog={blog} />
       <BlogDetailBody blog={blog} relatedBlogs={relatedBlogs} />
-      <AllEvents blogs={blogs} showButton />
+      <AllEvents blogs={blogs} showButton excludeSlug={slug} />
       <WhatNext />
     </>
   );

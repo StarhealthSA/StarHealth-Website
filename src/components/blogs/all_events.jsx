@@ -7,14 +7,23 @@ import Reveal, { staggerDelay } from '../reveal';
 import { toPublicBlogPost } from '@/lib/content/blog-public';
 import BlogMeta from '@/components/blogs/blog_meta';
 
-function AllEvents({ blogs = [], showButton = false }) {
+function AllEvents({ blogs = [], showButton = false, excludeSlug = '' }) {
   const { t, i18n } = useTranslation();
-  const posts = blogs.map((blog) => toPublicBlogPost(blog, i18n.language)).filter(Boolean);
+  const posts = blogs
+    .map((blog) => toPublicBlogPost(blog, i18n.language))
+    .filter(Boolean)
+    .filter((post) => !excludeSlug || post.slug !== excludeSlug);
 
   if (!posts.length) return null;
 
   return (
-    <div className="py-[15px] lg:py-[80px] px-[30px] lg:px-[120px]">
+    <div
+      className={
+        showButton
+          ? 'px-[30px] pb-12 pt-8 lg:px-[120px] lg:pb-16 lg:pt-10'
+          : 'px-[30px] py-[15px] lg:px-[120px] lg:py-[80px]'
+      }
+    >
       <Reveal>
         <h2 className="mb-6 text-lg font-semibold text-gray-800">
           {t('blogs.allPosts', { defaultValue: 'All Events & News' })}
