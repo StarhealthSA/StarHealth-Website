@@ -26,20 +26,25 @@ export default function ServiceCardsGrid({ className = '' }) {
 
   return (
     <div className={className}>
-      <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+      <div className="mb-4 max-w-xl">
         <input
           type="search"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder={t('serviceListing.searchPlaceholder')}
-          className="w-full shrink-0 rounded-xl border border-[#E9E7E6] bg-white px-4 py-3 font-inter text-sm text-[#002333] md:max-w-md"
+          className="w-full rounded-lg border border-[#DAD8D7] px-4 py-3 font-inter text-[14px] text-[#687276] focus:border-[#037B76] focus:outline-none"
         />
-        <div className="flex flex-wrap gap-2 md:flex-1 md:justify-end">
+      </div>
+
+      {categories.length > 0 && (
+        <div className="flex flex-wrap gap-3 py-4 md:py-0 lg:ml-2.5 lg:gap-4">
           <button
             type="button"
             onClick={() => setCategoryFilter('')}
-            className={`whitespace-nowrap rounded-full px-4 py-2 font-inter text-sm font-medium transition ${
-              !categoryFilter ? 'bg-[#037B76] text-white' : 'bg-white text-[#586971] border border-[#E9E7E6]'
+            className={`w-fit whitespace-nowrap rounded-[8px] px-4 py-2 font-inter text-[14px] font-weight-[400px] transition-all lg:text-[16px] ${
+              !categoryFilter
+                ? 'bg-gradient-to-tl from-[#037B76] to-[#AED5C6] text-[#FFFFFF]'
+                : 'border-[1px] border-[#DAD8D7] text-[#687276] hover:bg-gray-50'
             }`}
           >
             {t('serviceListing.allCategories')}
@@ -49,20 +54,22 @@ export default function ServiceCardsGrid({ className = '' }) {
               key={cat.id}
               type="button"
               onClick={() => setCategoryFilter(cat.id)}
-              className={`whitespace-nowrap rounded-full px-4 py-2 font-inter text-sm font-medium transition ${
-                categoryFilter === cat.id ? 'bg-[#037B76] text-white' : 'bg-white text-[#586971] border border-[#E9E7E6]'
+              className={`w-fit whitespace-nowrap rounded-[8px] px-4 py-2 font-inter text-[14px] font-weight-[400px] transition-all lg:text-[16px] ${
+                categoryFilter === cat.id
+                  ? 'bg-gradient-to-tl from-[#037B76] to-[#AED5C6] text-[#FFFFFF]'
+                  : 'border-[1px] border-[#DAD8D7] text-[#687276] hover:bg-gray-50'
               }`}
             >
               {cat.displayName}
             </button>
           ))}
         </div>
-      </div>
+      )}
 
       {filteredServices.length === 0 ? (
         <p className="font-inter text-sm text-[#586971]">{t('serviceListing.noResults')}</p>
       ) : (
-        <div className="grid grid-cols-1 gap-2 md:grid-cols-3 md:items-stretch md:gap-4 lg:grid-cols-4 lg:gap-4">
+        <div className="mt-8 grid grid-cols-1 gap-2 md:grid-cols-3 md:items-stretch md:gap-4 lg:grid-cols-4 lg:gap-4">
           {filteredServices.map((item, index) => (
             <Servicescard
               key={item.id}
