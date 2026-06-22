@@ -26,19 +26,19 @@ export default function ServiceCardsGrid({ className = '' }) {
 
   return (
     <div className={className}>
-      <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         <input
           type="search"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder={t('serviceListing.searchPlaceholder')}
-          className="w-full rounded-xl border border-[#E9E7E6] bg-white px-4 py-3 font-inter text-sm text-[#002333] md:max-w-md"
+          className="w-full shrink-0 rounded-xl border border-[#E9E7E6] bg-white px-4 py-3 font-inter text-sm text-[#002333] md:max-w-md"
         />
-        <div className="scrollbar-hide flex gap-2 overflow-x-auto pb-1">
+        <div className="flex flex-wrap gap-2 md:flex-1 md:justify-end">
           <button
             type="button"
             onClick={() => setCategoryFilter('')}
-            className={`shrink-0 rounded-full px-4 py-2 font-inter text-sm font-medium transition ${
+            className={`whitespace-nowrap rounded-full px-4 py-2 font-inter text-sm font-medium transition ${
               !categoryFilter ? 'bg-[#037B76] text-white' : 'bg-white text-[#586971] border border-[#E9E7E6]'
             }`}
           >
@@ -49,7 +49,7 @@ export default function ServiceCardsGrid({ className = '' }) {
               key={cat.id}
               type="button"
               onClick={() => setCategoryFilter(cat.id)}
-              className={`shrink-0 rounded-full px-4 py-2 font-inter text-sm font-medium transition ${
+              className={`whitespace-nowrap rounded-full px-4 py-2 font-inter text-sm font-medium transition ${
                 categoryFilter === cat.id ? 'bg-[#037B76] text-white' : 'bg-white text-[#586971] border border-[#E9E7E6]'
               }`}
             >

@@ -56,16 +56,16 @@ export default function AboutPage() {
       <IntroSection />
 
       <section className="px-[20px] md:px-[30px] lg:px-[120px] py-14 lg:py-20">
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-3 md:items-stretch">
           {[
             { title: 'Our Vision', body: 'To become the most trusted neighborhood healthcare destination in Riyadh by delivering clinical excellence with genuine human care.' },
             { title: 'Our Mission', body: 'Provide accessible, preventive, and personalized healthcare for families through modern diagnostics and multidisciplinary expertise.' },
             { title: 'Our Promise', body: 'Clear communication, ethical practice, and continuity of care from first consultation through recovery and long-term wellness.' },
           ].map((item, index) => (
-            <Reveal key={item.title} delay={staggerDelay(index)}>
-              <article className="rounded-2xl border border-[#dce9e5] bg-white p-6">
+            <Reveal key={item.title} delay={staggerDelay(index)} className="h-full">
+              <article className="flex h-full flex-col rounded-2xl border border-[#dce9e5] bg-white p-6">
                 <h2 className="text-[20px] font-semibold text-[#002333]">{item.title}</h2>
-                <p className="mt-3 text-[15px] leading-[25px] text-[#58696f]">{item.body}</p>
+                <p className="mt-3 flex-1 text-[15px] leading-[25px] text-[#58696f]">{item.body}</p>
               </article>
             </Reveal>
           ))}
@@ -82,17 +82,17 @@ export default function AboutPage() {
                 From reception flow to consultation rooms, every touchpoint is designed for calm, privacy, and confidence. We focus on reducing waiting friction and improving communication across the complete care path.
               </p>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="about-equal-cards grid grid-cols-2 gap-4 items-stretch">
               {[
                 { label: 'Average Wait', value: '15-20 min' },
                 { label: 'Patient Follow-ups', value: '48 hrs' },
                 { label: 'Specialties', value: '8+' },
                 { label: 'Care Model', value: 'Family-first' },
               ].map((stat, index) => (
-                <Reveal key={stat.label} delay={staggerDelay(index, 70)}>
-                  <div className="rounded-xl bg-white/10 p-4">
+                <Reveal key={stat.label} delay={staggerDelay(index, 70)} className="h-full">
+                  <div className="flex h-full min-h-[108px] flex-col rounded-xl bg-white/10 p-4">
                     <p className="text-[12px] uppercase tracking-[0.12em] text-[#aed5c6]">{stat.label}</p>
-                    <p className="mt-2 text-[26px] font-semibold">{stat.value}</p>
+                    <p className="mt-auto pt-2 text-[26px] font-semibold">{stat.value}</p>
                   </div>
                 </Reveal>
               ))}
@@ -109,10 +109,10 @@ export default function AboutPage() {
             Our multidisciplinary services support preventive care, acute treatment, chronic condition management, and long-term family wellness.
           </p>
         </Reveal>
-        <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="about-equal-cards mt-6 grid gap-3 sm:grid-cols-2 sm:items-stretch lg:grid-cols-4">
           {specialties.map((item, index) => (
-            <Reveal key={item} delay={staggerDelay(index, 60)}>
-              <div className="rounded-xl border border-[#d8e6e2] bg-white px-4 py-3 text-[15px] font-medium text-[#123f49]">
+            <Reveal key={item} delay={staggerDelay(index, 60)} className="h-full">
+              <div className="flex h-full min-h-[52px] items-center rounded-xl border border-[#d8e6e2] bg-white px-4 py-3 text-[15px] font-medium text-[#123f49]">
                 {item}
               </div>
             </Reveal>
@@ -124,12 +124,12 @@ export default function AboutPage() {
         <Reveal>
           <h2 className="text-[28px] font-semibold text-[#002333]">How Care Works at Star Health</h2>
         </Reveal>
-        <div className="mt-6 grid gap-4 lg:grid-cols-2">
+        <div className="about-equal-cards mt-6 grid gap-4 sm:grid-cols-2 sm:items-stretch lg:grid-cols-2">
           {process.map((item, index) => (
-            <Reveal key={item.title} delay={staggerDelay(index)}>
-              <article className="rounded-2xl border border-[#dfebe7] bg-white p-6">
+            <Reveal key={item.title} delay={staggerDelay(index)} className="h-full">
+              <article className="flex h-full flex-col rounded-2xl border border-[#dfebe7] bg-white p-6">
                 <h3 className="text-[19px] font-semibold text-[#02353f]">{item.title}</h3>
-                <p className="mt-2 text-[15px] leading-[25px] text-[#5a6b72]">{item.body}</p>
+                <p className="mt-2 flex-1 text-[15px] leading-[25px] text-[#5a6b72]">{item.body}</p>
               </article>
             </Reveal>
           ))}

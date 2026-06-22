@@ -629,6 +629,14 @@ html {
   .premium-quality-process-grid {
     grid-auto-rows: 1fr;
   }
+
+  .about-equal-cards {
+    grid-auto-rows: 1fr;
+  }
+
+  .about-equal-cards > * {
+    height: 100%;
+  }
 }
 
 .service-landing-faq {
