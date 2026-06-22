@@ -621,6 +621,16 @@ html {
   background: linear-gradient(135deg, #F3FAF8 0%, #fff 100%);
 }
 
+.premium-quality-process-grid > * {
+  height: 100%;
+}
+
+@media (min-width: 640px) {
+  .premium-quality-process-grid {
+    grid-auto-rows: 1fr;
+  }
+}
+
 .service-landing-faq {
   overflow: hidden;
   border-radius: 1rem;
