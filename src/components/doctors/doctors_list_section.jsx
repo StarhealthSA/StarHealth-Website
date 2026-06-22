@@ -73,7 +73,7 @@ function DoctorsListSection() {
         </div>
 
         {showCategoryFilters && (
-          <div className="scrollbar-hide flex flex-row space-x-3 overflow-x-auto py-4 sm:whitespace-normal md:py-0 lg:ml-2.5 lg:space-x-5">
+          <div className="flex flex-wrap gap-3 py-4 md:py-0 lg:ml-2.5 lg:gap-4">
             <button
               onClick={() => setSelectedCategory('all')}
               className={`${selectedCategory === 'all'
