@@ -40,7 +40,7 @@ function AboveInsuranceSection(props){
                     <img
                             src={props.img}
                             alt='imgs'
-                            className={`lg:h-[520px] w-full md:w-1/2 lg:w-full ${isRTL ? 'lg:ml-4' : 'lg:mr-4'}`}
+                            className={`lg:h-[520px] w-full md:w-1/2 lg:w-full ${isRTL ? 'lg:ml-4' : 'lg:mr-4'} object-cover object-top rounded-2xl`}
                         />
                 </div>
     )
