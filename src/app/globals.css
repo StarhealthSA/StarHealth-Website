@@ -113,6 +113,24 @@
   );
 }
 
+.hero-slot-grid {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
+}
+
+.hero-slot-grid::-webkit-scrollbar {
+  width: 4px;
+}
+
+.hero-slot-grid::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+}
+
+.hero-slot-grid::-webkit-scrollbar-track {
+  background: transparent;
+}
+
 .linear-text{
   background: linear-gradient(to right, #AED5C6, #037B76);
   -webkit-background-clip: text;

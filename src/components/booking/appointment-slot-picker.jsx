@@ -11,6 +11,7 @@ export default function AppointmentSlotPicker({
   onSelect,
   excludeAppointmentId = null,
   className = '',
+  gridClassName = '',
   variant = 'light',
 }) {
   const isDark = variant === 'onDark';
@@ -82,10 +83,12 @@ export default function AppointmentSlotPicker({
     return <p className={`${messageClass} ${className}`}>{t('doctorModal.noSlotsAvailable')}</p>;
   }
 
+  const defaultGridClass = 'grid max-h-40 grid-cols-1 gap-2 overflow-y-auto sm:grid-cols-2';
+
   return (
     <div className={className}>
-      <p className={titleClass}>{t('doctorModal.timeSlot')}</p>
-      <div className="grid max-h-40 grid-cols-1 gap-2 overflow-y-auto sm:grid-cols-2">
+      <p className={`${titleClass} shrink-0`}>{t('doctorModal.timeSlot')}</p>
+      <div className={gridClassName || defaultGridClass}>
         {slots.map((slot) => {
           const isBooked = slot.status === 'booked';
           const isSelected = selectedSlot === slot.index;

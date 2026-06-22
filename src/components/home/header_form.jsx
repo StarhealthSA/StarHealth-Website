@@ -100,13 +100,19 @@ function HeaderForm() {
     { age: "91-100 years" },
   ];
 
-  return (
-    <div className={`flex flex-col min-h-[420px] w-5/6 bg-gradient-to-tl from-[#037B76] to-[#AED5C6] items-center justify-center md:pt-[20px] lg:px-[30px] lg:-py-[20px] md:pb-[20px] md:pr-[20px] md:pl-[20px] rounded-lg mx-20 mt-[30px] mb-[80px] ${isRTL ? 'text-right' : 'text-left'}`}>
-      <h1 className="text-white font-medium text-[18px] lg:text-[24px] font-family-inter">{t('bookingForm.title')}</h1>
-      <h2 className="text-white font-weight-[400px] text-[14px] lg:text-[16px] font-family-inter mb-6">{t('bookingForm.subtitle')}</h2>
+  const showSlotPicker = isConfigured && doctorId && selectedDate;
 
-      <form onSubmit={handleSubmit}>
-        <div className="flex flex-col w-full md:gap-2">
+  return (
+    <div
+      className={`flex w-full flex-col rounded-lg bg-gradient-to-tl from-[#037B76] to-[#AED5C6] px-5 py-5 sm:w-[420px] sm:px-5 sm:py-5 lg:w-[500px] lg:shrink-0 lg:px-[30px] lg:py-6 ${isRTL ? 'text-right' : 'text-left'}`}
+    >
+      <div className={`shrink-0 text-center sm:text-start ${isRTL ? 'sm:text-right' : ''}`}>
+        <h1 className="font-family-inter text-[18px] font-medium text-white lg:text-[24px]">{t('bookingForm.title')}</h1>
+        <h2 className="mb-4 font-family-inter text-[14px] text-white lg:mb-5 lg:text-[16px]">{t('bookingForm.subtitle')}</h2>
+      </div>
+
+      <form onSubmit={handleSubmit} className="flex flex-col">
+        <div className="flex shrink-0 flex-col md:gap-2">
           <div className="flex flex-row w-full justify-between md:gap-2">
 
             <div className="relative w-1/2">
@@ -228,26 +234,31 @@ function HeaderForm() {
           {isOpenSchedule && doctorId && !scheduleLoading && (
             <p className="mt-2 text-sm text-white/80">{t('doctorModal.openScheduleNote')}</p>
           )}
-
-          {isConfigured && (
-            <AppointmentSlotPicker
-              doctorId={doctorId}
-              date={selectedDate}
-              selectedSlot={selectedSlot?.index ?? null}
-              onSelect={setSelectedSlot}
-              variant="onDark"
-              className="mt-4"
-            />
-          )}
-
-          <button 
-            type="submit"
-            disabled={submitting}
-            className="bg-white font-inter hover:bg-[#FFFFFFCC] font-semibold text-[#002333] mt-5 w-full h-14 rounded-lg transition-all duration-200 disabled:opacity-60"
-          >
-            {submitting ? t('doctorModal.booking') : t('bookingForm.bookNow')}
-          </button>
         </div>
+
+        {showSlotPicker && (
+          <AppointmentSlotPicker
+            doctorId={doctorId}
+            date={selectedDate}
+            selectedSlot={selectedSlot?.index ?? null}
+            onSelect={setSelectedSlot}
+            variant="onDark"
+            className="mt-3"
+            gridClassName="grid grid-cols-2 gap-2"
+          />
+        )}
+
+        {isConfigured && doctorId && !selectedDate && !scheduleLoading && (
+          <p className="mt-3 shrink-0 text-sm text-white/80">{t('doctorModal.selectDoctorAndDate')}</p>
+        )}
+
+        <button
+          type="submit"
+          disabled={submitting}
+          className="mt-5 h-14 w-full shrink-0 rounded-lg bg-white font-inter font-semibold text-[#002333] transition-all duration-200 hover:bg-[#FFFFFFCC] disabled:opacity-60"
+        >
+            {submitting ? t('doctorModal.booking') : t('bookingForm.bookNow')}
+        </button>
       </form>
     </div>
   );
