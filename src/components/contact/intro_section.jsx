@@ -31,7 +31,7 @@ function IntroSection() {
     ]
 
     return (
-        <section>
+        <section className="pt-6 md:pt-0">
             <Reveal className="flex flex-col items-center px-[30px] lg:px-[120px]">
                 <h1 className="text-[24px] lg:text-[44px] text-[#002333] font-medium font-inter leading-[32px] lg:leading-[56px]">{t('contactPage.header.title')}</h1>
                 <p className="text-[14px] lg:text-[16px] text-[#687276] font-normal text-center w-full md:w-3/4 lg:w-3/6 leading-[22px] sm:leading-[24px] font-inter mt-2 sm:mt-4 mb-3 sm:mb-6">

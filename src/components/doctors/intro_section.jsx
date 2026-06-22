@@ -7,7 +7,7 @@ function IntroSection() {
   const { t } = useTranslation();
 
   return (
-    <section className="mt-2 px-[30px] lg:px-[120px]">
+    <section className="pt-6 px-[30px] md:pt-0 lg:px-[120px]">
       <Reveal className="flex flex-col items-center">
         <h1 className="text-[24px] lg:text-[44px] text-[#002333] font-medium font-inter leading-[32px] lg:leading-[56px]">
           {t('doctorsPage.title')}
