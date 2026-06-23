@@ -3,6 +3,7 @@ import Whatnext from '@/components/what_next';
 import Reveal from '@/components/reveal';
 import FaqPageSection from '@/components/shared/faq-page-section';
 import { staggerDelay } from '@/lib/stagger_delay';
+import { SERVICE_ICONS } from '@/lib/content/service-icons';
 
 export const metadata = {
   title: 'About Star Health | Premium Medical Care in Riyadh',
@@ -22,14 +23,14 @@ export default function AboutPage() {
     'Book your consultation, explore our specialties, or speak to our team. We are here to guide every step of your healthcare journey.';
 
   const specialties = [
-    'General Medicine',
-    'Family Medicine',
-    'Internal Medicine',
-    'Obstetrics & Gynecology',
-    'Dentistry & Orthodontics',
-    'Pediatrics',
-    'Orthopedics',
-    'Laboratory Services',
+    { label: 'General Medicine', iconKey: 'generalMedicine' },
+    { label: 'Family Medicine', iconKey: 'familyMedicine' },
+    { label: 'Internal Medicine', iconKey: 'internalMedicine' },
+    { label: 'Obstetrics & Gynecology', iconKey: 'obg' },
+    { label: 'Dentistry & Orthodontics', iconKey: 'generalDentistry' },
+    { label: 'Pediatrics', iconKey: 'pediatrics' },
+    { label: 'Orthopedics', iconKey: 'ortho' },
+    { label: 'Laboratory Services', iconKey: 'laboratory' },
   ];
 
   const process = [
@@ -111,9 +112,16 @@ export default function AboutPage() {
         </Reveal>
         <div className="about-equal-cards mt-6 grid gap-3 sm:grid-cols-2 sm:items-stretch lg:grid-cols-4">
           {specialties.map((item, index) => (
-            <Reveal key={item} delay={staggerDelay(index, 60)} className="h-full">
-              <div className="flex h-full min-h-[52px] items-center rounded-xl border border-[#d8e6e2] bg-white px-4 py-3 text-[15px] font-medium text-[#123f49]">
-                {item}
+            <Reveal key={item.label} delay={staggerDelay(index, 60)} className="h-full">
+              <div className="about-specialty-card flex h-full min-h-[52px] cursor-default items-center gap-3 rounded-xl border border-[#d8e6e2] bg-white px-4 py-3 text-[15px] font-medium text-[#123f49]">
+                <div className="about-specialty-icon flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#C5E4DC]">
+                  <img
+                    src={SERVICE_ICONS[item.iconKey]}
+                    alt=""
+                    className="h-8 w-8 object-contain"
+                  />
+                </div>
+                <span>{item.label}</span>
               </div>
             </Reveal>
           ))}

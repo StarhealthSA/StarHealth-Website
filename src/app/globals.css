@@ -197,6 +197,39 @@ html {
   animation: marqueeAbout 30s linear infinite;
 }
 
+@keyframes specialty-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  35% {
+    transform: translateY(-8px);
+  }
+
+  55% {
+    transform: translateY(0);
+  }
+
+  70% {
+    transform: translateY(-4px);
+  }
+}
+
+.about-specialty-card {
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.about-specialty-card:hover {
+  animation: specialty-bounce 0.55s ease;
+  border-color: #b8d9cf;
+  box-shadow: 0 8px 20px rgba(3, 123, 118, 0.12);
+}
+
+.about-specialty-card:hover .about-specialty-icon {
+  animation: specialty-bounce 0.55s ease 0.05s;
+}
+
 @keyframes marqueeAbout {
   0% {
     transform: translateX(0);
