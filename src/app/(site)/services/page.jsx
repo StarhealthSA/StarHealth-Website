@@ -1,6 +1,7 @@
 import IntroSection from '@/components/services/intro_section';
 import ServiceCardsGrid from '@/components/services/service_cards_grid';
 import PremiumQualitySection from '@/components/services/premium_quality_section';
+import ServicesHighlights from '@/components/services/services-highlights';
 import Whatnext from '@/components/what_next';
 import Reveal from '@/components/reveal';
 import FaqPageSection from '@/components/shared/faq-page-section';
@@ -68,18 +69,7 @@ export default function ServicesPage() {
     <div className="bg-[#f4f8f7]">
       <IntroSection />
 
-      <section className="px-[20px] md:px-[30px] lg:px-[120px] py-14 lg:py-20">
-        <div className="grid gap-4 sm:grid-cols-2 sm:items-stretch lg:grid-cols-4">
-          {highlights.map((item, index) => (
-            <Reveal key={item.label} delay={staggerDelay(index)} className="h-full">
-              <article className="flex h-full flex-col rounded-2xl border border-[#d7e6e2] bg-white p-6">
-                <p className="text-[13px] font-semibold tracking-[0.09em] uppercase text-[#5d737b]">{item.label}</p>
-                <p className="mt-auto pt-2 text-[34px] font-semibold leading-[40px] text-[#002f3b]">{item.value}</p>
-              </article>
-            </Reveal>
-          ))}
-        </div>
-      </section>
+      <ServicesHighlights highlights={highlights} />
 
       <section className="px-[20px] md:px-[30px] lg:px-[120px] pb-14 lg:pb-20">
         <Reveal>

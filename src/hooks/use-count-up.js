@@ -15,7 +15,12 @@ function getSuffix(value = '') {
 }
 
 export function useCountUp(targetValue, { duration = 1200, enabled = true } = {}) {
-  const [display, setDisplay] = useState(targetValue);
+  const [display, setDisplay] = useState(() => {
+    if (!enabled) return targetValue;
+    const numeric = parseNumericValue(targetValue);
+    if (numeric === null) return targetValue;
+    return `0${getSuffix(targetValue)}`;
+  });
   const frameRef = useRef(null);
 
   useEffect(() => {
