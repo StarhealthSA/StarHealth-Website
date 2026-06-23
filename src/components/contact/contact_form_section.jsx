@@ -3,7 +3,7 @@
 import Reveal from '../reveal';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
-import emailjs from '@emailjs/browser';
+import { submitEnquiry } from '@/lib/contact/submit-enquiry';
 
 function ContactForm() {
   const { t, i18n } = useTranslation();
@@ -26,41 +26,30 @@ function ContactForm() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const serviceId = 'service_gr3hz0c';
-    const templateId = 'template_jdttqx9';
-    const publicKey = '3hR26mPB0OTAoNfhQ';
-
-    const templateParams = {
-      name: formData.name,
-      phonenumber: formData.phonenumber,
-      mail: formData.mail,
-      country: formData.country,
-      speciality: formData.speciality,
-      address: formData.address,
-      message: formData.message
-    };
-
-    emailjs.send(serviceId, templateId, templateParams, publicKey)
-      .then((response) => {
-        console.log('Email sent successfully!', response);
-        alert('Message sent successfully!');
-        setFormData({
-          name: '',
-          phonenumber: '',
-          mail: '',
-          country: '',
-          speciality: '',
-          address: '',
-          message: ''
-        });
-      })
-      .catch((error) => {
-        console.error('Error sending email:', error);
-        alert('Failed to send message. Please try again.');
+    try {
+      setSubmitting(true);
+      await submitEnquiry(formData);
+      alert('Message sent successfully!');
+      setFormData({
+        name: '',
+        phonenumber: '',
+        mail: '',
+        country: '',
+        speciality: '',
+        address: '',
+        message: ''
       });
+    } catch (error) {
+      console.error('Error submitting enquiry:', error);
+      alert(error.message || 'Failed to send message. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const Speciality = [
@@ -202,9 +191,10 @@ function ContactForm() {
             <div className={`flex ${isRTL ? 'justify-start' : 'justify-end'}`}>
               <button
                 type="submit"
-                className="px-6 md:px-8 py-3 bg-gradient-to-tl cursor-pointer from-[#037B76] to-[#AED5C6] hover:bg-gradient-to-br hover:from-[#037B76] hover:to-[#AED5C6] text-white font-family-inter font-medium rounded-lg transition-all duration-200"
+                disabled={submitting}
+                className="px-6 md:px-8 py-3 bg-gradient-to-tl cursor-pointer from-[#037B76] to-[#AED5C6] hover:bg-gradient-to-br hover:from-[#037B76] hover:to-[#AED5C6] text-white font-family-inter font-medium rounded-lg transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {t('contactPage.form.sendMessage')}
+                {submitting ? '...' : t('contactPage.form.sendMessage')}
               </button>
             </div>
           </div>
