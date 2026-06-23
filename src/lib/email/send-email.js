@@ -2,9 +2,9 @@ const EMAILJS_API_URL = 'https://api.emailjs.com/api/v1.0/email/send';
 
 function getEmailJsConfig() {
   return {
-    serviceId: process.env.EMAILJS_SERVICE_ID || 'service_gr3hz0c',
-    publicKey: process.env.EMAILJS_PUBLIC_KEY || '3hR26mPB0OTAoNfhQ',
-    privateKey: process.env.EMAILJS_PRIVATE_KEY || '',
+    serviceId: (process.env.EMAILJS_SERVICE_ID || 'service_gr3hz0c').trim(),
+    publicKey: (process.env.EMAILJS_PUBLIC_KEY || '3hR26mPB0OTAoNfhQ').trim(),
+    privateKey: (process.env.EMAILJS_PRIVATE_KEY || '').trim(),
   };
 }
 
@@ -39,9 +39,9 @@ export async function sendEmailJsTemplate(templateId, templateParams) {
 }
 
 export function getEnquiryTemplateId() {
-  return process.env.EMAILJS_ENQUIRY_TEMPLATE_ID || 'template_jdttqx9';
+  return (process.env.EMAILJS_ENQUIRY_TEMPLATE_ID || 'template_jdttqx9').trim();
 }
 
 export function getAppointmentTemplateId() {
-  return process.env.EMAILJS_APPOINTMENT_TEMPLATE_ID || 'template_zi5qnzk';
+  return (process.env.EMAILJS_APPOINTMENT_TEMPLATE_ID || 'template_zi5qnzk').trim();
 }
