@@ -4,10 +4,12 @@ import Reveal from '../reveal';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { submitEnquiry } from '@/lib/contact/submit-enquiry';
+import { useServiceCategories } from '@/contexts/content-context';
 
 function ContactForm() {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
+  const categories = useServiceCategories(i18n.language);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -51,17 +53,6 @@ function ContactForm() {
       setSubmitting(false);
     }
   };
-
-  const Speciality = [
-    { sty: t('contactPage.form.specialties.generalMedicine') },
-    { sty: t('contactPage.form.specialties.internalMedicine') },
-    { sty: t('contactPage.form.specialties.pediatrics') },
-    { sty: t('contactPage.form.specialties.obg') },
-    { sty: t('contactPage.form.specialties.generalDentistry') },
-    { sty: t('contactPage.form.specialties.orthodontics') },
-    { sty: t('contactPage.form.specialties.urology') },
-    { sty: t('contactPage.form.specialties.laserTreatments') },
-  ];
 
   return (
     <div className="min-h-screen bg-white">
@@ -145,9 +136,9 @@ function ContactForm() {
                     <option value="" disabled className="text-gray-400">
                       {t('contactPage.form.select')}
                     </option>
-                    {Speciality.map((item, index) => (
-                      <option key={index} value={item.sty}>
-                        {item.sty}
+                    {categories.map((category) => (
+                      <option key={category.id} value={category.displayName}>
+                        {category.displayName}
                       </option>
                     ))}
                   </select>
