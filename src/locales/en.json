@@ -308,7 +308,21 @@
     "description": "We help you navigate your coverage with ease so you can focus on healing, not paperwork."
   },
   "testimonials": {
+    "eyebrow": "Patient Stories",
+    "ratingLabel": "5-star rated on Google",
     "title": "Hear from Our Patients",
+    "previous": "Previous review",
+    "next": "Next review",
+    "pause": "Pause autoplay",
+    "play": "Play autoplay",
+    "speedLabel": "Speed",
+    "reviewList": "Patient reviews",
+    "goToReview": "Go to review {{number}}",
+    "speed": {
+      "slow": "Slow",
+      "normal": "Normal",
+      "fast": "Fast"
+    },
     "description": "Get to know our experienced medical team, whose dedication, skill, and compassionate approach ensure you receive personalized, exceptional care throughout your healing journey.",
     "patients": {
       "nadia": {
