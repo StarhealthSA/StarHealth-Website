@@ -108,7 +108,6 @@ export default function AdminShell({ children }) {
         <Link href="/admin" className="inline-block">
           <img src={logo} alt="Star Health" className="h-8 w-auto lg:h-9" />
         </Link>
-        <p className="mt-2 text-xs text-[#586971]">Admin panel</p>
       </div>
 
       <nav className="flex-1 space-y-1 px-3 py-4">
