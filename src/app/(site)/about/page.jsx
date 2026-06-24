@@ -5,6 +5,8 @@ import FaqPageSection from '@/components/shared/faq-page-section';
 import { staggerDelay } from '@/lib/stagger_delay';
 import { SERVICE_ICONS } from '@/lib/content/service-icons';
 import careProcessImage from '@/assets/home/treatment.jpg';
+import markIcon from '@/assets/home/mark.svg';
+import familyMedicineIcon from '@/assets/home/familymedicine.svg';
 
 export const metadata = {
   title: 'About Star Health | Premium Medical Care in Riyadh',
@@ -32,6 +34,39 @@ export default function AboutPage() {
     { label: 'Pediatrics', iconKey: 'pediatrics' },
     { label: 'Orthopedics', iconKey: 'ortho' },
     { label: 'Laboratory Services', iconKey: 'laboratory' },
+  ];
+
+  const pillars = [
+    {
+      title: 'Our Vision',
+      body: 'To become the most trusted neighborhood healthcare destination in Riyadh by delivering clinical excellence with genuine human care.',
+      icon: (
+        <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path
+            d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"
+            stroke="#037B76"
+            strokeWidth="1.75"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <circle cx="12" cy="12" r="3" stroke="#037B76" strokeWidth="1.75" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Our Mission',
+      body: 'Provide accessible, preventive, and personalized healthcare for families through modern diagnostics and multidisciplinary expertise.',
+      icon: (
+        <img src={familyMedicineIcon} alt="" className="h-7 w-7 object-contain" />
+      ),
+    },
+    {
+      title: 'Our Promise',
+      body: 'Clear communication, ethical practice, and continuity of care from first consultation through recovery and long-term wellness.',
+      icon: (
+        <img src={markIcon} alt="" className="h-5 w-5 object-contain" />
+      ),
+    },
   ];
 
   const process = [
@@ -72,16 +107,13 @@ export default function AboutPage() {
       <IntroSection />
 
       <section className="px-[20px] md:px-[30px] lg:px-[120px] py-14 lg:py-20">
-        <div className="grid gap-6 md:grid-cols-3 md:items-stretch">
-          {[
-            { title: 'Our Vision', body: 'To become the most trusted neighborhood healthcare destination in Riyadh by delivering clinical excellence with genuine human care.' },
-            { title: 'Our Mission', body: 'Provide accessible, preventive, and personalized healthcare for families through modern diagnostics and multidisciplinary expertise.' },
-            { title: 'Our Promise', body: 'Clear communication, ethical practice, and continuity of care from first consultation through recovery and long-term wellness.' },
-          ].map((item, index) => (
-            <Reveal key={item.title} delay={staggerDelay(index)} className="h-full">
-              <article className="flex h-full flex-col rounded-2xl border border-[#dce9e5] bg-white p-6">
-                <h2 className="text-[20px] font-semibold text-[#002333]">{item.title}</h2>
-                <p className="mt-3 flex-1 text-[15px] leading-[25px] text-[#58696f]">{item.body}</p>
+        <div className="grid gap-4 md:grid-cols-3">
+          {pillars.map((item, index) => (
+            <Reveal key={item.title} delay={staggerDelay(index, 70)}>
+              <article className="about-value-card">
+                <div className="about-value-card__icon">{item.icon}</div>
+                <h2 className="about-value-card__title">{item.title}</h2>
+                <p className="about-value-card__body">{item.body}</p>
               </article>
             </Reveal>
           ))}
