@@ -16,7 +16,7 @@ function ExpertAdvice({ blogs = [] }) {
   const sidePosts = posts.filter((post) => post.id !== featuredPost.id).slice(0, 4);
 
   return (
-    <div className="flex flex-col items-center justify-start bg-[#FFFFFF] px-[30px] pt-6 md:pt-0 lg:px-[120px]">
+    <div className="flex flex-col items-center justify-start bg-[#FFFFFF] px-[30px] pt-12 md:pt-16 lg:px-[120px] lg:pt-20">
       <Reveal className="flex flex-col items-center">
         <h1 className="text-[24px] lg:text-[44px] text-[#002333] font-medium font-inter leading-[32px] lg:leading-[54px]">
           {t('blogs.title')}
