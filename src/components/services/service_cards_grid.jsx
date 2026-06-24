@@ -5,6 +5,7 @@ import Servicescard from '@/components/services_card';
 import { staggerDelay } from '@/lib/stagger_delay';
 import { useTranslation } from 'react-i18next';
 import { useLocalizedServices, useServiceCategories } from '@/contexts/content-context';
+import SearchInput from '@/components/shared/search-input';
 
 export default function ServiceCardsGrid({ className = '' }) {
   const { t, i18n } = useTranslation();
@@ -27,12 +28,10 @@ export default function ServiceCardsGrid({ className = '' }) {
   return (
     <div className={className}>
       <div className="mb-4 max-w-xl">
-        <input
-          type="search"
+        <SearchInput
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder={t('serviceListing.searchPlaceholder')}
-          className="w-full rounded-lg border border-[#DAD8D7] px-4 py-3 font-inter text-[14px] text-[#687276] focus:border-[#037B76] focus:outline-none"
         />
       </div>
 

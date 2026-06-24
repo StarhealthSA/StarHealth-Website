@@ -11,6 +11,7 @@ import {
   getCategoriesWithDoctors,
   getDoctorsWithCategory,
 } from '@/lib/content/doctor-category-utils';
+import SearchInput from '@/components/shared/search-input';
 
 function DoctorsListSection() {
   const { t, i18n } = useTranslation();
@@ -63,12 +64,10 @@ function DoctorsListSection() {
 
       <div className={`w-full px-[30px] ${isRTL ? 'lg:pr-[120px]' : 'lg:pl-[120px]'} pt-[5px] lg:pt-[20px]`}>
         <div className="mb-4 max-w-xl">
-          <input
-            type="search"
+          <SearchInput
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder={t('doctorsPage.searchPlaceholder')}
-            className="w-full rounded-lg border border-[#DAD8D7] px-4 py-3 font-inter text-[14px] text-[#687276] focus:border-[#037B76] focus:outline-none"
           />
         </div>
 
