@@ -6,6 +6,9 @@ import Whatnext from '@/components/what_next';
 import Reveal from '@/components/reveal';
 import FaqPageSection from '@/components/shared/faq-page-section';
 import { staggerDelay } from '@/lib/stagger_delay';
+import whyPatientsImage from '@/assets/home/Why Patients Search for Star Health Services.png';
+import familyHealthcareImage from '@/assets/home/Designed for Family Healthcare Journeys.png';
+import clinicalQualityImage from '@/assets/home/Clinical Quality with Operational Clarity.png';
 
 export const metadata = {
   title: 'Medical Services in Riyadh | Star Health',
@@ -33,16 +36,22 @@ export default function ServicesPage() {
 
   const seoContentBlocks = [
     {
-      title: 'Why Patients Search for Star Health Services',
-      text: 'Patients looking for trusted medical services in Riyadh often need one center that handles preventive, acute, and long-term care. Star Health addresses this with multidisciplinary clinics, evidence-based decisions, and clear communication at each stage of treatment.',
+      title: 'Trusted Healthcare Services at Star Health Hospital',
+      text: 'Patients across Saudi Arabia choose Star Health Hospital for reliable medical care, advanced treatments, and patient-focused services. Our hospital provides comprehensive healthcare solutions through experienced doctors, modern medical facilities, and specialized departments designed to support preventive care, diagnosis, treatment, and long-term wellness.',
+      image: whyPatientsImage,
+      alt: 'Why patients search for Star Health services',
     },
     {
-      title: 'Designed for Family Healthcare Journeys',
-      text: 'Families need convenience without compromising medical quality. Our service model supports parents, children, and seniors with coordinated appointments, shared health context, and practical follow-up plans that reduce repeat visits and confusion.',
+      title: 'Comprehensive Family Healthcare Under One Roof',
+      text: 'Star Health Hospital is committed to making healthcare simple and accessible for families across Saudi Arabia. From routine health check-ups and pediatric care to specialist consultations and chronic disease management, our coordinated healthcare approach ensures every patient receives personalized attention and continuous medical support.',
+      image: familyHealthcareImage,
+      alt: 'Designed for family healthcare journeys',
     },
     {
-      title: 'Clinical Quality with Operational Clarity',
-      text: 'Our team balances medical depth with service efficiency. From consultation to test results and review, we provide transparent next steps, documented care plans, and active support so patients can make informed decisions confidently.',
+      title: 'Advanced Medical Care with Patient-Centered Excellence',
+      text: 'At Star Health Hospital Saudi Arabia, we combine clinical expertise, advanced technology, and compassionate care to deliver high-quality healthcare experiences. Our dedicated medical team focuses on accurate diagnosis, effective treatment plans, and clear communication to help patients make confident decisions about their health.',
+      image: clinicalQualityImage,
+      alt: 'Clinical quality with operational clarity at Star Health',
     },
   ];
 
@@ -87,14 +96,23 @@ export default function ServicesPage() {
 
       <section className="px-[20px] md:px-[30px] lg:px-[120px] pb-14 lg:pb-20">
         <Reveal>
-          <h2 className="text-[28px] font-semibold text-[#002333]">SEO-Focused Healthcare Information</h2>
+          <h2 className="text-[28px] font-semibold text-[#002333]">Why Choose Star Health Hospital for Quality Healthcare?</h2>
         </Reveal>
-        <div className="mt-6 grid gap-4 lg:grid-cols-3 lg:items-stretch">
+        <div className="mt-6 grid gap-5 lg:grid-cols-3 lg:items-stretch">
           {seoContentBlocks.map((item, index) => (
             <Reveal key={item.title} delay={staggerDelay(index)} className="h-full">
-              <article className="flex h-full flex-col rounded-2xl border border-[#d7e5e1] bg-white p-6">
-                <h3 className="text-[20px] font-semibold leading-[28px] text-[#0a3944]">{item.title}</h3>
-                <p className="mt-3 flex-1 text-[15px] leading-[25px] text-[#5e6f77]">{item.text}</p>
+              <article className="services-why-card flex h-full flex-col overflow-hidden rounded-2xl border border-[#d7e5e1] bg-white">
+                <div className="relative h-52 overflow-hidden sm:h-56">
+                  <img
+                    src={item.image}
+                    alt={item.alt}
+                    className="h-full w-full object-cover transition duration-500 hover:scale-[1.03]"
+                  />
+                </div>
+                <div className="flex flex-1 flex-col p-6">
+                  <h3 className="text-[20px] font-semibold leading-[28px] text-[#0a3944]">{item.title}</h3>
+                  <p className="mt-3 flex-1 text-[15px] leading-[25px] text-[#5e6f77]">{item.text}</p>
+                </div>
               </article>
             </Reveal>
           ))}
