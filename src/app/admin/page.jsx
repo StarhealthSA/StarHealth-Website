@@ -16,6 +16,15 @@ export default function AdminDashboardPage() {
       </p>
 
       <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <a
+          href="/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-2xl border border-[#b8d9cf] bg-gradient-to-br from-[#f3faf8] to-white p-6 transition-shadow hover:shadow-md"
+        >
+          <h2 className="text-xl font-semibold text-[#037B76]">View Website</h2>
+          <p className="mt-2 text-sm text-[#586971]">Open the public Star Health site in a new tab to preview the frontend.</p>
+        </a>
         <Link
           href="/admin/specializations"
           className="rounded-2xl border border-[#d7e6e2] bg-white p-6 transition-shadow hover:shadow-md"

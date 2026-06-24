@@ -185,13 +185,43 @@ export default function AdminShell({ children }) {
               Menu
             </button>
             <img src={logo} alt="Star Health" className="h-7 w-[88px] object-contain object-left" />
-            <button
-              type="button"
-              onClick={logout}
-              className="text-sm font-medium text-[#037B76]"
+            <div className="flex items-center gap-3">
+              <a
+                href="/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-medium text-[#037B76]"
+              >
+                View site
+              </a>
+              <button
+                type="button"
+                onClick={logout}
+                className="text-sm font-medium text-[#037B76]"
+              >
+                Log out
+              </button>
+            </div>
+          </header>
+
+          <header className="hidden items-center justify-end border-b border-[#d7e6e2] bg-white px-6 py-3 lg:flex">
+            <a
+              href="/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-lg border border-[#037B76] px-4 py-2 text-sm font-medium text-[#037B76] transition-colors hover:bg-[#037B76] hover:text-white"
             >
-              Log out
-            </button>
+              View Website
+              <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path
+                  d="M11 3h6v6M17 3 9 11M8 5H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-3"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </a>
           </header>
 
           <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
