@@ -52,13 +52,3 @@ export const FOOTER_QUICK_LINKS = [
   { href: '/contact', labelKey: 'footer.quickLink.contactUs' },
   { href: '/privacy', labelKey: 'footer.quickLink.privacy' },
 ];
-
-export const FOOTER_SERVICE_LINKS = [
-  { href: '/services', labelKey: 'footer.services.generalMedicine' },
-  { href: '/services', labelKey: 'footer.services.paediatrics' },
-  { href: '/services', labelKey: 'footer.services.orthopaedics' },
-  { href: '/services', labelKey: 'footer.services.internalMedicine' },
-  { href: '/services', labelKey: 'footer.services.dentistry' },
-  { href: '/services', labelKey: 'footer.services.dermatology' },
-  { href: '/services', labelKey: 'footer.services.pediatrics' },
-];

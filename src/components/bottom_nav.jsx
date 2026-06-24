@@ -4,12 +4,12 @@ function BottomNav() {
             <p className="text-[14px] lg:text-[16px] font-normal font-inter text-center text-[#FFFFFF] leading-[22px] lg:leading-[24px]">
               © 2025 All Right Reserved | Powered by
                 <a 
-                    href="https://www.procube.cx/" 
+                    href="https://mentecode.com/" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-[#FFFFFF] hover:text-[#FFFFFF99] pl-1"
                 >
-                  procube.cx
+                  Mentecode
                 </a>
             </p>
         </div>

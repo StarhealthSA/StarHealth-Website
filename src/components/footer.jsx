@@ -10,11 +10,13 @@ import tiktok from '../assets/home/tiktok1.svg';
 import Bottomnav from './bottom_nav';
 import NavLink from './nav_link';
 import { useTranslation } from 'react-i18next';
-import { FOOTER_QUICK_LINKS, FOOTER_SERVICE_LINKS } from '@/constants/nav_routes';
+import { FOOTER_QUICK_LINKS } from '@/constants/nav_routes';
+import { useLocalizedServices } from '@/contexts/content-context';
 
 function Footer() {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
+  const services = useLocalizedServices(i18n.language);
 
   return (
     <div>
@@ -72,9 +74,9 @@ function Footer() {
           <div className="lg:w-1/5 md:w-1/5">
             <h4 className="text-lg lg:text-xl font-medium text-white mb-2 lg:mb-6">{t('footer.ourServices')}</h4>
             <ul className="grid grid-cols-2 md:grid-cols-1 gap-2 lg:gap-4">
-              {FOOTER_SERVICE_LINKS.map((service) => (
-                <li key={service.labelKey} className="text-sm lg:text-base text-[#FFFFFFCC] hover:text-[#FFFFFF]">
-                  <NavLink href={service.href}>{t(service.labelKey)}</NavLink>
+              {services.map((service) => (
+                <li key={service.id} className="text-sm lg:text-base text-[#FFFFFFCC] hover:text-[#FFFFFF]">
+                  <NavLink href={`/services/${service.slug}`}>{service.displayTitle}</NavLink>
                 </li>
               ))}
             </ul>
