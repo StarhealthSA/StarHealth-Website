@@ -55,11 +55,11 @@ function ContactForm() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="bg-white">
       <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
         <Reveal>
         <form onSubmit={handleSubmit}>
-          <div className="bg-[#F6F4F3] rounded-2xl shadow-sm p-8 sm:p-16">
+          <div className="rounded-2xl border border-[#C5E4DC] bg-gradient-to-br from-[#E8F5F2] via-[#F3FAF8] to-[#D9EEE8] p-8 shadow-[0_8px_24px_rgba(3,123,118,0.1)] sm:p-16">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-6">
               <div>
                 <label className="block text-base font-family-inter font-medium text-[#002333] mb-3">
@@ -72,7 +72,7 @@ function ContactForm() {
                   type="text"
                   required
                   placeholder={t('contactPage.form.fullNamePlaceholder')}
-                  className={`w-full px-4 py-3 border border-[#DAD8D7] rounded-lg focus:border-[#DAD8D7] focus:outline-none text-base font-normal text-[#687276] ${isRTL ? 'text-right' : 'text-left'}`}
+                  className={`w-full bg-white px-4 py-3 border border-[#DAD8D7] rounded-lg focus:border-[#037B76] focus:outline-none text-base font-normal text-[#687276] ${isRTL ? 'text-right' : 'text-left'}`}
                 />
               </div>
 
@@ -87,7 +87,7 @@ function ContactForm() {
                   type="tel"
                   required
                   placeholder={t('contactPage.form.phoneNumberPlaceholder')}
-                  className={`w-full px-4 py-3 border border-[#DAD8D7] rounded-lg focus:border-[#DAD8D7] focus:outline-none text-base font-normal text-[#687276] ${isRTL ? 'text-right' : 'text-left'}`}
+                  className={`w-full bg-white px-4 py-3 border border-[#DAD8D7] rounded-lg focus:border-[#037B76] focus:outline-none text-base font-normal text-[#687276] ${isRTL ? 'text-right' : 'text-left'}`}
                 />
               </div>
 
@@ -102,7 +102,7 @@ function ContactForm() {
                   type="email"
                   required
                   placeholder={t('contactPage.form.emailPlaceholder')}
-                  className={`w-full px-4 py-3 border border-[#DAD8D7] rounded-lg focus:border-[#DAD8D7] focus:outline-none text-base font-normal text-[#687276] ${isRTL ? 'text-right' : 'text-left'}`}
+                  className={`w-full bg-white px-4 py-3 border border-[#DAD8D7] rounded-lg focus:border-[#037B76] focus:outline-none text-base font-normal text-[#687276] ${isRTL ? 'text-right' : 'text-left'}`}
                 />
               </div>
             </div>
@@ -118,7 +118,7 @@ function ContactForm() {
                   onChange={handleChange}
                   type="text"
                   placeholder={t('contactPage.form.countryOfResidencePlaceholder')}
-                  className={`w-full px-4 py-3 border border-[#DAD8D7] rounded-lg focus:border-[#DAD8D7] focus:outline-none text-base font-normal text-[#687276] ${isRTL ? 'text-right' : 'text-left'}`}
+                  className={`w-full bg-white px-4 py-3 border border-[#DAD8D7] rounded-lg focus:border-[#037B76] focus:outline-none text-base font-normal text-[#687276] ${isRTL ? 'text-right' : 'text-left'}`}
                 />
               </div>
 
@@ -131,7 +131,7 @@ function ContactForm() {
                     name='speciality'
                     value={formData.speciality}
                     onChange={handleChange}
-                    className={`w-full px-4 py-3 border border-[#DAD8D7] rounded-lg appearance-none focus:border-[#DAD8D7] focus:outline-none text-base font-normal text-[#687276] ${isRTL ? 'text-right' : 'text-left'}`}
+                    className={`w-full bg-white px-4 py-3 border border-[#DAD8D7] rounded-lg appearance-none focus:border-[#037B76] focus:outline-none text-base font-normal text-[#687276] ${isRTL ? 'text-right' : 'text-left'}`}
                   >
                     <option value="" disabled className="text-gray-400">
                       {t('contactPage.form.select')}
@@ -160,7 +160,7 @@ function ContactForm() {
                   onChange={handleChange}
                   type="text"
                   placeholder={t('contactPage.form.addressPlaceholder')}
-                  className={`w-full px-4 py-3 border border-[#DAD8D7] rounded-lg focus:border-[#DAD8D7] focus:outline-none text-base font-normal text-[#687276] ${isRTL ? 'text-right' : 'text-left'}`}
+                  className={`w-full bg-white px-4 py-3 border border-[#DAD8D7] rounded-lg focus:border-[#037B76] focus:outline-none text-base font-normal text-[#687276] ${isRTL ? 'text-right' : 'text-left'}`}
                 />
               </div>
             </div>
@@ -175,7 +175,7 @@ function ContactForm() {
                 onChange={handleChange}
                 placeholder={t('contactPage.form.messagePlaceholder')}
                 rows={5}
-                className={`w-full px-4 py-3 border border-[#DAD8D7] rounded-lg focus:border-[#DAD8D7] focus:outline-none text-base font-normal text-[#687276] ${isRTL ? 'text-right' : 'text-left'}`}
+                className={`w-full bg-white px-4 py-3 border border-[#DAD8D7] rounded-lg focus:border-[#037B76] focus:outline-none text-base font-normal text-[#687276] ${isRTL ? 'text-right' : 'text-left'}`}
               />
             </div>
 

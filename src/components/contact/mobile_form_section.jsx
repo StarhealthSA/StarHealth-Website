@@ -57,7 +57,7 @@ function MobileViewForm() {
         <div className="min-h-screen bg-[#FFFFFF]">
             <div className="mx-[30px] lg:mx-[120px]">
                 <form onSubmit={handleSubmit}>
-                    <div className="bg-[#F6F4F3] rounded-[16px] p-4 sm:p-16">
+                    <div className="rounded-[16px] border border-[#C5E4DC] bg-gradient-to-br from-[#E8F5F2] via-[#F3FAF8] to-[#D9EEE8] p-4 shadow-[0_8px_24px_rgba(3,123,118,0.1)] sm:p-16">
                         <div className="grid grid-cols-1 gap-4 sm:gap-6 mb-6">
                             <div>
                                 <label className="block text-[14px] font-inter font-medium text-[#002333] mb-3">
@@ -70,7 +70,7 @@ function MobileViewForm() {
                                     type="text"
                                     required
                                     placeholder={t('contactPage.form.fullNamePlaceholder')}
-                                    className={`w-full px-4 py-3 border border-[#DAD8D7] focus:border-[#DAD8D7] rounded-[8px] text-[14px] font-inter font-normal text-[#687276] outline-none ${isRTL ? 'text-right' : 'text-left'}`}
+                                    className={`w-full bg-white px-4 py-3 border border-[#DAD8D7] focus:border-[#037B76] rounded-[8px] text-[14px] font-inter font-normal text-[#687276] outline-none ${isRTL ? 'text-right' : 'text-left'}`}
                                 />
                             </div>
 
@@ -85,7 +85,7 @@ function MobileViewForm() {
                                     type="tel"
                                     required
                                     placeholder={t('contactPage.form.phoneNumberPlaceholder')}
-                                    className={`w-full px-4 py-3 border border-[#DAD8D7] focus:border-[#DAD8D7] rounded-[8px] text-[14px] font-inter font-normal text-[#687276] outline-none ${isRTL ? 'text-right' : 'text-left'}`}
+                                    className={`w-full bg-white px-4 py-3 border border-[#DAD8D7] focus:border-[#037B76] rounded-[8px] text-[14px] font-inter font-normal text-[#687276] outline-none ${isRTL ? 'text-right' : 'text-left'}`}
                                 />
                             </div>
 
@@ -100,7 +100,7 @@ function MobileViewForm() {
                                     type="email"
                                     required
                                     placeholder={t('contactPage.form.emailPlaceholder')}
-                                    className={`w-full px-4 py-3 border border-[#DAD8D7] focus:border-[#DAD8D7] rounded-[8px] text-[14px] font-inter font-normal text-[#687276] outline-none ${isRTL ? 'text-right' : 'text-left'}`}
+                                    className={`w-full bg-white px-4 py-3 border border-[#DAD8D7] focus:border-[#037B76] rounded-[8px] text-[14px] font-inter font-normal text-[#687276] outline-none ${isRTL ? 'text-right' : 'text-left'}`}
                                 />
                             </div>
 
@@ -114,7 +114,7 @@ function MobileViewForm() {
                                     onChange={handleChange}
                                     type="text"
                                     placeholder={t('contactPage.form.countryOfResidencePlaceholder')}
-                                    className={`w-full px-4 py-3 border border-[#DAD8D7] focus:border-[#DAD8D7] rounded-[8px] text-[14px] font-inter font-normal text-[#687276] outline-none ${isRTL ? 'text-right' : 'text-left'}`}
+                                    className={`w-full bg-white px-4 py-3 border border-[#DAD8D7] focus:border-[#037B76] rounded-[8px] text-[14px] font-inter font-normal text-[#687276] outline-none ${isRTL ? 'text-right' : 'text-left'}`}
                                 />
                             </div>
 
@@ -127,7 +127,7 @@ function MobileViewForm() {
                                         name='speciality'
                                         value={formData.speciality}
                                         onChange={handleChange}
-                                        className={`w-full px-4 py-3 border border-[#DAD8D7] focus:border-[#DAD8D7] rounded-[8px] appearance-none text-[14px] font-inter font-normal text-[#687276] outline-none ${isRTL ? 'text-right' : 'text-left'}`}
+                                        className={`w-full bg-white px-4 py-3 border border-[#DAD8D7] focus:border-[#037B76] rounded-[8px] appearance-none text-[14px] font-inter font-normal text-[#687276] outline-none ${isRTL ? 'text-right' : 'text-left'}`}
                                     >
                                         <option value="">{t('contactPage.form.select')}</option>
                                         {categories.map((category) => (
@@ -154,7 +154,7 @@ function MobileViewForm() {
                                     onChange={handleChange}
                                     type="text"
                                     placeholder={t('contactPage.form.addressPlaceholder')}
-                                    className={`w-full px-4 py-3 border border-[#DAD8D7] focus:border-[#DAD8D7] rounded-[8px] text-[14px] font-inter font-normal text-[#687276] outline-none ${isRTL ? 'text-right' : 'text-left'}`}
+                                    className={`w-full bg-white px-4 py-3 border border-[#DAD8D7] focus:border-[#037B76] rounded-[8px] text-[14px] font-inter font-normal text-[#687276] outline-none ${isRTL ? 'text-right' : 'text-left'}`}
                                 />
                             </div>
 
@@ -168,7 +168,7 @@ function MobileViewForm() {
                                     onChange={handleChange}
                                     placeholder={t('contactPage.form.messagePlaceholder')}
                                     rows={5}
-                                    className={`w-full px-4 py-3 border border-[#DAD8D7] focus:border-[#DAD8D7] rounded-[8px] text-[14px] font-inter font-normal text-[#687276] outline-none ${isRTL ? 'text-right' : 'text-left'}`}
+                                    className={`w-full bg-white px-4 py-3 border border-[#DAD8D7] focus:border-[#037B76] rounded-[8px] text-[14px] font-inter font-normal text-[#687276] outline-none ${isRTL ? 'text-right' : 'text-left'}`}
                                 />
                             </div>
                         </div>
