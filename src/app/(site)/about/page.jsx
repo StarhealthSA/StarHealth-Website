@@ -4,6 +4,7 @@ import Reveal from '@/components/reveal';
 import FaqPageSection from '@/components/shared/faq-page-section';
 import { staggerDelay } from '@/lib/stagger_delay';
 import { SERVICE_ICONS } from '@/lib/content/service-icons';
+import careProcessImage from '@/assets/home/treatment.jpg';
 
 export const metadata = {
   title: 'About Star Health | Premium Medical Care in Riyadh',
@@ -35,22 +36,36 @@ export default function AboutPage() {
 
   const process = [
     {
-      title: '1. Simple Appointment Access',
+      step: '01',
+      title: 'Simple Appointment Access',
       body: 'Book online or by phone and get support selecting the right specialty based on your need.',
     },
     {
-      title: '2. Thorough Clinical Review',
+      step: '02',
+      title: 'Thorough Clinical Review',
       body: 'Our doctors listen carefully, review your history, and explain diagnosis and options with clarity.',
     },
     {
-      title: '3. Coordinated Treatment Plan',
+      step: '03',
+      title: 'Coordinated Treatment Plan',
       body: 'From tests to follow-ups, your care is organized across departments for better continuity.',
     },
     {
-      title: '4. Follow-up and Prevention',
+      step: '04',
+      title: 'Follow-up and Prevention',
       body: 'We do not stop at treatment. Preventive guidance and long-term monitoring protect your health outcomes.',
     },
   ];
+
+  const processCard = (item, index) => (
+    <Reveal key={item.step} delay={staggerDelay(index, 70)}>
+      <article className="about-care-step-card">
+        <span className="about-care-step-card__badge">{item.step}</span>
+        <h3 className="about-care-step-card__title">{item.title}</h3>
+        <p className="about-care-step-card__body">{item.body}</p>
+      </article>
+    </Reveal>
+  );
 
   return (
     <div className="bg-[#f8fbfa]">
@@ -132,15 +147,42 @@ export default function AboutPage() {
         <Reveal>
           <h2 className="text-[28px] font-semibold text-[#002333]">How Care Works at Star Health</h2>
         </Reveal>
-        <div className="about-equal-cards mt-6 grid gap-4 sm:grid-cols-2 sm:items-stretch lg:grid-cols-2">
-          {process.map((item, index) => (
-            <Reveal key={item.title} delay={staggerDelay(index)} className="h-full">
-              <article className="flex h-full flex-col rounded-2xl border border-[#dfebe7] bg-white p-6">
-                <h3 className="text-[19px] font-semibold text-[#02353f]">{item.title}</h3>
-                <p className="mt-2 flex-1 text-[15px] leading-[25px] text-[#5a6b72]">{item.body}</p>
-              </article>
-            </Reveal>
-          ))}
+
+        <div className="mt-6 lg:hidden">
+          <Reveal delay={staggerDelay(0, 60)}>
+            <div className="about-care-process-image overflow-hidden rounded-3xl">
+              <img
+                src={careProcessImage}
+                alt="Star Health care team supporting patients"
+                className="h-[260px] w-full object-cover object-center sm:h-[320px]"
+              />
+            </div>
+          </Reveal>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            {process.map((item, index) => processCard(item, index))}
+          </div>
+        </div>
+
+        <div className="about-care-process-grid mt-8 hidden lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(280px,340px)_minmax(0,1fr)] lg:items-center lg:gap-8">
+          <div className="flex flex-col gap-3">
+            {processCard(process[0], 0)}
+            {processCard(process[2], 2)}
+          </div>
+
+          <Reveal delay={staggerDelay(1, 80)}>
+            <div className="about-care-process-image overflow-hidden rounded-3xl">
+              <img
+                src={careProcessImage}
+                alt="Star Health care team supporting patients"
+                className="aspect-[4/5] w-full object-cover object-center"
+              />
+            </div>
+          </Reveal>
+
+          <div className="flex flex-col gap-3">
+            {processCard(process[1], 1)}
+            {processCard(process[3], 3)}
+          </div>
         </div>
       </section>
 
