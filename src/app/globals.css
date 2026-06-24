@@ -440,14 +440,8 @@ html {
 }
 
 .testimonials-carousel__viewport {
-  display: flex;
-  gap: 1rem;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
+  overflow: hidden;
   padding: 0.35rem 1.25rem 0.25rem;
-  -webkit-overflow-scrolling: touch;
 }
 
 @media (min-width: 1024px) {
@@ -456,10 +450,15 @@ html {
   }
 }
 
+.testimonials-carousel__track {
+  display: flex;
+  gap: 1rem;
+  width: max-content;
+  will-change: transform;
+}
+
 .testimonials-carousel__slide {
   flex: 0 0 auto;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
 }
 
 .testimonials-carousel__nav {

@@ -1,123 +1,140 @@
 'use client';
 
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import TestimonialCard from '@/components/shared/testimonial-card';
 import { useTranslation } from 'react-i18next';
 
-const AUTO_PLAY_MS = 5000;
+const AUTO_PLAY_MS = 2000;
 const PAUSE_AFTER_INTERACTION_MS = 10000;
+const TRANSITION_MS = 450;
 
 export default function TestimonialsCarousel({ items = [], isRTL = false }) {
   const { t } = useTranslation();
   const viewportRef = useRef(null);
-  const slideRefs = useRef([]);
-  const isNavigatingRef = useRef(false);
-  const navigateTimerRef = useRef(null);
-  const activeIndexRef = useRef(0);
+  const trackRef = useRef(null);
+  const stepPxRef = useRef(0);
+  const positionRef = useRef(0);
   const pauseUntilRef = useRef(0);
   const isHoveredRef = useRef(false);
 
+  const [position, setPosition] = useState(0);
+  const [animate, setAnimate] = useState(true);
+
   const itemCount = items.length;
   const hasMultiple = itemCount > 1;
+  const loopedItems = useMemo(
+    () => (hasMultiple ? [...items, ...items] : items),
+    [hasMultiple, items]
+  );
 
-  const getSlideScrollLeft = useCallback((index) => {
-    const viewport = viewportRef.current;
-    const slide = slideRefs.current[index];
-    if (!viewport || !slide) return 0;
+  const translateIndex = hasMultiple
+    ? ((position % (itemCount * 2)) + itemCount * 2) % (itemCount * 2)
+    : 0;
 
-    return slide.getBoundingClientRect().left
-      - viewport.getBoundingClientRect().left
-      + viewport.scrollLeft;
-  }, []);
+  positionRef.current = position;
 
-  const scrollToIndex = useCallback((index) => {
-    const viewport = viewportRef.current;
-    if (!viewport || itemCount === 0) return;
+  const measureStep = useCallback(() => {
+    const track = trackRef.current;
+    const firstSlide = track?.children[0];
+    if (!firstSlide || !track) return;
 
-    const nextIndex = ((index % itemCount) + itemCount) % itemCount;
-    const slide = slideRefs.current[nextIndex];
-    if (!slide) return;
-
-    if (navigateTimerRef.current) {
-      window.clearTimeout(navigateTimerRef.current);
+    const secondSlide = track.children[1];
+    if (secondSlide) {
+      stepPxRef.current = secondSlide.offsetLeft - firstSlide.offsetLeft;
+      return;
     }
 
-    isNavigatingRef.current = true;
-    activeIndexRef.current = nextIndex;
+    stepPxRef.current = firstSlide.getBoundingClientRect().width;
+  }, []);
 
-    viewport.scrollTo({
-      left: getSlideScrollLeft(nextIndex),
-      behavior: 'smooth',
+  useEffect(() => {
+    setPosition(0);
+    setAnimate(false);
+    measureStep();
+
+    const frame = requestAnimationFrame(() => {
+      setAnimate(true);
     });
 
-    navigateTimerRef.current = window.setTimeout(() => {
-      isNavigatingRef.current = false;
-    }, 450);
-  }, [getSlideScrollLeft, itemCount]);
+    return () => cancelAnimationFrame(frame);
+  }, [items, measureStep]);
+
+  useEffect(() => {
+    measureStep();
+    const viewport = viewportRef.current;
+    if (!viewport) return undefined;
+
+    const observer = new ResizeObserver(() => {
+      measureStep();
+    });
+
+    observer.observe(viewport);
+    window.addEventListener('resize', measureStep);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', measureStep);
+    };
+  }, [measureStep, loopedItems.length]);
+
+  const handleTransitionEnd = useCallback((event) => {
+    if (event.target !== trackRef.current || event.propertyName !== 'transform') return;
+    if (!hasMultiple) return;
+
+    const current = positionRef.current;
+    const index = ((current % (itemCount * 2)) + itemCount * 2) % (itemCount * 2);
+    if (index < itemCount) return;
+
+    setAnimate(false);
+    setPosition(current - itemCount);
+    requestAnimationFrame(() => {
+      setAnimate(true);
+    });
+  }, [hasMultiple, itemCount]);
 
   const goNext = useCallback(() => {
     pauseUntilRef.current = Date.now() + PAUSE_AFTER_INTERACTION_MS;
-    scrollToIndex(activeIndexRef.current + 1);
-  }, [scrollToIndex]);
+    setAnimate(true);
+    setPosition((current) => current + 1);
+  }, []);
 
   const goPrev = useCallback(() => {
     pauseUntilRef.current = Date.now() + PAUSE_AFTER_INTERACTION_MS;
-    scrollToIndex(activeIndexRef.current - 1);
-  }, [scrollToIndex]);
 
-  useEffect(() => {
-    const viewport = viewportRef.current;
-    if (!viewport || !hasMultiple) return undefined;
-
-    let scrollTimer;
-
-    const syncActiveIndex = () => {
-      if (isNavigatingRef.current) return;
-
-      const scrollLeft = viewport.scrollLeft;
-      let closest = 0;
-      let minDistance = Infinity;
-
-      slideRefs.current.forEach((slide, index) => {
-        if (!slide) return;
-        const distance = Math.abs(getSlideScrollLeft(index) - scrollLeft);
-        if (distance < minDistance) {
-          minDistance = distance;
-          closest = index;
-        }
+    const current = positionRef.current;
+    const index = ((current % (itemCount * 2)) + itemCount * 2) % (itemCount * 2);
+    if (index === 0) {
+      setAnimate(false);
+      setPosition(itemCount);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setAnimate(true);
+          setPosition(itemCount - 1);
+        });
       });
+      return;
+    }
 
-      activeIndexRef.current = closest;
-      pauseUntilRef.current = Date.now() + PAUSE_AFTER_INTERACTION_MS;
-    };
-
-    const handleScroll = () => {
-      window.clearTimeout(scrollTimer);
-      scrollTimer = window.setTimeout(syncActiveIndex, 80);
-    };
-
-    viewport.addEventListener('scroll', handleScroll, { passive: true });
-    return () => {
-      viewport.removeEventListener('scroll', handleScroll);
-      window.clearTimeout(scrollTimer);
-      if (navigateTimerRef.current) {
-        window.clearTimeout(navigateTimerRef.current);
-      }
-    };
-  }, [getSlideScrollLeft, hasMultiple]);
+    setAnimate(true);
+    setPosition(current - 1);
+  }, [itemCount]);
 
   useEffect(() => {
     if (!hasMultiple) return undefined;
 
     const timer = window.setInterval(() => {
       if (isHoveredRef.current || Date.now() < pauseUntilRef.current) return;
-      scrollToIndex(activeIndexRef.current + 1);
+      setAnimate(true);
+      setPosition((current) => current + 1);
     }, AUTO_PLAY_MS);
 
     return () => window.clearInterval(timer);
-  }, [hasMultiple, scrollToIndex]);
+  }, [hasMultiple]);
 
   if (!itemCount) return null;
+
+  const offset = stepPxRef.current * translateIndex;
+  const translateX = isRTL ? offset : -offset;
 
   return (
     <div
@@ -129,22 +146,22 @@ export default function TestimonialsCarousel({ items = [], isRTL = false }) {
         isHoveredRef.current = false;
       }}
     >
-      <div
-        ref={viewportRef}
-        dir={isRTL ? 'rtl' : 'ltr'}
-        className="testimonials-carousel__viewport scrollbar-hide"
-      >
-        {items.map((item, index) => (
-          <div
-            key={`${item.name}-${index}`}
-            ref={(node) => {
-              slideRefs.current[index] = node;
-            }}
-            className="testimonials-carousel__slide"
-          >
-            <TestimonialCard name={item.name} quote={item.quote} />
-          </div>
-        ))}
+      <div ref={viewportRef} className="testimonials-carousel__viewport">
+        <div
+          ref={trackRef}
+          className="testimonials-carousel__track"
+          style={{
+            transform: `translate3d(${translateX}px, 0, 0)`,
+            transition: animate ? `transform ${TRANSITION_MS}ms ease` : 'none',
+          }}
+          onTransitionEnd={handleTransitionEnd}
+        >
+          {loopedItems.map((item, index) => (
+            <div key={`${item.name}-${index}`} className="testimonials-carousel__slide">
+              <TestimonialCard name={item.name} quote={item.quote} />
+            </div>
+          ))}
+        </div>
       </div>
 
       {hasMultiple && (
