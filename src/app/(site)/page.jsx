@@ -1,5 +1,7 @@
 import HeroSection from '@/components/home/hero_section';
 import { getHomeSettings } from '@/lib/content/site-settings';
+import { getActiveHeroSlides } from '@/lib/content/hero-slides';
+import { preload } from 'react-dom';
 import WelcomePart from '@/components/home/welcome_part';
 import Safety from '@/components/home/safety';
 import SpecializedServices from '@/components/home/specialized_services';
@@ -12,6 +14,13 @@ export const revalidate = 60;
 
 export default async function HomePage() {
   const homeSettings = await getHomeSettings();
+  const slides = getActiveHeroSlides(homeSettings?.heroSlides || []);
+  const firstImage = slides.find((slide) => slide.mediaType === 'image' && slide.src);
+
+  if (firstImage?.src) {
+    preload(firstImage.src, { as: 'image' });
+  }
+
   const content =
     'Start by scheduling your consultation, explore our specialties for insights, or access resources to make confident and informed decisions you need.';
 

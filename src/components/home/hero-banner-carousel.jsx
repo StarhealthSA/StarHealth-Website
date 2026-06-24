@@ -89,6 +89,9 @@ export default function HeroBannerCarousel({ slides = [] }) {
                 src={slide.src}
                 alt=""
                 className="hero-banner-carousel__image"
+                loading={index === 0 ? 'eager' : 'lazy'}
+                fetchPriority={index === 0 ? 'high' : 'auto'}
+                decoding="async"
               />
             ) : (
               <HeroBannerVideo
