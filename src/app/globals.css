@@ -812,6 +812,22 @@ html {
   box-shadow: 0 28px 70px rgba(3, 123, 118, 0.22);
 }
 
+.doctor-card-photo {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 0.85rem;
+  background: linear-gradient(180deg, #f3faf8 0%, #e8f5f2 100%);
+}
+
+.doctor-card-photo__image {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: 68% center;
+}
+
 .service-detail-container {
   margin-inline: auto;
   width: 100%;

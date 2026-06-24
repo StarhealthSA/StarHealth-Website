@@ -29,9 +29,9 @@ export default function ServiceDoctors({ matchedDoctors = [], lang }) {
             description={t('serviceDetail.meetDoctorsLead')}
           />
         </Reveal>
-        <div className="scrollbar-hide mt-8 flex gap-6 overflow-x-auto pb-2 lg:grid lg:grid-cols-4 lg:overflow-visible">
+        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {localized.map((doctor, index) => (
-            <div key={doctor.id} className="min-w-[220px] flex-shrink-0 lg:min-w-0">
+            <div key={doctor.id} className="min-w-0">
               <DoctorsCard
                 imgs={doctor.image}
                 name={doctor.displayName}

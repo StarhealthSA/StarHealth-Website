@@ -16,7 +16,9 @@ function DoctorsCard(props) {
       <Reveal delay={props.revealDelay ?? 0} className="h-full">
         <div className="flex h-full flex-col justify-between rounded-[12px] border-[1px] border-[#E9E7E6] bg-[#FFFFFF] px-[20px] py-[30px] lg:mb-1">
           <Link href={props.slug ? `/doctors/${props.slug}` : '#'} className="block flex-1">
-            <img src={props.imgs} alt="doctor" className="h-auto w-full object-cover" />
+            <div className="doctor-card-photo">
+              <img src={props.imgs} alt="" className="doctor-card-photo__image" />
+            </div>
             <h1 className="mt-4 font-inter text-[16px] font-medium text-[#002333] lg:text-[20px]">{props.name}</h1>
             <p className="mt-2 font-inter text-[12px] font-medium text-[#687276] lg:text-[16px] lg:font-normal">{props.specialty}</p>
             {props.specialization && (
