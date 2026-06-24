@@ -16,7 +16,7 @@ export function FaqSectionTitle({ children, className = '' }) {
 
 export default function FaqAccordion({
   items = [],
-  defaultOpenIndex = 0,
+  defaultOpenIndex = null,
   reveal = true,
   revealStagger = 70,
   className = '',
