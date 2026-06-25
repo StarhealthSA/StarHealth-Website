@@ -1,10 +1,8 @@
 'use client';
 
-import { SERVICE_ICONS } from '@/lib/content/service-icons';
-
 export default function ServiceBenefitsEditor({ items = [], onChange }) {
   const addItem = () => {
-    onChange([...items, { en: '', ar: '', iconKey: '' }]);
+    onChange([...items, { en: '', ar: '' }]);
   };
 
   return (
@@ -40,23 +38,6 @@ export default function ServiceBenefitsEditor({ items = [], onChange }) {
               className="rounded-lg border border-[#d7e6e2] px-3 py-2 text-sm"
             />
           </div>
-          <label className="block">
-            <span className="text-xs font-medium text-[#586971]">Icon (optional)</span>
-            <select
-              value={item.iconKey || ''}
-              onChange={(e) => {
-                const next = [...items];
-                next[index] = { ...item, iconKey: e.target.value };
-                onChange(next);
-              }}
-              className="mt-1 w-full rounded-lg border border-[#d7e6e2] bg-white px-3 py-2 text-sm"
-            >
-              <option value="">Numbered card</option>
-              {Object.keys(SERVICE_ICONS).map((key) => (
-                <option key={key} value={key}>{key}</option>
-              ))}
-            </select>
-          </label>
           <button
             type="button"
             onClick={() => onChange(items.filter((_, i) => i !== index))}

@@ -70,11 +70,10 @@ export function normalizeMarketing(raw = {}) {
 export function normalizeBenefits(items) {
   if (!Array.isArray(items)) return [];
   return items.map((item) => {
-    if (typeof item === 'string') return { en: item, ar: '', iconKey: '' };
+    if (typeof item === 'string') return { en: item, ar: '' };
     return {
       en: item.en || '',
       ar: item.ar || '',
-      iconKey: item.iconKey || '',
     };
   });
 }
