@@ -4,7 +4,8 @@ import { useMemo, useState } from 'react';
 import LocalizedInput from '@/components/admin/localized-input';
 import AdminImagePreview from '@/components/admin/admin-image-preview';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
-import { adminFetch, uploadAdminFile } from '@/lib/admin-api';
+import { useAdminUpload } from '@/contexts/admin-upload-context';
+import { adminFetch } from '@/lib/admin-api';
 import {
   createEmptyHeroSlide,
   isBannerImageUrl,
@@ -22,13 +23,13 @@ function sortSlides(slides) {
 
 export default function HomepageSettingsForm({ initial }) {
   const { getIdToken } = useAdminAuth();
+  const { isUploading, uploadFile } = useAdminUpload();
   const [form, setForm] = useState({
     heroTitle: initial?.heroTitle || { en: '', ar: '' },
     heroSubtitle: initial?.heroSubtitle || { en: '', ar: '' },
     heroSlides: sortSlides(migrateHeroSlidesFromLegacy(initial || {})),
   });
   const [saving, setSaving] = useState(false);
-  const [uploadingSlideId, setUploadingSlideId] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
@@ -79,19 +80,17 @@ export default function HomepageSettingsForm({ initial }) {
   };
 
   const handleUpload = async (slideId, file, type) => {
-    if (!file) return;
+    if (!file || isUploading) return;
 
     try {
-      setUploadingSlideId(slideId);
       setError('');
       const token = await getIdToken();
       const folder = type === 'video' ? 'homepage/videos' : 'homepage/images';
-      const url = await uploadAdminFile(file, folder, token);
+      const label = type === 'video' ? 'Uploading hero video...' : 'Uploading hero image...';
+      const url = await uploadFile(file, folder, token, label);
       updateSlide(slideId, { url, type, enabled: true });
     } catch (err) {
       setError(err.message);
-    } finally {
-      setUploadingSlideId('');
     }
   };
 
@@ -185,7 +184,6 @@ export default function HomepageSettingsForm({ initial }) {
                 slide={slide}
                 index={index}
                 total={form.heroSlides.length}
-                uploading={uploadingSlideId === slide.id}
                 onUpdate={(patch) => updateSlide(slide.id, patch)}
                 onRemove={() => removeSlide(slide.id)}
                 onMoveUp={() => moveSlide(slide.id, 'up')}
@@ -199,7 +197,7 @@ export default function HomepageSettingsForm({ initial }) {
 
       <button
         type="submit"
-        disabled={saving}
+        disabled={saving || isUploading}
         className="rounded-lg bg-[#037B76] px-5 py-2 text-sm font-medium text-white disabled:opacity-60"
       >
         {saving ? 'Saving...' : 'Save settings'}
@@ -212,13 +210,13 @@ function SlideEditor({
   slide,
   index,
   total,
-  uploading,
   onUpdate,
   onRemove,
   onMoveUp,
   onMoveDown,
   onUpload,
 }) {
+  const { isUploading } = useAdminUpload();
   const platform = useMemo(
     () => (slide.type === 'video' ? detectBannerVideoPlatform(slide.url) : ''),
     [slide.type, slide.url]
@@ -319,11 +317,11 @@ function SlideEditor({
           type="file"
           accept={slide.type === 'video' ? 'video/mp4,video/webm,video/quicktime' : 'image/*'}
           onChange={(e) => onUpload(e.target.files?.[0])}
-          disabled={uploading}
+          disabled={isUploading}
           className="mt-1 w-full text-sm"
         />
         <p className="mt-1 text-xs text-[#586971]">
-          {uploading ? 'Uploading...' : 'Uploaded files are stored and the URL is filled automatically.'}
+          {isUploading ? 'Uploading...' : 'Uploaded files are stored and the URL is filled automatically.'}
         </p>
       </label>
 

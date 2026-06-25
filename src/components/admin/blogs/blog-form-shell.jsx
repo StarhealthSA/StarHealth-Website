@@ -6,7 +6,8 @@ import LocalizedInput from '@/components/admin/localized-input';
 import AutoTranslateBar from '@/components/admin/auto-translate-bar';
 import AdminImagePreview from '@/components/admin/admin-image-preview';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
-import { adminFetch, uploadAdminFile } from '@/lib/admin-api';
+import { useAdminUpload } from '@/contexts/admin-upload-context';
+import { adminFetch } from '@/lib/admin-api';
 import { createEmptyBlog } from '@/lib/content/blog-defaults';
 
 const TABS = ['Basic', 'Content', 'SEO', 'Media'];
@@ -14,10 +15,10 @@ const TABS = ['Basic', 'Content', 'SEO', 'Media'];
 export default function BlogFormShell({ initial }) {
   const router = useRouter();
   const { getIdToken } = useAdminAuth();
+  const { isUploading, uploadFile } = useAdminUpload();
   const [form, setForm] = useState(initial || createEmptyBlog());
   const [tab, setTab] = useState('Basic');
   const [saving, setSaving] = useState(false);
-  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
 
   const updateField = (path, value) => {
@@ -35,10 +36,10 @@ export default function BlogFormShell({ initial }) {
   };
 
   const handleImageUpload = async (file, field) => {
+    if (!file || isUploading) return;
     try {
-      setUploading(true);
       const token = await getIdToken();
-      const imageUrl = await uploadAdminFile(file, 'blogs', token);
+      const imageUrl = await uploadFile(file, 'blogs', token, 'Uploading blog image...');
       if (field === 'featuredImageUrl') {
         updateField('featuredImageUrl', imageUrl);
       } else {
@@ -46,8 +47,6 @@ export default function BlogFormShell({ initial }) {
       }
     } catch (err) {
       setError(err.message);
-    } finally {
-      setUploading(false);
     }
   };
 
@@ -100,8 +99,9 @@ export default function BlogFormShell({ initial }) {
           <button
             key={item}
             type="button"
+            disabled={isUploading}
             onClick={() => setTab(item)}
-            className={`rounded-lg px-4 py-2 text-sm font-medium ${
+            className={`rounded-lg px-4 py-2 text-sm font-medium disabled:cursor-not-allowed disabled:opacity-50 ${
               tab === item
                 ? 'bg-[#037B76] text-white'
                 : 'border border-[#d7e6e2] text-[#586971]'
@@ -220,7 +220,7 @@ export default function BlogFormShell({ initial }) {
               <input
                 type="file"
                 accept="image/*"
-                disabled={uploading}
+                disabled={isUploading}
                 onChange={(e) => e.target.files?.[0] && handleImageUpload(e.target.files[0], 'ogImage')}
                 className="mt-1 block w-full text-sm"
               />
@@ -251,7 +251,7 @@ export default function BlogFormShell({ initial }) {
               <input
                 type="file"
                 accept="image/*"
-                disabled={uploading}
+                disabled={isUploading}
                 onChange={(e) => e.target.files?.[0] && handleImageUpload(e.target.files[0], 'featuredImageUrl')}
                 className="mt-1 block w-full text-sm"
               />
@@ -270,7 +270,7 @@ export default function BlogFormShell({ initial }) {
       <div className="flex gap-3">
         <button
           type="submit"
-          disabled={saving || uploading}
+          disabled={saving || isUploading}
           className="rounded-lg bg-[#037B76] px-5 py-2 text-sm font-medium text-white disabled:opacity-60"
         >
           {saving ? 'Saving...' : 'Save blog'}

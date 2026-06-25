@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import LocalizedInput from '@/components/admin/localized-input';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
-import { uploadAdminFile } from '@/lib/admin-api';
+import { useAdminUpload } from '@/contexts/admin-upload-context';
+import { useAdminUpload } from '@/contexts/admin-upload-context';
 import AdminImagePreview from '@/components/admin/admin-image-preview';
 import { createEmptyReel, detectReelPlatform } from '@/lib/content/reel-utils';
 
@@ -14,8 +15,9 @@ const PLATFORMS = [
   { value: 'upload', label: 'Uploaded Video' },
 ];
 
-export default function DoctorReelsEditor({ reels = [], onChange, disabled = false, onUploadingChange }) {
+export default function DoctorReelsEditor({ reels = [], onChange, disabled = false }) {
   const { getIdToken } = useAdminAuth();
+  const { isUploading, uploadFile } = useAdminUpload();
   const [uploadingId, setUploadingId] = useState(null);
 
   const updateReel = (index, patch) => {
@@ -40,12 +42,11 @@ export default function DoctorReelsEditor({ reels = [], onChange, disabled = fal
   };
 
   const handleVideoUpload = async (index, file) => {
-    if (!file) return;
+    if (!file || isUploading) return;
     try {
-      onUploadingChange?.(true);
       setUploadingId(reels[index]?.id || index);
       const token = await getIdToken();
-      const videoUrl = await uploadAdminFile(file, 'doctors/reels', token);
+      const videoUrl = await uploadFile(file, 'doctors/reels', token, 'Uploading reel video...');
       updateReel(index, {
         url: videoUrl,
         platform: 'upload',
@@ -55,23 +56,20 @@ export default function DoctorReelsEditor({ reels = [], onChange, disabled = fal
       alert(error.message || 'Video upload failed');
     } finally {
       setUploadingId(null);
-      onUploadingChange?.(false);
     }
   };
 
   const handleThumbnailUpload = async (index, file) => {
-    if (!file) return;
+    if (!file || isUploading) return;
     try {
-      onUploadingChange?.(true);
       setUploadingId(reels[index]?.id || index);
       const token = await getIdToken();
-      const imageUrl = await uploadAdminFile(file, 'doctors/reels/thumbnails', token);
+      const imageUrl = await uploadFile(file, 'doctors/reels/thumbnails', token, 'Uploading reel thumbnail...');
       updateReel(index, { thumbnailUrl: imageUrl });
     } catch (error) {
       alert(error.message || 'Thumbnail upload failed');
     } finally {
       setUploadingId(null);
-      onUploadingChange?.(false);
     }
   };
 
@@ -87,7 +85,7 @@ export default function DoctorReelsEditor({ reels = [], onChange, disabled = fal
         <button
           type="button"
           onClick={addReel}
-          disabled={disabled}
+          disabled={disabled || isUploading}
           className="rounded-lg border border-[#037B76] px-3 py-1.5 text-sm font-medium text-[#037B76] hover:bg-[#037B76] hover:text-white disabled:opacity-50"
         >
           + Add Reel
@@ -149,7 +147,7 @@ export default function DoctorReelsEditor({ reels = [], onChange, disabled = fal
               <input
                 type="file"
                 accept="video/*"
-                disabled={uploadingId === (reel.id || index)}
+                disabled={isUploading || uploadingId === (reel.id || index)}
                 onChange={(e) => handleVideoUpload(index, e.target.files?.[0])}
                 className="mt-1 w-full text-sm"
               />
@@ -159,7 +157,7 @@ export default function DoctorReelsEditor({ reels = [], onChange, disabled = fal
               <input
                 type="file"
                 accept="image/*"
-                disabled={uploadingId === (reel.id || index)}
+                disabled={isUploading || uploadingId === (reel.id || index)}
                 onChange={(e) => handleThumbnailUpload(index, e.target.files?.[0])}
                 className="mt-1 w-full text-sm"
               />

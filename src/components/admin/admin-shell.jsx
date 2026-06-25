@@ -8,6 +8,8 @@ import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
 import AdminPageLoader from '@/components/admin/admin-page-loader';
 import AdminThemeToggle from '@/components/admin/admin-theme-toggle';
+import AdminUploadLoader from '@/components/admin/admin-upload-loader';
+import { useAdminUpload } from '@/contexts/admin-upload-context';
 import { ROLE_LABELS } from '@/lib/firebase/roles';
 
 const NAV_ITEMS = [
@@ -33,6 +35,7 @@ export default function AdminShell({ children }) {
   const { user, role, loading, logout, configured, getIdToken, canManageUsers } = useAdminAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [unreadBookings, setUnreadBookings] = useState(0);
+  const { isUploading } = useAdminUpload();
   const isLoginPage = pathname === '/admin/login';
 
   useEffect(() => {
@@ -234,8 +237,14 @@ export default function AdminShell({ children }) {
           </a>
         </header>
 
-        <main className="admin-shell-main flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
-          <div className="mx-auto max-w-7xl">{children}</div>
+        <main className="admin-shell-main relative flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+          <AdminUploadLoader show={isUploading} />
+          <div
+            className={`mx-auto max-w-7xl ${isUploading ? 'pointer-events-none select-none opacity-60' : ''}`}
+            aria-hidden={isUploading}
+          >
+            {children}
+          </div>
         </main>
       </div>
     </div>

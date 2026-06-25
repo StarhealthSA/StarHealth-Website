@@ -14,12 +14,12 @@ import {
   getSpecializationsByCategory,
 } from '@/lib/content/specialization-utils';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
+import { useAdminUpload } from '@/contexts/admin-upload-context';
 import { adminFetch, uploadAdminFile } from '@/lib/admin-api';
 import LocalizedInput from '@/components/admin/localized-input';
 import LocalizedListEditor from '@/components/admin/localized-list-editor';
 import AutoTranslateBar from '@/components/admin/auto-translate-bar';
 import AdminImagePreview from '@/components/admin/admin-image-preview';
-import AdminUploadLoader from '@/components/admin/admin-upload-loader';
 import DoctorAvailabilityCalendar from '@/components/admin/doctors/doctor-availability-calendar';
 import DoctorReelsEditor from '@/components/admin/doctors/doctor-reels-editor';
 
@@ -32,6 +32,7 @@ export default function DoctorFormShell({
 }) {
   const router = useRouter();
   const { getIdToken } = useAdminAuth();
+  const { isUploading, uploadFile, runWithUpload } = useAdminUpload();
   const [tab, setTab] = useState(() => resolveDoctorFormTab(initialTab));
   const [form, setForm] = useState(() => {
     const base = initial || createEmptyDoctor();
@@ -45,7 +46,6 @@ export default function DoctorFormShell({
     };
   });
   const [saving, setSaving] = useState(false);
-  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -68,31 +68,27 @@ export default function DoctorFormShell({
 
   const handlePhotoUpload = async (e) => {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (!file || isUploading) return;
     try {
-      setUploading(true);
       const token = await getIdToken();
-      const url = await uploadAdminFile(file, 'doctors', token);
+      const url = await uploadFile(file, 'doctors', token, 'Uploading doctor photo...');
       update('profilePhotoUrl', url);
     } catch (err) {
       setError(err.message);
-    } finally {
-      setUploading(false);
     }
   };
 
   const handleGalleryUpload = async (e) => {
     const files = Array.from(e.target.files || []);
-    if (!files.length) return;
+    if (!files.length || isUploading) return;
     try {
-      setUploading(true);
-      const token = await getIdToken();
-      const urls = await Promise.all(files.map((f) => uploadAdminFile(f, 'doctors/gallery', token)));
-      update('galleryImages', [...(form.galleryImages || []), ...urls]);
+      await runWithUpload(async () => {
+        const token = await getIdToken();
+        const urls = await Promise.all(files.map((f) => uploadAdminFile(f, 'doctors/gallery', token)));
+        update('galleryImages', [...(form.galleryImages || []), ...urls]);
+      }, 'Uploading gallery images...');
     } catch (err) {
       setError(err.message);
-    } finally {
-      setUploading(false);
     }
   };
 
@@ -156,7 +152,6 @@ export default function DoctorFormShell({
 
   return (
     <form onSubmit={handleSubmit} className="relative space-y-6">
-      <AdminUploadLoader show={uploading} label="Uploading image..." />
       <AutoTranslateBar form={form} onTranslated={setForm} />
 
       <div className="flex flex-wrap gap-2 border-b border-[#d7e6e2] pb-4">
@@ -164,8 +159,9 @@ export default function DoctorFormShell({
           <button
             key={t.id}
             type="button"
+            disabled={isUploading}
             onClick={() => setTab(t.id)}
-            className={`rounded-lg px-4 py-2 text-sm font-medium ${
+            className={`rounded-lg px-4 py-2 text-sm font-medium disabled:cursor-not-allowed disabled:opacity-50 ${
               tab === t.id ? 'bg-[#037B76] text-white' : 'bg-white text-[#586971] border border-[#d7e6e2]'
             }`}
           >
@@ -241,10 +237,7 @@ export default function DoctorFormShell({
               </label>
               <label className="block">
                 <span className="text-sm font-medium text-[#586971]">Upload Photo</span>
-                <input type="file" accept="image/*" onChange={handlePhotoUpload} disabled={uploading} className="mt-1 w-full text-sm" />
-                {uploading && (
-                  <p className="mt-1 text-xs text-[#037B76]">Uploading...</p>
-                )}
+                <input type="file" accept="image/*" onChange={handlePhotoUpload} disabled={isUploading} className="mt-1 w-full text-sm" />
               </label>
             </div>
             {form.profilePhotoUrl && (
@@ -300,10 +293,7 @@ export default function DoctorFormShell({
           <div className="space-y-4">
             <label className="block">
               <span className="text-sm font-medium text-[#586971]">Upload Gallery Images</span>
-              <input type="file" accept="image/*" multiple onChange={handleGalleryUpload} disabled={uploading} className="mt-1 w-full text-sm" />
-              {uploading && (
-                <p className="mt-1 text-xs text-[#037B76]">Uploading...</p>
-              )}
+              <input type="file" accept="image/*" multiple onChange={handleGalleryUpload} disabled={isUploading} className="mt-1 w-full text-sm" />
             </label>
             <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
               {(form.galleryImages || []).map((url, i) => (
@@ -323,8 +313,7 @@ export default function DoctorFormShell({
           <DoctorReelsEditor
             reels={form.reels || []}
             onChange={(reels) => update('reels', reels)}
-            disabled={uploading}
-            onUploadingChange={setUploading}
+            disabled={isUploading}
           />
         )}
 
@@ -372,7 +361,7 @@ export default function DoctorFormShell({
       </div>
 
       <div className="flex gap-3">
-        <button type="submit" disabled={saving || uploading} className="rounded-lg bg-[#037B76] px-6 py-2 text-sm font-medium text-white disabled:opacity-60">
+        <button type="submit" disabled={saving || isUploading} className="rounded-lg bg-[#037B76] px-6 py-2 text-sm font-medium text-white disabled:opacity-60">
           {saving ? 'Saving...' : 'Save Doctor'}
         </button>
         <button type="button" onClick={() => router.push('/admin/doctors')} className="rounded-lg border border-[#d7e6e2] px-6 py-2 text-sm font-medium text-[#586971]">

@@ -2,6 +2,7 @@
 
 import LocalizedInput from '@/components/admin/localized-input';
 import LocalizedListEditor from '@/components/admin/localized-list-editor';
+import { useAdminUpload } from '@/contexts/admin-upload-context';
 
 function StatsEditor({ stats = [], onChange }) {
   const addStat = () => {
@@ -115,9 +116,9 @@ export default function ServiceMarketingEditor({
   marketing,
   doctors = [],
   onUpdate,
-  uploading,
   onHeroVideoUpload,
 }) {
+  const { isUploading } = useAdminUpload();
   const updateMarketing = (field, value) => {
     onUpdate('marketing', { ...marketing, [field]: value });
   };
@@ -158,7 +159,7 @@ export default function ServiceMarketingEditor({
             type="file"
             accept="video/mp4,video/webm"
             onChange={onHeroVideoUpload}
-            disabled={uploading}
+            disabled={isUploading}
             className="mt-1 block w-full text-sm"
           />
         </label>

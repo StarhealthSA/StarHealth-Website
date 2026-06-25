@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { SERVICE_ICONS } from '@/lib/content/service-icons';
 import { createEmptyService, SERVICE_FORM_TABS } from '@/lib/content/service-defaults';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
+import { useAdminUpload } from '@/contexts/admin-upload-context';
 import { adminFetch, uploadAdminFile } from '@/lib/admin-api';
 import LocalizedInput from '@/components/admin/localized-input';
 import LocalizedListEditor from '@/components/admin/localized-list-editor';
@@ -22,10 +23,10 @@ export default function ServiceFormShell({
 }) {
   const router = useRouter();
   const { getIdToken } = useAdminAuth();
+  const { isUploading, uploadFile, runWithUpload } = useAdminUpload();
   const [tab, setTab] = useState('basic');
   const [form, setForm] = useState(initial || createEmptyService());
   const [saving, setSaving] = useState(false);
-  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
 
   const update = (path, value) => {
@@ -54,64 +55,54 @@ export default function ServiceFormShell({
 
   const handleFeaturedUpload = async (e) => {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (!file || isUploading) return;
     try {
-      setUploading(true);
       const token = await getIdToken();
-      const url = await uploadAdminFile(file, 'services', token);
+      const url = await uploadFile(file, 'services', token, 'Uploading featured image...');
       update('featuredImageUrl', url);
     } catch (err) {
       setError(err.message);
-    } finally {
-      setUploading(false);
     }
   };
 
   const handleIconUpload = async (e) => {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (!file || isUploading) return;
     try {
-      setUploading(true);
       const token = await getIdToken();
-      const url = await uploadAdminFile(file, 'services/icons', token);
+      const url = await uploadFile(file, 'services/icons', token, 'Uploading service icon...');
       update('iconUrl', url);
     } catch (err) {
       setError(err.message);
-    } finally {
-      setUploading(false);
     }
   };
 
   const handleHeroVideoUpload = async (e) => {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (!file || isUploading) return;
     try {
-      setUploading(true);
       const token = await getIdToken();
-      const url = await uploadAdminFile(file, 'services/videos', token);
+      const url = await uploadFile(file, 'services/videos', token, 'Uploading hero video...');
       update('marketing', {
         ...(form.marketing || {}),
         heroVideo: { enabled: true, url },
       });
     } catch (err) {
       setError(err.message);
-    } finally {
-      setUploading(false);
     }
   };
 
   const handleGalleryUpload = async (e) => {
     const files = Array.from(e.target.files || []);
-    if (!files.length) return;
+    if (!files.length || isUploading) return;
     try {
-      setUploading(true);
-      const token = await getIdToken();
-      const urls = await Promise.all(files.map((f) => uploadAdminFile(f, 'services/gallery', token)));
-      update('galleryImages', [...(form.galleryImages || []), ...urls]);
+      await runWithUpload(async () => {
+        const token = await getIdToken();
+        const urls = await Promise.all(files.map((f) => uploadAdminFile(f, 'services/gallery', token)));
+        update('galleryImages', [...(form.galleryImages || []), ...urls]);
+      }, 'Uploading gallery images...');
     } catch (err) {
       setError(err.message);
-    } finally {
-      setUploading(false);
     }
   };
 
@@ -168,8 +159,9 @@ export default function ServiceFormShell({
           <button
             key={t.id}
             type="button"
+            disabled={isUploading}
             onClick={() => setTab(t.id)}
-            className={`rounded-lg px-4 py-2 text-sm font-medium ${
+            className={`rounded-lg px-4 py-2 text-sm font-medium disabled:cursor-not-allowed disabled:opacity-50 ${
               tab === t.id ? 'bg-[#037B76] text-white' : 'bg-[#f0f6f4] text-[#586971]'
             }`}
           >
@@ -215,7 +207,7 @@ export default function ServiceFormShell({
               </label>
               <label className="block">
                 <span className="text-sm font-medium text-[#586971]">Custom Icon Upload</span>
-                <input type="file" accept="image/*" onChange={handleIconUpload} disabled={uploading} className="mt-1 block w-full text-sm" />
+                <input type="file" accept="image/*" onChange={handleIconUpload} disabled={isUploading} className="mt-1 block w-full text-sm" />
               </label>
             </div>
             <div className="mt-4 flex items-center gap-4">
@@ -235,7 +227,7 @@ export default function ServiceFormShell({
             <p className="mt-1 text-xs text-[#586971]">Shown in the hero area on the service detail page only.</p>
             <label className="mt-4 block">
               <span className="text-sm font-medium text-[#586971]">Upload Banner Image</span>
-              <input type="file" accept="image/*" onChange={handleFeaturedUpload} disabled={uploading} className="mt-1 block w-full text-sm" />
+              <input type="file" accept="image/*" onChange={handleFeaturedUpload} disabled={isUploading} className="mt-1 block w-full text-sm" />
             </label>
             {form.featuredImageUrl && (
               <div className="mt-4">
@@ -256,7 +248,6 @@ export default function ServiceFormShell({
           marketing={form.marketing || createEmptyService().marketing}
           doctors={doctors}
           onUpdate={update}
-          uploading={uploading}
           onHeroVideoUpload={handleHeroVideoUpload}
         />
       )}
@@ -329,7 +320,7 @@ export default function ServiceFormShell({
         <div className="space-y-4">
           <label className="block">
             <span className="text-sm font-medium text-[#586971]">Gallery Images</span>
-            <input type="file" accept="image/*" multiple onChange={handleGalleryUpload} disabled={uploading} className="mt-1 block w-full text-sm" />
+            <input type="file" accept="image/*" multiple onChange={handleGalleryUpload} disabled={isUploading} className="mt-1 block w-full text-sm" />
           </label>
           {(form.galleryImages || []).length > 0 && (
             <div className="flex flex-wrap gap-3">
@@ -439,7 +430,7 @@ export default function ServiceFormShell({
       <div className="flex gap-3 border-t border-[#d7e6e2] pt-4">
         <button
           type="submit"
-          disabled={saving || uploading}
+          disabled={saving || isUploading}
           className="rounded-lg bg-[#037B76] px-5 py-2 text-sm font-medium text-white disabled:opacity-60"
         >
           {saving ? 'Saving...' : 'Save Service'}

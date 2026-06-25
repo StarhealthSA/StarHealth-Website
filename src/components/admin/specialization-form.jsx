@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { SERVICE_ICONS } from '@/lib/content/service-icons';
 import { createEmptySpecialization } from '@/lib/content/specialization-defaults';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
+import { useAdminUpload } from '@/contexts/admin-upload-context';
 import { uploadAdminFile } from '@/lib/admin-api';
 import LocalizedInput from '@/components/admin/localized-input';
 import LocalizedListEditor from '@/components/admin/localized-list-editor';
@@ -21,13 +22,13 @@ export default function SpecializationForm({
   saving,
 }) {
   const { getIdToken } = useAdminAuth();
+  const { isUploading, uploadFile, runWithUpload } = useAdminUpload();
   const [form, setForm] = useState(() => ({
     ...createEmptySpecialization(),
     ...initial,
     categoryId: initial?.categoryId || null,
     parentServiceId: initial?.parentServiceId || '',
   }));
-  const [uploading, setUploading] = useState(false);
   const [tab, setTab] = useState('basic');
 
   const updateField = (path, value) => {
@@ -46,27 +47,27 @@ export default function SpecializationForm({
 
   const handleFeaturedUpload = async (e) => {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (!file || isUploading) return;
     try {
-      setUploading(true);
       const token = await getIdToken();
-      const url = await uploadAdminFile(file, 'specializations', token);
+      const url = await uploadFile(file, 'specializations', token, 'Uploading featured image...');
       updateField('featuredImageUrl', url);
-    } finally {
-      setUploading(false);
+    } catch {
+      // upload errors surface via global loader ending
     }
   };
 
   const handleGalleryUpload = async (e) => {
     const files = Array.from(e.target.files || []);
-    if (!files.length) return;
+    if (!files.length || isUploading) return;
     try {
-      setUploading(true);
-      const token = await getIdToken();
-      const urls = await Promise.all(files.map((f) => uploadAdminFile(f, 'specializations/gallery', token)));
-      updateField('galleryImages', [...(form.galleryImages || []), ...urls]);
-    } finally {
-      setUploading(false);
+      await runWithUpload(async () => {
+        const token = await getIdToken();
+        const urls = await Promise.all(files.map((f) => uploadAdminFile(f, 'specializations/gallery', token)));
+        updateField('galleryImages', [...(form.galleryImages || []), ...urls]);
+      }, 'Uploading gallery images...');
+    } catch {
+      // upload errors surface via global loader ending
     }
   };
 
@@ -102,8 +103,9 @@ export default function SpecializationForm({
           <button
             key={item.id}
             type="button"
+            disabled={isUploading}
             onClick={() => setTab(item.id)}
-            className={`rounded-lg px-4 py-2 text-sm font-medium ${
+            className={`rounded-lg px-4 py-2 text-sm font-medium disabled:cursor-not-allowed disabled:opacity-50 ${
               tab === item.id ? 'bg-[#037B76] text-white' : 'bg-[#f0f6f4] text-[#586971]'
             }`}
           >
@@ -231,7 +233,7 @@ export default function SpecializationForm({
           </label>
           <label className="block">
             <span className="text-sm font-medium text-[#586971]">Featured Image</span>
-            <input type="file" accept="image/*" onChange={handleFeaturedUpload} disabled={uploading} className="mt-1 block w-full text-sm" />
+            <input type="file" accept="image/*" onChange={handleFeaturedUpload} disabled={isUploading} className="mt-1 block w-full text-sm" />
           </label>
           {form.featuredImageUrl && (
             <AdminImagePreview
@@ -242,7 +244,7 @@ export default function SpecializationForm({
           )}
           <label className="block">
             <span className="text-sm font-medium text-[#586971]">Gallery Images</span>
-            <input type="file" accept="image/*" multiple onChange={handleGalleryUpload} disabled={uploading} className="mt-1 block w-full text-sm" />
+            <input type="file" accept="image/*" multiple onChange={handleGalleryUpload} disabled={isUploading} className="mt-1 block w-full text-sm" />
           </label>
           {(form.galleryImages || []).length > 0 && (
             <div className="flex flex-wrap gap-3">
@@ -291,7 +293,7 @@ export default function SpecializationForm({
       <div className="flex gap-3 border-t border-[#d7e6e2] pt-4">
         <button
           type="submit"
-          disabled={saving || uploading}
+          disabled={saving || isUploading}
           className="rounded-lg bg-[#037B76] px-5 py-2 text-sm font-medium text-white disabled:opacity-60"
         >
           {saving ? 'Saving...' : 'Save'}
