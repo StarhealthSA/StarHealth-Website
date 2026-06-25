@@ -1,5 +1,6 @@
 import AdminShell from '@/components/admin/admin-shell';
 import { AdminAuthProvider } from '@/contexts/admin-auth-context';
+import { AdminThemeProvider } from '@/contexts/admin-theme-context';
 
 export const metadata = {
   title: 'Admin | Star Health',
@@ -9,7 +10,9 @@ export const metadata = {
 export default function AdminLayout({ children }) {
   return (
     <AdminAuthProvider>
-      <AdminShell>{children}</AdminShell>
+      <AdminThemeProvider>
+        <AdminShell>{children}</AdminShell>
+      </AdminThemeProvider>
     </AdminAuthProvider>
   );
 }

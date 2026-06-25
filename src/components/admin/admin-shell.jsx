@@ -7,6 +7,7 @@ import logo from '@/assets/doctors/logo1.svg';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
 import AdminPageLoader from '@/components/admin/admin-page-loader';
+import AdminThemeToggle from '@/components/admin/admin-theme-toggle';
 import { ROLE_LABELS } from '@/lib/firebase/roles';
 
 const NAV_ITEMS = [
@@ -70,7 +71,14 @@ export default function AdminShell({ children }) {
   }, [user, isLoginPage, getIdToken, pathname]);
 
   if (isLoginPage) {
-    return <div className="min-h-screen bg-[#f4f8f7]">{children}</div>;
+    return (
+      <div className="relative min-h-screen bg-[#f4f8f7]">
+        <div className="absolute right-4 top-4 z-10">
+          <AdminThemeToggle />
+        </div>
+        {children}
+      </div>
+    );
   }
 
   if (loading) {
@@ -108,7 +116,6 @@ export default function AdminShell({ children }) {
         <Link href="/admin" className="inline-block">
           <img src={logo} alt="Star Health" className="h-8 w-auto lg:h-9" />
         </Link>
-        <p className="mt-2 text-xs text-[#586971]">Admin panel</p>
       </div>
 
       <nav className="min-h-0 flex-1 space-y-1 overflow-y-auto px-3 py-4">
@@ -187,6 +194,7 @@ export default function AdminShell({ children }) {
           </button>
           <img src={logo} alt="Star Health" className="h-7 w-[88px] object-contain object-left" />
           <div className="flex items-center gap-3">
+            <AdminThemeToggle />
             <a
               href="/"
               target="_blank"
@@ -205,7 +213,8 @@ export default function AdminShell({ children }) {
           </div>
         </header>
 
-        <header className="admin-shell-topbar hidden shrink-0 items-center justify-end border-b border-[#d7e6e2] bg-white px-6 lg:fixed lg:left-64 lg:right-0 lg:top-0 lg:z-20 lg:flex">
+        <header className="admin-shell-topbar hidden shrink-0 items-center justify-end gap-3 border-b border-[#d7e6e2] bg-white px-6 lg:fixed lg:left-64 lg:right-0 lg:top-0 lg:z-20 lg:flex">
+          <AdminThemeToggle />
           <a
             href="/"
             target="_blank"
