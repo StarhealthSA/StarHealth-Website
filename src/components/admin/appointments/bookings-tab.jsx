@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
 import AdminPageLoader from '@/components/admin/admin-page-loader';
+import AdminPagination, { usePagination } from '@/components/admin/admin-pagination';
 import { formatDateLabel } from '@/lib/appointments/slot-utils';
 
 function StatusBadge({ status, read }) {
@@ -43,6 +44,15 @@ export default function BookingsTab() {
       setLoading(false);
     }
   }, [getIdToken, statusFilter, search]);
+
+  const {
+    page,
+    setPage,
+    totalPages,
+    paginatedItems,
+    totalItems,
+    pageSize,
+  } = usePagination(appointments, undefined, `${statusFilter}|${search}`);
 
   useEffect(() => {
     load();
@@ -178,7 +188,7 @@ export default function BookingsTab() {
               </tr>
             ) : appointments.length === 0 ? (
               <tr><td colSpan={6} className="px-4 py-6 text-[#586971]">No appointments found.</td></tr>
-            ) : appointments.map((item) => (
+            ) : paginatedItems.map((item) => (
               <tr
                 key={item.id}
                 className={`border-b border-[#eef4f2] ${!item.read && item.status === 'booked' ? 'bg-amber-50/40' : ''}`}
@@ -230,6 +240,15 @@ export default function BookingsTab() {
             ))}
           </tbody>
         </table>
+        {!loading && totalItems > 0 && (
+          <AdminPagination
+            page={page}
+            totalPages={totalPages}
+            totalItems={totalItems}
+            pageSize={pageSize}
+            onPageChange={setPage}
+          />
+        )}
       </div>
     </>
   );

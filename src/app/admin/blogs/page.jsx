@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
 import AdminPageLoader from '@/components/admin/admin-page-loader';
+import AdminPagination, { usePagination } from '@/components/admin/admin-pagination';
 
 export default function AdminBlogsPage() {
   const { getIdToken, canWrite, canDeleteContent } = useAdminAuth();
@@ -41,6 +42,15 @@ export default function AdminBlogsPage() {
       return titleEn.includes(query) || titleAr.includes(query) || slug.includes(query);
     });
   }, [blogs, search]);
+
+  const {
+    page,
+    setPage,
+    totalPages,
+    paginatedItems,
+    totalItems,
+    pageSize,
+  } = usePagination(filteredBlogs, undefined, search);
 
   const handleDelete = async (blogId) => {
     if (!window.confirm('Delete this blog post?')) return;
@@ -110,7 +120,7 @@ export default function AdminBlogsPage() {
             ) : filteredBlogs.length === 0 ? (
               <tr><td colSpan={6} className="px-4 py-6 text-[#586971]">No blog posts yet.</td></tr>
             ) : (
-              filteredBlogs.map((blog) => (
+              paginatedItems.map((blog) => (
                 <tr key={blog.id} className="border-b border-[#eef4f2]">
                   <td className="px-4 py-3">
                     <p className="font-medium text-[#002f3b]">{blog.title?.en || blog.slug}</p>
@@ -168,6 +178,15 @@ export default function AdminBlogsPage() {
             )}
           </tbody>
         </table>
+        {!loading && totalItems > 0 && (
+          <AdminPagination
+            page={page}
+            totalPages={totalPages}
+            totalItems={totalItems}
+            pageSize={pageSize}
+            onPageChange={setPage}
+          />
+        )}
       </div>
     </div>
   );
