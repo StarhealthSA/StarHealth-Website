@@ -1,6 +1,7 @@
 import './globals.css';
 import Providers from './providers';
 import ScrollToTop from '@/components/scroll_to_top';
+import ScrollTopButton from '@/components/scroll_top_button';
 import RoutePrefetcher from '@/components/route_prefetcher';
 
 export const metadata = {
@@ -34,6 +35,7 @@ export default function RootLayout({ children }) {
         <Providers>
           <RoutePrefetcher />
           <ScrollToTop />
+          <ScrollTopButton />
           {children}
         </Providers>
       </body>
