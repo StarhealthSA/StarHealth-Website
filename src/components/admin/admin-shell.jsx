@@ -103,14 +103,15 @@ export default function AdminShell({ children }) {
   }
 
   const sidebar = (
-    <aside className="flex h-full w-64 shrink-0 flex-col border-r border-[#d7e6e2] bg-white">
-      <div className="border-b border-[#eef4f2] px-5 py-5">
+    <aside className="flex h-full min-h-0 w-64 shrink-0 flex-col border-r border-[#d7e6e2] bg-white">
+      <div className="shrink-0 border-b border-[#eef4f2] px-5 py-5">
         <Link href="/admin" className="inline-block">
           <img src={logo} alt="Star Health" className="h-8 w-auto lg:h-9" />
         </Link>
+        <p className="mt-2 text-xs text-[#586971]">Admin panel</p>
       </div>
 
-      <nav className="flex-1 space-y-1 px-3 py-4">
+      <nav className="min-h-0 flex-1 space-y-1 overflow-y-auto px-3 py-4">
         {NAV_ITEMS.filter((item) => !item.requiresUserManagement || canManageUsers).map((item) => {
           const active = isNavActive(pathname, item);
           return (
@@ -137,7 +138,7 @@ export default function AdminShell({ children }) {
         })}
       </nav>
 
-      <div className="border-t border-[#eef4f2] px-4 py-4">
+      <div className="shrink-0 border-t border-[#eef4f2] px-4 py-4">
         <p className="truncate text-sm font-medium text-[#002f3b]">{user.email}</p>
         <p className="mt-0.5 text-xs text-[#586971]">{ROLE_LABELS[role] || role}</p>
         <button
@@ -152,81 +153,81 @@ export default function AdminShell({ children }) {
   );
 
   return (
-    <div className="min-h-screen bg-[#f4f8f7]">
-      <div className="flex min-h-screen">
-        <div className="hidden lg:block">{sidebar}</div>
+    <div className="min-h-screen bg-[#f4f8f7] lg:h-svh lg:overflow-hidden">
+      {sidebarOpen && (
+        <button
+          type="button"
+          aria-label="Close menu"
+          className="fixed inset-0 z-40 bg-black/40 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
 
-        {sidebarOpen && (
+      <div
+        className={`fixed inset-y-0 left-0 z-50 w-64 transition-transform duration-200 lg:hidden ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        {sidebar}
+      </div>
+
+      <div className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:z-30 lg:block lg:h-svh lg:w-64">
+        {sidebar}
+      </div>
+
+      <div className="flex min-h-screen flex-col lg:ml-64 lg:h-svh lg:overflow-hidden">
+        <header className="flex items-center justify-between border-b border-[#d7e6e2] bg-white px-4 py-3 lg:hidden">
           <button
             type="button"
-            aria-label="Close menu"
-            className="fixed inset-0 z-40 bg-black/40 lg:hidden"
-            onClick={() => setSidebarOpen(false)}
-          />
-        )}
-
-        <div
-          className={`fixed inset-y-0 left-0 z-50 transition-transform duration-200 lg:hidden ${
-            sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          }`}
-        >
-          {sidebar}
-        </div>
-
-        <div className="flex min-w-0 flex-1 flex-col">
-          <header className="flex items-center justify-between border-b border-[#d7e6e2] bg-white px-4 py-3 lg:hidden">
-            <button
-              type="button"
-              onClick={() => setSidebarOpen(true)}
-              className="rounded-lg border border-[#d7e6e2] px-3 py-2 text-sm font-medium text-[#586971]"
-              aria-label="Open menu"
-            >
-              Menu
-            </button>
-            <img src={logo} alt="Star Health" className="h-7 w-[88px] object-contain object-left" />
-            <div className="flex items-center gap-3">
-              <a
-                href="/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm font-medium text-[#037B76]"
-              >
-                View site
-              </a>
-              <button
-                type="button"
-                onClick={logout}
-                className="text-sm font-medium text-[#037B76]"
-              >
-                Log out
-              </button>
-            </div>
-          </header>
-
-          <header className="hidden items-center justify-end border-b border-[#d7e6e2] bg-white px-6 py-3 lg:flex">
+            onClick={() => setSidebarOpen(true)}
+            className="rounded-lg border border-[#d7e6e2] px-3 py-2 text-sm font-medium text-[#586971]"
+            aria-label="Open menu"
+          >
+            Menu
+          </button>
+          <img src={logo} alt="Star Health" className="h-7 w-[88px] object-contain object-left" />
+          <div className="flex items-center gap-3">
             <a
               href="/"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg border border-[#037B76] px-4 py-2 text-sm font-medium text-[#037B76] transition-colors hover:bg-[#037B76] hover:text-white"
+              className="text-sm font-medium text-[#037B76]"
             >
-              View Website
-              <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                <path
-                  d="M11 3h6v6M17 3 9 11M8 5H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-3"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              View site
             </a>
-          </header>
+            <button
+              type="button"
+              onClick={logout}
+              className="text-sm font-medium text-[#037B76]"
+            >
+              Log out
+            </button>
+          </div>
+        </header>
 
-          <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
-            <div className="mx-auto max-w-7xl">{children}</div>
-          </main>
-        </div>
+        <header className="admin-shell-topbar hidden shrink-0 items-center justify-end border-b border-[#d7e6e2] bg-white px-6 lg:fixed lg:left-64 lg:right-0 lg:top-0 lg:z-20 lg:flex">
+          <a
+            href="/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-lg border border-[#037B76] px-4 py-2 text-sm font-medium text-[#037B76] transition-colors hover:bg-[#037B76] hover:text-white"
+          >
+            View Website
+            <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path
+                d="M11 3h6v6M17 3 9 11M8 5H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-3"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </a>
+        </header>
+
+        <main className="admin-shell-main flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+          <div className="mx-auto max-w-7xl">{children}</div>
+        </main>
       </div>
     </div>
   );

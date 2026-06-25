@@ -244,6 +244,20 @@ html {
   }
 }
 
+@media (min-width: 1024px) {
+  .admin-shell-topbar {
+    height: 3.5rem;
+  }
+
+  .admin-shell-main {
+    margin-top: 3.5rem;
+    height: calc(100svh - 3.5rem);
+    max-height: calc(100svh - 3.5rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
+
 .glass-nav {
   background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(10px) saturate(140%);
