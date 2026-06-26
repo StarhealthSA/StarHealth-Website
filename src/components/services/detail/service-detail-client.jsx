@@ -10,7 +10,6 @@ import { getServiceMatchedDoctors } from '@/lib/content/service-doctors';
 import AppointmentModal from '@/components/doctors/appointment-modal';
 import ServiceBanner from './service_banner';
 import ServiceAbout from './service_about';
-import ServiceBenefits from './service_benefits';
 import ServiceProcedure from './service_procedure';
 import ServiceRecovery from './service_recovery';
 import ServiceFaqs from './service_faqs';
@@ -83,10 +82,7 @@ export default function ServiceDetailClient({
         showWhatsApp={showWhatsApp}
       />
 
-      <ServiceBenefits service={service} lang={lang} />
-      {serviceSpecializations.length > 0 && (
-        <ServiceSpecializations items={serviceSpecializations} lang={lang} />
-      )}
+      <ServiceSpecializations items={serviceSpecializations} lang={lang} />
       <ServiceAbout service={service} />
       {matchedDoctors.length > 0 && (
         <ServiceDoctors matchedDoctors={matchedDoctors} lang={lang} />
