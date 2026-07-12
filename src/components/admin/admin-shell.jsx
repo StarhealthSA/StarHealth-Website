@@ -238,9 +238,12 @@ export default function AdminShell({ children }) {
         </header>
 
         <main className="admin-shell-main relative flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+          <div className="admin-shell-main-bg pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+            <img src={logo} alt="" className="admin-shell-main-bg__logo" />
+          </div>
           <AdminUploadLoader show={isUploading} />
           <div
-            className={`mx-auto max-w-7xl ${isUploading ? 'pointer-events-none select-none opacity-60' : ''}`}
+            className={`relative z-[1] mx-auto max-w-7xl ${isUploading ? 'pointer-events-none select-none opacity-60' : ''}`}
             aria-hidden={isUploading}
           >
             {children}

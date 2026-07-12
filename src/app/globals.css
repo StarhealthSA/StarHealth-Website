@@ -259,6 +259,29 @@ html {
   }
 }
 
+.admin-shell-main-bg__logo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(34rem, 72vw);
+  max-width: none;
+  transform: translate(-50%, -50%);
+  opacity: 0.045;
+  user-select: none;
+}
+
+@media (min-width: 1024px) {
+  .admin-shell-main-bg__logo {
+    width: min(40rem, 52vw);
+    opacity: 0.05;
+  }
+}
+
+[data-admin-theme="dark"] .admin-shell-main-bg__logo {
+  opacity: 0.07;
+  filter: brightness(1.75);
+}
+
 /* Admin panel dark theme — scoped to admin routes only */
 [data-admin-theme="dark"] {
   color-scheme: dark;
