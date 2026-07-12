@@ -46,7 +46,6 @@ export const DOCTOR_FORM_TABS = [
   { id: 'basic', label: 'Basic' },
   { id: 'professional', label: 'Professional' },
   { id: 'profile', label: 'Profile' },
-  { id: 'availability', label: 'Availability' },
   { id: 'media', label: 'Media' },
   { id: 'reels', label: 'Reels' },
   { id: 'seo', label: 'SEO' },
@@ -58,7 +57,7 @@ export function resolveDoctorFormTab(tab) {
 }
 
 export function doctorAvailabilityAdminPath(doctorId) {
-  return `/admin/doctors/${doctorId}?tab=availability`;
+  return `/admin/doctors/${doctorId}/availability`;
 }
 
 export const WORKING_DAYS = [

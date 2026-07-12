@@ -152,12 +152,22 @@ export default function DoctorAvailabilityCalendar({
     setSelectedDate(parseDateKey(dateKey));
   };
 
+  const handleCalendarSelect = (date) => {
+    if (!date) return;
+
+    const dateKey = formatDateKey(date);
+    const isEnabled = Boolean(dateAvailability[dateKey]?.enabled);
+
+    setSelectedDate(date);
+    toggleDateEnabled(dateKey, !isEnabled);
+  };
+
   return (
     <div className="space-y-5">
       <div>
         <h3 className="text-sm font-semibold text-[#002f3b]">Availability calendar</h3>
         <p className="mt-1 text-xs text-[#586971]">
-          Enable specific upcoming dates, set consultation hours, and configure daily breaks that are hidden from booking.
+          Click dates on the calendar to enable or disable booking. Configure duty hours for the selected date on the right.
         </p>
       </div>
 
@@ -242,8 +252,9 @@ export default function DoctorAvailabilityCalendar({
         <div className="rounded-xl border border-[#d7e6e2] bg-white p-3">
           <DatePicker
             inline
-            selected={selectedDate}
-            onChange={(date) => setSelectedDate(date)}
+            selected={null}
+            openToDate={selectedDate}
+            onSelect={handleCalendarSelect}
             minDate={new Date()}
             maxDate={parseDateKey(upcomingDateKeys[upcomingDateKeys.length - 1])}
             highlightDates={highlightDates}
@@ -251,7 +262,7 @@ export default function DoctorAvailabilityCalendar({
           />
           <p className="mt-2 px-1 text-xs text-[#586971]">
             <span className="mr-2 inline-block h-2.5 w-2.5 rounded-full bg-[#037B76]" />
-            Enabled dates
+            Enabled dates — click again to disable
           </p>
         </div>
 

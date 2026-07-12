@@ -7,6 +7,7 @@ import { adminFetch } from '@/lib/admin-api';
 import AdminPageLoader from '@/components/admin/admin-page-loader';
 import { resolveDoctorImage } from '@/lib/content/doctor-images';
 import { findServiceCategoryName } from '@/lib/content/service-category-utils';
+import { doctorAvailabilityAdminPath } from '@/lib/content/doctor-defaults';
 
 export default function AdminDoctorsPage() {
   const { getIdToken, canWrite, canDeleteContent } = useAdminAuth();
@@ -110,9 +111,12 @@ export default function AdminDoctorsPage() {
                   )}
                 </td>
                 <td className="px-4 py-3">
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2">
                     <Link href={`/admin/doctors/${doctor.id}`} className="text-[#037B76] hover:underline">
                       Edit
+                    </Link>
+                    <Link href={doctorAvailabilityAdminPath(doctor.id)} className="text-[#037B76] hover:underline">
+                      Availability
                     </Link>
                     {canDeleteContent && (
                       <button type="button" onClick={() => handleDelete(doctor.id)} className="text-red-600 hover:underline">

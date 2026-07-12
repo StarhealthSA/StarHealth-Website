@@ -1,12 +1,13 @@
 'use client';
 
+import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
 import DoctorFormShell from '@/components/admin/doctors/doctor-form-shell';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
 import AdminPageLoader from '@/components/admin/admin-page-loader';
-import { createEmptyDoctor, resolveDoctorFormTab } from '@/lib/content/doctor-defaults';
+import { createEmptyDoctor, doctorAvailabilityAdminPath, resolveDoctorFormTab } from '@/lib/content/doctor-defaults';
 
 export default function AdminDoctorEditPage() {
   const { id } = useParams();
@@ -86,19 +87,33 @@ export default function AdminDoctorEditPage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-semibold text-[#002f3b]">
-        {isNew ? 'Add Doctor' : 'Edit Doctor'}
-      </h1>
-      <p className="mt-1 mb-6 text-sm text-[#586971]">
-        Manage all doctor profile fields across tabs.
-      </p>
-      <DoctorFormShell
-        initial={isNew ? null : doctor}
-        initialTab={initialTab}
-        specializations={specializations}
-        serviceCategories={serviceCategories}
-        services={services}
-      />
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-semibold text-[#002f3b]">
+            {isNew ? 'Add Doctor' : 'Edit Doctor'}
+          </h1>
+          <p className="mt-1 text-sm text-[#586971]">
+            Manage all doctor profile fields across tabs.
+          </p>
+        </div>
+        {!isNew && (
+          <Link
+            href={doctorAvailabilityAdminPath(id)}
+            className="rounded-lg border border-[#037B76] px-4 py-2 text-sm font-medium text-[#037B76] hover:bg-[#f3faf8]"
+          >
+            Manage Availability
+          </Link>
+        )}
+      </div>
+      <div className="mt-6">
+        <DoctorFormShell
+          initial={isNew ? null : doctor}
+          initialTab={initialTab}
+          specializations={specializations}
+          serviceCategories={serviceCategories}
+          services={services}
+        />
+      </div>
     </div>
   );
 }

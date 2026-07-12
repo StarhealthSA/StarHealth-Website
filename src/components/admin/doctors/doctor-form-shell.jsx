@@ -8,7 +8,6 @@ import {
   GENDERS,
   resolveDoctorFormTab,
 } from '@/lib/content/doctor-defaults';
-import { DEFAULT_SCHEDULE_BREAK } from '@/lib/appointments/slot-utils';
 import {
   getSpecializationCategoryId,
   getSpecializationsByCategory,
@@ -20,7 +19,6 @@ import LocalizedInput from '@/components/admin/localized-input';
 import LocalizedListEditor from '@/components/admin/localized-list-editor';
 import AutoTranslateBar from '@/components/admin/auto-translate-bar';
 import AdminImagePreview from '@/components/admin/admin-image-preview';
-import DoctorAvailabilityCalendar from '@/components/admin/doctors/doctor-availability-calendar';
 import DoctorReelsEditor from '@/components/admin/doctors/doctor-reels-editor';
 
 export default function DoctorFormShell({
@@ -269,23 +267,6 @@ export default function DoctorFormShell({
             <LocalizedInput label="Detailed Biography" value={form.biography} onChange={(v) => update('biography', v)} multiline />
             <LocalizedListEditor label="Areas of Expertise" items={form.areasOfExpertise || []} onChange={(v) => update('areasOfExpertise', v)} />
             <LocalizedListEditor label="Treatments Offered" items={form.treatmentsOffered || []} onChange={(v) => update('treatmentsOffered', v)} />
-          </div>
-        )}
-
-        {tab === 'availability' && (
-          <div className="space-y-4">
-            <LocalizedInput label="Consultation Timings" value={form.consultationTimings} onChange={(v) => update('consultationTimings', v)} multiline />
-            <DoctorAvailabilityCalendar
-              dateAvailability={form.dateAvailability || {}}
-              onChange={(dateAvailability) => update('dateAvailability', dateAvailability)}
-              scheduleBreak={form.scheduleBreak || DEFAULT_SCHEDULE_BREAK}
-              onScheduleBreakChange={(scheduleBreak) => update('scheduleBreak', scheduleBreak)}
-              doctorId={form.id}
-            />
-            <label className="flex items-center gap-2 text-sm text-[#586971]">
-              <input type="checkbox" checked={form.onlineConsultationAvailable} onChange={(e) => update('onlineConsultationAvailable', e.target.checked)} />
-              Online Consultation Available
-            </label>
           </div>
         )}
 
