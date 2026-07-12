@@ -11,6 +11,7 @@ import Reveal from './reveal';
 import { useTranslation } from 'react-i18next';
 import { sendAppointmentEmailClient } from '@/lib/email/client-emailjs';
 import { useLocalizedDoctors } from '@/contexts/content-context';
+import notify from '@/lib/ui/notify';
 
 function WhatNext() {
   const { t, i18n } = useTranslation();
@@ -52,7 +53,7 @@ function WhatNext() {
         speciality: formData.speciality,
         date: formattedDate,
       });
-      alert('Appointment booked successfully!');
+      notify.success('Appointment booked successfully!');
       setFormData({
         name: '',
         phonenumber: '',
@@ -64,7 +65,7 @@ function WhatNext() {
       handleCloseModal();
     } catch (error) {
       console.error('Error sending email:', error);
-      alert('Failed to book appointment. Please try again.');
+      notify.error('Failed to book appointment. Please try again.');
     }
   };
 

@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { submitEnquiry } from '@/lib/contact/submit-enquiry';
 import { useServiceCategories } from '@/contexts/content-context';
+import notify from '@/lib/ui/notify';
 
 function ContactForm() {
   const { t, i18n } = useTranslation();
@@ -36,7 +37,7 @@ function ContactForm() {
     try {
       setSubmitting(true);
       await submitEnquiry(formData);
-      alert('Message sent successfully!');
+      notify.success('Message sent successfully!');
       setFormData({
         name: '',
         phonenumber: '',
@@ -48,7 +49,7 @@ function ContactForm() {
       });
     } catch (error) {
       console.error('Error submitting enquiry:', error);
-      alert(error.message || 'Failed to send message. Please try again.');
+      notify.error(error.message || 'Failed to send message. Please try again.');
     } finally {
       setSubmitting(false);
     }

@@ -5,6 +5,7 @@ import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
 import AdminPageLoader from '@/components/admin/admin-page-loader';
 import { AdminActionButton, AdminActionGroup, AdminActionLink } from '@/components/admin/admin-action-button';
+import notify from '@/lib/ui/notify';
 
 function EnquiryStatusBadge({ read }) {
   if (!read) {
@@ -48,7 +49,13 @@ export default function ContactEnquiriesTab() {
   }, [load]);
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Permanently delete this contact form submission?')) return;
+    const confirmed = await notify.confirm({
+      title: 'Delete submission?',
+      text: 'This contact form submission will be permanently removed.',
+      confirmText: 'Delete',
+      danger: true,
+    });
+    if (!confirmed) return;
     try {
       const token = await getIdToken();
       await adminFetch(`/api/admin/enquiries/${id}`, { method: 'DELETE', token });

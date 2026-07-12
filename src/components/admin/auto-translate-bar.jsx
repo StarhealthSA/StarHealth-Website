@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { translateFormToArabic } from '@/lib/admin-translate';
+import notify from '@/lib/ui/notify';
 
 export default function AutoTranslateBar({ form, onTranslated }) {
   const { getIdToken } = useAdminAuth();
@@ -15,7 +16,7 @@ export default function AutoTranslateBar({ form, onTranslated }) {
       const translated = await translateFormToArabic(form, token);
       onTranslated(translated);
     } catch (error) {
-      alert(error.message || 'Translation failed');
+      notify.error(error.message || 'Translation failed');
     } finally {
       setTranslating(false);
     }

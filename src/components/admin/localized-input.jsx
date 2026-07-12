@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { translateSingleText } from '@/lib/admin-translate';
+import notify from '@/lib/ui/notify';
 
 export default function LocalizedInput({ label, value, onChange, multiline = false }) {
   const { getIdToken } = useAdminAuth();
@@ -18,7 +19,7 @@ export default function LocalizedInput({ label, value, onChange, multiline = fal
       const ar = await translateSingleText(value.en, token);
       onChange({ ...value, ar });
     } catch (error) {
-      alert(error.message || 'Translation failed');
+      notify.error(error.message || 'Translation failed');
     } finally {
       setTranslating(false);
     }

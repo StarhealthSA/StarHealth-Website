@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { translateTexts } from '@/lib/admin-translate';
+import notify from '@/lib/ui/notify';
 
 export default function LocalizedListEditor({
   label,
@@ -36,7 +37,7 @@ export default function LocalizedListEditor({
         }))
       );
     } catch (error) {
-      alert(error.message || 'Translation failed');
+      notify.error(error.message || 'Translation failed');
     } finally {
       setTranslating(false);
     }

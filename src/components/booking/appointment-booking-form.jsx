@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { submitAppointmentBooking } from '@/lib/booking/submit-appointment';
 import { useDoctorBookingSchedule } from '@/hooks/use-doctor-booking-schedule';
 import { useBookingCategoryDoctors } from '@/hooks/use-booking-category-doctors';
+import notify from '@/lib/ui/notify';
 
 export default function AppointmentBookingForm({
   preselectedDoctorId = '',
@@ -56,7 +57,7 @@ export default function AppointmentBookingForm({
     if (!doctorId || !categoryId || scheduleLoading) return;
 
     if (isConfigured && (!selectedDate || !selectedSlot)) {
-      alert(t('doctorModal.selectSlotRequired'));
+      notify.warning(t('doctorModal.selectSlotRequired'));
       return;
     }
 
@@ -73,13 +74,13 @@ export default function AppointmentBookingForm({
         speciality: selectedCategoryName,
         requiresSchedule: isConfigured,
       });
-      alert(t('doctorModal.bookingSuccess'));
+      notify.success(t('doctorModal.bookingSuccess'));
       setFormData({ name: '', phonenumber: '', age: '' });
       setSelectedDate(null);
       setSelectedSlot(null);
       resetSelection();
     } catch (error) {
-      alert(error.message || t('doctorModal.bookingFailed'));
+      notify.error(error.message || t('doctorModal.bookingFailed'));
     } finally {
       setSubmitting(false);
     }

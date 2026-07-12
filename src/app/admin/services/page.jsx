@@ -6,6 +6,7 @@ import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
 import AdminPageLoader from '@/components/admin/admin-page-loader';
 import { AdminActionButton, AdminActionGroup, AdminActionLink } from '@/components/admin/admin-action-button';
+import notify from '@/lib/ui/notify';
 import { resolveServiceIcon } from '@/lib/content/service-icons';
 
 export default function AdminServicesPage() {
@@ -58,7 +59,13 @@ export default function AdminServicesPage() {
   };
 
   const handleDelete = async (serviceId) => {
-    if (!window.confirm('Delete this service?')) return;
+    const confirmed = await notify.confirm({
+      title: 'Delete service?',
+      text: 'This service will be removed from the website.',
+      confirmText: 'Delete',
+      danger: true,
+    });
+    if (!confirmed) return;
     try {
       const token = await getIdToken();
       await adminFetch(`/api/admin/services/${serviceId}`, { method: 'DELETE', token });

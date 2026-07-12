@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Playwrite+DK+Uloopet:wght@100..400&display=swap');
+@import 'sweetalert2/dist/sweetalert2.min.css';
 @import "tailwindcss";
 
 .bground {
@@ -1505,4 +1506,45 @@ html {
   .service-landing-visual-image {
     transform: none !important;
   }
+}
+
+.star-health-alert {
+  font-family: Inter, sans-serif !important;
+  border-radius: 1.25rem !important;
+  border: 1px solid #d7e6e2 !important;
+  box-shadow: 0 24px 60px rgba(0, 35, 51, 0.12) !important;
+  padding: 1.5rem 1.25rem 1.25rem !important;
+}
+
+.star-health-alert__title {
+  font-family: Merriweather, Georgia, serif !important;
+  color: #002f3b !important;
+  font-size: 1.35rem !important;
+}
+
+.star-health-alert__text {
+  color: #586971 !important;
+  font-size: 0.95rem !important;
+}
+
+.star-health-alert__confirm,
+.star-health-alert__cancel {
+  border-radius: 0.65rem !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  padding: 0.55rem 1.1rem !important;
+}
+
+[data-admin-theme="dark"] .star-health-alert {
+  background: #161d24 !important;
+  border-color: #2b3844 !important;
+  color: #e8eef2 !important;
+}
+
+[data-admin-theme="dark"] .star-health-alert__title {
+  color: #e8eef2 !important;
+}
+
+[data-admin-theme="dark"] .star-health-alert__text {
+  color: #b8c5cc !important;
 }

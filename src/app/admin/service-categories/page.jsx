@@ -6,6 +6,7 @@ import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
 import AdminPageLoader from '@/components/admin/admin-page-loader';
 import { AdminActionButton, AdminActionGroup } from '@/components/admin/admin-action-button';
+import notify from '@/lib/ui/notify';
 
 export default function AdminServiceCategoriesPage() {
   const { getIdToken, canWrite, canDeleteContent } = useAdminAuth();
@@ -62,7 +63,13 @@ export default function AdminServiceCategoriesPage() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Delete this service category?')) return;
+    const confirmed = await notify.confirm({
+      title: 'Delete category?',
+      text: 'This service category will be removed from the website.',
+      confirmText: 'Delete',
+      danger: true,
+    });
+    if (!confirmed) return;
     try {
       const token = await getIdToken();
       await adminFetch(`/api/admin/service-categories/${id}`, { method: 'DELETE', token });

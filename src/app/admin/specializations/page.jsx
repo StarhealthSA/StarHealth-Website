@@ -6,6 +6,7 @@ import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
 import AdminPageLoader from '@/components/admin/admin-page-loader';
 import { AdminActionButton, AdminActionGroup } from '@/components/admin/admin-action-button';
+import notify from '@/lib/ui/notify';
 import {
   getSpecializationsByCategory,
   getTopLevelSpecializations,
@@ -74,7 +75,13 @@ export default function AdminSpecializationsPage() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Delete this specialization?')) return;
+    const confirmed = await notify.confirm({
+      title: 'Delete specialization?',
+      text: 'This specialization will be removed from the website.',
+      confirmText: 'Delete',
+      danger: true,
+    });
+    if (!confirmed) return;
     try {
       const token = await getIdToken();
       await adminFetch(`/api/admin/specializations/${id}`, { method: 'DELETE', token });

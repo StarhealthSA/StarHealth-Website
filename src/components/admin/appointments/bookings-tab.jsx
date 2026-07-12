@@ -8,6 +8,7 @@ import AdminPageLoader from '@/components/admin/admin-page-loader';
 import AdminPagination, { usePagination } from '@/components/admin/admin-pagination';
 import { AdminActionButton, AdminActionGroup, AdminActionLink } from '@/components/admin/admin-action-button';
 import { formatDateLabel } from '@/lib/appointments/slot-utils';
+import notify from '@/lib/ui/notify';
 
 function StatusBadge({ status, read }) {
   if (status === 'cancelled') {
@@ -60,7 +61,13 @@ export default function BookingsTab() {
   }, [load]);
 
   const handleCancel = async (id) => {
-    if (!window.confirm('Cancel this appointment and free the time slot?')) return;
+    const confirmed = await notify.confirm({
+      title: 'Cancel appointment?',
+      text: 'This will free the time slot for other patients.',
+      confirmText: 'Cancel appointment',
+      danger: true,
+    });
+    if (!confirmed) return;
     try {
       const token = await getIdToken();
       await adminFetch(`/api/admin/appointments/${id}`, {
@@ -75,10 +82,16 @@ export default function BookingsTab() {
   };
 
   const handleDelete = async (id, status) => {
-    const message = status === 'booked'
-      ? 'Permanently delete this booking? The time slot will be freed.'
-      : 'Permanently delete this cancelled booking? This cannot be undone.';
-    if (!window.confirm(message)) return;
+    const isBooked = status === 'booked';
+    const confirmed = await notify.confirm({
+      title: isBooked ? 'Delete booking?' : 'Delete cancelled booking?',
+      text: isBooked
+        ? 'The time slot will be freed permanently.'
+        : 'This action cannot be undone.',
+      confirmText: 'Delete',
+      danger: true,
+    });
+    if (!confirmed) return;
     try {
       const token = await getIdToken();
       await adminFetch(`/api/admin/appointments/${id}`, { method: 'DELETE', token });

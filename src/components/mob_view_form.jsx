@@ -9,6 +9,7 @@ import AppointmentSlotPicker from '@/components/booking/appointment-slot-picker'
 import { useBookingCategoryDoctors } from '@/hooks/use-booking-category-doctors';
 import { submitAppointmentBooking } from '@/lib/booking/submit-appointment';
 import { useDoctorBookingSchedule } from '@/hooks/use-doctor-booking-schedule';
+import notify from '@/lib/ui/notify';
 
 function Mobviewform() {
   const { t, i18n } = useTranslation();
@@ -58,7 +59,7 @@ function Mobviewform() {
     if (!doctorId || !categoryId || scheduleLoading) return;
 
     if (isConfigured && (!selectedDate || !selectedSlot)) {
-      alert(t('doctorModal.selectSlotRequired'));
+      notify.warning(t('doctorModal.selectSlotRequired'));
       return;
     }
 
@@ -75,14 +76,14 @@ function Mobviewform() {
         speciality: selectedCategoryName,
         requiresSchedule: isConfigured,
       });
-      alert(t('doctorModal.bookingSuccess'));
+      notify.success(t('doctorModal.bookingSuccess'));
       setFormData({ name: '', phonenumber: '', age: '' });
       setCategoryId('');
       setDoctorId('');
       setSelectedDate(null);
       setSelectedSlot(null);
     } catch (error) {
-      alert(error.message || t('doctorModal.bookingFailed'));
+      notify.error(error.message || t('doctorModal.bookingFailed'));
     } finally {
       setSubmitting(false);
     }

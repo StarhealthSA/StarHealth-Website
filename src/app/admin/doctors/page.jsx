@@ -9,6 +9,7 @@ import { AdminActionButton, AdminActionGroup, AdminActionLink } from '@/componen
 import { resolveDoctorImage } from '@/lib/content/doctor-images';
 import { findServiceCategoryName } from '@/lib/content/service-category-utils';
 import { doctorAvailabilityAdminPath } from '@/lib/content/doctor-defaults';
+import notify from '@/lib/ui/notify';
 
 export default function AdminDoctorsPage() {
   const { getIdToken, canWrite, canDeleteContent } = useAdminAuth();
@@ -40,7 +41,13 @@ export default function AdminDoctorsPage() {
   }, [loadDoctors]);
 
   const handleDelete = async (doctorId) => {
-    if (!window.confirm('Delete this doctor?')) return;
+    const confirmed = await notify.confirm({
+      title: 'Delete doctor?',
+      text: 'This doctor will be removed from the website.',
+      confirmText: 'Delete',
+      danger: true,
+    });
+    if (!confirmed) return;
     try {
       const token = await getIdToken();
       await adminFetch(`/api/admin/doctors/${doctorId}`, { method: 'DELETE', token });

@@ -7,6 +7,7 @@ import { adminFetch } from '@/lib/admin-api';
 import AdminPageLoader from '@/components/admin/admin-page-loader';
 import AdminPagination, { usePagination } from '@/components/admin/admin-pagination';
 import { AdminActionButton, AdminActionGroup, AdminActionLink } from '@/components/admin/admin-action-button';
+import notify from '@/lib/ui/notify';
 
 export default function AdminBlogsPage() {
   const { getIdToken, canWrite, canDeleteContent } = useAdminAuth();
@@ -54,7 +55,13 @@ export default function AdminBlogsPage() {
   } = usePagination(filteredBlogs, undefined, search);
 
   const handleDelete = async (blogId) => {
-    if (!window.confirm('Delete this blog post?')) return;
+    const confirmed = await notify.confirm({
+      title: 'Delete blog post?',
+      text: 'This article will be permanently removed.',
+      confirmText: 'Delete',
+      danger: true,
+    });
+    if (!confirmed) return;
     try {
       const token = await getIdToken();
       await adminFetch(`/api/admin/blogs/${blogId}`, { method: 'DELETE', token });

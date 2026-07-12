@@ -6,6 +6,7 @@ import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
 import AdminPageLoader from '@/components/admin/admin-page-loader';
 import { AdminActionButton, AdminActionGroup } from '@/components/admin/admin-action-button';
+import notify from '@/lib/ui/notify';
 import { canModifyUser, ROLE_LABELS } from '@/lib/firebase/roles';
 
 function formatDate(value) {
@@ -89,7 +90,13 @@ export default function AdminUsersPage() {
   };
 
   const handleDelete = async (targetUser) => {
-    if (!window.confirm(`Delete user ${targetUser.email}?`)) return;
+    const confirmed = await notify.confirm({
+      title: 'Delete user?',
+      text: `${targetUser.email} will lose access to the admin panel.`,
+      confirmText: 'Delete',
+      danger: true,
+    });
+    if (!confirmed) return;
     try {
       const token = await getIdToken();
       await adminFetch(`/api/admin/users/${targetUser.uid}`, {

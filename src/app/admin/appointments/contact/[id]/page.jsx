@@ -7,6 +7,7 @@ import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
 import AdminPageLoader from '@/components/admin/admin-page-loader';
 import { AdminActionButton } from '@/components/admin/admin-action-button';
+import notify from '@/lib/ui/notify';
 
 export default function AdminContactEnquiryDetailPage() {
   const { id } = useParams();
@@ -35,7 +36,13 @@ export default function AdminContactEnquiryDetailPage() {
   }, [load]);
 
   const handleDelete = async () => {
-    if (!window.confirm('Permanently delete this contact form submission?')) return;
+    const confirmed = await notify.confirm({
+      title: 'Delete submission?',
+      text: 'This contact form submission will be permanently removed.',
+      confirmText: 'Delete',
+      danger: true,
+    });
+    if (!confirmed) return;
     try {
       const token = await getIdToken();
       await adminFetch(`/api/admin/enquiries/${id}`, { method: 'DELETE', token });

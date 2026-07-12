@@ -6,6 +6,7 @@ import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { useAdminUpload } from '@/contexts/admin-upload-context';
 import AdminImagePreview from '@/components/admin/admin-image-preview';
 import { createEmptyReel, detectReelPlatform } from '@/lib/content/reel-utils';
+import notify from '@/lib/ui/notify';
 
 const PLATFORMS = [
   { value: 'instagram', label: 'Instagram Reel' },
@@ -52,7 +53,7 @@ export default function DoctorReelsEditor({ reels = [], onChange, disabled = fal
         thumbnailUrl: reels[index]?.thumbnailUrl || '',
       });
     } catch (error) {
-      alert(error.message || 'Video upload failed');
+      notify.error(error.message || 'Video upload failed');
     } finally {
       setUploadingId(null);
     }
@@ -66,7 +67,7 @@ export default function DoctorReelsEditor({ reels = [], onChange, disabled = fal
       const imageUrl = await uploadFile(file, 'doctors/reels/thumbnails', token, 'Uploading reel thumbnail...');
       updateReel(index, { thumbnailUrl: imageUrl });
     } catch (error) {
-      alert(error.message || 'Thumbnail upload failed');
+      notify.error(error.message || 'Thumbnail upload failed');
     } finally {
       setUploadingId(null);
     }
