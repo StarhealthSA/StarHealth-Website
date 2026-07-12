@@ -3,7 +3,7 @@
 @import "tailwindcss";
 
 .bground {
-  background-image: url(../assets/home/headerimage.png);
+  background-image: url(../assets/home/headerimage.jpg);
   background-size: cover;
   background-position: center;
 }

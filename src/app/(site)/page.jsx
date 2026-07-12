@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import HeroSection from '@/components/home/hero_section';
 import { getHomeSettings } from '@/lib/content/site-settings';
 import { getActiveHeroSlides } from '@/lib/content/hero-slides';
@@ -12,7 +13,7 @@ import Mobviewform from '@/components/mob_view_form';
 
 export const revalidate = 60;
 
-export default async function HomePage() {
+async function DynamicHeroSection() {
   const homeSettings = await getHomeSettings();
   const slides = getActiveHeroSlides(homeSettings?.heroSlides || []);
   const firstImage = slides.find((slide) => slide.mediaType === 'image' && slide.src);
@@ -21,12 +22,18 @@ export default async function HomePage() {
     preload(firstImage.src, { as: 'image' });
   }
 
+  return <HeroSection homeSettings={homeSettings} />;
+}
+
+export default function HomePage() {
   const content =
     'Start by scheduling your consultation, explore our specialties for insights, or access resources to make confident and informed decisions you need.';
 
   return (
     <div>
-      <HeroSection homeSettings={homeSettings} />
+      <Suspense fallback={<HeroSection />}>
+        <DynamicHeroSection />
+      </Suspense>
       <div className="sm:hidden">
         <Mobviewform />
       </div>
