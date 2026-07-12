@@ -1,9 +1,5 @@
-import emailjs from '@emailjs/browser';
 import { formatDateKey } from '@/lib/appointments/slot-utils';
-
-const EMAILJS_SERVICE_ID = 'service_gr3hz0c';
-const EMAILJS_TEMPLATE_ID = 'template_zi5qnzk';
-const EMAILJS_PUBLIC_KEY = '3hR26mPB0OTAoNfhQ';
+import { sendAppointmentEmailClient } from '@/lib/email/client-emailjs';
 
 export async function submitAppointmentBooking({
   doctorId,
@@ -45,20 +41,15 @@ export async function submitAppointmentBooking({
     throw new Error(bookingData.error || 'Failed to book appointment');
   }
 
-  await emailjs.send(
-    EMAILJS_SERVICE_ID,
-    EMAILJS_TEMPLATE_ID,
-    {
-      name: patientName,
-      age,
-      phonenumber: phone,
-      doctor: doctorName,
-      speciality,
-      date: date ? date.toLocaleDateString() : 'To be confirmed',
-      time: slot?.label || 'To be confirmed',
-    },
-    EMAILJS_PUBLIC_KEY
-  );
+  await sendAppointmentEmailClient({
+    name: patientName,
+    age,
+    phonenumber: phone,
+    doctor: doctorName,
+    speciality,
+    date: date ? date.toLocaleDateString() : 'To be confirmed',
+    time: slot?.label || 'To be confirmed',
+  });
 
   return bookingData;
 }

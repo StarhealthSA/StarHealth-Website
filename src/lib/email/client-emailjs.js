@@ -1,21 +1,13 @@
 import emailjs from '@emailjs/browser';
-
-function getClientEmailJsConfig() {
-  return {
-    serviceId: (process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || 'service_gr3hz0c').trim(),
-    publicKey: (process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || '3hR26mPB0OTAoNfhQ').trim(),
-    enquiryTemplateId: (
-      process.env.NEXT_PUBLIC_EMAILJS_ENQUIRY_TEMPLATE_ID || 'template_jdttqx9'
-    ).trim(),
-  };
-}
+import { assertClientEmailJsReady, getClientEmailJsConfig } from '@/lib/email/client-emailjs-config';
 
 export async function sendEnquiryEmailClient(enquiry) {
-  const { serviceId, publicKey, enquiryTemplateId } = getClientEmailJsConfig();
+  const config = getClientEmailJsConfig();
+  const templateId = assertClientEmailJsReady(config, { template: 'enquiry' });
 
   await emailjs.send(
-    serviceId,
-    enquiryTemplateId,
+    config.serviceId,
+    templateId,
     {
       name: enquiry.name,
       phonenumber: enquiry.phone,
@@ -25,6 +17,18 @@ export async function sendEnquiryEmailClient(enquiry) {
       address: enquiry.address || '',
       message: enquiry.message || '',
     },
-    publicKey
+    config.publicKey
+  );
+}
+
+export async function sendAppointmentEmailClient(templateParams) {
+  const config = getClientEmailJsConfig();
+  const templateId = assertClientEmailJsReady(config, { template: 'appointment' });
+
+  await emailjs.send(
+    config.serviceId,
+    templateId,
+    templateParams,
+    config.publicKey
   );
 }

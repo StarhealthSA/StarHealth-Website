@@ -9,7 +9,7 @@ import calender from '../assets/contact/calder.svg';
 import Button from "../components/web_button";
 import Reveal from './reveal';
 import { useTranslation } from 'react-i18next';
-import emailjs from '@emailjs/browser';
+import { sendAppointmentEmailClient } from '@/lib/email/client-emailjs';
 import { useLocalizedDoctors } from '@/contexts/content-context';
 
 function WhatNext() {
@@ -38,42 +38,34 @@ function WhatNext() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const serviceId = 'service_gr3hz0c';
-    const templateId = 'template_zi5qnzk';
-    const publicKey = '3hR26mPB0OTAoNfhQ';
 
     const formattedDate = selectedDate ? selectedDate.toLocaleDateString() : '';
 
-    const templateParams = {
-      name: formData.name,
-      age: formData.age,
-      phonenumber: formData.phonenumber,
-      doctor: formData.doctor,
-      speciality: formData.speciality,
-      date: formattedDate,
-    };
-
-    emailjs.send(serviceId, templateId, templateParams, publicKey)
-      .then((response) => {
-        console.log('Email sent Successfully!', response);
-        alert('Appointment booked successfully!');
-        setFormData({
-          name: '',
-          phonenumber: '',
-          age: '',
-          speciality: '',
-          doctor: ''
-        });
-        setSelectedDate(null);
-        handleCloseModal();
-      })
-      .catch((error) => {
-        console.error('Error sending email:', error);
-        alert('Failed to book appointment. Please try again.');
+    try {
+      await sendAppointmentEmailClient({
+        name: formData.name,
+        age: formData.age,
+        phonenumber: formData.phonenumber,
+        doctor: formData.doctor,
+        speciality: formData.speciality,
+        date: formattedDate,
       });
+      alert('Appointment booked successfully!');
+      setFormData({
+        name: '',
+        phonenumber: '',
+        age: '',
+        speciality: '',
+        doctor: ''
+      });
+      setSelectedDate(null);
+      handleCloseModal();
+    } catch (error) {
+      console.error('Error sending email:', error);
+      alert('Failed to book appointment. Please try again.');
+    }
   };
 
   const Speciality = [
