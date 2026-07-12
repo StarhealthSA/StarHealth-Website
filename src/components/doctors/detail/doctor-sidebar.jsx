@@ -1,23 +1,11 @@
 'use client';
 
 import Reveal from '@/components/reveal';
+import { DoctorScheduleSidebar } from './doctor-schedule-display';
 import { useTranslation } from 'react-i18next';
-import { getLocalizedText } from '@/lib/content/localized';
-
-const DAY_LABELS = {
-  sun: 'doctorDetail.days.sun',
-  mon: 'doctorDetail.days.mon',
-  tue: 'doctorDetail.days.tue',
-  wed: 'doctorDetail.days.wed',
-  thu: 'doctorDetail.days.thu',
-  fri: 'doctorDetail.days.fri',
-  sat: 'doctorDetail.days.sat',
-};
 
 export default function DoctorSidebar({ doctor, onBookClick }) {
-  const { t, i18n } = useTranslation();
-  const timings = getLocalizedText(doctor.consultationTimings, i18n.language);
-  const hasSchedule = timings || (doctor.workingDays || []).length > 0;
+  const { t } = useTranslation();
 
   return (
     <aside className="hidden lg:block">
@@ -55,28 +43,7 @@ export default function DoctorSidebar({ doctor, onBookClick }) {
           )}
         </div>
 
-        {hasSchedule && (
-          <div className="space-y-3 border-t border-[#E9E7E6] pt-5">
-            <p className="font-inter text-xs font-semibold uppercase tracking-[0.16em] text-[#037B76]">
-              {t('doctorDetail.quickInfo')}
-            </p>
-            {timings && (
-              <p className="font-inter text-sm leading-relaxed text-[#586971]">{timings}</p>
-            )}
-            {(doctor.workingDays || []).length > 0 && (
-              <div className="flex flex-wrap gap-1.5">
-                {doctor.workingDays.map((day) => (
-                  <span
-                    key={day}
-                    className="rounded-md bg-[#F6F4F3] px-2 py-1 font-inter text-[11px] font-medium text-[#586971]"
-                  >
-                    {t(DAY_LABELS[day] || day)}
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
+        <DoctorScheduleSidebar doctor={doctor} />
 
         <button
           type="button"
