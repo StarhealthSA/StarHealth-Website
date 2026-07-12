@@ -21,6 +21,7 @@
     "firebase": "^12.14.0",
     "firebase-admin": "^13.10.0",
     "i18next": "^25.6.0",
+    "lucide-react": "^1.24.0",
     "next": "^15.3.3",
     "react": "^19.1.0",
     "react-datepicker": "^8.4.0",

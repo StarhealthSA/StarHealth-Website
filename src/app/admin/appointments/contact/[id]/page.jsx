@@ -6,6 +6,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
 import AdminPageLoader from '@/components/admin/admin-page-loader';
+import { AdminActionButton } from '@/components/admin/admin-action-button';
 
 export default function AdminContactEnquiryDetailPage() {
   const { id } = useParams();
@@ -75,13 +76,7 @@ export default function AdminContactEnquiryDetailPage() {
           </p>
         </div>
         {canWrite && (
-          <button
-            type="button"
-            onClick={handleDelete}
-            className="rounded-lg border border-red-200 px-4 py-2 text-sm font-medium text-red-600"
-          >
-            Delete
-          </button>
+          <AdminActionButton action="delete" onClick={handleDelete} />
         )}
       </div>
 

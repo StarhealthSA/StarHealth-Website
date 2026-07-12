@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
 import AdminPageLoader from '@/components/admin/admin-page-loader';
+import { AdminActionButton, AdminActionGroup, AdminActionLink } from '@/components/admin/admin-action-button';
 import { resolveServiceIcon } from '@/lib/content/service-icons';
 
 export default function AdminServicesPage() {
@@ -155,22 +156,14 @@ export default function AdminServicesPage() {
                 </td>
                 <td className="px-4 py-3 text-[#586971]">{service.order}</td>
                 <td className="px-4 py-3">
-                  <div className="flex gap-3">
+                  <AdminActionGroup>
                     {canWrite && (
-                      <Link href={`/admin/services/${service.id}`} className="text-sm text-[#037B76] hover:underline">
-                        Edit
-                      </Link>
+                      <AdminActionLink action="edit" href={`/admin/services/${service.id}`} />
                     )}
                     {canDeleteContent && (
-                      <button
-                        type="button"
-                        onClick={() => handleDelete(service.id)}
-                        className="text-sm text-red-600 hover:underline"
-                      >
-                        Delete
-                      </button>
+                      <AdminActionButton action="delete" onClick={() => handleDelete(service.id)} />
                     )}
-                  </div>
+                  </AdminActionGroup>
                 </td>
               </tr>
             ))}

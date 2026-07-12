@@ -380,6 +380,30 @@ html {
   background-color: #233040;
 }
 
+[data-admin-theme="dark"] .admin-action-btn--primary {
+  color: #7fd4cf;
+}
+
+[data-admin-theme="dark"] .admin-action-btn--primary:hover {
+  background-color: #123b38;
+}
+
+[data-admin-theme="dark"] .admin-action-btn--danger {
+  color: #f87171;
+}
+
+[data-admin-theme="dark"] .admin-action-btn--danger:hover {
+  background-color: rgba(127, 29, 29, 0.35);
+}
+
+[data-admin-theme="dark"] .admin-action-btn--muted {
+  color: #b8c5cc;
+}
+
+[data-admin-theme="dark"] .admin-action-btn--muted:hover {
+  background-color: #1f2930;
+}
+
 .glass-nav {
   background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(10px) saturate(140%);

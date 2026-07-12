@@ -5,6 +5,7 @@ import ServiceCategoryForm from '@/components/admin/service-category-form';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
 import AdminPageLoader from '@/components/admin/admin-page-loader';
+import { AdminActionButton, AdminActionGroup } from '@/components/admin/admin-action-button';
 
 export default function AdminServiceCategoriesPage() {
   const { getIdToken, canWrite, canDeleteContent } = useAdminAuth();
@@ -139,24 +140,15 @@ export default function AdminServiceCategoriesPage() {
                 </td>
                 <td className="px-4 py-3">
                   {canWrite && (
-                    <div className="flex gap-3">
-                      <button
-                        type="button"
+                    <AdminActionGroup>
+                      <AdminActionButton
+                        action="edit"
                         onClick={() => { setEditing(category); setShowForm(true); }}
-                        className="text-sm text-[#037B76] hover:underline"
-                      >
-                        Edit
-                      </button>
+                      />
                       {canDeleteContent && (
-                        <button
-                          type="button"
-                          onClick={() => handleDelete(category.id)}
-                          className="text-sm text-red-600 hover:underline"
-                        >
-                          Delete
-                        </button>
+                        <AdminActionButton action="delete" onClick={() => handleDelete(category.id)} />
                       )}
-                    </div>
+                    </AdminActionGroup>
                   )}
                 </td>
               </tr>

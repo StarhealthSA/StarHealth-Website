@@ -1,10 +1,10 @@
 'use client';
 
-import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
 import AdminPageLoader from '@/components/admin/admin-page-loader';
+import { AdminActionButton, AdminActionGroup, AdminActionLink } from '@/components/admin/admin-action-button';
 
 function EnquiryStatusBadge({ read }) {
   if (!read) {
@@ -146,23 +146,12 @@ export default function ContactEnquiriesTab() {
                   <EnquiryStatusBadge read={item.read} />
                 </td>
                 <td className="px-4 py-3">
-                  <div className="flex flex-wrap gap-3">
-                    <Link
-                      href={`/admin/appointments/contact/${item.id}`}
-                      className="text-[#037B76] hover:underline"
-                    >
-                      View
-                    </Link>
+                  <AdminActionGroup>
+                    <AdminActionLink action="view" href={`/admin/appointments/contact/${item.id}`} />
                     {canWrite && (
-                      <button
-                        type="button"
-                        onClick={() => handleDelete(item.id)}
-                        className="text-red-600 hover:underline"
-                      >
-                        Delete
-                      </button>
+                      <AdminActionButton action="delete" onClick={() => handleDelete(item.id)} />
                     )}
-                  </div>
+                  </AdminActionGroup>
                 </td>
               </tr>
             ))}

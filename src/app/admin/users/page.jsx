@@ -5,6 +5,7 @@ import UserForm from '@/components/admin/users/user-form';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
 import AdminPageLoader from '@/components/admin/admin-page-loader';
+import { AdminActionButton, AdminActionGroup } from '@/components/admin/admin-action-button';
 import { canModifyUser, ROLE_LABELS } from '@/lib/firebase/roles';
 
 function formatDate(value) {
@@ -220,25 +221,16 @@ export default function AdminUsersPage() {
                     <td className="px-4 py-3 text-[#586971]">{formatDate(item.createdAt)}</td>
                     <td className="px-4 py-3">
                       {canEdit ? (
-                        <div className="flex gap-2">
-                          <button
-                            type="button"
+                        <AdminActionGroup>
+                          <AdminActionButton
+                            action="edit"
                             onClick={() => {
                               setShowForm(false);
                               setEditing(item);
                             }}
-                            className="text-[#037B76] hover:underline"
-                          >
-                            Edit
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => handleDelete(item)}
-                            className="text-red-600 hover:underline"
-                          >
-                            Delete
-                          </button>
-                        </div>
+                          />
+                          <AdminActionButton action="delete" onClick={() => handleDelete(item)} />
+                        </AdminActionGroup>
                       ) : (
                         <span className="text-xs text-[#586971]">
                           {item.uid === user?.uid ? 'You' : 'Read only'}

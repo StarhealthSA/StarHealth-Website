@@ -5,6 +5,7 @@ import SpecializationForm from '@/components/admin/specialization-form';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
 import AdminPageLoader from '@/components/admin/admin-page-loader';
+import { AdminActionButton, AdminActionGroup } from '@/components/admin/admin-action-button';
 import {
   getSpecializationsByCategory,
   getTopLevelSpecializations,
@@ -111,24 +112,15 @@ export default function AdminSpecializationsPage() {
           {spec.active ? 'Active' : 'Inactive'}
         </span>
         {canWrite && (
-          <>
-            <button
-              type="button"
+          <AdminActionGroup>
+            <AdminActionButton
+              action="edit"
               onClick={() => { setEditing(spec); setShowForm(true); }}
-              className="text-sm text-[#037B76] hover:underline"
-            >
-              Edit
-            </button>
+            />
             {canDeleteContent && (
-              <button
-                type="button"
-                onClick={() => handleDelete(spec.id)}
-                className="text-sm text-red-600 hover:underline"
-              >
-                Delete
-              </button>
+              <AdminActionButton action="delete" onClick={() => handleDelete(spec.id)} />
             )}
-          </>
+          </AdminActionGroup>
         )}
       </div>
     </div>

@@ -6,6 +6,7 @@ import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
 import AdminPageLoader from '@/components/admin/admin-page-loader';
 import AdminPagination, { usePagination } from '@/components/admin/admin-pagination';
+import { AdminActionButton, AdminActionGroup, AdminActionLink } from '@/components/admin/admin-action-button';
 
 export default function AdminBlogsPage() {
   const { getIdToken, canWrite, canDeleteContent } = useAdminAuth();
@@ -148,30 +149,15 @@ export default function AdminBlogsPage() {
                     {blog.publishedAt ? new Date(blog.publishedAt).toLocaleDateString() : '—'}
                   </td>
                   <td className="px-4 py-3">
-                    <div className="flex gap-2">
-                      <Link href={`/admin/blogs/${blog.id}`} className="text-[#037B76] hover:underline">
-                        Edit
-                      </Link>
+                    <AdminActionGroup>
+                      <AdminActionLink action="edit" href={`/admin/blogs/${blog.id}`} />
                       {blog.status === 'active' && (
-                        <a
-                          href={`/blog/${blog.slug}`}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-[#586971] hover:underline"
-                        >
-                          View
-                        </a>
+                        <AdminActionLink action="external" href={`/blog/${blog.slug}`} external />
                       )}
                       {canDeleteContent && (
-                        <button
-                          type="button"
-                          onClick={() => handleDelete(blog.id)}
-                          className="text-red-600 hover:underline"
-                        >
-                          Delete
-                        </button>
+                        <AdminActionButton action="delete" onClick={() => handleDelete(blog.id)} />
                       )}
-                    </div>
+                    </AdminActionGroup>
                   </td>
                 </tr>
               ))

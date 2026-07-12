@@ -6,6 +6,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
 import AdminPageLoader from '@/components/admin/admin-page-loader';
+import { AdminActionButton, AdminActionGroup, AdminActionLink } from '@/components/admin/admin-action-button';
 import { formatDateLabel } from '@/lib/appointments/slot-utils';
 import { doctorAvailabilityAdminPath } from '@/lib/content/doctor-defaults';
 
@@ -97,32 +98,15 @@ export default function AdminAppointmentDetailPage() {
           </p>
         </div>
         {canWrite && (
-          <div className="flex flex-wrap gap-3">
+          <AdminActionGroup>
             {appointment.status === 'booked' && (
               <>
-                <Link
-                  href={`/admin/appointments/${id}/edit`}
-                  className="rounded-lg border border-[#d7e6e2] px-4 py-2 text-sm font-medium text-[#037B76] hover:bg-[#f8fbfa]"
-                >
-                  Edit
-                </Link>
-                <button
-                  type="button"
-                  onClick={handleCancel}
-                  className="rounded-lg border border-red-200 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50"
-                >
-                  Cancel appointment
-                </button>
+                <AdminActionLink action="edit" href={`/admin/appointments/${id}/edit`} />
+                <AdminActionButton action="cancel" onClick={handleCancel} />
               </>
             )}
-            <button
-              type="button"
-              onClick={handleDelete}
-              className="rounded-lg border border-red-200 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50"
-            >
-              Delete
-            </button>
-          </div>
+            <AdminActionButton action="delete" onClick={handleDelete} />
+          </AdminActionGroup>
         )}
       </div>
 

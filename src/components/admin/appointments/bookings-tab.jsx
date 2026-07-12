@@ -6,6 +6,7 @@ import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
 import AdminPageLoader from '@/components/admin/admin-page-loader';
 import AdminPagination, { usePagination } from '@/components/admin/admin-pagination';
+import { AdminActionButton, AdminActionGroup, AdminActionLink } from '@/components/admin/admin-action-button';
 import { formatDateLabel } from '@/lib/appointments/slot-utils';
 
 function StatusBadge({ status, read }) {
@@ -207,34 +208,18 @@ export default function BookingsTab() {
                   <StatusBadge status={item.status} read={item.read} />
                 </td>
                 <td className="px-4 py-3">
-                  <div className="flex flex-wrap gap-3">
-                    <Link href={`/admin/appointments/${item.id}`} className="text-[#037B76] hover:underline">
-                      View
-                    </Link>
+                  <AdminActionGroup>
+                    <AdminActionLink action="view" href={`/admin/appointments/${item.id}`} />
                     {canWrite && item.status === 'booked' && (
-                      <Link href={`/admin/appointments/${item.id}/edit`} className="text-[#037B76] hover:underline">
-                        Edit
-                      </Link>
+                      <AdminActionLink action="edit" href={`/admin/appointments/${item.id}/edit`} />
                     )}
                     {canWrite && item.status === 'booked' && (
-                      <button
-                        type="button"
-                        onClick={() => handleCancel(item.id)}
-                        className="text-red-600 hover:underline"
-                      >
-                        Cancel
-                      </button>
+                      <AdminActionButton action="cancel" onClick={() => handleCancel(item.id)} />
                     )}
                     {canWrite && (
-                      <button
-                        type="button"
-                        onClick={() => handleDelete(item.id, item.status)}
-                        className="text-red-600 hover:underline"
-                      >
-                        Delete
-                      </button>
+                      <AdminActionButton action="delete" onClick={() => handleDelete(item.id, item.status)} />
                     )}
-                  </div>
+                  </AdminActionGroup>
                 </td>
               </tr>
             ))}
