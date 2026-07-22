@@ -8,6 +8,7 @@ import Safety from '@/components/home/safety';
 import SpecializedServices from '@/components/home/specialized_services';
 import MedTeam from '@/components/home/med_team';
 import Testimonials from '@/components/home/testomonials';
+import PrivilegeMembershipBanner from '@/components/home/privilege-membership-banner';
 import Whatnext from '@/components/what_next';
 import Mobviewform from '@/components/mob_view_form';
 
@@ -40,6 +41,7 @@ export default function HomePage() {
       <div id="about">
         <WelcomePart />
       </div>
+      <PrivilegeMembershipBanner />
       <Safety />
       <div id="services">
         <SpecializedServices />

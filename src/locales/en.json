@@ -710,6 +710,13 @@
     "publishedBy": "Published by",
     "author": "Author"
   },
+  "homePrivilegeBanner": {
+    "eyebrow": "PRIVILEGE MEMBERSHIP",
+    "title": "Unlock Burgundy Privilege with Nujoom",
+    "description": "Earn reward points on every Star Health Derma visit, enjoy exclusive member prices, and redeem benefits on treatments you love.",
+    "cta": "Explore Privilege Membership",
+    "note": "1 Nujoom point for every SAR 10 spent"
+  },
   "loyaltyPage": {
     "hero": {
       "eyebrow": "STAR HEALTH NUJOOM",
