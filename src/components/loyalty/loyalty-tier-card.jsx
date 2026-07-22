@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  ArrowRight,
   Crown,
   Gift,
   Sparkles,
@@ -38,52 +39,38 @@ export default function LoyaltyTierCard({
 
   return (
     <article className={`loyalty-tier-card loyalty-tier-card--${tier}`}>
-      <div className="loyalty-tier-card__glow" aria-hidden />
-      <div className="loyalty-tier-card__pattern" aria-hidden />
+      <div className="loyalty-tier-card__media">
+        <img
+          src={cardImage}
+          alt=""
+          className="loyalty-tier-card__image"
+        />
+        <div className="loyalty-tier-card__media-overlay" aria-hidden />
+        <div className="loyalty-tier-card__media-shine" aria-hidden />
 
-      <div className="loyalty-tier-card__header">
-        <img src={logo} alt="" className="loyalty-tier-card__logo" />
-        <div className="loyalty-tier-card__points">
-          <span className="loyalty-tier-card__points-label">{pointsLabel}</span>
-          <span className="loyalty-tier-card__points-value">{pointsDescription}</span>
+        <div className="loyalty-tier-card__media-top">
+          <img src={logo} alt="" className="loyalty-tier-card__logo" />
+          <div className="loyalty-tier-card__points">
+            <span className="loyalty-tier-card__points-label">{pointsLabel}</span>
+            <span className="loyalty-tier-card__points-value">{pointsDescription}</span>
+          </div>
         </div>
-      </div>
 
-      <div className="loyalty-tier-card__hero">
-        <div className="loyalty-tier-card__copy">
+        <div className="loyalty-tier-card__media-bottom">
+          <p className="loyalty-tier-card__tier-label">{cardTypeLabel}</p>
           <h2 className="loyalty-tier-card__title">{title}</h2>
-          <p className="loyalty-tier-card__tagline">{tagline}</p>
-          <div className="loyalty-tier-card__badge-slot">
-            {inviteOnly ? (
-              <span className="loyalty-tier-card__badge">{inviteOnly}</span>
-            ) : (
-              <span className="loyalty-tier-card__badge loyalty-tier-card__badge--placeholder" aria-hidden>
-                &nbsp;
-              </span>
-            )}
-          </div>
-        </div>
-
-        <div className="loyalty-tier-card__visual">
-          <img
-            src={cardImage}
-            alt=""
-            className="loyalty-tier-card__image"
-          />
+          {inviteOnly ? (
+            <span className="loyalty-tier-card__badge">{inviteOnly}</span>
+          ) : (
+            <span className="loyalty-tier-card__badge loyalty-tier-card__badge--placeholder" aria-hidden>
+              &nbsp;
+            </span>
+          )}
         </div>
       </div>
 
-      <div className="loyalty-tier-card__divider" aria-hidden>
-        <span />
-      </div>
-
-      <div className="loyalty-tier-card__footer">
-        <div className="loyalty-tier-card__meta">
-          <div className="loyalty-tier-card__meta-item">
-            <p className="loyalty-tier-card__meta-label">{cardTypeLabel}</p>
-            <p className="loyalty-tier-card__meta-value">{title}</p>
-          </div>
-        </div>
+      <div className="loyalty-tier-card__body">
+        <p className="loyalty-tier-card__tagline">{tagline}</p>
 
         {benefits.length > 0 && (
           <ul className="loyalty-tier-card__benefits">
@@ -91,7 +78,9 @@ export default function LoyaltyTierCard({
               const Icon = BENEFIT_ICONS[benefit.icon] || Sparkles;
               return (
                 <li key={benefit.label}>
-                  <Icon className="loyalty-tier-card__benefit-icon" aria-hidden />
+                  <span className="loyalty-tier-card__benefit-icon-wrap" aria-hidden>
+                    <Icon className="loyalty-tier-card__benefit-icon" />
+                  </span>
                   <span>{benefit.label}</span>
                 </li>
               );
@@ -100,7 +89,8 @@ export default function LoyaltyTierCard({
         )}
 
         <NavLink href="/contact" className="loyalty-tier-card__cta">
-          {ctaLabel}
+          <span>{ctaLabel}</span>
+          <ArrowRight className="loyalty-tier-card__cta-icon" aria-hidden />
         </NavLink>
       </div>
     </article>
