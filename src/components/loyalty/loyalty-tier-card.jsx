@@ -12,11 +12,6 @@ import burgundyImage from '@/assets/home/burgundy.png';
 import blackImage from '@/assets/home/black.png';
 import NavLink from '@/components/nav_link';
 
-const TIER_IMAGES = {
-  burgundy: burgundyImage,
-  black: blackImage,
-};
-
 const BENEFIT_ICONS = {
   premium: Crown,
   care: UserRound,
@@ -34,16 +29,22 @@ export default function LoyaltyTierCard({
   benefits = [],
   cardTypeLabel,
   ctaLabel,
+  ctaHref = '/contact',
 }) {
-  const cardImage = TIER_IMAGES[tier] || burgundyImage;
+  const isExternal = /^https?:\/\//.test(ctaHref);
 
   return (
     <article className={`loyalty-tier-card loyalty-tier-card--${tier}`}>
       <div className="loyalty-tier-card__media">
         <img
-          src={cardImage}
+          src={burgundyImage}
           alt=""
-          className="loyalty-tier-card__image"
+          className="loyalty-tier-card__image loyalty-tier-card__image--primary"
+        />
+        <img
+          src={blackImage}
+          alt=""
+          className="loyalty-tier-card__image loyalty-tier-card__image--hover"
         />
         <div className="loyalty-tier-card__media-overlay" aria-hidden />
         <div className="loyalty-tier-card__media-shine" aria-hidden />
@@ -88,10 +89,22 @@ export default function LoyaltyTierCard({
           </ul>
         )}
 
-        <NavLink href="/contact" className="loyalty-tier-card__cta">
-          <span>{ctaLabel}</span>
-          <ArrowRight className="loyalty-tier-card__cta-icon" aria-hidden />
-        </NavLink>
+        {isExternal ? (
+          <a
+            href={ctaHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="loyalty-tier-card__cta"
+          >
+            <span>{ctaLabel}</span>
+            <ArrowRight className="loyalty-tier-card__cta-icon" aria-hidden />
+          </a>
+        ) : (
+          <NavLink href={ctaHref} className="loyalty-tier-card__cta">
+            <span>{ctaLabel}</span>
+            <ArrowRight className="loyalty-tier-card__cta-icon" aria-hidden />
+          </NavLink>
+        )}
       </div>
     </article>
   );

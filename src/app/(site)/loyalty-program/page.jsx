@@ -1,15 +1,15 @@
 import LoyaltyProgramSection from '@/components/loyalty/loyalty-program-section';
 
 export const metadata = {
-  title: 'Loyalty Program | Star Health Medical Centre',
+  title: 'Nujoom Loyalty Program | Star Health Medical Centre',
   description:
-    'Discover Star Health Burgundy and Black Privilege loyalty programs. Earn points, enjoy aesthetic treatments, and access exclusive member benefits in Riyadh.',
+    'Join Star Health Nujoom and earn reward points every time you receive a service at Star Health Derma. Enjoy member prices, special offers, and redeem points on treatments.',
   keywords:
-    'star health loyalty program, burgundy privilege, black privilege, aesthetic treatments riyadh, botox fillers loyalty',
+    'star health nujoom, loyalty program, derma rewards, earn points riyadh, star health derma',
   openGraph: {
-    title: 'Loyalty Program | Star Health Medical Centre',
+    title: 'Nujoom Loyalty Program | Star Health Medical Centre',
     description:
-      'Explore Burgundy and Black Privilege membership tiers with exclusive treatments and dedicated care at Star Health.',
+      'Earn Nujoom points on every Star Health Derma service and redeem them for exclusive member benefits.',
   },
 };
 

@@ -5,7 +5,7 @@
     "services": "Services",
     "doctors": "Doctors",
     "blogs": "Blogs",
-    "loyalty": "Loyalty Program",
+    "loyalty": "Nujoom",
     "contact": "Contact Us",
     "booking": "Book Appointment"
   },
@@ -395,7 +395,7 @@
       "services": "Services",
       "doctors": "Doctors",
       "blogs" : "Blogs",
-      "loyalty": "Loyalty Program",
+      "loyalty": "Nujoom",
       "contactUs": "Contact Us",
       "privacy": "Privacy Policy"
     }
@@ -712,52 +712,59 @@
   },
   "loyaltyPage": {
     "hero": {
-      "eyebrow": "STAR HEALTH PRIVILEGE",
-      "title": "Loyalty Programs Designed for Premium Care",
-      "description": "Join our Burgundy and Black Privilege tiers to earn points on treatments, enjoy aesthetic services, and unlock exclusive member benefits at Star Health Medical Centre."
+      "eyebrow": "STAR HEALTH NUJOOM",
+      "title": "Enjoy Nujoom with Star Health Medical Center",
+      "description": "Join Star Health Nujoom and earn reward points every time you receive a service at Star Health Derma."
     },
-    "cardsTitle": "Choose Your Privilege Tier",
-    "cardsDescription": "Two membership experiences crafted for patients who value premium aesthetics, dedicated care, and exclusive privileges.",
-    "pointsLabel": "POINTS",
+    "cta": "Join Nujoom",
+    "cardsEyebrow": "Membership Card",
+    "cardsTitle": "Burgundy Privilege",
+    "cardsDescription": "Earn points on every Star Health Derma visit and unlock exclusive member prices, special offers, and privileges.",
+    "pointsLabel": "EARNING",
     "cardTypeLabel": "Card Type",
-    "cta": "Join the Program",
-    "highlightsTitle": "How the Program Works",
-    "whatNext": "Ready to join Burgundy or Black Privilege? Contact our team to learn eligibility, benefits, and enrollment.",
     "burgundy": {
       "title": "Burgundy Privilege",
-      "tagline": "Botox, fillers, and more",
-      "points": "Earn on every eligible treatment",
+      "tagline": "Reward points on every Derma service",
+      "points": "1 point for every SAR 10 spent",
       "benefits": {
-        "aesthetics": "Aesthetic Treatments",
-        "care": "Dedicated Care",
-        "privileges": "Member Privileges"
+        "aesthetics": "Derma Services",
+        "care": "Member Prices",
+        "privileges": "Special Offers"
       }
     },
-    "black": {
-      "title": "Black Privilege",
-      "tagline": "Botox, fillers, and more",
-      "inviteOnly": "BY INVITE ONLY",
-      "points": "Premium rewards and priority access",
-      "benefits": {
-        "premium": "Premium Treatments",
-        "care": "Dedicated Care",
-        "privileges": "Exclusive Privileges"
+    "howItWorks": {
+      "title": "How It Works",
+      "steps": {
+        "register": "Register for the Star Health Nujoom program.",
+        "earn": "Earn Nujoom points with every service at Star Health Derma.",
+        "enjoy": "Enjoy exclusive member prices, special offers, and member privileges.",
+        "redeem": "Redeem your Nujoom points on any service at Star Health Derma."
       }
     },
-    "highlights": {
-      "earn": {
-        "title": "Earn Points",
-        "body": "Collect loyalty points on eligible aesthetic and medical services every time you visit Star Health."
-      },
-      "redeem": {
-        "title": "Redeem Benefits",
-        "body": "Use your points and tier privileges for treatments such as botox, fillers, and other premium services."
-      },
-      "experience": {
-        "title": "Exclusive Experience",
-        "body": "Enjoy a elevated member journey with dedicated support, priority access, and invite-only Black privileges."
+    "earning": {
+      "title": "Earning Rules",
+      "body": "Earn 1 Nujoom Point for every SAR 10 spent at Star Health Derma."
+    },
+    "redeem": {
+      "title": "Redeem Your Nujoom Points",
+      "description": "You can redeem your points in the following amounts:",
+      "amounts": {
+        "a": "250 Points",
+        "b": "500 Points",
+        "c": "750 Points",
+        "d": "1,000 Points"
       }
-    }
+    },
+    "terms": {
+      "title": "Terms & Conditions",
+      "items": {
+        "amounts": "Nujoom points can only be redeemed in the following amounts: 250, 500, 750, or 1,000 points.",
+        "services": "Redeemed points can be used toward any service at Star Health Derma.",
+        "nonTransferable": "Points are non-transferable and cannot be exchanged for cash.",
+        "modify": "Star Health Medical Center reserves the right to modify or discontinue the Nujoom program and its terms at any time without prior notice."
+      }
+    },
+    "whatNext": "Ready to start earning Nujoom points? Join today and enjoy exclusive member benefits at Star Health Derma."
   },
   "notFoundPage": {
     "title": "Page not found",
