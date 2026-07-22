@@ -5,6 +5,7 @@
     "services": "Services",
     "doctors": "Doctors",
     "blogs": "Blogs",
+    "loyalty": "Loyalty Program",
     "contact": "Contact Us",
     "booking": "Book Appointment"
   },
@@ -394,6 +395,7 @@
       "services": "Services",
       "doctors": "Doctors",
       "blogs" : "Blogs",
+      "loyalty": "Loyalty Program",
       "contactUs": "Contact Us",
       "privacy": "Privacy Policy"
     }
@@ -707,6 +709,55 @@
     "publishedOn": "Published on",
     "publishedBy": "Published by",
     "author": "Author"
+  },
+  "loyaltyPage": {
+    "hero": {
+      "eyebrow": "STAR HEALTH PRIVILEGE",
+      "title": "Loyalty Programs Designed for Premium Care",
+      "description": "Join our Burgundy and Black Privilege tiers to earn points on treatments, enjoy aesthetic services, and unlock exclusive member benefits at Star Health Medical Centre."
+    },
+    "cardsTitle": "Choose Your Privilege Tier",
+    "cardsDescription": "Two membership experiences crafted for patients who value premium aesthetics, dedicated care, and exclusive privileges.",
+    "pointsLabel": "POINTS",
+    "cardTypeLabel": "Card Type",
+    "cta": "Join the Program",
+    "highlightsTitle": "How the Program Works",
+    "whatNext": "Ready to join Burgundy or Black Privilege? Contact our team to learn eligibility, benefits, and enrollment.",
+    "burgundy": {
+      "title": "Burgundy Privilege",
+      "tagline": "Botox, fillers, and more",
+      "points": "Earn on every eligible treatment",
+      "benefits": {
+        "aesthetics": "Aesthetic Treatments",
+        "care": "Dedicated Care",
+        "privileges": "Member Privileges"
+      }
+    },
+    "black": {
+      "title": "Black Privilege",
+      "tagline": "Botox, fillers, and more",
+      "inviteOnly": "BY INVITE ONLY",
+      "points": "Premium rewards and priority access",
+      "benefits": {
+        "premium": "Premium Treatments",
+        "care": "Dedicated Care",
+        "privileges": "Exclusive Privileges"
+      }
+    },
+    "highlights": {
+      "earn": {
+        "title": "Earn Points",
+        "body": "Collect loyalty points on eligible aesthetic and medical services every time you visit Star Health."
+      },
+      "redeem": {
+        "title": "Redeem Benefits",
+        "body": "Use your points and tier privileges for treatments such as botox, fillers, and other premium services."
+      },
+      "experience": {
+        "title": "Exclusive Experience",
+        "body": "Enjoy a elevated member journey with dedicated support, priority access, and invite-only Black privileges."
+      }
+    }
   },
   "notFoundPage": {
     "title": "Page not found",

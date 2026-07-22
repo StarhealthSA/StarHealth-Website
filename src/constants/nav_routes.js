@@ -4,6 +4,7 @@ export const PREFETCH_ROUTES = [
   '/services',
   '/doctors',
   '/blogs',
+  '/loyalty-program',
   '/contact',
   '/privacy',
 ];
@@ -14,6 +15,7 @@ export const HEADER_NAV_LINKS = [
   { href: '/services', labelKey: 'navigation.services' },
   { href: '/doctors', labelKey: 'navigation.doctors' },
   { href: '/blogs', labelKey: 'navigation.blogs' },
+  { href: '/loyalty-program', labelKey: 'navigation.loyalty' },
   { href: '/contact', labelKey: 'navigation.contact' },
 ];
 
@@ -40,6 +42,10 @@ export function isNavLinkActive(href, pathname = '') {
     return pathname === '/doctors' || pathname.startsWith('/doctors/');
   }
 
+  if (href === '/loyalty-program') {
+    return pathname === '/loyalty-program';
+  }
+
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
@@ -49,6 +55,7 @@ export const FOOTER_QUICK_LINKS = [
   { href: '/services', labelKey: 'footer.quickLink.services' },
   { href: '/doctors', labelKey: 'footer.quickLink.doctors' },
   { href: '/blogs', labelKey: 'footer.quickLink.blogs' },
+  { href: '/loyalty-program', labelKey: 'footer.quickLink.loyalty' },
   { href: '/contact', labelKey: 'footer.quickLink.contactUs' },
   { href: '/privacy', labelKey: 'footer.quickLink.privacy' },
 ];
