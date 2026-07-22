@@ -52,7 +52,6 @@ export default function LoyaltyProgramSection() {
             <p className="loyalty-hero__what-is-body">{t('loyaltyPage.hero.whatIsBody')}</p>
           </div>
 
-          <p className="loyalty-hero__lead">{t('loyaltyPage.hero.description')}</p>
           <a
             href={JOIN_NUJOOM_URL}
             target="_blank"
