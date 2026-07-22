@@ -721,6 +721,8 @@
     "hero": {
       "eyebrow": "STAR HEALTH NUJOOM",
       "title": "Enjoy Nujoom with Star Health Medical Center",
+      "whatIsTitle": "What is Nujoom Loyalty Program?",
+      "whatIsBody": "Nujoom Program is the Loyalty Reward Program from Star Health Derma.",
       "description": "Join Star Health Nujoom and earn reward points every time you receive a service at Star Health Derma."
     },
     "cta": "Join Nujoom",

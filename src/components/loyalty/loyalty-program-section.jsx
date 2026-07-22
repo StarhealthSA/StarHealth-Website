@@ -46,6 +46,12 @@ export default function LoyaltyProgramSection() {
         <Reveal className="relative mx-auto max-w-4xl text-center">
           <p className="loyalty-hero__eyebrow">{t('loyaltyPage.hero.eyebrow')}</p>
           <h1 className="loyalty-hero__title">{t('loyaltyPage.hero.title')}</h1>
+
+          <div className="loyalty-hero__what-is">
+            <h2 className="loyalty-hero__what-is-title">{t('loyaltyPage.hero.whatIsTitle')}</h2>
+            <p className="loyalty-hero__what-is-body">{t('loyaltyPage.hero.whatIsBody')}</p>
+          </div>
+
           <p className="loyalty-hero__lead">{t('loyaltyPage.hero.description')}</p>
           <a
             href={JOIN_NUJOOM_URL}

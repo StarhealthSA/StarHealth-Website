@@ -1780,8 +1780,32 @@ html {
   font-weight: 700;
 }
 
+.loyalty-hero__what-is {
+  margin: 1.75rem auto 0;
+  max-width: 38rem;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 1.25rem 1.35rem;
+}
+
+.loyalty-hero__what-is-title {
+  font-family: Merriweather, Georgia, serif;
+  font-size: clamp(1.15rem, 2vw, 1.45rem);
+  line-height: 1.35;
+  font-weight: 700;
+  color: #e8c874;
+}
+
+.loyalty-hero__what-is-body {
+  margin-top: 0.65rem;
+  font-size: 0.98rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.88);
+}
+
 .loyalty-hero__lead {
-  margin-top: 1rem;
+  margin-top: 1.35rem;
   font-size: 1rem;
   line-height: 1.7;
   color: rgba(255, 255, 255, 0.82);
