@@ -91,10 +91,10 @@ export default function LoyaltyProgramSection() {
             {t('loyaltyPage.highlightsTitle')}
           </h2>
         </Reveal>
-        <div className="mt-8 grid gap-4 md:grid-cols-3">
+        <div className="mt-8 grid items-stretch gap-4 md:grid-cols-3">
           {highlights.map((item, index) => (
-            <Reveal key={item.title} delay={staggerDelay(index, 70)}>
-              <article className="rounded-2xl border border-[#d8e6e2] bg-white p-6 shadow-sm">
+            <Reveal key={item.title} delay={staggerDelay(index, 70)} className="h-full">
+              <article className="h-full rounded-2xl border border-[#d8e6e2] bg-white p-6 shadow-sm">
                 <h3 className="text-lg font-semibold text-[#002333]">{item.title}</h3>
                 <p className="mt-3 text-[15px] leading-[24px] text-[#5b6a71]">{item.body}</p>
               </article>
