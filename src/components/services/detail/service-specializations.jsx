@@ -4,12 +4,13 @@ import Link from 'next/link';
 import Reveal, { staggerDelay } from '@/components/reveal';
 import ServiceSectionHeader from './service-section-header';
 import { useTranslation } from 'react-i18next';
-import { getLocalizedText } from '@/lib/content/localized';
+import { getLocalizedText, formatSarPrice } from '@/lib/content/localized';
 import { SERVICE_ICONS } from '@/lib/content/service-icons';
 
 function SpecializationCard({ item, lang, delay, viewLabel }) {
   const title = getLocalizedText(item.name, lang);
   const description = getLocalizedText(item.shortDescription, lang);
+  const price = formatSarPrice(item.priceAmount);
   const image = item.featuredImageUrl || (item.iconKey && SERVICE_ICONS[item.iconKey]) || '';
 
   return (
@@ -35,6 +36,9 @@ function SpecializationCard({ item, lang, delay, viewLabel }) {
         <p className="mt-4 font-inter text-sm font-semibold text-[#002333]">{title}</p>
         {description && (
           <p className="mt-1 line-clamp-2 font-inter text-xs leading-relaxed text-[#687276]">{description}</p>
+        )}
+        {price && (
+          <p className="mt-2 font-inter text-sm font-semibold text-[#037B76]">{price}</p>
         )}
         <span className="mt-3 inline-flex items-center gap-1 font-inter text-xs font-semibold text-[#037B76] opacity-0 transition group-hover:opacity-100">
           {viewLabel} →

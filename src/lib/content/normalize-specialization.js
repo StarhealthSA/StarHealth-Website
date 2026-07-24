@@ -8,6 +8,20 @@ function normalizeLocalized(value) {
   return { en: value.en || '', ar: value.ar || '' };
 }
 
+function normalizePriceAmount(value) {
+  if (value === null || value === undefined || value === '') return '';
+  if (typeof value === 'number' && Number.isFinite(value)) {
+    return String(value);
+  }
+  if (typeof value === 'object') {
+    const text = value.en || value.ar || '';
+    const match = String(text).replace(/,/g, '').match(/(\d+(?:\.\d+)?)/);
+    return match ? match[1] : '';
+  }
+  const match = String(value).replace(/,/g, '').match(/(\d+(?:\.\d+)?)/);
+  return match ? match[1] : '';
+}
+
 function normalizeLocalizedList(items) {
   if (!Array.isArray(items)) return [];
   return items.map((item) => {
@@ -40,6 +54,8 @@ export function normalizeSpecialization(raw = {}) {
     fullDescription: normalizeLocalized(raw.fullDescription),
     procedureOverview: normalizeLocalized(raw.procedureOverview),
     treatmentDuration: normalizeLocalized(raw.treatmentDuration),
+    priceAmount: normalizePriceAmount(raw.priceAmount ?? raw.price),
+    price: normalizeLocalized(raw.price),
     recoveryInfo: normalizeLocalized(raw.recoveryInfo),
     preparationGuidelines: normalizeLocalized(raw.preparationGuidelines),
     risksAndPrecautions: normalizeLocalized(raw.risksAndPrecautions),

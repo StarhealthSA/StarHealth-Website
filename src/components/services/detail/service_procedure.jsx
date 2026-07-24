@@ -3,15 +3,16 @@
 import Reveal, { staggerDelay } from '@/components/reveal';
 import ServiceSectionHeader from './service-section-header';
 import { useTranslation } from 'react-i18next';
-import { getLocalizedText } from '@/lib/content/localized';
+import { getLocalizedText, formatSarPrice } from '@/lib/content/localized';
 
 export default function ServiceProcedure({ service, lang }) {
   const { t } = useTranslation();
   const hasProcedure = getLocalizedText(service.procedureOverview, lang);
   const hasDuration = getLocalizedText(service.treatmentDuration, lang);
+  const hasPrice = formatSarPrice(service.priceAmount);
   const hasPrep = getLocalizedText(service.preparationGuidelines, lang);
 
-  if (!hasProcedure && !hasDuration && !hasPrep) return null;
+  if (!hasProcedure && !hasDuration && !hasPrice && !hasPrep) return null;
 
   const steps = hasProcedure
     ? hasProcedure.split(/\n+/).map((s) => s.trim()).filter(Boolean)
@@ -52,6 +53,16 @@ export default function ServiceProcedure({ service, lang }) {
           )}
 
           <div className="space-y-4">
+            {hasPrice && (
+              <Reveal delay={100}>
+                <div className="service-landing-highlight-card">
+                  <p className="font-inter text-xs font-semibold uppercase tracking-wider text-[#037B76]">
+                    {t('serviceDetail.treatmentPrice')}
+                  </p>
+                  <p className="mt-2 font-inter text-lg font-medium text-[#002333]">{hasPrice}</p>
+                </div>
+              </Reveal>
+            )}
             {hasDuration && (
               <Reveal delay={120}>
                 <div className="service-landing-highlight-card">

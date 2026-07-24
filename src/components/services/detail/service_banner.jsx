@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Reveal from '@/components/reveal';
 import HeroBannerVideo from '@/components/home/hero-banner-video';
 import { useTranslation } from 'react-i18next';
-import { getLocalizedText } from '@/lib/content/localized';
+import { getLocalizedText, formatSarPrice } from '@/lib/content/localized';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
 export default function ServiceBanner({
@@ -21,6 +21,7 @@ export default function ServiceBanner({
   const resolvedBackLabel = backLabel || t('serviceDetail.backToServices');
   const bannerImage = service.bannerImage || service.featuredImageUrl || '';
   const duration = getLocalizedText(service.treatmentDuration, lang);
+  const priceLabel = formatSarPrice(service.priceAmount);
   const heroVideo = marketing?.heroVideo;
   const hasVideo = Boolean(heroVideo?.enabled && heroVideo?.playback);
   const stats = (marketing?.stats || []).filter(
@@ -98,6 +99,15 @@ export default function ServiceBanner({
                 {service.displayTitle}
               </h1>
             </Reveal>
+
+            {priceLabel ? (
+              <Reveal delay={90}>
+                <div className="service-landing-hero-price">
+                  <span className="service-landing-hero-price__label">{t('serviceDetail.startingFrom')}</span>
+                  <span className="service-landing-hero-price__value">{priceLabel}</span>
+                </div>
+              </Reveal>
+            ) : null}
 
             <Reveal delay={120}>
               <p

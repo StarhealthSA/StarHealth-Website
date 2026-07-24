@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { getLocalizedText } from '@/lib/content/localized';
+import { getLocalizedText, formatSarPrice } from '@/lib/content/localized';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
 export default function ServiceBookingSidebar({
@@ -15,6 +15,7 @@ export default function ServiceBookingSidebar({
   const { t } = useTranslation();
   const [hidden, setHidden] = useState(false);
   const duration = getLocalizedText(service.treatmentDuration, lang);
+  const price = formatSarPrice(service.priceAmount);
   const showWhatsApp = marketing?.whatsappEnabled !== false;
 
   useEffect(() => {
@@ -47,8 +48,13 @@ export default function ServiceBookingSidebar({
         <p className="mt-2 line-clamp-3 font-inter text-sm leading-relaxed text-[#586971]">
           {service.displayShortDescription}
         </p>
+        {price && (
+          <p className="mt-3 font-inter text-sm font-semibold text-[#002333]">
+            {t('serviceDetail.treatmentPrice')}: {price}
+          </p>
+        )}
         {duration && (
-          <p className="mt-3 font-inter text-xs text-[#037B76]">
+          <p className={`font-inter text-xs text-[#037B76] ${price ? 'mt-1' : 'mt-3'}`}>
             {t('serviceDetail.treatmentDuration')}: {duration}
           </p>
         )}

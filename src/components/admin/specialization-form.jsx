@@ -198,6 +198,21 @@ export default function SpecializationForm({
             value={form.treatmentDuration}
             onChange={(v) => updateField('treatmentDuration', v)}
           />
+          <label className="block">
+            <span className="text-sm font-medium text-[#586971]">Treatment Price (SAR)</span>
+            <input
+              type="number"
+              min="0"
+              step="1"
+              value={form.priceAmount ?? ''}
+              onChange={(e) => updateField('priceAmount', e.target.value)}
+              placeholder="e.g. 500"
+              className="mt-1 w-full rounded-lg border border-[#d7e6e2] bg-white px-3 py-2"
+            />
+            <span className="mt-1 block text-xs text-[#7a8a91]">
+              Leave empty to hide the price on the treatment page hero.
+            </span>
+          </label>
           <LocalizedInput
             label="Recovery Information"
             value={form.recoveryInfo}

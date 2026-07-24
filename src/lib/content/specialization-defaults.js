@@ -20,6 +20,8 @@ export function createEmptySpecialization() {
     videoUrl: '',
     procedureOverview: emptyLocalized(),
     treatmentDuration: emptyLocalized(),
+    priceAmount: '',
+    price: emptyLocalized(),
     recoveryInfo: emptyLocalized(),
     preparationGuidelines: emptyLocalized(),
     suitableFor: [],
