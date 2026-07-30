@@ -29,10 +29,12 @@ export async function getPublishedServices({ categoryId } = {}) {
   try {
     let services;
     if (!isFirebaseAdminConfigured()) {
+      // Local/dev only: show sample services when Firebase Admin is not configured.
       services = normalizeList(FALLBACK_SERVICES);
     } else {
+      // When Firebase is configured, trust the DB — empty collection means no services.
       const fetched = await fetchServicesFromFirestore({ publishedOnly: true });
-      services = fetched?.length ? fetched : normalizeList(FALLBACK_SERVICES);
+      services = fetched ?? [];
     }
 
     if (categoryId) {
@@ -41,8 +43,12 @@ export async function getPublishedServices({ categoryId } = {}) {
     return services;
   } catch (error) {
     console.error('Failed to fetch services:', error);
-    const services = normalizeList(FALLBACK_SERVICES);
-    return categoryId ? services.filter((s) => s.categoryId === categoryId) : services;
+    // Do not fall back to hardcoded services when Firebase is configured.
+    if (!isFirebaseAdminConfigured()) {
+      const services = normalizeList(FALLBACK_SERVICES);
+      return categoryId ? services.filter((s) => s.categoryId === categoryId) : services;
+    }
+    return [];
   }
 }
 

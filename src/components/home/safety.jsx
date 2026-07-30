@@ -51,13 +51,19 @@ function Safety() {
                 </div>
                 </Link>
             </Reveal>
-            <Reveal delay={120} className="w-full md:w-1/2 lg:w-[50%]">
+            <Reveal delay={120} className="w-full shrink-0 self-start md:w-1/2 md:self-auto lg:w-[50%]">
             <img
                 src={safety}
                 alt='safety'
-                className='hidden md:block md:w-full md:pr-[3px] lg:pr-0 md:h-1/1'/>
+                className='hidden h-auto w-full object-contain md:block md:pr-[3px] lg:pr-0'/>
 
-            <img src={safetymobile} alt='safety mobile view' className='block h-fit w-full object-fit md:hidden'/>
+            <img
+                src={safetymobile}
+                alt='safety mobile view'
+                width={750}
+                height={864}
+                className='block h-auto w-full max-w-full object-contain md:hidden'
+            />
             </Reveal>
         </div>
     );

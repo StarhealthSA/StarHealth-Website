@@ -25,14 +25,14 @@ export async function getActiveServiceCategories() {
     if (!isFirebaseAdminConfigured()) {
       return sortByOrder(FALLBACK_SERVICE_CATEGORIES.filter((c) => c.active));
     }
-    const items = await fetchCategories({ activeOnly: true });
-    if (!items?.length) {
-      return sortByOrder(FALLBACK_SERVICE_CATEGORIES.filter((c) => c.active));
-    }
-    return items;
+    // When Firebase is configured, trust the DB — empty collection means no categories.
+    return (await fetchCategories({ activeOnly: true })) ?? [];
   } catch (error) {
     console.error('Failed to fetch service categories:', error);
-    return sortByOrder(FALLBACK_SERVICE_CATEGORIES.filter((c) => c.active));
+    if (!isFirebaseAdminConfigured()) {
+      return sortByOrder(FALLBACK_SERVICE_CATEGORIES.filter((c) => c.active));
+    }
+    return [];
   }
 }
 

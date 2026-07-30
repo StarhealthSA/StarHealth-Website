@@ -33,14 +33,14 @@ export async function getActiveSpecializations() {
     if (!isFirebaseAdminConfigured()) {
       return normalizeList(FALLBACK_SPECIALIZATIONS.filter((s) => s.active));
     }
-    const items = await fetchSpecializations({ activeOnly: true });
-    if (!items?.length) {
-      return normalizeList(FALLBACK_SPECIALIZATIONS.filter((s) => s.active));
-    }
-    return items;
+    // When Firebase is configured, trust the DB — empty collection means no specializations.
+    return (await fetchSpecializations({ activeOnly: true })) ?? [];
   } catch (error) {
     console.error('Failed to fetch specializations:', error);
-    return normalizeList(FALLBACK_SPECIALIZATIONS.filter((s) => s.active));
+    if (!isFirebaseAdminConfigured()) {
+      return normalizeList(FALLBACK_SPECIALIZATIONS.filter((s) => s.active));
+    }
+    return [];
   }
 }
 
