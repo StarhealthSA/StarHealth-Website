@@ -8,7 +8,7 @@ export default function HeroSection({ homeSettings = null }) {
 
   return (
     <section
-      className={`home-header relative flex w-full min-h-[85vh] items-center overflow-hidden ${
+      className={`home-header relative flex w-full min-h-[85vh] items-end overflow-hidden sm:items-center ${
         hasCustomBanner ? 'hero-header--media' : 'bground bg-cover'
       }`}
     >
