@@ -27,6 +27,8 @@ export default function HomepageSettingsForm({ initial }) {
   const [form, setForm] = useState({
     heroTitle: initial?.heroTitle || { en: '', ar: '' },
     heroSubtitle: initial?.heroSubtitle || { en: '', ar: '' },
+    metaTitle: initial?.metaTitle || { en: '', ar: '' },
+    metaDescription: initial?.metaDescription || { en: '', ar: '' },
     heroSlides: sortSlides(migrateHeroSlidesFromLegacy(initial || {})),
   });
   const [saving, setSaving] = useState(false);
@@ -118,6 +120,8 @@ export default function HomepageSettingsForm({ initial }) {
         body: {
           heroTitle: form.heroTitle,
           heroSubtitle: form.heroSubtitle,
+          metaTitle: form.metaTitle,
+          metaDescription: form.metaDescription,
           heroSlides: sortSlides(form.heroSlides),
         },
       });
@@ -151,6 +155,27 @@ export default function HomepageSettingsForm({ initial }) {
           label="Hero subtitle"
           value={form.heroSubtitle}
           onChange={(value) => setForm((prev) => ({ ...prev, heroSubtitle: value }))}
+          multiline
+        />
+      </section>
+
+      <section className="space-y-5 rounded-2xl border border-[#d7e6e2] bg-white p-6">
+        <div>
+          <h2 className="text-lg font-semibold text-[#002f3b]">SEO</h2>
+          <p className="mt-1 text-sm text-[#586971]">
+            Meta title and description for the homepage. Leave blank to keep the default site SEO copy.
+          </p>
+        </div>
+
+        <LocalizedInput
+          label="Meta title"
+          value={form.metaTitle}
+          onChange={(value) => setForm((prev) => ({ ...prev, metaTitle: value }))}
+        />
+        <LocalizedInput
+          label="Meta description"
+          value={form.metaDescription}
+          onChange={(value) => setForm((prev) => ({ ...prev, metaDescription: value }))}
           multiline
         />
       </section>

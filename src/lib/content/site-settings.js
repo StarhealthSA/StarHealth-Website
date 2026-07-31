@@ -18,6 +18,8 @@ const emptyLocalized = () => ({ en: '', ar: '' });
 export const DEFAULT_HOME_SETTINGS = {
   heroTitle: emptyLocalized(),
   heroSubtitle: emptyLocalized(),
+  metaTitle: emptyLocalized(),
+  metaDescription: emptyLocalized(),
   heroSlides: [],
   heroVideo: {
     enabled: false,
@@ -67,6 +69,8 @@ export function normalizeHomeSettings(raw = {}) {
     id: HOME_DOC_ID,
     heroTitle: normalizeLocalizedField(raw.heroTitle),
     heroSubtitle: normalizeLocalizedField(raw.heroSubtitle),
+    metaTitle: normalizeLocalizedField(raw.metaTitle),
+    metaDescription: normalizeLocalizedField(raw.metaDescription),
     heroSlides,
     heroVideo: normalizeHeroVideo(raw.heroVideo),
     updatedAt: raw.updatedAt || null,
@@ -112,12 +116,16 @@ export async function updateHomeSettings(payload = {}) {
 
   const heroTitle = normalizeLocalizedField(payload.heroTitle ?? existing.heroTitle);
   const heroSubtitle = normalizeLocalizedField(payload.heroSubtitle ?? existing.heroSubtitle);
+  const metaTitle = normalizeLocalizedField(payload.metaTitle ?? existing.metaTitle);
+  const metaDescription = normalizeLocalizedField(payload.metaDescription ?? existing.metaDescription);
 
   const now = new Date().toISOString();
   const data = {
     id: HOME_DOC_ID,
     heroTitle,
     heroSubtitle,
+    metaTitle,
+    metaDescription,
     heroSlides: serializeHeroSlides(normalizedSlides),
     updatedAt: now,
   };
