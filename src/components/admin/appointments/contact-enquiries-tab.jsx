@@ -154,7 +154,7 @@ export default function ContactEnquiriesTab() {
                 </td>
                 <td className="px-4 py-3">
                   <AdminActionGroup>
-                    <AdminActionLink action="view" href={`/admin/appointments/contact/${item.id}`} />
+                    <AdminActionLink action="view" href={`/admin/contact/${item.id}`} />
                     {canWrite && (
                       <AdminActionButton action="delete" onClick={() => handleDelete(item.id)} />
                     )}

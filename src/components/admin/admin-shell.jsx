@@ -15,6 +15,7 @@ import { ROLE_LABELS } from '@/lib/firebase/roles';
 const NAV_ITEMS = [
   { href: '/admin', label: 'Dashboard', exact: true },
   { href: '/admin/appointments', label: 'Bookings', badgeKey: 'bookings' },
+  { href: '/admin/contact', label: 'Contact Form', badgeKey: 'enquiries' },
   { href: '/admin/specializations', label: 'Specializations' },
   { href: '/admin/doctors', label: 'Doctors' },
   { href: '/admin/services', label: 'Services' },
@@ -33,7 +34,7 @@ export default function AdminShell({ children }) {
   const router = useRouter();
   const { user, role, loading, logout, configured, getIdToken, canManageUsers } = useAdminAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [unreadBookings, setUnreadBookings] = useState(0);
+  const [unreadCounts, setUnreadCounts] = useState({ bookings: 0, enquiries: 0 });
   const { isUploading } = useAdminUpload();
   const isLoginPage = pathname === '/admin/login';
 
@@ -58,9 +59,14 @@ export default function AdminShell({ children }) {
       try {
         const token = await getIdToken();
         const data = await adminFetch('/api/admin/appointments/unread-count', { token });
-        if (!cancelled) setUnreadBookings(data.count || 0);
+        if (!cancelled) {
+          setUnreadCounts({
+            bookings: data.appointments || 0,
+            enquiries: data.enquiries || 0,
+          });
+        }
       } catch {
-        if (!cancelled) setUnreadBookings(0);
+        if (!cancelled) setUnreadCounts({ bookings: 0, enquiries: 0 });
       }
     }
 
@@ -123,6 +129,7 @@ export default function AdminShell({ children }) {
       <nav className="min-h-0 flex-1 space-y-1 overflow-y-auto px-3 py-4">
         {NAV_ITEMS.filter((item) => !item.requiresUserManagement || canManageUsers).map((item) => {
           const active = isNavActive(pathname, item);
+          const badgeCount = item.badgeKey ? unreadCounts[item.badgeKey] || 0 : 0;
           return (
             <Link
               key={item.href}
@@ -134,12 +141,12 @@ export default function AdminShell({ children }) {
               }`}
             >
               <span>{item.label}</span>
-              {item.badgeKey === 'bookings' && unreadBookings > 0 && (
+              {badgeCount > 0 && (
                 <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
                   active ? 'bg-white text-[#037B76]' : 'bg-amber-100 text-amber-800'
                 }`}
                 >
-                  {unreadBookings}
+                  {badgeCount}
                 </span>
               )}
             </Link>
