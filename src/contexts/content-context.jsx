@@ -6,25 +6,22 @@ import { resolveDoctorImage } from '@/lib/content/doctor-images';
 import { resolveServiceBannerImage, resolveServiceIcon } from '@/lib/content/service-icons';
 import { getDoctorDisplayLine } from '@/lib/content/normalize-doctor';
 import { findSpecializationName } from '@/lib/content/specialization-utils';
-import { findServiceCategoryName } from '@/lib/content/service-category-utils';
 
 const ContentContext = createContext({
   doctors: [],
   services: [],
   specializations: [],
-  serviceCategories: [],
 });
 
 export function ContentProvider({
   doctors = [],
   services = [],
   specializations = [],
-  serviceCategories = [],
   children,
 }) {
   const value = useMemo(
-    () => ({ doctors, services, specializations, serviceCategories }),
-    [doctors, services, specializations, serviceCategories]
+    () => ({ doctors, services, specializations }),
+    [doctors, services, specializations]
   );
   return <ContentContext.Provider value={value}>{children}</ContentContext.Provider>;
 }
@@ -50,25 +47,15 @@ export function useLocalizedDoctors(language) {
 }
 
 export function useLocalizedServices(language) {
-  const { services, serviceCategories } = useContent();
+  const { services } = useContent();
   return services.map((service) => ({
     ...service,
     displayTitle: getLocalizedText(service.title, language),
     displayDescription: getLocalizedText(service.shortDescription || service.description, language),
     displayShortDescription: getLocalizedText(service.shortDescription || service.description, language),
     displayFullDescription: getLocalizedText(service.fullDescription, language),
-    displayCategory: findServiceCategoryName(serviceCategories, service.categoryId, language),
     icon: resolveServiceIcon(service),
     bannerImage: resolveServiceBannerImage(service),
-  }));
-}
-
-export function useServiceCategories(language) {
-  const { serviceCategories } = useContent();
-  return serviceCategories.map((category) => ({
-    ...category,
-    displayName: getLocalizedText(category.name, language),
-    displayDescription: getLocalizedText(category.description, language),
   }));
 }
 

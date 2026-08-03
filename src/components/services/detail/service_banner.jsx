@@ -87,11 +87,6 @@ export default function ServiceBanner({
                     <img src={service.icon} alt="" className="h-6 w-6 object-contain" />
                   </span>
                 )}
-                {service.displayCategory && (
-                  <span className="service-landing-pill service-landing-pill--on-dark">
-                    {service.displayCategory}
-                  </span>
-                )}
               </div>
               <h1
                 className="service-display-title mt-5 text-[2rem] font-semibold leading-[1.15] text-white md:text-5xl lg:text-[3.25rem]"

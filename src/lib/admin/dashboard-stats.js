@@ -2,7 +2,6 @@ import { listAppointments } from '@/lib/content/appointments';
 import { getAllBlogs } from '@/lib/content/blogs';
 import { getAllDoctors } from '@/lib/content/doctors';
 import { listEnquiries } from '@/lib/content/enquiries';
-import { getAllServiceCategories } from '@/lib/content/service-categories';
 import { getAllServices } from '@/lib/content/services';
 import { getHomeSettings } from '@/lib/content/site-settings';
 import { getAllSpecializations } from '@/lib/content/specializations';
@@ -146,7 +145,6 @@ export async function getDashboardStats({ period = '7days', role } = {}) {
   const [
     specializations,
     doctors,
-    serviceCategories,
     services,
     blogs,
     appointments,
@@ -155,7 +153,6 @@ export async function getDashboardStats({ period = '7days', role } = {}) {
   ] = await Promise.all([
     getAllSpecializations(),
     getAllDoctors(),
-    getAllServiceCategories(),
     getAllServices(),
     getAllBlogs(),
     listAppointments(),
@@ -181,7 +178,6 @@ export async function getDashboardStats({ period = '7days', role } = {}) {
     counts: {
       specializations: specializations.length,
       doctors: doctors.length,
-      serviceCategories: serviceCategories.length,
       services: services.length,
       blogs: blogs.length,
       bookings: appointments.length,

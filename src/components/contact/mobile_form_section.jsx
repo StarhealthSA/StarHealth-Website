@@ -3,13 +3,13 @@
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { submitEnquiry } from '@/lib/contact/submit-enquiry';
-import { useServiceCategories } from '@/contexts/content-context';
+import { useLocalizedServices } from '@/contexts/content-context';
 import notify from '@/lib/ui/notify';
 
 function MobileViewForm() {
     const { t, i18n } = useTranslation();
     const isRTL = i18n.language === 'ar';
-    const categories = useServiceCategories(i18n.language);
+    const services = useLocalizedServices(i18n.language);
 
     const [formData, setFormData] = useState({
         name: '',
@@ -131,9 +131,9 @@ function MobileViewForm() {
                                         className={`w-full bg-white px-4 py-3 border border-[#DAD8D7] focus:border-[#037B76] rounded-[8px] appearance-none text-[14px] font-inter font-normal text-[#687276] outline-none ${isRTL ? 'text-right' : 'text-left'}`}
                                     >
                                         <option value="">{t('contactPage.form.select')}</option>
-                                        {categories.map((category) => (
-                                            <option key={category.id} value={category.displayName}>
-                                                {category.displayName}
+                                        {services.map((service) => (
+                                            <option key={service.id} value={service.displayTitle}>
+                                                {service.displayTitle}
                                             </option>
                                         ))}
                                     </select>

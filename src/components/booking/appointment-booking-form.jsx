@@ -8,12 +8,12 @@ import AppointmentSlotPicker from '@/components/booking/appointment-slot-picker'
 import { useTranslation } from 'react-i18next';
 import { submitAppointmentBooking } from '@/lib/booking/submit-appointment';
 import { useDoctorBookingSchedule } from '@/hooks/use-doctor-booking-schedule';
-import { useBookingCategoryDoctors } from '@/hooks/use-booking-category-doctors';
+import { useBookingServiceDoctors } from '@/hooks/use-booking-service-doctors';
 import notify from '@/lib/ui/notify';
 
 export default function AppointmentBookingForm({
   preselectedDoctorId = '',
-  preselectedCategoryId = '',
+  preselectedServiceId = '',
   lockSelection = false,
 }) {
   const { t, i18n } = useTranslation();
@@ -28,20 +28,20 @@ export default function AppointmentBookingForm({
   });
 
   const {
-    categories,
+    services,
     filteredDoctors,
-    categoryId,
+    serviceId,
     doctorId,
-    setCategoryId,
+    setServiceId,
     setDoctorId,
     selectedDoctor,
-    selectedCategoryName,
+    selectedServiceName,
     isDoctorLocked,
-    isCategoryLocked,
+    isServiceLocked,
     resetSelection,
-  } = useBookingCategoryDoctors({
+  } = useBookingServiceDoctors({
     preselectedDoctorId,
-    preselectedCategoryId,
+    preselectedServiceId,
     lockSelection,
   });
 
@@ -54,7 +54,7 @@ export default function AppointmentBookingForm({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!doctorId || !categoryId || scheduleLoading) return;
+    if (!doctorId || !serviceId || scheduleLoading) return;
 
     if (isConfigured && (!selectedDate || !selectedSlot)) {
       notify.warning(t('doctorModal.selectSlotRequired'));
@@ -71,7 +71,7 @@ export default function AppointmentBookingForm({
         patientName: formData.name,
         phone: formData.phonenumber,
         age: formData.age,
-        speciality: selectedCategoryName,
+        speciality: selectedServiceName,
         requiresSchedule: isConfigured,
       });
       notify.success(t('doctorModal.bookingSuccess'));
@@ -111,17 +111,17 @@ export default function AppointmentBookingForm({
       <form onSubmit={handleSubmit} className="mt-8">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <label className="block sm:col-span-2 lg:col-span-1">
-            <span className="mb-2 block text-sm font-medium text-[#002333]">{t('doctorModal.serviceCategory')}</span>
+            <span className="mb-2 block text-sm font-medium text-[#002333]">{t('doctorModal.service', { defaultValue: 'Service' })}</span>
             <select
-              value={categoryId}
-              onChange={(e) => setCategoryId(e.target.value)}
+              value={serviceId}
+              onChange={(e) => setServiceId(e.target.value)}
               required
-              disabled={isCategoryLocked}
+              disabled={isServiceLocked}
               className={`w-full rounded-lg border border-[#DAD8D7] px-4 py-3 text-sm text-[#687276] disabled:bg-[#F6F4F3] ${isRTL ? 'text-right' : 'text-left'}`}
             >
-              <option value="" disabled>{t('doctorModal.selectServiceCategory')}</option>
-              {categories.map((item) => (
-                <option key={item.id} value={item.id}>{item.displayName}</option>
+              <option value="" disabled>{t('doctorModal.selectService', { defaultValue: 'Select service' })}</option>
+              {services.map((item) => (
+                <option key={item.id} value={item.id}>{item.displayTitle}</option>
               ))}
             </select>
           </label>
@@ -132,11 +132,11 @@ export default function AppointmentBookingForm({
               value={doctorId}
               onChange={(e) => setDoctorId(e.target.value)}
               required
-              disabled={isDoctorLocked || !categoryId}
+              disabled={isDoctorLocked || !serviceId}
               className={`w-full rounded-lg border border-[#DAD8D7] px-4 py-3 text-sm text-[#687276] disabled:bg-[#F6F4F3] ${isRTL ? 'text-right' : 'text-left'}`}
             >
               <option value="" disabled>
-                {categoryId ? t('doctorModal.selectDoctor') : t('doctorModal.selectCategoryFirst')}
+                {t('doctorModal.selectDoctor')}
               </option>
               {filteredDoctors.map((item) => (
                 <option key={item.id} value={item.id}>{item.displayName}</option>

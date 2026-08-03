@@ -16,7 +16,6 @@ const NAV_ITEMS = [
   { href: '/admin', label: 'Dashboard', exact: true },
   { href: '/admin/appointments', label: 'Bookings', badgeKey: 'bookings' },
   { href: '/admin/specializations', label: 'Specializations' },
-  { href: '/admin/service-categories', label: 'Service Categories' },
   { href: '/admin/doctors', label: 'Doctors' },
   { href: '/admin/services', label: 'Services' },
   { href: '/admin/blogs', label: 'Blogs' },

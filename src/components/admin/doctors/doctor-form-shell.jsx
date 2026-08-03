@@ -8,10 +8,6 @@ import {
   GENDERS,
   resolveDoctorFormTab,
 } from '@/lib/content/doctor-defaults';
-import {
-  getSpecializationCategoryId,
-  getSpecializationsByCategory,
-} from '@/lib/content/specialization-utils';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { useAdminUpload } from '@/contexts/admin-upload-context';
 import { adminFetch, uploadAdminFile } from '@/lib/admin-api';
@@ -25,7 +21,6 @@ export default function DoctorFormShell({
   initial,
   initialTab = 'basic',
   specializations = [],
-  serviceCategories = [],
   services = [],
 }) {
   const router = useRouter();
@@ -35,11 +30,8 @@ export default function DoctorFormShell({
   const [form, setForm] = useState(() => {
     const base = initial || createEmptyDoctor();
     const activeSpecId = base.subSpecializationId || base.specializationId;
-    const selectedSpec = specializations.find((spec) => spec.id === activeSpecId);
-    const categoryId = base.categoryId || getSpecializationCategoryId(selectedSpec);
     return {
       ...base,
-      categoryId: categoryId || '',
       specializationId: activeSpecId || base.specializationId || '',
     };
   });
@@ -49,10 +41,6 @@ export default function DoctorFormShell({
   useEffect(() => {
     setTab(resolveDoctorFormTab(initialTab));
   }, [initialTab]);
-
-  const categorySpecs = form.categoryId
-    ? getSpecializationsByCategory(specializations, form.categoryId)
-    : [];
 
   const update = (path, value) => {
     setForm((prev) => {
@@ -117,7 +105,6 @@ export default function DoctorFormShell({
         ...form,
         id,
         slug,
-        categoryId: form.categoryId || null,
         specializationId: form.specializationId || null,
         subSpecializationId: form.subSpecializationId || null,
         certifications: normalizeListItems(form.certifications).map((c) => ({
@@ -192,41 +179,39 @@ export default function DoctorFormShell({
                 <input type="number" value={form.order} onChange={(e) => update('order', Number(e.target.value))} className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2" />
               </label>
             </div>
-            <div className="grid gap-4 md:grid-cols-2">
-              <label className="block">
-                <span className="text-sm font-medium text-[#586971]">Service Category</span>
-                <select
-                  value={form.categoryId || ''}
-                  onChange={(e) => {
-                    update('categoryId', e.target.value);
-                    update('specializationId', '');
-                    update('subSpecializationId', null);
-                  }}
-                  className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
-                >
-                  <option value="">Select category</option>
-                  {serviceCategories.map((category) => (
-                    <option key={category.id} value={category.id}>{category.name?.en}</option>
-                  ))}
-                </select>
-              </label>
-              <label className="block">
-                <span className="text-sm font-medium text-[#586971]">Specialization</span>
-                <select
-                  value={form.specializationId || ''}
-                  onChange={(e) => {
-                    update('specializationId', e.target.value);
-                    update('subSpecializationId', null);
-                  }}
-                  className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
-                  disabled={!form.categoryId}
-                >
-                  <option value="">Select specialization</option>
-                  {categorySpecs.map((spec) => (
-                    <option key={spec.id} value={spec.id}>{spec.name?.en}</option>
-                  ))}
-                </select>
-              </label>
+            <label className="block">
+              <span className="text-sm font-medium text-[#586971]">Specialization</span>
+              <select
+                value={form.specializationId || ''}
+                onChange={(e) => {
+                  update('specializationId', e.target.value);
+                  update('subSpecializationId', null);
+                }}
+                className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
+              >
+                <option value="">Select specialization</option>
+                {specializations.map((spec) => (
+                  <option key={spec.id} value={spec.id}>{spec.name?.en}</option>
+                ))}
+              </select>
+            </label>
+            <div>
+              <span className="text-sm font-medium text-[#586971]">Related Services</span>
+              <p className="mt-1 text-xs text-[#586971]">
+                Assign this doctor to one or more services. Booking forms filter doctors by the selected service.
+              </p>
+              <div className="mt-2 grid gap-2 md:grid-cols-2">
+                {services.map((service) => (
+                  <label key={service.id} className="flex items-center gap-2 rounded-lg border border-[#eef4f2] px-3 py-2 text-sm">
+                    <input
+                      type="checkbox"
+                      checked={(form.relatedServiceIds || []).includes(service.id)}
+                      onChange={() => toggleService(service.id)}
+                    />
+                    {service.title?.en || service.id}
+                  </label>
+                ))}
+              </div>
             </div>
             <div className="grid gap-4 md:grid-cols-2">
               <label className="block">
@@ -322,21 +307,6 @@ export default function DoctorFormShell({
               <input type="checkbox" checked={form.featured} onChange={(e) => update('featured', e.target.checked)} />
               Featured on home page
             </label>
-            <div>
-              <span className="text-sm font-medium text-[#586971]">Related Services</span>
-              <div className="mt-2 grid gap-2 md:grid-cols-2">
-                {services.map((service) => (
-                  <label key={service.id} className="flex items-center gap-2 rounded-lg border border-[#eef4f2] px-3 py-2 text-sm">
-                    <input
-                      type="checkbox"
-                      checked={(form.relatedServiceIds || []).includes(service.id)}
-                      onChange={() => toggleService(service.id)}
-                    />
-                    {service.title?.en || service.id}
-                  </label>
-                ))}
-              </div>
-            </div>
           </div>
         )}
       </div>

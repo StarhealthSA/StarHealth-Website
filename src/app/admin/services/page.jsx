@@ -12,22 +12,16 @@ import { resolveServiceIcon } from '@/lib/content/service-icons';
 export default function AdminServicesPage() {
   const { getIdToken, canWrite, canDeleteContent } = useAdminAuth();
   const [services, setServices] = useState([]);
-  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [search, setSearch] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('');
 
   const loadServices = useCallback(async () => {
     try {
       setLoading(true);
       const token = await getIdToken();
-      const [data, cats] = await Promise.all([
-        adminFetch('/api/admin/services', { token }),
-        adminFetch('/api/admin/service-categories', { token }),
-      ]);
+      const data = await adminFetch('/api/admin/services', { token });
       setServices(data);
-      setCategories(cats);
       setError('');
     } catch (err) {
       setError(err.message);
@@ -42,21 +36,14 @@ export default function AdminServicesPage() {
 
   const filteredServices = useMemo(() => {
     const query = search.trim().toLowerCase();
+    if (!query) return services;
     return services.filter((service) => {
-      const matchesCategory = !categoryFilter || service.categoryId === categoryFilter;
-      if (!query) return matchesCategory;
       const titleEn = service.title?.en?.toLowerCase() || '';
       const titleAr = service.title?.ar?.toLowerCase() || '';
       const slug = service.slug?.toLowerCase() || '';
-      const matchesSearch = titleEn.includes(query) || titleAr.includes(query) || slug.includes(query);
-      return matchesCategory && matchesSearch;
+      return titleEn.includes(query) || titleAr.includes(query) || slug.includes(query);
     });
-  }, [services, search, categoryFilter]);
-
-  const getCategoryName = (categoryId) => {
-    const category = categories.find((c) => c.id === categoryId);
-    return category?.name?.en || '—';
-  };
+  }, [services, search]);
 
   const handleDelete = async (serviceId) => {
     const confirmed = await notify.confirm({
@@ -102,16 +89,6 @@ export default function AdminServicesPage() {
           placeholder="Search services..."
           className="min-w-[220px] flex-1 rounded-lg border border-[#d7e6e2] px-3 py-2 text-sm"
         />
-        <select
-          value={categoryFilter}
-          onChange={(e) => setCategoryFilter(e.target.value)}
-          className="rounded-lg border border-[#d7e6e2] px-3 py-2 text-sm"
-        >
-          <option value="">All categories</option>
-          {categories.map((cat) => (
-            <option key={cat.id} value={cat.id}>{cat.name?.en}</option>
-          ))}
-        </select>
       </div>
 
       <div className="mt-8 overflow-x-auto rounded-2xl border border-[#d7e6e2] bg-white">
@@ -120,7 +97,6 @@ export default function AdminServicesPage() {
             <tr>
               <th className="px-4 py-3 font-medium text-[#586971]">Image</th>
               <th className="px-4 py-3 font-medium text-[#586971]">Name</th>
-              <th className="px-4 py-3 font-medium text-[#586971]">Category</th>
               <th className="px-4 py-3 font-medium text-[#586971]">Status</th>
               <th className="px-4 py-3 font-medium text-[#586971]">Order</th>
               <th className="px-4 py-3 font-medium text-[#586971]">Actions</th>
@@ -129,11 +105,11 @@ export default function AdminServicesPage() {
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan={6}>
+                <td colSpan={5}>
                   <AdminPageLoader
                     variant="table"
                     label="Loading services..."
-                    description="Fetching services and categories from the database."
+                    description="Fetching services from the database."
                   />
                 </td>
               </tr>
@@ -150,7 +126,6 @@ export default function AdminServicesPage() {
                   <p className="font-medium text-[#002f3b]">{service.title?.en}</p>
                   <p className="text-xs text-[#586971]">{service.slug}</p>
                 </td>
-                <td className="px-4 py-3 text-[#586971]">{getCategoryName(service.categoryId)}</td>
                 <td className="px-4 py-3">
                   <span className={`rounded-full px-2 py-1 text-xs ${
                     (service.status || (service.published !== false ? 'active' : 'inactive')) === 'active'

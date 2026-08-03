@@ -33,7 +33,7 @@ export async function getActiveDoctors() {
 export async function getPublishedDoctors() {
   try {
     if (!isFirebaseAdminConfigured()) {
-      return normalizeList(FALLBACK_DOCTORS.filter((d) => d.published !== false && d.categoryId));
+      return normalizeList(FALLBACK_DOCTORS.filter((d) => d.published !== false));
     }
 
     const doctors = await fetchDoctorsFromFirestore({ activeOnly: true });
@@ -111,7 +111,6 @@ export async function updateDoctor(id, data) {
   const normalized = normalizeDoctor({ ...data, id });
   const payload = {
     ...normalized,
-    categoryId: data.categoryId ?? normalized.categoryId ?? null,
     dateAvailability: data.dateAvailability ?? normalized.dateAvailability,
     scheduleBreak: data.scheduleBreak ?? normalized.scheduleBreak,
     updatedAt: now,

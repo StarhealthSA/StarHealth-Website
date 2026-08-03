@@ -8,7 +8,6 @@ export function createEmptySpecialization() {
     slug: '',
     name: emptyLocalized(),
     parentServiceId: '',
-    categoryId: null,
     parentId: null,
     shortDescription: emptyLocalized(),
     fullDescription: emptyLocalized(),

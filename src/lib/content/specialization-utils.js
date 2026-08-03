@@ -1,29 +1,5 @@
-const LEGACY_SPEC_TO_CATEGORY = {
-  'general-medicine': 'primary-care',
-  'family-medicine': 'primary-care',
-  paediatrics: 'pediatrics',
-  dentistry: 'dental',
-  orthodontics: 'dental',
-  obg: 'womens-health',
-};
-
-export function getSpecializationCategoryId(spec) {
-  if (!spec) return null;
-  if (spec.categoryId) return spec.categoryId;
-  if (LEGACY_SPEC_TO_CATEGORY[spec.id]) return LEGACY_SPEC_TO_CATEGORY[spec.id];
-  if (spec.parentId && LEGACY_SPEC_TO_CATEGORY[spec.parentId]) {
-    return LEGACY_SPEC_TO_CATEGORY[spec.parentId];
-  }
-  return null;
-}
-
-export function getSpecializationsByCategory(specializations, categoryId) {
-  if (!categoryId) return [];
-  return specializations.filter((spec) => getSpecializationCategoryId(spec) === categoryId);
-}
-
 export function getTopLevelSpecializations(specializations) {
-  return specializations.filter((s) => !getSpecializationCategoryId(s));
+  return specializations.filter((s) => !s.parentId);
 }
 
 export function getSubSpecializations(specializations, parentId) {
@@ -40,17 +16,14 @@ export function findSpecializationName(specializations, id, language = 'en') {
 export function getSpecializationsForService(specializations, service) {
   if (!service?.id) return [];
 
-  const byParent = specializations.filter(
+  return specializations.filter(
     (spec) => spec.active !== false && spec.parentServiceId === service.id
   );
-  if (byParent.length) return byParent;
+}
 
-  if (!service.categoryId) return [];
-
+export function getSpecializationsByParentService(specializations, serviceId) {
+  if (!serviceId) return [];
   return specializations.filter(
-    (spec) =>
-      spec.active !== false
-      && !spec.parentServiceId
-      && getSpecializationCategoryId(spec) === service.categoryId
+    (spec) => spec.active !== false && spec.parentServiceId === serviceId
   );
 }

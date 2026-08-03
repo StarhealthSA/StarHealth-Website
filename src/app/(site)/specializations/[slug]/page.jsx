@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation';
 import SpecializationDetailClient from '@/components/specializations/detail/specialization-detail-client';
-import { getActiveServiceCategories } from '@/lib/content/service-categories';
 import { getPublishedDoctors } from '@/lib/content/doctors';
 import { getServiceById } from '@/lib/content/services';
 import { getLocalizedText } from '@/lib/content/localized';
@@ -31,8 +30,7 @@ export default async function SpecializationDetailPage({ params }) {
     notFound();
   }
 
-  const [categories, doctors, parentService] = await Promise.all([
-    getActiveServiceCategories(),
+  const [doctors, parentService] = await Promise.all([
     getPublishedDoctors(),
     specialization.parentServiceId
       ? getServiceById(specialization.parentServiceId)
@@ -43,7 +41,6 @@ export default async function SpecializationDetailPage({ params }) {
     <SpecializationDetailClient
       specialization={specialization}
       parentService={parentService}
-      categories={categories}
       doctors={doctors}
     />
   );

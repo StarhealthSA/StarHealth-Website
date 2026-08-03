@@ -15,7 +15,6 @@ import ServiceFaqsEditor from '@/components/admin/services/service-faqs-editor';
 
 export default function SpecializationForm({
   initial,
-  categories = [],
   services = [],
   onSubmit,
   onCancel,
@@ -26,7 +25,6 @@ export default function SpecializationForm({
   const [form, setForm] = useState(() => ({
     ...createEmptySpecialization(),
     ...initial,
-    categoryId: initial?.categoryId || null,
     parentServiceId: initial?.parentServiceId || '',
   }));
   const [tab, setTab] = useState('basic');
@@ -79,7 +77,6 @@ export default function SpecializationForm({
       ...form,
       id,
       slug,
-      categoryId: form.categoryId || null,
       parentServiceId: form.parentServiceId || '',
       parentId: null,
     });
@@ -126,7 +123,7 @@ export default function SpecializationForm({
               onChange={(e) => updateField('parentServiceId', e.target.value)}
               className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
             >
-              <option value="">None (match by category only)</option>
+              <option value="">None</option>
               {services.map((service) => (
                 <option key={service.id} value={service.id}>
                   {service.title?.en || service.id}
@@ -134,30 +131,15 @@ export default function SpecializationForm({
               ))}
             </select>
           </label>
-          <div className="grid gap-4 md:grid-cols-2">
-            <label className="block">
-              <span className="text-sm font-medium text-[#586971]">Service Category</span>
-              <select
-                value={form.categoryId || ''}
-                onChange={(e) => updateField('categoryId', e.target.value || null)}
-                className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
-              >
-                <option value="">Select category</option>
-                {categories.map((category) => (
-                  <option key={category.id} value={category.id}>{category.name?.en}</option>
-                ))}
-              </select>
-            </label>
-            <label className="block">
-              <span className="text-sm font-medium text-[#586971]">Order</span>
-              <input
-                type="number"
-                value={form.order}
-                onChange={(e) => updateField('order', Number(e.target.value))}
-                className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
-              />
-            </label>
-          </div>
+          <label className="block">
+            <span className="text-sm font-medium text-[#586971]">Order</span>
+            <input
+              type="number"
+              value={form.order}
+              onChange={(e) => updateField('order', Number(e.target.value))}
+              className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2 md:max-w-xs"
+            />
+          </label>
           <label className="flex items-center gap-2 text-sm text-[#586971]">
             <input
               type="checkbox"

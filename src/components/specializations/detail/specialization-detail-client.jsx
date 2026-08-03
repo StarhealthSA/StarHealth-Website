@@ -3,7 +3,6 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getLocalizedText } from '@/lib/content/localized';
-import { findServiceCategoryName } from '@/lib/content/service-category-utils';
 import { resolveServiceBannerImage, resolveServiceIcon } from '@/lib/content/service-icons';
 import { normalizeMarketing } from '@/lib/content/service-marketing';
 import { specializationToServiceShape } from '@/lib/content/normalize-specialization';
@@ -23,7 +22,6 @@ import ServiceTestimonials from '@/components/services/detail/service-testimonia
 export default function SpecializationDetailClient({
   specialization: rawSpec,
   parentService = null,
-  categories = [],
   doctors = [],
 }) {
   const { t, i18n } = useTranslation();
@@ -42,10 +40,9 @@ export default function SpecializationDetailClient({
     displayTitle: getLocalizedText(serviceShape.title, lang),
     displayShortDescription: getLocalizedText(serviceShape.shortDescription, lang),
     displayFullDescription: getLocalizedText(serviceShape.fullDescription, lang),
-    displayCategory: findServiceCategoryName(categories, serviceShape.categoryId, lang),
     icon: resolveServiceIcon(serviceShape),
     bannerImage: resolveServiceBannerImage(serviceShape),
-  }), [serviceShape, lang, categories, marketing]);
+  }), [serviceShape, lang, marketing]);
 
   const matchedDoctors = useMemo(
     () => getSpecializationMatchedDoctors({
@@ -108,7 +105,7 @@ export default function SpecializationDetailClient({
       <AppointmentModal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
-        preselectedCategoryId={rawSpec.categoryId}
+        preselectedServiceId={rawSpec.parentServiceId}
       />
     </div>
   );

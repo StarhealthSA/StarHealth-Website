@@ -134,7 +134,7 @@ export default function AdminDashboard() {
           <DashboardStatCard
             href="/admin/specializations"
             title="Specializations"
-            description="Manage doctor specializations by service category."
+            description="Manage doctor specializations linked to parent services."
             count={counts.specializations}
           />
           <DashboardStatCard
@@ -142,12 +142,6 @@ export default function AdminDashboard() {
             title="Doctors"
             description="Manage doctor profiles, specialties, and visibility."
             count={counts.doctors}
-          />
-          <DashboardStatCard
-            href="/admin/service-categories"
-            title="Service Categories"
-            description="Organize services into browsable categories."
-            count={counts.serviceCategories}
           />
           <DashboardStatCard
             href="/admin/services"

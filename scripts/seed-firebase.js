@@ -17,7 +17,6 @@ const db = getFirestore();
 
 const { FALLBACK_DOCTORS, FALLBACK_SERVICES } = await import('../src/lib/content/fallback-data.js');
 const { FALLBACK_SPECIALIZATIONS } = await import('../src/lib/content/fallback-specializations.js');
-const { FALLBACK_SERVICE_CATEGORIES } = await import('../src/lib/content/fallback-service-categories.js');
 const { normalizeDoctor } = await import('../src/lib/content/normalize-doctor.js');
 const { normalizeService } = await import('../src/lib/content/normalize-service.js');
 
@@ -31,15 +30,6 @@ async function seed() {
       updatedAt: now,
     });
     console.log(`Seeded specialization: ${spec.id}`);
-  }
-
-  for (const category of FALLBACK_SERVICE_CATEGORIES) {
-    await db.collection('serviceCategories').doc(category.id).set({
-      ...category,
-      createdAt: now,
-      updatedAt: now,
-    });
-    console.log(`Seeded service category: ${category.id}`);
   }
 
   for (const doctor of FALLBACK_DOCTORS) {

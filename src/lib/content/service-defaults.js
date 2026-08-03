@@ -12,7 +12,6 @@ export function createEmptyService() {
     iconKey: 'generalMedicine',
     iconUrl: '',
     featuredImageUrl: '',
-    categoryId: '',
     marketing: createEmptyMarketing(),
     benefits: [],
     procedureOverview: emptyLocalized(),

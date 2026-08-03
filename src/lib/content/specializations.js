@@ -115,8 +115,7 @@ export async function deleteSpecialization(id) {
 export {
   getTopLevelSpecializations,
   getSubSpecializations,
-  getSpecializationsByCategory,
-  getSpecializationCategoryId,
+  getSpecializationsByParentService,
   getSpecializationsForService,
   findSpecializationName,
 } from './specialization-utils';

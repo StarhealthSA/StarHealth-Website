@@ -111,7 +111,7 @@ export default function DoctorDetailClient({ doctor: rawDoctor, relatedServices 
         onClose={() => setShowModal(false)}
         preselectedDoctor={doctor.displayName}
         preselectedDoctorId={rawDoctor.id}
-        preselectedCategoryId={rawDoctor.categoryId}
+        preselectedServiceId={rawDoctor.relatedServiceIds?.[0]}
         lockSelection
       />
     </div>
