@@ -20,7 +20,6 @@ export function normalizeDoctor(raw = {}) {
     qualification: raw.qualification ?? emptyLocalized(),
     experienceYears: raw.experienceYears ?? null,
     designation: raw.designation ?? emptyLocalized(),
-    categoryId: raw.categoryId || null,
     specializationId,
     subSpecializationId: raw.subSpecializationId || null,
     specialty: raw.specialty ?? emptyLocalized(),

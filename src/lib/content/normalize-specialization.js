@@ -67,7 +67,6 @@ export function normalizeSpecialization(raw = {}) {
     faqs: normalizeFaqs(raw.faqs),
     galleryImages: Array.isArray(raw.galleryImages) ? raw.galleryImages : [],
     parentServiceId: raw.parentServiceId || '',
-    categoryId: raw.categoryId || null,
     parentId: raw.parentId || null,
     featuredImageUrl: raw.featuredImageUrl || '',
     active: raw.active !== false,
@@ -87,7 +86,6 @@ export function specializationToServiceShape(spec) {
     title: normalized.name,
     shortDescription: normalized.shortDescription,
     fullDescription: normalized.fullDescription,
-    categoryId: normalized.categoryId || '',
     status: normalized.active ? 'active' : 'inactive',
   };
 }

@@ -42,7 +42,7 @@ function DoctorsCard(props) {
         onClose={() => setShowModal(false)}
         preselectedDoctor={props.name}
         preselectedDoctorId={props.doctorId}
-        preselectedCategoryId={props.categoryId}
+        preselectedServiceId={props.preselectedServiceId}
         lockSelection
       />
     </>

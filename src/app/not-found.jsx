@@ -6,14 +6,12 @@ import { ContentProvider } from '@/contexts/content-context';
 import { getPublishedDoctors } from '@/lib/content/doctors';
 import { getPublishedServices } from '@/lib/content/services';
 import { getActiveSpecializations } from '@/lib/content/specializations';
-import { getActiveServiceCategories } from '@/lib/content/service-categories';
 
 export default async function RootNotFound() {
-  const [doctors, services, specializations, serviceCategories] = await Promise.all([
+  const [doctors, services, specializations] = await Promise.all([
     getPublishedDoctors(),
     getPublishedServices(),
     getActiveSpecializations(),
-    getActiveServiceCategories(),
   ]);
 
   return (
@@ -21,7 +19,6 @@ export default async function RootNotFound() {
       doctors={doctors}
       services={services}
       specializations={specializations}
-      serviceCategories={serviceCategories}
     >
       <Topnav />
       <Header />

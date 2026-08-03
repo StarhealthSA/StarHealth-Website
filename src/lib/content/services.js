@@ -25,28 +25,20 @@ async function fetchServicesFromFirestore({ publishedOnly = true } = {}) {
   return publishedOnly ? filterPublished(services) : services;
 }
 
-export async function getPublishedServices({ categoryId } = {}) {
+export async function getPublishedServices() {
   try {
-    let services;
     if (!isFirebaseAdminConfigured()) {
       // Local/dev only: show sample services when Firebase Admin is not configured.
-      services = normalizeList(FALLBACK_SERVICES);
-    } else {
-      // When Firebase is configured, trust the DB — empty collection means no services.
-      const fetched = await fetchServicesFromFirestore({ publishedOnly: true });
-      services = fetched ?? [];
+      return normalizeList(FALLBACK_SERVICES);
     }
-
-    if (categoryId) {
-      return services.filter((s) => s.categoryId === categoryId);
-    }
-    return services;
+    // When Firebase is configured, trust the DB — empty collection means no services.
+    const fetched = await fetchServicesFromFirestore({ publishedOnly: true });
+    return fetched ?? [];
   } catch (error) {
     console.error('Failed to fetch services:', error);
     // Do not fall back to hardcoded services when Firebase is configured.
     if (!isFirebaseAdminConfigured()) {
-      const services = normalizeList(FALLBACK_SERVICES);
-      return categoryId ? services.filter((s) => s.categoryId === categoryId) : services;
+      return normalizeList(FALLBACK_SERVICES);
     }
     return [];
   }

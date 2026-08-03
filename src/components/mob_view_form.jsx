@@ -6,7 +6,7 @@ import Reveal from './reveal';
 import { useTranslation } from 'react-i18next';
 import AppointmentDatePicker from '@/components/booking/appointment-date-picker';
 import AppointmentSlotPicker from '@/components/booking/appointment-slot-picker';
-import { useBookingCategoryDoctors } from '@/hooks/use-booking-category-doctors';
+import { useBookingServiceDoctors } from '@/hooks/use-booking-service-doctors';
 import { submitAppointmentBooking } from '@/lib/booking/submit-appointment';
 import { useDoctorBookingSchedule } from '@/hooks/use-doctor-booking-schedule';
 import notify from '@/lib/ui/notify';
@@ -25,15 +25,15 @@ function Mobviewform() {
   });
 
   const {
-    categories,
+    services,
     filteredDoctors,
-    categoryId,
+    serviceId,
     doctorId,
-    setCategoryId,
+    setServiceId,
     setDoctorId,
     selectedDoctor,
-    selectedCategoryName,
-  } = useBookingCategoryDoctors();
+    selectedServiceName,
+  } = useBookingServiceDoctors();
 
   const { isConfigured, isOpenSchedule, loading: scheduleLoading } = useDoctorBookingSchedule(doctorId);
 
@@ -42,8 +42,8 @@ function Mobviewform() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleCategoryChange = (value) => {
-    setCategoryId(value);
+  const handleServiceChange = (value) => {
+    setServiceId(value);
     setSelectedSlot(null);
     setSelectedDate(null);
   };
@@ -56,7 +56,7 @@ function Mobviewform() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!doctorId || !categoryId || scheduleLoading) return;
+    if (!doctorId || !serviceId || scheduleLoading) return;
 
     if (isConfigured && (!selectedDate || !selectedSlot)) {
       notify.warning(t('doctorModal.selectSlotRequired'));
@@ -73,12 +73,12 @@ function Mobviewform() {
         patientName: formData.name,
         phone: formData.phonenumber,
         age: formData.age,
-        speciality: selectedCategoryName,
+        speciality: selectedServiceName,
         requiresSchedule: isConfigured,
       });
       notify.success(t('doctorModal.bookingSuccess'));
       setFormData({ name: '', phonenumber: '', age: '' });
-      setCategoryId('');
+      setServiceId('');
       setDoctorId('');
       setSelectedDate(null);
       setSelectedSlot(null);
@@ -112,19 +112,19 @@ function Mobviewform() {
           <div className="relative w-full">
             <div className="flex flex-row w-full border border-[#FFFFFF66] rounded-lg">
               <select
-                value={categoryId}
-                onChange={(e) => handleCategoryChange(e.target.value)}
+                value={serviceId}
+                onChange={(e) => handleServiceChange(e.target.value)}
                 required
                 className={`w-full bg-transparent text-white placeholder-white font-inter text-base p-3 outline-none appearance-none ${isRTL ? 'text-right' : 'text-left'}`}
               >
-                <option value="" disabled className="text-[#FFFFFF]">{t('doctorModal.selectServiceCategory')}</option>
-                {categories.map((item) => (
+                <option value="" disabled className="text-[#FFFFFF]">{t('doctorModal.selectService', { defaultValue: 'Select service' })}</option>
+                {services.map((item) => (
                   <option
                     key={item.id}
                     value={item.id}
                     className="text-white bg-[#037B76]"
                   >
-                    {item.displayName}
+                    {item.displayTitle}
                   </option>
                 ))}
               </select>
@@ -142,21 +142,23 @@ function Mobviewform() {
                 value={doctorId}
                 onChange={(e) => handleDoctorChange(e.target.value)}
                 required
-                disabled={!categoryId}
+                disabled={!serviceId}
                 className={`w-full bg-transparent text-white placeholder-white font-inter text-base p-3 outline-none appearance-none disabled:opacity-70 ${isRTL ? 'text-right' : 'text-left'}`}
               >
                 <option value="" disabled className="text-gray-400">
-                  {categoryId ? t('bookingForm.selectDoctor') : t('doctorModal.selectCategoryFirst')}
+                  {t('bookingForm.selectDoctor')}
                 </option>
-                {filteredDoctors.map((item) => (
-                  <option
-                    key={item.id}
-                    value={item.id}
-                    className="text-white bg-[#037B76]"
-                  >
-                    {item.displayName}
-                  </option>
-                ))}
+                {serviceId
+                  ? filteredDoctors.map((item) => (
+                    <option
+                      key={item.id}
+                      value={item.id}
+                      className="text-white bg-[#037B76]"
+                    >
+                      {item.displayName}
+                    </option>
+                  ))
+                  : null}
               </select>
               <div className={`absolute inset-y-0 ${isRTL ? 'left-0' : 'right-0'} flex items-center px-2 pointer-events-none`}>
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">

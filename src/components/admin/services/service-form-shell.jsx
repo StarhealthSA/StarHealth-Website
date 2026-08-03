@@ -17,7 +17,6 @@ import ServiceMarketingEditor from '@/components/admin/services/service-marketin
 
 export default function ServiceFormShell({
   initial,
-  categories = [],
   allServices = [],
   doctors = [],
 }) {
@@ -254,19 +253,6 @@ export default function ServiceFormShell({
 
       {tab === 'details' && (
         <div className="space-y-4">
-          <label className="block">
-            <span className="text-sm font-medium text-[#586971]">Service Category</span>
-            <select
-              value={form.categoryId || ''}
-              onChange={(e) => update('categoryId', e.target.value)}
-              className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
-            >
-              <option value="">Select category</option>
-              {categories.map((cat) => (
-                <option key={cat.id} value={cat.id}>{cat.name?.en}</option>
-              ))}
-            </select>
-          </label>
           <ServiceBenefitsEditor
             items={form.benefits || []}
             onChange={(v) => update('benefits', v)}

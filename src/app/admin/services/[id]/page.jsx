@@ -13,7 +13,6 @@ export default function AdminServiceEditPage() {
   const isNew = id === 'new';
   const { getIdToken } = useAdminAuth();
   const [service, setService] = useState(null);
-  const [categories, setCategories] = useState([]);
   const [allServices, setAllServices] = useState([]);
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(!isNew);
@@ -22,12 +21,10 @@ export default function AdminServiceEditPage() {
   const load = useCallback(async () => {
     try {
       const token = await getIdToken();
-      const [cats, svcs, drs] = await Promise.all([
-        adminFetch('/api/admin/service-categories', { token }),
+      const [svcs, drs] = await Promise.all([
         adminFetch('/api/admin/services', { token }),
         adminFetch('/api/admin/doctors', { token }),
       ]);
-      setCategories(cats);
       setAllServices(svcs);
       setDoctors((drs || []).filter((d) => d.status === 'active' || d.published !== false));
 
@@ -79,7 +76,6 @@ export default function AdminServiceEditPage() {
       </p>
       <ServiceFormShell
         initial={isNew ? null : service}
-        categories={categories}
         allServices={allServices}
         doctors={doctors}
       />

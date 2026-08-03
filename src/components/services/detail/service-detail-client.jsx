@@ -3,7 +3,6 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getLocalizedText } from '@/lib/content/localized';
-import { findServiceCategoryName } from '@/lib/content/service-category-utils';
 import { resolveServiceBannerImage, resolveServiceIcon } from '@/lib/content/service-icons';
 import { normalizeMarketing } from '@/lib/content/service-marketing';
 import { getServiceMatchedDoctors } from '@/lib/content/service-doctors';
@@ -22,7 +21,6 @@ import { getSpecializationsForService } from '@/lib/content/specialization-utils
 
 export default function ServiceDetailClient({
   service: rawService,
-  categories = [],
   doctors = [],
   specializations = [],
   childSpecializations = [],
@@ -42,17 +40,17 @@ export default function ServiceDetailClient({
     displayTitle: getLocalizedText(rawService.title, lang),
     displayShortDescription: getLocalizedText(rawService.shortDescription || rawService.description, lang),
     displayFullDescription: getLocalizedText(rawService.fullDescription || rawService.description, lang),
-    displayCategory: findServiceCategoryName(categories, rawService.categoryId, lang),
     icon: resolveServiceIcon(rawService),
     bannerImage: resolveServiceBannerImage(rawService),
-  }), [rawService, lang, categories, marketing]);
+  }), [rawService, lang, marketing]);
 
   const matchedDoctors = useMemo(
     () => getServiceMatchedDoctors({
       doctors,
-      categoryId: rawService.categoryId,
+      serviceId: rawService.id,
+      specializations,
     }),
-    [doctors, rawService.categoryId]
+    [doctors, rawService.id, specializations]
   );
 
   const serviceSpecializations = useMemo(
@@ -109,7 +107,7 @@ export default function ServiceDetailClient({
       <AppointmentModal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
-        preselectedCategoryId={rawService.categoryId}
+        preselectedServiceId={rawService.id}
       />
     </div>
   );

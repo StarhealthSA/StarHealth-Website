@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation';
 import ServiceDetailClient from '@/components/services/detail/service-detail-client';
-import { getActiveServiceCategories } from '@/lib/content/service-categories';
 import { getPublishedDoctors } from '@/lib/content/doctors';
 import { getServiceBySlug } from '@/lib/content/services';
 import { getActiveSpecializations } from '@/lib/content/specializations';
@@ -29,8 +28,7 @@ export default async function ServiceDetailPage({ params }) {
     notFound();
   }
 
-  const [categories, doctors, specializations] = await Promise.all([
-    getActiveServiceCategories(),
+  const [doctors, specializations] = await Promise.all([
     getPublishedDoctors(),
     getActiveSpecializations(),
   ]);
@@ -38,7 +36,6 @@ export default async function ServiceDetailPage({ params }) {
   return (
     <ServiceDetailClient
       service={service}
-      categories={categories}
       doctors={doctors}
       specializations={specializations}
     />

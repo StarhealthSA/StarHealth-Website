@@ -8,14 +8,13 @@ import AdminPageLoader from '@/components/admin/admin-page-loader';
 import { AdminActionButton, AdminActionGroup } from '@/components/admin/admin-action-button';
 import notify from '@/lib/ui/notify';
 import {
-  getSpecializationsByCategory,
+  getSpecializationsByParentService,
   getTopLevelSpecializations,
 } from '@/lib/content/specialization-utils';
 
 export default function AdminSpecializationsPage() {
   const { getIdToken, canWrite, canDeleteContent } = useAdminAuth();
   const [specializations, setSpecializations] = useState([]);
-  const [categories, setCategories] = useState([]);
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -27,13 +26,11 @@ export default function AdminSpecializationsPage() {
     try {
       setLoading(true);
       const token = await getIdToken();
-      const [specs, cats, svcs] = await Promise.all([
+      const [specs, svcs] = await Promise.all([
         adminFetch('/api/admin/specializations', { token }),
-        adminFetch('/api/admin/service-categories', { token }),
         adminFetch('/api/admin/services', { token }),
       ]);
       setSpecializations(specs);
-      setCategories(cats);
       setServices(svcs || []);
       setError('');
     } catch (err) {
@@ -91,18 +88,18 @@ export default function AdminSpecializationsPage() {
     }
   };
 
-  const uncategorized = useMemo(
-    () => getTopLevelSpecializations(specializations),
+  const unassigned = useMemo(
+    () => getTopLevelSpecializations(specializations).filter((spec) => !spec.parentServiceId),
     [specializations]
   );
 
-  const groupedByCategory = useMemo(
+  const groupedByService = useMemo(
     () =>
-      categories.map((category) => ({
-        category,
-        specializations: getSpecializationsByCategory(specializations, category.id),
+      services.map((service) => ({
+        service,
+        specializations: getSpecializationsByParentService(specializations, service.id),
       })),
-    [categories, specializations]
+    [services, specializations]
   );
 
   const renderSpecRow = (spec, nested = false) => (
@@ -139,7 +136,7 @@ export default function AdminSpecializationsPage() {
         <div>
           <h1 className="text-3xl font-semibold text-[#002f3b]">Specializations</h1>
           <p className="mt-1 text-sm text-[#586971]">
-            Manage specialization landing pages linked to parent services and service categories.
+            Manage specialization landing pages linked to parent services.
           </p>
         </div>
         {canWrite && (
@@ -159,7 +156,6 @@ export default function AdminSpecializationsPage() {
         <div className="mt-6">
           <SpecializationForm
             initial={editing}
-            categories={categories}
             services={services}
             saving={saving}
             onSubmit={handleSave}
@@ -172,16 +168,16 @@ export default function AdminSpecializationsPage() {
         {loading ? (
           <AdminPageLoader
             label="Loading specializations..."
-            description="Fetching specializations, categories, and services from the database."
+            description="Fetching specializations and services from the database."
           />
         ) : (
           <>
-            {groupedByCategory.map(({ category, specializations: specs }) => (
+            {groupedByService.map(({ service, specializations: specs }) => (
               specs.length > 0 && (
-                <div key={category.id} className="rounded-2xl border border-[#d7e6e2] bg-white p-4">
+                <div key={service.id} className="rounded-2xl border border-[#d7e6e2] bg-white p-4">
                   <div className="mb-3 border-b border-[#eef3f1] pb-3">
-                    <p className="font-semibold text-[#037B76]">{category.name?.en}</p>
-                    <p className="text-sm text-[#586971]" dir="rtl">{category.name?.ar}</p>
+                    <p className="font-semibold text-[#037B76]">{service.title?.en}</p>
+                    <p className="text-sm text-[#586971]" dir="rtl">{service.title?.ar}</p>
                   </div>
                   <div className="space-y-3">
                     {specs.map((spec) => renderSpecRow(spec, true))}
@@ -190,13 +186,13 @@ export default function AdminSpecializationsPage() {
               )
             ))}
 
-            {uncategorized.length > 0 && (
+            {unassigned.length > 0 && (
               <div className="rounded-2xl border border-[#d7e6e2] bg-white p-4">
                 <div className="mb-3 border-b border-[#eef3f1] pb-3">
-                  <p className="font-semibold text-[#586971]">Uncategorized</p>
+                  <p className="font-semibold text-[#586971]">No parent service</p>
                 </div>
                 <div className="space-y-3">
-                  {uncategorized.map((spec) => renderSpecRow(spec))}
+                  {unassigned.map((spec) => renderSpecRow(spec))}
                 </div>
               </div>
             )}

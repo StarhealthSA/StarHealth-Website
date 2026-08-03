@@ -72,12 +72,6 @@ service cloud.firestore {
       allow delete: if isAdminDeleter();
     }
 
-    match /serviceCategories/{categoryId} {
-      allow read: if resource.data.active == true || isAdminReader();
-      allow create, update: if isAdminWriter();
-      allow delete: if isAdminDeleter();
-    }
-
     match /specializations/{specId} {
       allow read: if resource.data.active == true || isAdminReader();
       allow create, update: if isAdminWriter();
