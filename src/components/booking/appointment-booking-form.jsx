@@ -138,9 +138,11 @@ export default function AppointmentBookingForm({
               <option value="" disabled>
                 {t('doctorModal.selectDoctor')}
               </option>
-              {filteredDoctors.map((item) => (
-                <option key={item.id} value={item.id}>{item.displayName}</option>
-              ))}
+              {serviceId
+                ? filteredDoctors.map((item) => (
+                  <option key={item.id} value={item.id}>{item.displayName}</option>
+                ))
+                : null}
             </select>
           </label>
 

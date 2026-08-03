@@ -186,9 +186,11 @@ export default function AppointmentModal({
                   <option value="" disabled>
                     {t('doctorModal.selectDoctor')}
                   </option>
-                  {filteredDoctors.map((item) => (
-                    <option key={item.id} value={item.id}>{item.displayName}</option>
-                  ))}
+                  {serviceId
+                    ? filteredDoctors.map((item) => (
+                      <option key={item.id} value={item.id}>{item.displayName}</option>
+                    ))
+                    : null}
                 </select>
               </div>
 

@@ -83,7 +83,27 @@ export function useBookingServiceDoctors({
     resolvedServiceId,
   ]);
 
+  // Keep doctor selection in sync with the selected service.
+  useEffect(() => {
+    if (!isActive || lockSelection) return;
+    if (!serviceId) {
+      setDoctorId('');
+      return;
+    }
+    if (
+      doctorId
+      && !doctorBelongsToService(
+        doctors.find((doctor) => doctor.id === doctorId),
+        serviceId,
+        specializations
+      )
+    ) {
+      setDoctorId('');
+    }
+  }, [isActive, lockSelection, serviceId, doctorId, doctors, specializations]);
+
   const filteredDoctors = useMemo(() => {
+    // Doctors appear only after a service is selected.
     if (!serviceId) return [];
     return doctors.filter((doctor) =>
       doctorBelongsToService(doctor, serviceId, specializations)
@@ -102,31 +122,16 @@ export function useBookingServiceDoctors({
 
   const handleServiceChange = (nextServiceId) => {
     setServiceId(nextServiceId);
+    // Always reset doctor when service changes (service-first flow).
     if (!lockSelection) {
       setDoctorId('');
     }
   };
 
   const handleDoctorChange = (nextDoctorId) => {
+    // Doctor can only be chosen after a service is selected.
+    if (!serviceId && !lockSelection) return;
     setDoctorId(nextDoctorId);
-    if (lockSelection) return;
-
-    const doctor = doctors.find((item) => item.id === nextDoctorId);
-    if (!doctor) return;
-
-    if (doctorBelongsToService(doctor, serviceId, specializations)) return;
-
-    const related = Array.isArray(doctor.relatedServiceIds) ? doctor.relatedServiceIds : [];
-    if (related[0]) {
-      setServiceId(related[0]);
-      return;
-    }
-
-    const specId = doctor.specializationId || doctor.subSpecializationId;
-    const spec = specializations.find((item) => item.id === specId);
-    if (spec?.parentServiceId) {
-      setServiceId(spec.parentServiceId);
-    }
   };
 
   const resetSelection = () => {

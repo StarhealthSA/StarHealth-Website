@@ -148,15 +148,17 @@ function Mobviewform() {
                 <option value="" disabled className="text-gray-400">
                   {t('bookingForm.selectDoctor')}
                 </option>
-                {filteredDoctors.map((item) => (
-                  <option
-                    key={item.id}
-                    value={item.id}
-                    className="text-white bg-[#037B76]"
-                  >
-                    {item.displayName}
-                  </option>
-                ))}
+                {serviceId
+                  ? filteredDoctors.map((item) => (
+                    <option
+                      key={item.id}
+                      value={item.id}
+                      className="text-white bg-[#037B76]"
+                    >
+                      {item.displayName}
+                    </option>
+                  ))
+                  : null}
               </select>
               <div className={`absolute inset-y-0 ${isRTL ? 'left-0' : 'right-0'} flex items-center px-2 pointer-events-none`}>
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
