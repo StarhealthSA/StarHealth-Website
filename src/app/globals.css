@@ -1542,18 +1542,6 @@ html {
   color: rgba(255, 255, 255, 0.9);
 }
 
-.service-landing-trust-stat {
-  font-family: Merriweather, Georgia, serif;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #AED5C6;
-  flex-shrink: 0;
-}
-
-.service-landing-trust-item--on-dark .service-landing-trust-stat {
-  color: #fff;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .service-landing-visual-image {
     transform: none !important;
