@@ -124,7 +124,7 @@ export default function AdminDashboard() {
             accent="amber"
           />
           <DashboardStatCard
-            href="/admin/appointments?tab=contact"
+            href="/admin/contact"
             title="Contact Submissions"
             description="Review messages submitted through the website contact form."
             count={counts.contactSubmissions}
