@@ -151,13 +151,6 @@ export default function ServiceMarketingEditor({
         Show global testimonials when no service-specific testimonials are set
       </label>
 
-      <LocalizedInput
-        label="Urgency Note (final CTA)"
-        value={marketing.urgencyNote}
-        onChange={(v) => updateMarketing('urgencyNote', v)}
-        multiline
-      />
-
       <label className="flex items-center gap-2 text-sm">
         <input
           type="checkbox"

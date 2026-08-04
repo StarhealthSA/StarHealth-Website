@@ -8,7 +8,6 @@ export function createEmptyMarketing() {
     featuredDoctorIds: [],
     testimonials: [],
     showGlobalTestimonials: true,
-    urgencyNote: emptyLocalized(),
     whatsappEnabled: true,
   };
 }
@@ -42,7 +41,6 @@ export function normalizeMarketing(raw = {}) {
     featuredDoctorIds: Array.isArray(raw.featuredDoctorIds) ? raw.featuredDoctorIds : [],
     testimonials: normalizeTestimonials(raw.testimonials),
     showGlobalTestimonials: raw.showGlobalTestimonials !== false,
-    urgencyNote: normalizeLocalized(raw.urgencyNote),
     whatsappEnabled: raw.whatsappEnabled !== false,
   };
 }
