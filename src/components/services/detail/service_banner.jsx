@@ -24,9 +24,6 @@ export default function ServiceBanner({
   const priceLabel = formatSarPrice(service.priceAmount);
   const heroVideo = marketing?.heroVideo;
   const hasVideo = Boolean(heroVideo?.enabled && heroVideo?.playback);
-  const stats = (marketing?.stats || []).filter(
-    (stat) => getLocalizedText(stat.value, lang) || getLocalizedText(stat.label, lang)
-  );
 
   const imageRef = useRef(null);
   const [parallaxY, setParallaxY] = useState(0);
@@ -47,16 +44,11 @@ export default function ServiceBanner({
     t('serviceDetail.whatsappMessage', { service: service.displayTitle })
   );
 
-  const trustItems = stats.length
-    ? stats.slice(0, 3).map((stat) => ({
-        value: getLocalizedText(stat.value, lang),
-        label: getLocalizedText(stat.label, lang),
-      }))
-    : [
-        { value: '✓', label: t('serviceDetail.trustExpert') },
-        { value: '✓', label: duration || t('serviceDetail.trustFlexible') },
-        { value: '✓', label: t('serviceDetail.trustCare') },
-      ];
+  const trustItems = [
+    { label: t('serviceDetail.trustExpert') },
+    { label: duration || t('serviceDetail.trustFlexible') },
+    { label: t('serviceDetail.trustCare') },
+  ];
 
   return (
     <section
@@ -143,17 +135,8 @@ export default function ServiceBanner({
                     key={index}
                     className="service-landing-trust-item service-landing-trust-item--on-dark"
                   >
-                    {stats.length ? (
-                      <>
-                        <span className="service-landing-trust-stat">{item.value}</span>
-                        <span>{item.label}</span>
-                      </>
-                    ) : (
-                      <>
-                        <span className="service-landing-trust-icon" aria-hidden>✓</span>
-                        <span>{item.label}</span>
-                      </>
-                    )}
+                    <span className="service-landing-trust-icon" aria-hidden>✓</span>
+                    <span>{item.label}</span>
                   </li>
                 ))}
               </ul>

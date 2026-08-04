@@ -1,54 +1,7 @@
 'use client';
 
 import LocalizedInput from '@/components/admin/localized-input';
-import LocalizedListEditor from '@/components/admin/localized-list-editor';
 import { useAdminUpload } from '@/contexts/admin-upload-context';
-
-function StatsEditor({ stats = [], onChange }) {
-  const addStat = () => {
-    onChange([...stats, { value: { en: '', ar: '' }, label: { en: '', ar: '' } }]);
-  };
-
-  return (
-    <div className="space-y-3">
-      <div className="flex items-center justify-between">
-        <span className="text-sm font-medium text-[#586971]">Trust Stats (hero / stats strip)</span>
-        <button type="button" onClick={addStat} className="text-sm text-[#037B76] hover:underline">
-          + Add stat
-        </button>
-      </div>
-      {stats.map((stat, index) => (
-        <div key={index} className="space-y-2 rounded-lg border border-[#eef4f2] p-3">
-          <LocalizedInput
-            label="Value (e.g. 15+)"
-            value={stat.value}
-            onChange={(v) => {
-              const next = [...stats];
-              next[index] = { ...stat, value: v };
-              onChange(next);
-            }}
-          />
-          <LocalizedInput
-            label="Label"
-            value={stat.label}
-            onChange={(v) => {
-              const next = [...stats];
-              next[index] = { ...stat, label: v };
-              onChange(next);
-            }}
-          />
-          <button
-            type="button"
-            onClick={() => onChange(stats.filter((_, i) => i !== index))}
-            className="text-sm text-red-600"
-          >
-            Remove
-          </button>
-        </div>
-      ))}
-    </div>
-  );
-}
 
 function TestimonialsEditor({ testimonials = [], onChange }) {
   const addItem = () => {
@@ -164,17 +117,6 @@ export default function ServiceMarketingEditor({
           />
         </label>
       </div>
-
-      <StatsEditor
-        stats={marketing.stats || []}
-        onChange={(v) => updateMarketing('stats', v)}
-      />
-
-      <LocalizedListEditor
-        label="About Highlights (bullet points)"
-        items={marketing.highlights || []}
-        onChange={(v) => updateMarketing('highlights', v)}
-      />
 
       <div>
         <p className="mb-2 text-sm font-medium text-[#586971]">Featured Doctors (max 4 shown)</p>

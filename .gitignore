@@ -27,3 +27,5 @@ out
 *.sw?
 .env
 .pnpm-store
+# Local Netlify folder
+.netlify
