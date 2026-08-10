@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Reveal from '@/components/reveal';
 import HeroBannerVideo from '@/components/home/hero-banner-video';
@@ -24,21 +23,6 @@ export default function ServiceBanner({
   const priceLabel = formatSarPrice(service.priceAmount);
   const heroVideo = marketing?.heroVideo;
   const hasVideo = Boolean(heroVideo?.enabled && heroVideo?.playback);
-
-  const imageRef = useRef(null);
-  const [parallaxY, setParallaxY] = useState(0);
-
-  useEffect(() => {
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced || !bannerImage) return undefined;
-
-    const onScroll = () => {
-      const y = Math.min(window.scrollY * 0.12, 40);
-      setParallaxY(y);
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, [bannerImage]);
 
   const whatsappUrl = buildWhatsAppUrl(
     t('serviceDetail.whatsappMessage', { service: service.displayTitle })
@@ -148,12 +132,10 @@ export default function ServiceBanner({
               <div className="service-landing-visual-glow" aria-hidden />
               {bannerImage && (
                 <img
-                  ref={imageRef}
                   src={bannerImage}
                   alt=""
                   loading="eager"
                   className="service-landing-visual-image"
-                  style={{ transform: `translateY(${parallaxY}px)` }}
                 />
               )}
             </div>
