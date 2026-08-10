@@ -6,6 +6,7 @@ import internalmedicine from '@/assets/home/internalmedicine.svg';
 import familyMedicine from '@/assets/home/familymedicine.svg';
 import laboratory from '@/assets/home/laboratory.svg';
 import pediatrics from '@/assets/home/pediatric.svg';
+import dermatology from '@/assets/home/dermatology.png';
 
 export const SERVICE_ICONS = {
   generalMedicine: generalmedicine,
@@ -16,6 +17,7 @@ export const SERVICE_ICONS = {
   generalDentistry: generaldentistry,
   laboratory,
   pediatrics,
+  dermatology,
 };
 
 export function resolveServiceIcon(service) {
