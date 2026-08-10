@@ -229,7 +229,9 @@ export default function SpecializationForm({
             </select>
           </label>
           <label className="block">
-            <span className="text-sm font-medium text-[#586971]">Featured Image</span>
+            <span className="text-sm font-medium text-[#586971]">
+              Featured Image <span className="font-normal text-[#8a9aa1]">(1600×1200 px)</span>
+            </span>
             <input type="file" accept="image/*" onChange={handleFeaturedUpload} disabled={isUploading} className="mt-1 block w-full text-sm" />
           </label>
           {form.featuredImageUrl && (
@@ -240,7 +242,9 @@ export default function SpecializationForm({
             />
           )}
           <label className="block">
-            <span className="text-sm font-medium text-[#586971]">Gallery Images</span>
+            <span className="text-sm font-medium text-[#586971]">
+              Gallery Images <span className="font-normal text-[#8a9aa1]">(1600×1200 px)</span>
+            </span>
             <input type="file" accept="image/*" multiple onChange={handleGalleryUpload} disabled={isUploading} className="mt-1 block w-full text-sm" />
           </label>
           {(form.galleryImages || []).length > 0 && (
