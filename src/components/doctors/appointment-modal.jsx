@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { useRouter } from 'next/navigation';
 import close from '@/assets/contact/close_button.svg';
 import calender from '@/assets/contact/calder.svg';
 import Button from '@/components/web_button';
@@ -13,6 +12,10 @@ import { submitAppointmentBooking } from '@/lib/booking/submit-appointment';
 import { useDoctorBookingSchedule } from '@/hooks/use-doctor-booking-schedule';
 import { useBookingServiceDoctors } from '@/hooks/use-booking-service-doctors';
 import notify from '@/lib/ui/notify';
+import {
+  resetAppointmentBookedTracking,
+  trackAppointmentBooked,
+} from '@/lib/analytics/track-appointment-booked';
 
 export default function AppointmentModal({
   isOpen,
@@ -22,7 +25,6 @@ export default function AppointmentModal({
   preselectedServiceId = '',
   lockSelection = false,
 }) {
-  const router = useRouter();
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
   const [mounted, setMounted] = useState(false);
@@ -98,6 +100,7 @@ export default function AppointmentModal({
 
     try {
       setSubmitting(true);
+      resetAppointmentBookedTracking();
       await submitAppointmentBooking({
         doctorId,
         doctorName: selectedDoctor?.displayName || preselectedDoctor,
@@ -109,9 +112,10 @@ export default function AppointmentModal({
         speciality: selectedServiceName,
         requiresSchedule: isConfigured,
       });
+      trackAppointmentBooked();
       resetForm();
       onClose();
-      router.push('/thank-you');
+      window.location.assign('/thank-you');
     } catch (error) {
       notify.error(error.message || t('doctorModal.bookingFailed'));
       setSubmitting(false);

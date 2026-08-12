@@ -2,7 +2,6 @@
 
 import calender from '../assets/home/calender.svg'
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Reveal from './reveal';
 import { useTranslation } from 'react-i18next';
 import AppointmentDatePicker from '@/components/booking/appointment-date-picker';
@@ -11,9 +10,12 @@ import { useBookingServiceDoctors } from '@/hooks/use-booking-service-doctors';
 import { submitAppointmentBooking } from '@/lib/booking/submit-appointment';
 import { useDoctorBookingSchedule } from '@/hooks/use-doctor-booking-schedule';
 import notify from '@/lib/ui/notify';
+import {
+  resetAppointmentBookedTracking,
+  trackAppointmentBooked,
+} from '@/lib/analytics/track-appointment-booked';
 
 function Mobviewform() {
-  const router = useRouter();
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
   const [selectedDate, setSelectedDate] = useState(null);
@@ -67,6 +69,7 @@ function Mobviewform() {
 
     try {
       setSubmitting(true);
+      resetAppointmentBookedTracking();
       await submitAppointmentBooking({
         doctorId,
         doctorName: selectedDoctor?.displayName || '',
@@ -78,7 +81,8 @@ function Mobviewform() {
         speciality: selectedServiceName,
         requiresSchedule: isConfigured,
       });
-      router.push('/thank-you');
+      trackAppointmentBooked();
+      window.location.assign('/thank-you');
     } catch (error) {
       notify.error(error.message || t('doctorModal.bookingFailed'));
       setSubmitting(false);

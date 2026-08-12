@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import calender from '@/assets/contact/calder.svg';
 import Button from '@/components/web_button';
 import AppointmentDatePicker from '@/components/booking/appointment-date-picker';
@@ -11,13 +10,16 @@ import { submitAppointmentBooking } from '@/lib/booking/submit-appointment';
 import { useDoctorBookingSchedule } from '@/hooks/use-doctor-booking-schedule';
 import { useBookingServiceDoctors } from '@/hooks/use-booking-service-doctors';
 import notify from '@/lib/ui/notify';
+import {
+  resetAppointmentBookedTracking,
+  trackAppointmentBooked,
+} from '@/lib/analytics/track-appointment-booked';
 
 export default function AppointmentBookingForm({
   preselectedDoctorId = '',
   preselectedServiceId = '',
   lockSelection = false,
 }) {
-  const router = useRouter();
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
   const [selectedDate, setSelectedDate] = useState(null);
@@ -64,6 +66,7 @@ export default function AppointmentBookingForm({
 
     try {
       setSubmitting(true);
+      resetAppointmentBookedTracking();
       await submitAppointmentBooking({
         doctorId,
         doctorName: selectedDoctor?.displayName || '',
@@ -75,7 +78,8 @@ export default function AppointmentBookingForm({
         speciality: selectedServiceName,
         requiresSchedule: isConfigured,
       });
-      router.push('/thank-you');
+      trackAppointmentBooked();
+      window.location.assign('/thank-you');
     } catch (error) {
       notify.error(error.message || t('doctorModal.bookingFailed'));
       setSubmitting(false);

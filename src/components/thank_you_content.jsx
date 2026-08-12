@@ -4,15 +4,14 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import Reveal from '@/components/reveal';
+import { trackAppointmentBooked } from '@/lib/analytics/track-appointment-booked';
 
 export default function ThankYouContent() {
   const { t } = useTranslation();
 
   useEffect(() => {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      event: 'appointment_booked',
-    });
+    // Backup if the event was not pushed before navigation (SPA edge cases).
+    trackAppointmentBooked();
   }, []);
 
   return (
