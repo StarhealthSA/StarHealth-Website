@@ -1,11 +1,19 @@
 'use client';
 
+import { useEffect } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import Reveal from '@/components/reveal';
 
 export default function ThankYouContent() {
   const { t } = useTranslation();
+
+  useEffect(() => {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'appointment_booked',
+    });
+  }, []);
 
   return (
     <section className="bg-gradient-to-b from-[#E8F5F2] via-[#F3FAF8] to-[#FAFAF9] px-5 py-16 md:px-12 md:py-24 lg:px-[100px]">
