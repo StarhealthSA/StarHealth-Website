@@ -2,6 +2,7 @@
 
 import calender from '../assets/home/calender.svg'
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Reveal from './reveal';
 import { useTranslation } from 'react-i18next';
 import AppointmentDatePicker from '@/components/booking/appointment-date-picker';
@@ -12,6 +13,7 @@ import { useDoctorBookingSchedule } from '@/hooks/use-doctor-booking-schedule';
 import notify from '@/lib/ui/notify';
 
 function Mobviewform() {
+  const router = useRouter();
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
   const [selectedDate, setSelectedDate] = useState(null);
@@ -76,15 +78,9 @@ function Mobviewform() {
         speciality: selectedServiceName,
         requiresSchedule: isConfigured,
       });
-      notify.success(t('doctorModal.bookingSuccess'));
-      setFormData({ name: '', phonenumber: '', age: '' });
-      setServiceId('');
-      setDoctorId('');
-      setSelectedDate(null);
-      setSelectedSlot(null);
+      router.push('/thank-you');
     } catch (error) {
       notify.error(error.message || t('doctorModal.bookingFailed'));
-    } finally {
       setSubmitting(false);
     }
   };

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { useRouter } from 'next/navigation';
 import close from '@/assets/contact/close_button.svg';
 import calender from '@/assets/contact/calder.svg';
 import Button from '@/components/web_button';
@@ -21,6 +22,7 @@ export default function AppointmentModal({
   preselectedServiceId = '',
   lockSelection = false,
 }) {
+  const router = useRouter();
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
   const [mounted, setMounted] = useState(false);
@@ -107,12 +109,11 @@ export default function AppointmentModal({
         speciality: selectedServiceName,
         requiresSchedule: isConfigured,
       });
-      notify.success(t('doctorModal.bookingSuccess'));
       resetForm();
       onClose();
+      router.push('/thank-you');
     } catch (error) {
       notify.error(error.message || t('doctorModal.bookingFailed'));
-    } finally {
       setSubmitting(false);
     }
   };

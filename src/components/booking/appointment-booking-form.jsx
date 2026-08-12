@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import calender from '@/assets/contact/calder.svg';
 import Button from '@/components/web_button';
 import AppointmentDatePicker from '@/components/booking/appointment-date-picker';
@@ -16,6 +17,7 @@ export default function AppointmentBookingForm({
   preselectedServiceId = '',
   lockSelection = false,
 }) {
+  const router = useRouter();
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
   const [selectedDate, setSelectedDate] = useState(null);
@@ -38,7 +40,6 @@ export default function AppointmentBookingForm({
     selectedServiceName,
     isDoctorLocked,
     isServiceLocked,
-    resetSelection,
   } = useBookingServiceDoctors({
     preselectedDoctorId,
     preselectedServiceId,
@@ -74,14 +75,9 @@ export default function AppointmentBookingForm({
         speciality: selectedServiceName,
         requiresSchedule: isConfigured,
       });
-      notify.success(t('doctorModal.bookingSuccess'));
-      setFormData({ name: '', phonenumber: '', age: '' });
-      setSelectedDate(null);
-      setSelectedSlot(null);
-      resetSelection();
+      router.push('/thank-you');
     } catch (error) {
       notify.error(error.message || t('doctorModal.bookingFailed'));
-    } finally {
       setSubmitting(false);
     }
   };

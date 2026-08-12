@@ -29,6 +29,13 @@
     "selectDate": "Select Date",
     "bookNow": "Book Now"
   },
+  "thankYou": {
+    "eyebrow": "Booking received",
+    "title": "Thank you for booking with Star Health",
+    "description": "Your appointment request has been submitted successfully. Our team will review your details and contact you shortly to confirm.",
+    "backHome": "Back to Home",
+    "contactUs": "Contact Us"
+  },
   "welcome": {
     "title": "WELCOME TO STAR HEALTH",
     "description": "At Star Health, we do more than treat illness — we care for you as a person. You are not a case number — you are family. From diagnosis to healing, we stand with you."
