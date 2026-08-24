@@ -458,6 +458,84 @@
     }
   },
   "aboutPage": {
+    "hero": {
+      "eyebrow": "STAR HEALTH MEDICAL CENTRE",
+      "title": "Premium Family Healthcare Designed Around Your Everyday Life",
+      "description": "Star Health Medical Center is a multi-specialty outpatient medical facility in Riyadh, delivering ethical, high-quality, and patient-centric healthcare. We combine clinical excellence, operational efficiency, and compassionate care to provide reliable medical services for individuals, families, and corporate partners.",
+      "description2": "At Star Health, patients are treated with the same care, respect, and responsibility that we extend to our families—reflecting our commitment to care that truly feels personal."
+    },
+    "pillars": {
+      "promise": {
+        "title": "Our Promise",
+        "body": "At Star Health Medical Center, healthcare is delivered with clinical integrity, operational efficiency, and trust—serving patients, insurers, and corporate partners with consistency and care."
+      },
+      "mission": {
+        "title": "Our Mission",
+        "body": "To provide high-quality outpatient healthcare with compassion, professionalism, and respect—delivering consistent and reliable care for every patient, every visit."
+      },
+      "vision": {
+        "title": "Our Vision",
+        "body": "To create better patient health outcomes by delivering high-quality care through trusted medical professionals, ethical practice, and a patient-focused service experience."
+      }
+    },
+    "experience": {
+      "title": "Built for Patient-Centered Care",
+      "description": "Our medical professionals are carefully credentialed and trained to deliver consistent, protocol-driven, and patient-focused care—ensuring clinical reliability and professional coordination with insurers and corporate partners.",
+      "stats": {
+        "s1": {
+          "label": "Patient First",
+          "value": "Care decisions guided by patient well-being"
+        },
+        "s2": {
+          "label": "Clinical Excellence",
+          "value": "Qualified and experienced medical professionals"
+        },
+        "s3": {
+          "label": "Care Model",
+          "value": "Patient-focused"
+        },
+        "s4": {
+          "label": "Insurance Status",
+          "value": "Empaneled with 5 major insurance providers"
+        }
+      }
+    },
+    "careProcess": {
+      "title": "How Care Works at Star Health",
+      "imageAlt": "Star Health care team supporting patients",
+      "steps": {
+        "s1": {
+          "title": "Clinical Services",
+          "body": "General Medicine, Family Medicine, Internal Medicine, Obstetrics & Gynecology, Pediatrics, Dentistry & Orthodontics, Orthopedics, Laboratory, and Preventive Health Checkups & Screenings."
+        },
+        "s2": {
+          "title": "Why Partner with Star Health?",
+          "body": "Reliable outpatient medical services, ethical and transparent clinical practices, efficient patient handling and documentation, and a professional, partnership-oriented approach."
+        },
+        "s3": {
+          "title": "Our Growth & Expansion",
+          "body": "Star Health Medical Center follows a structured and sustainable growth strategy. We plan to establish up to five additional medical centers in Riyadh over the next three years, with a focus on standardized clinical quality, operational efficiency, and a consistent patient experience across all locations."
+        },
+        "s4": {
+          "title": "Our Commitment",
+          "body": "At Star Health Medical Center, healthcare is delivered with clinical integrity, operational efficiency, and trust—serving patients, insurers, and corporate partners with consistency and care."
+        }
+      }
+    },
+    "specialties": {
+      "title": "Core Medical Specialties",
+      "description": "Our multidisciplinary services support preventive care, acute treatment, chronic condition management, and long-term family wellness.",
+      "items": {
+        "generalMedicine": "General Medicine",
+        "familyMedicine": "Family Medicine",
+        "internalMedicine": "Internal Medicine",
+        "obg": "Obstetrics & Gynecology",
+        "dentistryOrthodontics": "Dentistry & Orthodontics",
+        "pediatrics": "Pediatrics",
+        "orthopedics": "Orthopedics",
+        "laboratory": "Laboratory Services"
+      }
+    },
     "faq": {
       "title": "Frequently Asked Questions",
       "questions": {
