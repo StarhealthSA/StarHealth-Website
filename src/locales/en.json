@@ -485,6 +485,63 @@
     }
   },
   "servicesPage": {
+    "hero": {
+      "eyebrow": "STAR HEALTH SERVICES",
+      "title": "Comprehensive Medical Services for Modern Families in Riyadh",
+      "description": "Explore premium outpatient services designed around speed, safety, and continuity of care. This SEO-focused services page helps users and search engines understand your treatment scope, specialties, and patient outcomes."
+    },
+    "coreServices": {
+      "title": "Our Core Medical Services",
+      "description": "Each service line is structured for clinical depth, practical timelines, and coordinated follow-up across your complete health journey."
+    },
+    "highlights": {
+      "h1": "Specialties Under One Roof",
+      "h2": "Average Appointment Flow",
+      "h3": "Follow-up Response Window",
+      "h4": "Patient-Centered Care Model"
+    },
+    "premiumQuality": {
+      "title": "How We Deliver Premium Service Quality",
+      "description": "From your first appointment to follow-up care, every step is designed for clarity, comfort, and clinical excellence.",
+      "steps": {
+        "s1": {
+          "title": "Book & Triage",
+          "body": "We identify the most relevant specialty and urgency before your visit to improve care speed."
+        },
+        "s2": {
+          "title": "Consult & Diagnose",
+          "body": "Doctor-led clinical review supported by targeted diagnostics when needed."
+        },
+        "s3": {
+          "title": "Treat & Educate",
+          "body": "You receive clear treatment plans, medication guidance, and lifestyle recommendations."
+        },
+        "s4": {
+          "title": "Review & Prevent",
+          "body": "Follow-up milestones help sustain results and prevent avoidable complications."
+        }
+      }
+    },
+    "whyChoose": {
+      "title": "Why Choose Star Health Hospital for Quality Healthcare?",
+      "cards": {
+        "c1": {
+          "title": "Trusted Healthcare Services at Star Health Hospital",
+          "text": "Patients across Saudi Arabia choose Star Health Hospital for reliable medical care, advanced treatments, and patient-focused services. Our hospital provides comprehensive healthcare solutions through experienced doctors, modern medical facilities, and specialized departments designed to support preventive care, diagnosis, treatment, and long-term wellness.",
+          "alt": "Why patients search for Star Health services"
+        },
+        "c2": {
+          "title": "Comprehensive Family Healthcare Under One Roof",
+          "text": "Star Health Hospital is committed to making healthcare simple and accessible for families across Saudi Arabia. From routine health check-ups and pediatric care to specialist consultations and chronic disease management, our coordinated healthcare approach ensures every patient receives personalized attention and continuous medical support.",
+          "alt": "Designed for family healthcare journeys"
+        },
+        "c3": {
+          "title": "Advanced Medical Care with Patient-Centered Excellence",
+          "text": "At Star Health Hospital Saudi Arabia, we combine clinical expertise, advanced technology, and compassionate care to deliver high-quality healthcare experiences. Our dedicated medical team focuses on accurate diagnosis, effective treatment plans, and clear communication to help patients make confident decisions about their health.",
+          "alt": "Clinical quality with operational clarity at Star Health"
+        }
+      }
+    },
     "faq": {
       "title": "Frequently Asked Questions",
       "questions": {
