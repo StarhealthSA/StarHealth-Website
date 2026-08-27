@@ -41,6 +41,8 @@ const SKIP_KEYS = new Set([
   'bookAppointmentUrl',
   'validUntil',
   'slotDurationMinutes',
+  'logoUrl',
+  'websiteUrl',
 ]);
 
 export function isLocalizedField(value) {

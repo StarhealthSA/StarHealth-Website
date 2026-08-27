@@ -156,6 +156,12 @@ export default function AdminDashboard() {
             count={counts.offers}
           />
           <DashboardStatCard
+            href="/admin/insurance"
+            title="Insurance"
+            description="Manage insurance partner logos and visibility on the public listing."
+            count={counts.insurancePartners}
+          />
+          <DashboardStatCard
             href="/admin/blogs"
             title="Blogs"
             description="Create SEO blog posts for the public blog listing and detail pages."

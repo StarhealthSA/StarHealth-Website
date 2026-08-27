@@ -5,6 +5,7 @@
     "services": "Services",
     "doctors": "Doctors",
     "offers": "Offers",
+    "insurance": "Insurance",
     "blogs": "Blogs",
     "loyalty": "Nujoom",
     "contact": "Contact Us",
@@ -404,6 +405,7 @@
       "services": "Services",
       "doctors": "Doctors",
       "offers": "Offers",
+      "insurance": "Insurance Partners",
       "blogs" : "Blogs",
       "loyalty": "Nujoom by Star Health",
       "contactUs": "Contact Us",
@@ -863,6 +865,14 @@
     "featured": "Featured",
     "validUntil": "Valid until",
     "bookAppointment": "Book Appointment"
+  },
+  "insurancePage": {
+    "hero": {
+      "title": "Our partners in making care accessible",
+      "description": "We work closely with trusted insurers to simplify claims and reduce cost barriers."
+    },
+    "partnersTitle": "Trusted insurance partnerships",
+    "empty": "Insurance partners will appear here soon. Please check back later."
   },
   "homePrivilegeBanner": {
     "eyebrow": "Nujoom by Star Health ⭐⭐⭐⭐⭐",

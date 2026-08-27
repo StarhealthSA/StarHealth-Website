@@ -2723,3 +2723,224 @@ html {
     padding: 1.4rem 1.25rem 1.45rem;
   }
 }
+
+
+/* —— Insurance partners page —— */
+.insurance-page {
+  background: #ffffff;
+}
+
+.insurance-page__hero {
+  position: relative;
+  min-height: clamp(18rem, 42vw, 28rem);
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+.insurance-page__hero-media {
+  position: absolute;
+  inset: 0;
+}
+
+.insurance-page__hero-image {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+}
+
+.insurance-page__hero-fallback {
+  height: 100%;
+  width: 100%;
+  background:
+    radial-gradient(ellipse 70% 80% at 70% 40%, rgba(174, 213, 198, 0.35), transparent 55%),
+    linear-gradient(135deg, #037b76 0%, #063330 55%, #002333 100%);
+}
+
+.insurance-page__hero-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(0, 35, 51, 0.72) 0%,
+    rgba(0, 35, 51, 0.45) 42%,
+    rgba(0, 35, 51, 0.12) 72%,
+    transparent 100%
+  );
+}
+
+[dir='rtl'] .insurance-page__hero-shade {
+  background: linear-gradient(
+    to left,
+    rgba(0, 35, 51, 0.72) 0%,
+    rgba(0, 35, 51, 0.45) 42%,
+    rgba(0, 35, 51, 0.12) 72%,
+    transparent 100%
+  );
+}
+
+.insurance-page__hero-copy {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 42rem;
+  padding: 2.5rem 1.25rem 2.75rem;
+}
+
+@media (min-width: 768px) {
+  .insurance-page__hero-copy {
+    padding: 3rem 3rem 3.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .insurance-page__hero-copy {
+    padding-inline: 6.25rem;
+  }
+}
+
+.insurance-page__hero-title {
+  margin: 0;
+  font-family: Inter, sans-serif;
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  font-weight: 600;
+  line-height: 1.2;
+  color: #ffffff;
+}
+
+.insurance-page__hero-lead {
+  margin: 0.85rem 0 0;
+  max-width: 32rem;
+  font-family: Inter, sans-serif;
+  font-size: 1.02rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.insurance-page__partners {
+  padding: 3rem 1.25rem 4.5rem;
+}
+
+@media (min-width: 768px) {
+  .insurance-page__partners {
+    padding: 3.75rem 3rem 5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .insurance-page__partners {
+    padding-inline: 6.25rem;
+  }
+}
+
+.insurance-page__partners-title {
+  margin: 0 auto;
+  max-width: 40rem;
+  text-align: center;
+  font-family: Inter, sans-serif;
+  font-size: clamp(1.5rem, 2.8vw, 2rem);
+  font-weight: 600;
+  color: #002333;
+}
+
+.insurance-page__empty {
+  margin: 2.5rem auto 0;
+  max-width: 28rem;
+  border: 1px solid #e9e7e6;
+  border-radius: 1rem;
+  background: #f8fbfa;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  font-family: Inter, sans-serif;
+  color: #687276;
+}
+
+.insurance-page__grid {
+  display: grid;
+  gap: 1rem;
+  margin: 2.25rem auto 0;
+  max-width: 74rem;
+  align-items: stretch;
+}
+
+@media (min-width: 560px) {
+  .insurance-page__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 860px) {
+  .insurance-page__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.15rem;
+  }
+}
+
+@media (min-width: 1100px) {
+  .insurance-page__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+}
+
+.insurance-partner-card {
+  display: flex;
+  height: 100%;
+  min-height: 11.5rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  border: 1px solid #eceae8;
+  border-radius: 0.85rem;
+  background: #ffffff;
+  padding: 1.5rem 1.25rem;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(0, 35, 51, 0.04);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.insurance-partner-card:hover {
+  border-color: rgba(3, 123, 118, 0.22);
+  box-shadow: 0 14px 32px rgba(3, 123, 118, 0.1);
+  transform: translateY(-2px);
+}
+
+.insurance-partner-card__logo-wrap {
+  display: flex;
+  height: 4.5rem;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.insurance-partner-card__logo {
+  max-height: 4.25rem;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.insurance-partner-card__logo-fallback {
+  display: inline-flex;
+  height: 3.5rem;
+  width: 3.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: #e8f5f2;
+  font-family: Inter, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #037b76;
+}
+
+.insurance-partner-card__name {
+  margin: 0;
+  font-family: Inter, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: #002333;
+}
