@@ -14,6 +14,7 @@ import {
   resetAppointmentBookedTracking,
   trackAppointmentBooked,
 } from '@/lib/analytics/track-appointment-booked';
+import { redirectToThankYou } from '@/lib/booking/thank-you-access';
 
 export default function AppointmentBookingForm({
   preselectedDoctorId = '',
@@ -79,7 +80,7 @@ export default function AppointmentBookingForm({
         requiresSchedule: isConfigured,
       });
       trackAppointmentBooked();
-      window.location.assign('/thank-you');
+      redirectToThankYou();
     } catch (error) {
       notify.error(error.message || t('doctorModal.bookingFailed'));
       setSubmitting(false);

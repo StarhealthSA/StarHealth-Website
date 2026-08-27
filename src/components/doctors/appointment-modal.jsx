@@ -16,6 +16,7 @@ import {
   resetAppointmentBookedTracking,
   trackAppointmentBooked,
 } from '@/lib/analytics/track-appointment-booked';
+import { redirectToThankYou } from '@/lib/booking/thank-you-access';
 
 export default function AppointmentModal({
   isOpen,
@@ -115,7 +116,7 @@ export default function AppointmentModal({
       trackAppointmentBooked();
       resetForm();
       onClose();
-      window.location.assign('/thank-you');
+      redirectToThankYou();
     } catch (error) {
       notify.error(error.message || t('doctorModal.bookingFailed'));
       setSubmitting(false);

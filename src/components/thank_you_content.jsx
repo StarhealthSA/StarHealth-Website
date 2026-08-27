@@ -1,18 +1,35 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import Reveal from '@/components/reveal';
 import { trackAppointmentBooked } from '@/lib/analytics/track-appointment-booked';
+import {
+  clearThankYouAccess,
+  hasThankYouAccess,
+} from '@/lib/booking/thank-you-access';
 
 export default function ThankYouContent() {
   const { t } = useTranslation();
+  const router = useRouter();
+  const [allowed, setAllowed] = useState(false);
 
   useEffect(() => {
+    if (!hasThankYouAccess()) {
+      router.replace('/');
+      return;
+    }
+
+    setAllowed(true);
     // Backup if the event was not pushed before navigation (SPA edge cases).
     trackAppointmentBooked();
-  }, []);
+  }, [router]);
+
+  if (!allowed) {
+    return null;
+  }
 
   return (
     <section className="bg-gradient-to-b from-[#E8F5F2] via-[#F3FAF8] to-[#FAFAF9] px-5 py-16 md:px-12 md:py-24 lg:px-[100px]">
@@ -33,12 +50,14 @@ export default function ThankYouContent() {
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               href="/"
+              onClick={clearThankYouAccess}
               className="inline-flex items-center justify-center rounded-xl bg-gradient-to-tl from-[#037B76] to-[#AED5C6] px-6 py-3 font-inter text-sm font-medium text-white transition hover:opacity-95"
             >
               {t('thankYou.backHome')}
             </Link>
             <Link
               href="/contact"
+              onClick={clearThankYouAccess}
               className="inline-flex items-center justify-center rounded-xl border border-[#037B76] px-6 py-3 font-inter text-sm font-medium text-[#037B76] transition hover:bg-[#f3faf8]"
             >
               {t('thankYou.contactUs')}

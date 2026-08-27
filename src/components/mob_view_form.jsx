@@ -14,6 +14,7 @@ import {
   resetAppointmentBookedTracking,
   trackAppointmentBooked,
 } from '@/lib/analytics/track-appointment-booked';
+import { redirectToThankYou } from '@/lib/booking/thank-you-access';
 
 function Mobviewform() {
   const { t, i18n } = useTranslation();
@@ -82,7 +83,7 @@ function Mobviewform() {
         requiresSchedule: isConfigured,
       });
       trackAppointmentBooked();
-      window.location.assign('/thank-you');
+      redirectToThankYou();
     } catch (error) {
       notify.error(error.message || t('doctorModal.bookingFailed'));
       setSubmitting(false);
