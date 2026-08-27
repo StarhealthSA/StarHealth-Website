@@ -776,20 +776,10 @@ html {
     0 18px 40px rgba(3, 123, 118, 0.13);
 }
 
-.testimonial-card--rtl {
-  -webkit-transform: scaleX(-1);
-  transform: scaleX(-1);
-}
-
-.testimonial-card--rtl:hover {
-  -webkit-transform: scaleX(-1) translateY(-4px);
-  transform: scaleX(-1) translateY(-4px);
-}
-
 .testimonial-card__quote-mark {
   position: absolute;
   top: 0.35rem;
-  right: 1rem;
+  inset-inline-end: 1rem;
   font-size: 4.5rem;
   line-height: 1;
   font-family: Georgia, 'Times New Roman', serif;
