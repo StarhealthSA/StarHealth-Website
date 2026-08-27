@@ -2,7 +2,12 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { DEFAULT_SCHEDULE_BREAK } from '@/lib/appointments/slot-utils';
+import {
+  ALLOWED_SLOT_DURATIONS,
+  DEFAULT_SCHEDULE_BREAK,
+  normalizeSlotDuration,
+  remapScheduleForDuration,
+} from '@/lib/appointments/slot-utils';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
 import LocalizedInput from '@/components/admin/localized-input';
@@ -15,6 +20,7 @@ export default function DoctorAvailabilityForm({ doctor }) {
     consultationTimings: doctor.consultationTimings || { en: '', ar: '' },
     dateAvailability: doctor.dateAvailability || {},
     scheduleBreak: doctor.scheduleBreak || DEFAULT_SCHEDULE_BREAK,
+    slotDurationMinutes: normalizeSlotDuration(doctor.slotDurationMinutes),
     onlineConsultationAvailable: Boolean(doctor.onlineConsultationAvailable),
   });
   const [saving, setSaving] = useState(false);
@@ -23,6 +29,28 @@ export default function DoctorAvailabilityForm({ doctor }) {
 
   const update = (path, value) => {
     setForm((prev) => ({ ...prev, [path]: value }));
+    setSuccess('');
+  };
+
+  const handleSlotDurationChange = (nextDurationRaw) => {
+    const nextDuration = normalizeSlotDuration(nextDurationRaw);
+    setForm((prev) => {
+      if (prev.slotDurationMinutes === nextDuration) return prev;
+
+      const remapped = remapScheduleForDuration({
+        dateAvailability: prev.dateAvailability,
+        scheduleBreak: prev.scheduleBreak,
+        fromDuration: prev.slotDurationMinutes,
+        toDuration: nextDuration,
+      });
+
+      return {
+        ...prev,
+        slotDurationMinutes: nextDuration,
+        dateAvailability: remapped.dateAvailability,
+        scheduleBreak: remapped.scheduleBreak,
+      };
+    });
     setSuccess('');
   };
 
@@ -44,6 +72,7 @@ export default function DoctorAvailabilityForm({ doctor }) {
           consultationTimings: form.consultationTimings,
           dateAvailability: form.dateAvailability,
           scheduleBreak: form.scheduleBreak,
+          slotDurationMinutes: form.slotDurationMinutes,
           onlineConsultationAvailable: form.onlineConsultationAvailable,
         },
       });
@@ -68,11 +97,31 @@ export default function DoctorAvailabilityForm({ doctor }) {
           multiline
         />
 
+        <label className="block max-w-sm">
+          <span className="text-sm font-medium text-[#002f3b]">Appointment slot duration</span>
+          <select
+            value={form.slotDurationMinutes}
+            onChange={(e) => handleSlotDurationChange(e.target.value)}
+            className="mt-1 w-full rounded-lg border border-[#d7e6e2] bg-white px-3 py-2 text-sm"
+          >
+            {ALLOWED_SLOT_DURATIONS.map((duration) => (
+              <option key={duration} value={duration}>
+                {duration} minutes
+              </option>
+            ))}
+          </select>
+          <p className="mt-1 text-xs text-[#586971]">
+            Booking times for this doctor are generated in {form.slotDurationMinutes}-minute steps
+            (for example {form.slotDurationMinutes === 40 ? '2:00, 2:40, 3:20' : '2:00, 2:30, 3:00'}).
+          </p>
+        </label>
+
         <DoctorAvailabilityCalendar
           dateAvailability={form.dateAvailability}
           onChange={(dateAvailability) => update('dateAvailability', dateAvailability)}
           scheduleBreak={form.scheduleBreak}
           onScheduleBreakChange={(scheduleBreak) => update('scheduleBreak', scheduleBreak)}
+          slotDurationMinutes={form.slotDurationMinutes}
           doctorId={doctor.id}
         />
 
