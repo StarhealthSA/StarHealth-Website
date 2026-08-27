@@ -35,6 +35,12 @@ const SKIP_KEYS = new Set([
   'videoUrl',
   'similarServiceIds',
   'recommendedServiceIds',
+  'offerPrice',
+  'crossPrice',
+  'currency',
+  'bookAppointmentUrl',
+  'validUntil',
+  'slotDurationMinutes',
 ]);
 
 export function isLocalizedField(value) {

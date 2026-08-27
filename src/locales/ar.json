@@ -4,6 +4,7 @@
     "about": "عن",
     "services": "خدمات",
     "doctors": "الأطباء",
+    "offers": "العروض",
     "blogs": "مدونات",
     "loyalty": "نجوم",
     "contact": "اتصل بنا",
@@ -401,6 +402,7 @@
       "aboutUs": "من نحن",
       "services": "الخدمات",
       "doctors": "الأطباء",
+      "offers": "العروض",
       "blogs": "مدونات",
       "loyalty": "نجوم من ستار هيلث",
       "contactUs": "اتصل بنا",
@@ -852,6 +854,15 @@
     "publishedOn": "تاريخ النشر",
     "publishedBy": "نشر بواسطة",
     "author": "الكاتب"
+  },
+  "offersPage": {
+    "eyebrow": "العروض الحالية",
+    "title": "عروض خاصة",
+    "description": "استكشف باقات العلاج والعروض المحدودة المتوفرة في مركز ستار هيلث الطبي.",
+    "empty": "لا توجد عروض نشطة حالياً. يرجى التحقق مرة أخرى قريباً.",
+    "featured": "مميز",
+    "validUntil": "ساري حتى",
+    "bookAppointment": "احجز موعداً"
   },
   "homePrivilegeBanner": {
     "eyebrow": "نجوم من ستار هيلث ⭐⭐⭐⭐⭐",

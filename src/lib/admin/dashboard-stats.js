@@ -2,6 +2,7 @@ import { listAppointments } from '@/lib/content/appointments';
 import { getAllBlogs } from '@/lib/content/blogs';
 import { getAllDoctors } from '@/lib/content/doctors';
 import { listEnquiries } from '@/lib/content/enquiries';
+import { getAllOffers } from '@/lib/content/offers';
 import { getAllServices } from '@/lib/content/services';
 import { getHomeSettings } from '@/lib/content/site-settings';
 import { getAllSpecializations } from '@/lib/content/specializations';
@@ -147,6 +148,7 @@ export async function getDashboardStats({ period = '7days', role } = {}) {
     doctors,
     services,
     blogs,
+    offers,
     appointments,
     enquiries,
     homeSettings,
@@ -155,6 +157,7 @@ export async function getDashboardStats({ period = '7days', role } = {}) {
     getAllDoctors(),
     getAllServices(),
     getAllBlogs(),
+    getAllOffers(),
     listAppointments(),
     listEnquiries(),
     getHomeSettings(),
@@ -180,6 +183,7 @@ export async function getDashboardStats({ period = '7days', role } = {}) {
       doctors: doctors.length,
       services: services.length,
       blogs: blogs.length,
+      offers: offers.length,
       bookings: appointments.length,
       bookingsActive: activeBookings.length,
       bookingsUnread: unreadBookings.length,

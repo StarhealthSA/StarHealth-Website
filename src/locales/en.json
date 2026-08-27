@@ -4,6 +4,7 @@
     "about": "About",
     "services": "Services",
     "doctors": "Doctors",
+    "offers": "Offers",
     "blogs": "Blogs",
     "loyalty": "Nujoom",
     "contact": "Contact Us",
@@ -402,6 +403,7 @@
       "aboutUs": "About Us",
       "services": "Services",
       "doctors": "Doctors",
+      "offers": "Offers",
       "blogs" : "Blogs",
       "loyalty": "Nujoom by Star Health",
       "contactUs": "Contact Us",
@@ -852,6 +854,15 @@
     "publishedOn": "Published on",
     "publishedBy": "Published by",
     "author": "Author"
+  },
+  "offersPage": {
+    "eyebrow": "Current promotions",
+    "title": "Special Offers",
+    "description": "Explore limited-time treatment packages and savings available at Star Health Medical Centre.",
+    "empty": "No active offers right now. Please check back soon.",
+    "featured": "Featured",
+    "validUntil": "Valid until",
+    "bookAppointment": "Book Appointment"
   },
   "homePrivilegeBanner": {
     "eyebrow": "Nujoom by Star Health ⭐⭐⭐⭐⭐",

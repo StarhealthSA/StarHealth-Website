@@ -150,6 +150,12 @@ export default function AdminDashboard() {
             count={counts.services}
           />
           <DashboardStatCard
+            href="/admin/offers"
+            title="Offers"
+            description="Create promotional offers with pricing and booking links."
+            count={counts.offers}
+          />
+          <DashboardStatCard
             href="/admin/blogs"
             title="Blogs"
             description="Create SEO blog posts for the public blog listing and detail pages."
