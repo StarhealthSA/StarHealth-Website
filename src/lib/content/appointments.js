@@ -12,6 +12,15 @@ import {
 import { getDoctorById } from './doctors';
 import { getOfferById } from './offers';
 import { isOfferCurrentlyValid, isOfferPublished } from './normalize-offer';
+import {
+  isOfferBookingConfirmed,
+  isOfferBookingPending,
+} from '@/lib/appointments/offer-booking-status';
+
+export {
+  isOfferBookingConfirmed,
+  isOfferBookingPending,
+} from '@/lib/appointments/offer-booking-status';
 
 const COLLECTION = 'appointments';
 
@@ -239,7 +248,7 @@ export async function createOfferCallbackBooking(payload, { source = 'website', 
     phone,
     age,
     speciality: offerName,
-    status: 'booked',
+    status: 'pending',
     unscheduled: true,
     source,
     read: Boolean(read),
@@ -247,7 +256,80 @@ export async function createOfferCallbackBooking(payload, { source = 'website', 
     updatedAt: now,
   });
 
-  return { id: docId, offerName, slotLabel: 'Callback requested' };
+  return { id: docId, offerName, slotLabel: 'Callback requested', status: 'pending' };
+}
+
+export async function confirmOfferBooking(id, payload = {}) {
+  const db = getAdminDb();
+  if (!db) throw new Error('Firebase Admin is not configured');
+
+  const existing = await getAppointmentById(id);
+  if (!existing) throw new Error('Offer booking not found');
+  if (existing.type !== 'offer_callback') {
+    throw new Error('Only offer bookings can be confirmed this way');
+  }
+  if (existing.status === 'cancelled') {
+    throw new Error('Cancelled offer bookings cannot be confirmed');
+  }
+  if (isOfferBookingConfirmed(existing)) {
+    throw new Error('This offer booking is already confirmed');
+  }
+
+  const doctorId = String(payload.doctorId || '').trim();
+  if (!doctorId) throw new Error('Doctor is required');
+
+  const doctor = await getDoctorById(doctorId);
+  if (!doctor) throw new Error('Doctor not found');
+
+  const doctorName = payload.doctorName || doctor.name?.en || '';
+  const now = new Date().toISOString();
+  const hasSchedule = doctorHasAvailabilitySchedule(doctor);
+
+  let nextData = {
+    ...existing,
+    doctorId,
+    doctorName,
+    patientName: payload.patientName ?? existing.patientName ?? '',
+    phone: payload.phone ?? existing.phone ?? '',
+    age: payload.age ?? existing.age ?? '',
+    speciality: payload.speciality ?? existing.speciality ?? existing.offerName ?? '',
+    status: 'booked',
+    type: 'offer_callback',
+    source: existing.source || 'offers',
+    read: true,
+    confirmedAt: now,
+    updatedAt: now,
+  };
+
+  if (!hasSchedule) {
+    nextData = {
+      ...nextData,
+      date: '',
+      slotIndex: null,
+      slotLabel: 'To be confirmed',
+      unscheduled: true,
+    };
+    await db.collection(COLLECTION).doc(id).set(nextData, { merge: true });
+    return getAppointmentById(id);
+  }
+
+  const date = String(payload.date || '').trim();
+  const slotIndex = payload.slotIndex;
+  if (!date || slotIndex == null) {
+    throw new Error('Date and time slot are required for this doctor');
+  }
+
+  const { slot } = await assertSlotAvailable(doctorId, date, slotIndex, id);
+  nextData = {
+    ...nextData,
+    date,
+    slotIndex: Number(slotIndex),
+    slotLabel: payload.slotLabel || slot.label,
+    unscheduled: false,
+  };
+
+  await db.collection(COLLECTION).doc(id).set(nextData, { merge: true });
+  return getAppointmentById(id);
 }
 
 function matchesSearch(item, search) {
@@ -258,11 +340,18 @@ function matchesSearch(item, search) {
   const name = (item.patientName || '').toLowerCase();
   const phone = (item.phone || '').replace(/\s+/g, '');
   const phoneQuery = query.replace(/\s+/g, '');
+  const offerName = (item.offerName || item.speciality || '').toLowerCase();
+  const doctorName = (item.doctorName || '').toLowerCase();
 
-  return name.includes(query) || phone.includes(phoneQuery);
+  return (
+    name.includes(query)
+    || phone.includes(phoneQuery)
+    || offerName.includes(query)
+    || doctorName.includes(query)
+  );
 }
 
-export async function listAppointments({ doctorId, date, status, search } = {}) {
+export async function listAppointments({ doctorId, date, status, search, type } = {}) {
   const db = getAdminDb();
   if (!db) return [];
 
@@ -272,6 +361,17 @@ export async function listAppointments({ doctorId, date, status, search } = {}) 
 
   const snapshot = await query.get();
   let items = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+  if (type === 'offer_callback') {
+    items = items.filter((item) => item.type === 'offer_callback');
+  } else if (type === 'appointment') {
+    // Main booking tabs: regular appointments + confirmed offer bookings.
+    // Pending offer callbacks stay only in the Offer Bookings tab.
+    items = items.filter((item) => {
+      if (item.type !== 'offer_callback') return true;
+      return Boolean(item.doctorId) && item.status !== 'pending';
+    });
+  }
 
   if (status) {
     items = items.filter((item) => item.status === status);
@@ -285,8 +385,8 @@ export async function listAppointments({ doctorId, date, status, search } = {}) 
     const createdA = a.createdAt || '';
     const createdB = b.createdAt || '';
     if (createdA !== createdB) return createdB.localeCompare(createdA);
-    if (a.date !== b.date) return b.date.localeCompare(a.date);
-    return b.slotIndex - a.slotIndex;
+    if ((a.date || '') !== (b.date || '')) return (b.date || '').localeCompare(a.date || '');
+    return (Number(b.slotIndex) || 0) - (Number(a.slotIndex) || 0);
   });
 }
 
@@ -413,12 +513,40 @@ export async function cancelAppointment(id) {
   return getAppointmentById(id);
 }
 
-export async function getUnreadAppointmentCount() {
+export async function getUnreadAppointmentCounts() {
   const db = getAdminDb();
-  if (!db) return 0;
+  if (!db) {
+    return { appointments: 0, offerBookings: 0, total: 0 };
+  }
 
   const snapshot = await db.collection(COLLECTION).where('read', '==', false).get();
-  return snapshot.docs.filter((doc) => doc.data().status === 'booked').length;
+  let appointments = 0;
+  let offerBookings = 0;
+
+  snapshot.docs.forEach((doc) => {
+    const data = doc.data();
+    if (data.status === 'cancelled') return;
+
+    if (data.type === 'offer_callback' && isOfferBookingPending(data)) {
+      offerBookings += 1;
+      return;
+    }
+
+    if (data.status === 'booked') {
+      appointments += 1;
+    }
+  });
+
+  return {
+    appointments,
+    offerBookings,
+    total: appointments + offerBookings,
+  };
+}
+
+export async function getUnreadAppointmentCount() {
+  const counts = await getUnreadAppointmentCounts();
+  return counts.total;
 }
 
 export function isAppointmentsConfigured() {

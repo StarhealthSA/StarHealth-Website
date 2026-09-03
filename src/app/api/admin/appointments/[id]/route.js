@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { authenticateRequest, READ_ROLES, WRITE_ROLES } from '@/lib/firebase/auth';
 import {
   cancelAppointment,
+  confirmOfferBooking,
   deleteAppointment,
   getAppointmentById,
   markAppointmentRead,
@@ -61,6 +62,11 @@ export async function PATCH(request, { params }) {
 
     if (body.action === 'cancel') {
       const appointment = await cancelAppointment(id);
+      return NextResponse.json(appointment);
+    }
+
+    if (body.action === 'confirm') {
+      const appointment = await confirmOfferBooking(id, body);
       return NextResponse.json(appointment);
     }
 
