@@ -2732,7 +2732,7 @@ html {
 
 .insurance-page__hero {
   position: relative;
-  min-height: clamp(18rem, 42vw, 28rem);
+  min-height: clamp(22rem, 52vw, 36rem);
   overflow: hidden;
   display: flex;
   align-items: flex-end;

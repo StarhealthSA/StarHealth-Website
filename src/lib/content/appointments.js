@@ -10,6 +10,8 @@ import {
   parseDateKey,
 } from '@/lib/appointments/slot-utils';
 import { getDoctorById } from './doctors';
+import { getOfferById } from './offers';
+import { isOfferCurrentlyValid, isOfferPublished } from './normalize-offer';
 
 const COLLECTION = 'appointments';
 
@@ -19,6 +21,10 @@ function appointmentDocId(doctorId, date, slotIndex) {
 
 function openAppointmentDocId(doctorId) {
   return `${doctorId}_open_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
+}
+
+function offerCallbackDocId(offerId) {
+  return `offer_${offerId}_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
 }
 
 export async function getBookedSlotIndices(doctorId, dateKey, excludeAppointmentId = null) {
@@ -186,6 +192,62 @@ export async function createAppointment(payload, { source = 'website', read = fa
   });
 
   return { id: docId, slotLabel: slotLabel || slot.label };
+}
+
+export async function createOfferCallbackBooking(payload, { source = 'website', read = false } = {}) {
+  const db = getAdminDb();
+  if (!db) throw new Error('Booking is not available right now. Please try again later.');
+
+  const offerId = String(payload.offerId || '').trim();
+  const patientName = String(payload.patientName || '').trim();
+  const phone = String(payload.phone || '').trim();
+  const age = String(payload.age || '').trim();
+  const offerNameFromClient = String(payload.offerName || '').trim();
+
+  if (!offerId) throw new Error('Please select an offer');
+  if (!patientName) throw new Error('Full name is required');
+  if (!phone) throw new Error('Phone number is required');
+  if (!age) throw new Error('Age group is required');
+
+  const offer = await getOfferById(offerId);
+  if (!offer) throw new Error('Selected offer was not found');
+  if (!isOfferPublished(offer) || !isOfferCurrentlyValid(offer)) {
+    throw new Error('Selected offer is no longer available');
+  }
+
+  const offerName =
+    offerNameFromClient
+    || offer.name?.en
+    || offer.treatment?.en
+    || offer.slug
+    || offerId;
+
+  const now = new Date().toISOString();
+  const docId = offerCallbackDocId(offerId);
+
+  await db.collection(COLLECTION).doc(docId).set({
+    id: docId,
+    type: 'offer_callback',
+    offerId,
+    offerName,
+    doctorId: '',
+    doctorName: '',
+    date: '',
+    slotIndex: null,
+    slotLabel: 'Callback requested',
+    patientName,
+    phone,
+    age,
+    speciality: offerName,
+    status: 'booked',
+    unscheduled: true,
+    source,
+    read: Boolean(read),
+    createdAt: now,
+    updatedAt: now,
+  });
+
+  return { id: docId, offerName, slotLabel: 'Callback requested' };
 }
 
 function matchesSearch(item, search) {

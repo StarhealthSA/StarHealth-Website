@@ -7,21 +7,27 @@ import { adminFetch } from '@/lib/admin-api';
 import AdminPageLoader from '@/components/admin/admin-page-loader';
 import AdminPagination, { usePagination } from '@/components/admin/admin-pagination';
 import { AdminActionButton, AdminActionGroup, AdminActionLink } from '@/components/admin/admin-action-button';
+import InsuranceHeroSettingsForm from '@/components/admin/insurance/insurance-hero-settings-form';
 import notify from '@/lib/ui/notify';
 
 export default function AdminInsurancePage() {
   const { getIdToken, canWrite, canDeleteContent } = useAdminAuth();
   const [partners, setPartners] = useState([]);
+  const [heroSettings, setHeroSettings] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [search, setSearch] = useState('');
 
-  const loadPartners = useCallback(async () => {
+  const loadPage = useCallback(async () => {
     try {
       setLoading(true);
       const token = await getIdToken();
-      const data = await adminFetch('/api/admin/insurance', { token });
-      setPartners(data);
+      const [partnersData, settingsData] = await Promise.all([
+        adminFetch('/api/admin/insurance', { token }),
+        adminFetch('/api/admin/site-settings/insurance', { token }),
+      ]);
+      setPartners(partnersData);
+      setHeroSettings(settingsData);
       setError('');
     } catch (err) {
       setError(err.message);
@@ -31,8 +37,8 @@ export default function AdminInsurancePage() {
   }, [getIdToken]);
 
   useEffect(() => {
-    loadPartners();
-  }, [loadPartners]);
+    loadPage();
+  }, [loadPage]);
 
   const filteredPartners = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -65,7 +71,8 @@ export default function AdminInsurancePage() {
     try {
       const token = await getIdToken();
       await adminFetch(`/api/admin/insurance/${partnerId}`, { method: 'DELETE', token });
-      await loadPartners();
+      const data = await adminFetch('/api/admin/insurance', { token });
+      setPartners(data);
     } catch (err) {
       setError(err.message);
     }
@@ -94,104 +101,107 @@ export default function AdminInsurancePage() {
         <p className="mt-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>
       )}
 
-      <div className="mt-6 max-w-md">
-        <input
-          type="search"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search by name or slug..."
-          className="w-full rounded-lg border border-[#d7e6e2] px-3 py-2 text-sm"
-        />
-      </div>
+      {loading ? (
+        <div className="mt-8">
+          <AdminPageLoader
+            label="Loading insurance settings..."
+            description="Fetching hero copy and partner list."
+          />
+        </div>
+      ) : (
+        <>
+          {heroSettings && <InsuranceHeroSettingsForm initial={heroSettings} />}
 
-      <div className="mt-8 overflow-x-auto rounded-2xl border border-[#d7e6e2] bg-white">
-        <table className="min-w-full text-left text-sm">
-          <thead className="border-b border-[#d7e6e2] bg-[#f8fbfa]">
-            <tr>
-              <th className="px-4 py-3 font-medium text-[#586971]">Logo</th>
-              <th className="px-4 py-3 font-medium text-[#586971]">Name</th>
-              <th className="px-4 py-3 font-medium text-[#586971]">Order</th>
-              <th className="px-4 py-3 font-medium text-[#586971]">Status</th>
-              <th className="px-4 py-3 font-medium text-[#586971]">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading ? (
-              <tr>
-                <td colSpan={5}>
-                  <AdminPageLoader
-                    variant="inline"
-                    label="Loading insurance partners..."
-                    className="justify-start px-4 py-8"
-                  />
-                </td>
-              </tr>
-            ) : paginatedItems.length === 0 ? (
-              <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-[#586971]">
-                  No insurance partners found.
-                </td>
-              </tr>
-            ) : (
-              paginatedItems.map((partner) => (
-                <tr key={partner.id} className="border-b border-[#eef4f2]">
-                  <td className="px-4 py-3">
-                    {partner.logoUrl ? (
-                      <img
-                        src={partner.logoUrl}
-                        alt=""
-                        className="h-10 w-16 object-contain"
-                      />
-                    ) : (
-                      <span className="text-xs text-[#8a9aa1]">No logo</span>
-                    )}
-                  </td>
-                  <td className="px-4 py-3 font-medium text-[#002f3b]">
-                    {partner.name?.en || partner.slug}
-                    {partner.featured ? (
-                      <span className="ml-2 rounded-full bg-[#e8f5f2] px-2 py-0.5 text-[10px] font-semibold uppercase text-[#037B76]">
-                        Featured
-                      </span>
-                    ) : null}
-                  </td>
-                  <td className="px-4 py-3 text-[#586971]">{partner.order}</td>
-                  <td className="px-4 py-3">
-                    <span
-                      className={`rounded-full px-2.5 py-1 text-xs font-medium ${
-                        partner.status === 'active'
-                          ? 'bg-emerald-50 text-emerald-700'
-                          : 'bg-slate-100 text-slate-600'
-                      }`}
-                    >
-                      {partner.status === 'active' ? 'Active' : 'Draft'}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3">
-                    <AdminActionGroup>
-                      <AdminActionLink href={`/admin/insurance/${partner.id}`} action="edit" />
-                      <AdminActionLink href="/insurance" action="view" label="Public page" />
-                      {canDeleteContent && (
-                        <AdminActionButton
-                          action="delete"
-                          onClick={() => handleDelete(partner.id)}
-                        />
-                      )}
-                    </AdminActionGroup>
-                  </td>
+          <div className="mt-8 max-w-md">
+            <input
+              type="search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search by name or slug..."
+              className="w-full rounded-lg border border-[#d7e6e2] px-3 py-2 text-sm"
+            />
+          </div>
+
+          <div className="mt-6 overflow-x-auto rounded-2xl border border-[#d7e6e2] bg-white">
+            <table className="min-w-full text-left text-sm">
+              <thead className="border-b border-[#d7e6e2] bg-[#f8fbfa]">
+                <tr>
+                  <th className="px-4 py-3 font-medium text-[#586971]">Logo</th>
+                  <th className="px-4 py-3 font-medium text-[#586971]">Name</th>
+                  <th className="px-4 py-3 font-medium text-[#586971]">Order</th>
+                  <th className="px-4 py-3 font-medium text-[#586971]">Status</th>
+                  <th className="px-4 py-3 font-medium text-[#586971]">Actions</th>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+              </thead>
+              <tbody>
+                {paginatedItems.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="px-4 py-8 text-center text-[#586971]">
+                      No insurance partners found.
+                    </td>
+                  </tr>
+                ) : (
+                  paginatedItems.map((partner) => (
+                    <tr key={partner.id} className="border-b border-[#eef4f2]">
+                      <td className="px-4 py-3">
+                        {partner.logoUrl ? (
+                          <img
+                            src={partner.logoUrl}
+                            alt=""
+                            className="h-10 w-16 object-contain"
+                          />
+                        ) : (
+                          <span className="text-xs text-[#8a9aa1]">No logo</span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3 font-medium text-[#002f3b]">
+                        {partner.name?.en || partner.slug}
+                        {partner.featured ? (
+                          <span className="ml-2 rounded-full bg-[#e8f5f2] px-2 py-0.5 text-[10px] font-semibold uppercase text-[#037B76]">
+                            Featured
+                          </span>
+                        ) : null}
+                      </td>
+                      <td className="px-4 py-3 text-[#586971]">{partner.order}</td>
+                      <td className="px-4 py-3">
+                        <span
+                          className={`rounded-full px-2.5 py-1 text-xs font-medium ${
+                            partner.status === 'active'
+                              ? 'bg-emerald-50 text-emerald-700'
+                              : 'bg-slate-100 text-slate-600'
+                          }`}
+                        >
+                          {partner.status === 'active' ? 'Active' : 'Draft'}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3">
+                        <AdminActionGroup>
+                          <AdminActionLink href={`/admin/insurance/${partner.id}`} action="edit" />
+                          <AdminActionLink href="/insurance" action="view" label="Public page" />
+                          {canDeleteContent && (
+                            <AdminActionButton
+                              action="delete"
+                              onClick={() => handleDelete(partner.id)}
+                            />
+                          )}
+                        </AdminActionGroup>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
 
-      <AdminPagination
-        page={page}
-        totalPages={totalPages}
-        totalItems={totalItems}
-        pageSize={pageSize}
-        onPageChange={setPage}
-      />
+          <AdminPagination
+            page={page}
+            totalPages={totalPages}
+            totalItems={totalItems}
+            pageSize={pageSize}
+            onPageChange={setPage}
+          />
+        </>
+      )}
     </div>
   );
 }

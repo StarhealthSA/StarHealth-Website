@@ -114,7 +114,9 @@ export default function AdminAppointmentDetailPage() {
           <AdminActionGroup>
             {appointment.status === 'booked' && (
               <>
-                <AdminActionLink action="edit" href={`/admin/appointments/${id}/edit`} />
+                {appointment.type !== 'offer_callback' && (
+                  <AdminActionLink action="edit" href={`/admin/appointments/${id}/edit`} />
+                )}
                 <AdminActionButton action="cancel" onClick={handleCancel} />
               </>
             )}
@@ -130,10 +132,24 @@ export default function AdminAppointmentDetailPage() {
           ['Patient', appointment.patientName],
           ['Phone', appointment.phone],
           ['Age', appointment.age],
-          ['Speciality', appointment.speciality],
-          ['Doctor', appointment.doctorName],
-          ['Date', appointment.date ? formatDateLabel(appointment.date) : 'To be confirmed'],
-          ['Time slot', appointment.slotLabel || 'To be confirmed'],
+          appointment.type === 'offer_callback'
+            ? ['Offer', appointment.offerName || appointment.speciality]
+            : ['Speciality', appointment.speciality],
+          appointment.type === 'offer_callback'
+            ? ['Booking type', 'Offer callback']
+            : ['Doctor', appointment.doctorName],
+          [
+            'Date',
+            appointment.type === 'offer_callback'
+              ? 'Callback requested'
+              : (appointment.date ? formatDateLabel(appointment.date) : 'To be confirmed'),
+          ],
+          [
+            'Time slot',
+            appointment.type === 'offer_callback'
+              ? 'Team will confirm'
+              : (appointment.slotLabel || 'To be confirmed'),
+          ],
           ['Status', appointment.status === 'cancelled' ? 'Cancelled' : 'Booked'],
           ['Source', appointment.source || 'website'],
           ['Seen', appointment.read ? 'Yes' : 'No'],
@@ -147,7 +163,10 @@ export default function AdminAppointmentDetailPage() {
         ))}
       </div>
 
-      {(appointment.unscheduled || !appointment.date) && appointment.doctorId && canWrite && (
+      {(appointment.unscheduled || !appointment.date)
+        && appointment.doctorId
+        && appointment.type !== 'offer_callback'
+        && canWrite && (
         <div className="mt-6 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-[#586971]">
           <p>Date and time are not set yet. Enable bookable dates and duty hours for this doctor, then edit this booking.</p>
           <Link
@@ -159,9 +178,17 @@ export default function AdminAppointmentDetailPage() {
         </div>
       )}
 
+      {appointment.type === 'offer_callback' && appointment.status === 'booked' && (
+        <p className="mt-6 rounded-lg border border-[#d7e6e2] bg-[#f8fbfa] px-4 py-3 text-sm text-[#586971]">
+          This is an offer callback request. Call the patient to confirm the appointment details.
+        </p>
+      )}
+
       {appointment.status === 'cancelled' && (
         <p className="mt-6 rounded-lg border border-[#d7e6e2] bg-[#f8fbfa] px-4 py-3 text-sm text-[#586971]">
-          This slot is available for booking again.
+          {appointment.type === 'offer_callback'
+            ? 'This offer callback request was cancelled.'
+            : 'This slot is available for booking again.'}
         </p>
       )}
     </div>

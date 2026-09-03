@@ -864,7 +864,23 @@
     "empty": "No active offers right now. Please check back soon.",
     "featured": "Featured",
     "validUntil": "Valid until",
-    "bookAppointment": "Book Appointment"
+    "bookAppointment": "Book Appointment",
+    "modal": {
+      "title": "Book an Offer Appointment",
+      "description": "Choose an offer and share your details. We will contact you to confirm your appointment.",
+      "callbackNote": "You will get a call back for confirming the appointment.",
+      "offer": "Available offer",
+      "selectOffer": "Select an offer",
+      "fullName": "Full name",
+      "enterFullName": "Enter your full name",
+      "phoneNumber": "Phone number",
+      "enterPhone": "Enter phone number",
+      "age": "Age group",
+      "selectAge": "Select age group",
+      "submit": "Book now",
+      "submitting": "Booking...",
+      "bookingFailed": "Failed to submit your request. Please try again."
+    }
   },
   "insurancePage": {
     "hero": {

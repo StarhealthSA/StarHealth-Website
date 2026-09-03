@@ -182,7 +182,7 @@ export default function BookingsTab() {
           <thead className="border-b border-[#d7e6e2] bg-[#f8fbfa]">
             <tr>
               <th className="px-4 py-3 font-medium text-[#586971]">Patient</th>
-              <th className="px-4 py-3 font-medium text-[#586971]">Doctor</th>
+              <th className="px-4 py-3 font-medium text-[#586971]">Doctor / Offer</th>
               <th className="px-4 py-3 font-medium text-[#586971]">Date & time</th>
               <th className="px-4 py-3 font-medium text-[#586971]">Source</th>
               <th className="px-4 py-3 font-medium text-[#586971]">Status</th>
@@ -211,10 +211,22 @@ export default function BookingsTab() {
                   <p className="font-medium text-[#002f3b]">{item.patientName || '—'}</p>
                   <p className="text-xs text-[#586971]">{item.phone || '—'}</p>
                 </td>
-                <td className="px-4 py-3 text-[#586971]">{item.doctorName || item.doctorId}</td>
                 <td className="px-4 py-3 text-[#586971]">
-                  <p>{item.date ? formatDateLabel(item.date) : 'To be confirmed'}</p>
-                  <p className="text-xs">{item.slotLabel || 'To be confirmed'}</p>
+                  {item.type === 'offer_callback'
+                    ? (item.offerName || item.speciality || 'Offer callback')
+                    : (item.doctorName || item.doctorId || '—')}
+                </td>
+                <td className="px-4 py-3 text-[#586971]">
+                  <p>
+                    {item.type === 'offer_callback'
+                      ? 'Callback'
+                      : (item.date ? formatDateLabel(item.date) : 'To be confirmed')}
+                  </p>
+                  <p className="text-xs">
+                    {item.type === 'offer_callback'
+                      ? 'Team will confirm'
+                      : (item.slotLabel || 'To be confirmed')}
+                  </p>
                 </td>
                 <td className="px-4 py-3 capitalize text-[#586971]">{item.source || 'website'}</td>
                 <td className="px-4 py-3">
@@ -223,7 +235,7 @@ export default function BookingsTab() {
                 <td className="px-4 py-3">
                   <AdminActionGroup>
                     <AdminActionLink action="view" href={`/admin/appointments/${item.id}`} />
-                    {canWrite && item.status === 'booked' && (
+                    {canWrite && item.status === 'booked' && item.type !== 'offer_callback' && (
                       <AdminActionLink action="edit" href={`/admin/appointments/${item.id}/edit`} />
                     )}
                     {canWrite && item.status === 'booked' && (

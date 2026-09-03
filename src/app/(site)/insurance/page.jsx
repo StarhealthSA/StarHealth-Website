@@ -1,6 +1,7 @@
 import InsuranceListing from '@/components/insurance/insurance-listing';
 import WhatNext from '@/components/what_next';
 import { getPublishedInsurancePartners } from '@/lib/content/insurance';
+import { getInsuranceSettings } from '@/lib/content/site-settings';
 
 export const revalidate = 60;
 
@@ -22,11 +23,14 @@ export const metadata = {
 };
 
 export default async function InsurancePage() {
-  const partners = await getPublishedInsurancePartners();
+  const [partners, settings] = await Promise.all([
+    getPublishedInsurancePartners(),
+    getInsuranceSettings(),
+  ]);
 
   return (
     <div>
-      <InsuranceListing partners={partners} />
+      <InsuranceListing partners={partners} settings={settings} />
       <WhatNext />
     </div>
   );

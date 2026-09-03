@@ -2,7 +2,8 @@
 
 import { useTranslation } from 'react-i18next';
 import Reveal, { staggerDelay } from '@/components/reveal';
-import heroImage from '@/assets/home/headerimage.jpg';
+import heroImage from '@/assets/home/insurance-bg.png';
+import { getLocalizedText } from '@/lib/content/localized';
 import { toPublicInsurancePartner } from '@/lib/content/insurance-public';
 
 function PartnerCard({ partner }) {
@@ -41,11 +42,18 @@ function PartnerCard({ partner }) {
   return <article className="insurance-partner-card">{content}</article>;
 }
 
-export default function InsuranceListing({ partners = [] }) {
+export default function InsuranceListing({ partners = [], settings = null }) {
   const { t, i18n } = useTranslation();
   const items = partners
     .map((partner) => toPublicInsurancePartner(partner, i18n.language))
     .filter(Boolean);
+
+  const heroTitle =
+    getLocalizedText(settings?.heroTitle, i18n.language)
+    || t('insurancePage.hero.title');
+  const heroSubtitle =
+    getLocalizedText(settings?.heroSubtitle, i18n.language)
+    || t('insurancePage.hero.description');
 
   return (
     <div className="insurance-page">
@@ -60,8 +68,8 @@ export default function InsuranceListing({ partners = [] }) {
         </div>
         <div className="insurance-page__hero-copy">
           <Reveal>
-            <h1 className="insurance-page__hero-title">{t('insurancePage.hero.title')}</h1>
-            <p className="insurance-page__hero-lead">{t('insurancePage.hero.description')}</p>
+            <h1 className="insurance-page__hero-title">{heroTitle}</h1>
+            <p className="insurance-page__hero-lead">{heroSubtitle}</p>
           </Reveal>
         </div>
       </section>

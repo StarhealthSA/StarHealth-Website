@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Reveal, { staggerDelay } from '@/components/reveal';
-import AppointmentModal from '@/components/doctors/appointment-modal';
+import OfferAppointmentModal from '@/components/offers/offer-appointment-modal';
 import { toPublicOffer } from '@/lib/content/offer-public';
 
 function OfferCouponCard({
@@ -82,9 +82,15 @@ function OfferCouponCard({
 export default function OffersListing({ offers = [] }) {
   const { t, i18n } = useTranslation();
   const [showModal, setShowModal] = useState(false);
+  const [selectedOfferId, setSelectedOfferId] = useState('');
   const items = offers
     .map((offer) => toPublicOffer(offer, i18n.language))
     .filter(Boolean);
+
+  const openBooking = (offerId = '') => {
+    setSelectedOfferId(offerId);
+    setShowModal(true);
+  };
 
   return (
     <section className="offers-coupon-page">
@@ -110,16 +116,21 @@ export default function OffersListing({ offers = [] }) {
                 validUntilLabel={t('offersPage.validUntil')}
                 featuredLabel={t('offersPage.featured')}
                 language={i18n.language}
-                onBook={() => setShowModal(true)}
+                onBook={() => openBooking(offer.id)}
               />
             </Reveal>
           ))}
         </div>
       )}
 
-      <AppointmentModal
+      <OfferAppointmentModal
         isOpen={showModal}
-        onClose={() => setShowModal(false)}
+        onClose={() => {
+          setShowModal(false);
+          setSelectedOfferId('');
+        }}
+        offers={items}
+        preselectedOfferId={selectedOfferId}
       />
     </section>
   );
