@@ -22,6 +22,8 @@ export function normalizePortfolioEntry(raw = {}) {
     id: raw.id ?? raw.slug ?? '',
     slug: raw.slug ?? raw.id ?? '',
     title: normalizeLocalized(raw.title || raw.name),
+    serviceId: String(raw.serviceId || '').trim(),
+    serviceSlug: String(raw.serviceSlug || raw.serviceId || '').trim(),
     serviceName: normalizeLocalized(raw.serviceName || raw.service),
     doctorName: normalizeLocalized(raw.doctorName || raw.doctor),
     description: normalizeLocalized(raw.description),

@@ -13,21 +13,23 @@ export default function AdminPortfolioEditPage() {
   const isNew = id === 'new';
   const { getIdToken } = useAdminAuth();
   const [entry, setEntry] = useState(null);
-  const [loading, setLoading] = useState(!isNew);
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   const load = useCallback(async () => {
     try {
+      setLoading(true);
+      const token = await getIdToken();
+      const servicesData = await adminFetch('/api/admin/services', { token });
+      setServices(Array.isArray(servicesData) ? servicesData : []);
+
       if (isNew) {
         setEntry(createEmptyPortfolioEntry());
-        setError('');
-        setLoading(false);
-        return;
+      } else {
+        const data = await adminFetch(`/api/admin/portfolio/${id}`, { token });
+        setEntry(data);
       }
-
-      const token = await getIdToken();
-      const data = await adminFetch(`/api/admin/portfolio/${id}`, { token });
-      setEntry(data);
       setError('');
     } catch (err) {
       setError(err.message);
@@ -49,7 +51,7 @@ export default function AdminPortfolioEditPage() {
         <div className="mt-6">
           <AdminPageLoader
             label={isNew ? 'Preparing portfolio form...' : 'Loading portfolio case...'}
-            description="Fetching case details from the database."
+            description="Fetching case details and available services from the database."
           />
         </div>
       </div>
@@ -66,9 +68,12 @@ export default function AdminPortfolioEditPage() {
         {isNew ? 'Add portfolio case' : 'Edit portfolio case'}
       </h1>
       <p className="mt-1 mb-6 text-sm text-[#586971]">
-        Set case media, before/after images, bilingual content, category, and homepage featuring.
+        Set case media, before/after images, bilingual content, service, and homepage featuring.
       </p>
-      <PortfolioFormShell initial={isNew ? null : entry} />
+      <PortfolioFormShell
+        initial={isNew ? null : entry}
+        services={services}
+      />
     </div>
   );
 }

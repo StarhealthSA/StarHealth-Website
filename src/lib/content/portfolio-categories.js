@@ -61,9 +61,18 @@ export function resolvePortfolioCategoryForService(service) {
   return null;
 }
 
-/** Best public service path for a portfolio category (used by admin/public CTAs). */
-export function getServicePathForPortfolioCategory(categoryId) {
+/** Public service detail path from a portfolio entry's mapped service slug. */
+export function getPortfolioServicePath({ serviceSlug = '', categoryId = '' } = {}) {
+  const slug = String(serviceSlug || '').trim().replace(/^\/+|\/+$/g, '');
+  if (slug) return `/services/${slug}`;
+
+  // Legacy fallback when older entries have no stored serviceSlug.
   if (categoryId === 'dental') return '/services/dentistry';
   if (categoryId === 'dermatology') return '/services/dermatology';
   return '/services';
+}
+
+/** @deprecated Prefer getPortfolioServicePath with serviceSlug */
+export function getServicePathForPortfolioCategory(categoryId, serviceSlug = '') {
+  return getPortfolioServicePath({ categoryId, serviceSlug });
 }

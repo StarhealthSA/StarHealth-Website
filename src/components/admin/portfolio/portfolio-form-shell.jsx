@@ -9,23 +9,24 @@ import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { useAdminUpload } from '@/contexts/admin-upload-context';
 import { adminFetch } from '@/lib/admin-api';
 import { createEmptyPortfolioEntry } from '@/lib/content/portfolio-defaults';
-import { PORTFOLIO_CATEGORIES } from '@/lib/content/portfolio-categories';
+import { resolvePortfolioCategoryForService } from '@/lib/content/portfolio-categories';
 
-export default function PortfolioFormShell({ initial }) {
+export default function PortfolioFormShell({ initial, services = [] }) {
   const router = useRouter();
   const { getIdToken } = useAdminAuth();
   const { isUploading, uploadFile } = useAdminUpload();
   const [form, setForm] = useState(initial || createEmptyPortfolioEntry());
-  const [customCategory, setCustomCategory] = useState(() => {
-    const category = initial?.category || '';
-    const known = PORTFOLIO_CATEGORIES.some((item) => item.id === category);
-    return known ? '' : category;
-  });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
-  const knownCategorySelected = PORTFOLIO_CATEGORIES.some((item) => item.id === form.category)
-    && !customCategory;
+  const sortedServices = [...services].sort((a, b) => {
+    const titleA = (a.title?.en || a.id || '').toLowerCase();
+    const titleB = (b.title?.en || b.id || '').toLowerCase();
+    return titleA.localeCompare(titleB);
+  });
+
+  const selectedService = sortedServices.find((service) => service.id === form.serviceId);
+  const derivedCategory = resolvePortfolioCategoryForService(selectedService);
 
   const updateField = (path, value) => {
     setForm((prev) => {
@@ -35,6 +36,23 @@ export default function PortfolioFormShell({ initial }) {
       }
       return { ...prev, [path]: value };
     });
+  };
+
+  const handleServiceChange = (serviceId) => {
+    const selected = sortedServices.find((service) => service.id === serviceId);
+    const category = resolvePortfolioCategoryForService(selected) || '';
+    setForm((prev) => ({
+      ...prev,
+      serviceId: serviceId || '',
+      serviceSlug: selected?.slug || selected?.id || '',
+      category,
+      serviceName: selected
+        ? {
+          en: selected.title?.en || selected.slug || selected.id || '',
+          ar: selected.title?.ar || '',
+        }
+        : { en: '', ar: '' },
+    }));
   };
 
   const handleUpload = async (file, field, folder, label) => {
@@ -57,13 +75,18 @@ export default function PortfolioFormShell({ initial }) {
       return;
     }
 
-    const category = (customCategory.trim() || form.category || 'dental')
-      .toLowerCase()
-      .replace(/[^a-z0-9-]+/g, '-')
-      .replace(/(^-|-$)/g, '');
+    if (!form.serviceId) {
+      setError('Please select a service from the list.');
+      return;
+    }
 
+    const selected = sortedServices.find((service) => service.id === form.serviceId);
+    const category = resolvePortfolioCategoryForService(selected);
     if (!category) {
-      setError('Category is required.');
+      setError(
+        'Selected service is not mapped to a portfolio category (Dental or Dermatology). '
+        + 'Use a dentistry/dermatology service, or extend portfolio-categories.js.'
+      );
       return;
     }
 
@@ -76,6 +99,14 @@ export default function PortfolioFormShell({ initial }) {
       return;
     }
 
+    const serviceName = selected
+      ? {
+        en: selected.title?.en || selected.slug || selected.id || '',
+        ar: selected.title?.ar || '',
+      }
+      : (form.serviceName || { en: '', ar: '' });
+    const serviceSlug = selected?.slug || selected?.id || form.serviceSlug || '';
+
     const slug =
       form.slug
       || form.title.en.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -85,6 +116,9 @@ export default function PortfolioFormShell({ initial }) {
       id,
       slug,
       category,
+      serviceId: form.serviceId,
+      serviceSlug,
+      serviceName,
       mediaType: form.mediaType === 'video' ? 'video' : 'image',
     };
 
@@ -129,11 +163,33 @@ export default function PortfolioFormShell({ initial }) {
           value={form.title}
           onChange={(v) => updateField('title', v)}
         />
-        <LocalizedInput
-          label="Service name"
-          value={form.serviceName}
-          onChange={(v) => updateField('serviceName', v)}
-        />
+
+        <label className="block">
+          <span className="text-sm font-medium text-[#586971]">Service</span>
+          <select
+            value={form.serviceId || ''}
+            onChange={(e) => handleServiceChange(e.target.value)}
+            className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
+          >
+            <option value="">Select a service…</option>
+            {sortedServices.map((service) => (
+              <option key={service.id} value={service.id}>
+                {service.title?.en || service.slug || service.id}
+                {service.title?.ar ? ` / ${service.title.ar}` : ''}
+              </option>
+            ))}
+          </select>
+          <span className="mt-1 block text-xs text-[#586971]">
+            Category is set automatically from the selected service
+            {derivedCategory ? ` → ${derivedCategory}` : ''}.
+          </span>
+          {!sortedServices.length ? (
+            <span className="mt-1 block text-xs text-amber-700">
+              No services found. Add services under Admin → Services first.
+            </span>
+          ) : null}
+        </label>
+
         <LocalizedInput
           label="Doctor name"
           value={form.doctorName}
@@ -150,49 +206,6 @@ export default function PortfolioFormShell({ initial }) {
           value={form.altText}
           onChange={(v) => updateField('altText', v)}
         />
-
-        <div className="grid gap-4 md:grid-cols-2">
-          <label className="block">
-            <span className="text-sm font-medium text-[#586971]">Category</span>
-            <select
-              value={knownCategorySelected ? form.category : '__custom__'}
-              onChange={(e) => {
-                if (e.target.value === '__custom__') {
-                  setCustomCategory(form.category && !PORTFOLIO_CATEGORIES.some((c) => c.id === form.category)
-                    ? form.category
-                    : '');
-                  return;
-                }
-                setCustomCategory('');
-                updateField('category', e.target.value);
-              }}
-              className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
-            >
-              {PORTFOLIO_CATEGORIES.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.label.en} ({category.label.ar})
-                </option>
-              ))}
-              <option value="__custom__">Custom / future category…</option>
-            </select>
-          </label>
-
-          {(!knownCategorySelected || customCategory) && (
-            <label className="block">
-              <span className="text-sm font-medium text-[#586971]">Custom category id</span>
-              <input
-                type="text"
-                value={customCategory}
-                onChange={(e) => setCustomCategory(e.target.value)}
-                placeholder="e.g. orthodontics"
-                className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
-              />
-              <span className="mt-1 block text-xs text-[#586971]">
-                Lowercase slug. Add a matching entry in portfolio-categories.js later for labels.
-              </span>
-            </label>
-          )}
-        </div>
 
         <div className="grid gap-4 md:grid-cols-3">
           <label className="block">

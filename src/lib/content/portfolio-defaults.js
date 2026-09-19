@@ -5,6 +5,8 @@ export function createEmptyPortfolioEntry() {
     id: '',
     slug: '',
     title: emptyLocalized(),
+    serviceId: '',
+    serviceSlug: '',
     serviceName: emptyLocalized(),
     doctorName: emptyLocalized(),
     description: emptyLocalized(),

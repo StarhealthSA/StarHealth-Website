@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { getServicePathForPortfolioCategory } from '@/lib/content/portfolio-categories';
 
 const AUTO_PLAY_MS = 5000;
 const PAUSE_AFTER_INTERACTION_MS = 12000;
@@ -12,7 +11,7 @@ const SWIPE_THRESHOLD_PX = 48;
 
 function TeaserSlide({ entry, inert = false }) {
   const { t } = useTranslation();
-  const href = getServicePathForPortfolioCategory(entry.category);
+  const href = entry.serviceHref || '/services';
   const beforeSrc = entry.beforeImageUrl || '';
   const afterSrc = entry.afterImageUrl || '';
   const hasPair = Boolean(beforeSrc && afterSrc);

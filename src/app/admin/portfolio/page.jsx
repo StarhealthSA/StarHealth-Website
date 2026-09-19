@@ -12,7 +12,7 @@ import OurWorkHomepageSettingsForm from '@/components/admin/portfolio/our-work-h
 import {
   PORTFOLIO_CATEGORIES,
   getPortfolioCategoryLabel,
-  getServicePathForPortfolioCategory,
+  getPortfolioServicePath,
 } from '@/lib/content/portfolio-categories';
 
 export default function AdminPortfolioPage() {
@@ -204,11 +204,14 @@ export default function AdminPortfolioPage() {
                       <td className="px-4 py-3">
                         <AdminActionGroup>
                           <AdminActionLink href={`/admin/portfolio/${entry.id}`} action="edit" />
-                          <AdminActionLink
-                            href={getServicePathForPortfolioCategory(entry.category)}
-                            action="view"
-                            label="Service page"
-                          />
+                      <AdminActionLink
+                        href={getPortfolioServicePath({
+                          serviceSlug: entry.serviceSlug || entry.serviceId,
+                          categoryId: entry.category,
+                        })}
+                        action="view"
+                        label="Service page"
+                      />
                           {canDeleteContent && (
                             <AdminActionButton
                               action="delete"

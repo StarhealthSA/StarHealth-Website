@@ -880,6 +880,7 @@
     "homeTitle": "Our Work",
     "homeLead": "A quick look at real dental and dermatology results — explore each specialty for the full cases.",
     "exploreCategory": "Explore {{category}}",
+    "categories": "Work categories",
     "serviceTitle": "Our Work — {{category}}",
     "serviceLead": "Approved cases from this specialty — images, videos, and before-and-after results.",
     "empty": "Portfolio cases will appear here once published.",
