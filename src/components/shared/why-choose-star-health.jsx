@@ -80,7 +80,7 @@ export default function WhyChooseStarHealth({ settings = null, className = '' })
       <div className="why-choose-star-health__glow why-choose-star-health__glow--a" aria-hidden />
       <div className="why-choose-star-health__glow why-choose-star-health__glow--b" aria-hidden />
 
-      <div className="why-choose-star-health__shell">
+      <div className="why-choose-star-health__shell site-section-shell">
         <Reveal>
           <header className="why-choose-star-health__header">
             <p className="why-choose-star-health__eyebrow">

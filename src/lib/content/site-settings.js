@@ -10,13 +10,16 @@ import {
   validateHeroSlideInput,
 } from '@/lib/content/hero-slides';
 import { DEFAULT_WHY_CHOOSE_SETTINGS } from '@/lib/content/why-choose-defaults';
+import { DEFAULT_OUR_WORK_SETTINGS } from '@/lib/content/our-work-defaults';
 
 export { DEFAULT_WHY_CHOOSE_SETTINGS } from '@/lib/content/why-choose-defaults';
+export { DEFAULT_OUR_WORK_SETTINGS } from '@/lib/content/our-work-defaults';
 
 const COLLECTION = 'siteSettings';
 const HOME_DOC_ID = 'home';
 const INSURANCE_DOC_ID = 'insurance';
 const WHY_CHOOSE_DOC_ID = 'whyChoose';
+const OUR_WORK_DOC_ID = 'ourWork';
 
 const emptyLocalized = () => ({ en: '', ar: '' });
 
@@ -252,6 +255,48 @@ export async function updateWhyChooseSettings(payload = {}) {
 
   await db.collection(COLLECTION).doc(WHY_CHOOSE_DOC_ID).set(data, { merge: true });
   return normalizeWhyChooseSettings(data);
+}
+
+export function normalizeOurWorkSettings(raw = {}) {
+  const defaults = DEFAULT_OUR_WORK_SETTINGS;
+
+  return {
+    id: OUR_WORK_DOC_ID,
+    eyebrow: normalizeLocalizedField(raw.eyebrow ?? defaults.eyebrow),
+    title: normalizeLocalizedField(raw.title ?? defaults.title),
+    lead: normalizeLocalizedField(raw.lead ?? defaults.lead),
+    updatedAt: raw.updatedAt || null,
+  };
+}
+
+export async function getOurWorkSettings() {
+  const db = getAdminDb();
+  if (!db) {
+    return normalizeOurWorkSettings(DEFAULT_OUR_WORK_SETTINGS);
+  }
+
+  const doc = await db.collection(COLLECTION).doc(OUR_WORK_DOC_ID).get();
+  if (!doc.exists) {
+    return normalizeOurWorkSettings(DEFAULT_OUR_WORK_SETTINGS);
+  }
+
+  return normalizeOurWorkSettings(doc.data());
+}
+
+export async function updateOurWorkSettings(payload = {}) {
+  const db = getAdminDb();
+  if (!db) throw new Error('Firebase Admin is not configured');
+
+  const existing = await getOurWorkSettings();
+  const now = new Date().toISOString();
+  const data = normalizeOurWorkSettings({
+    ...existing,
+    ...payload,
+    updatedAt: now,
+  });
+
+  await db.collection(COLLECTION).doc(OUR_WORK_DOC_ID).set(data, { merge: true });
+  return normalizeOurWorkSettings(data);
 }
 
 export function isSiteSettingsConfigured() {

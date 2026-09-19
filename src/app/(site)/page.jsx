@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import HeroSection from '@/components/home/hero_section';
-import { getHomeSettings, getWhyChooseSettings } from '@/lib/content/site-settings';
+import { getHomeSettings, getWhyChooseSettings, getOurWorkSettings } from '@/lib/content/site-settings';
 import { getActiveHeroSlides } from '@/lib/content/hero-slides';
 import { getLocalizedText } from '@/lib/content/localized';
 import { preload } from 'react-dom';
@@ -13,6 +13,8 @@ import PrivilegeMembershipBanner from '@/components/home/privilege-membership-ba
 import Whatnext from '@/components/what_next';
 import Mobviewform from '@/components/mob_view_form';
 import WhyChooseStarHealth from '@/components/shared/why-choose-star-health';
+import OurWorkPreview from '@/components/portfolio/our-work-preview';
+import { getFeaturedPortfolioEntries } from '@/lib/content/portfolio';
 
 export const revalidate = 60;
 
@@ -59,7 +61,11 @@ async function DynamicHeroSection() {
 export default async function HomePage() {
   const content =
     'Start by scheduling your consultation, explore our specialties for insights, or access resources to make confident and informed decisions you need.';
-  const whyChooseSettings = await getWhyChooseSettings();
+  const [whyChooseSettings, featuredPortfolio, ourWorkSettings] = await Promise.all([
+    getWhyChooseSettings(),
+    getFeaturedPortfolioEntries(),
+    getOurWorkSettings(),
+  ]);
 
   return (
     <div>
@@ -67,6 +73,7 @@ export default async function HomePage() {
         <DynamicHeroSection />
       </Suspense>
       <WhyChooseStarHealth settings={whyChooseSettings} />
+      <OurWorkPreview entries={featuredPortfolio} settings={ourWorkSettings} />
       <div className="sm:hidden">
         <Mobviewform />
       </div>
