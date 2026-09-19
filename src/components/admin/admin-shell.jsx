@@ -23,6 +23,7 @@ const NAV_ITEMS = [
   { href: '/admin/insurance', label: 'Insurance' },
   { href: '/admin/blogs', label: 'Blogs' },
   { href: '/admin/homepage', label: 'Homepage' },
+  { href: '/admin/why-choose', label: 'Why Choose' },
   { href: '/admin/users', label: 'Users', requiresUserManagement: true },
 ];
 

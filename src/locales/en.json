@@ -318,6 +318,22 @@
       "safetyAccountability2": "Safety and Accountability"
     }
   },
+  "whyChooseStarHealth": {
+    "eyebrow": "Star Health",
+    "title": "Why Choose Star Health",
+    "paragraphs": [
+      "Because at Star Health, you are not just a number in a booking system. You receive a human experience worthy of you and personalized care built around understanding your needs and creating a comprehensive care plan.",
+      "We treat you as we treat our own family. We choose for you only what we would accept for our loved ones—from the competence of our doctors and the quality of the materials, equipment and technologies used in our medical and aesthetic services to the follow-up we provide after the procedure.",
+      "Because every detail of your journey matters to us."
+    ],
+    "bookNow": "Book Now",
+    "whatsapp": "WhatsApp",
+    "whatsappMessage": "Hello Star Health, I would like to know more.",
+    "counters": {
+      "clients": { "label": "Number of clients served" },
+      "satisfaction": { "label": "Customer satisfaction rate" }
+    }
+  },
   "insurance": {
     "title": "We accept all major insurance plans",
     "description": "We help you navigate your coverage with ease so you can focus on healing, not paperwork."

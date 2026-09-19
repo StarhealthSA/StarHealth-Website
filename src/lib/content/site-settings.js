@@ -9,10 +9,14 @@ import {
   normalizeHeroSlidesList,
   validateHeroSlideInput,
 } from '@/lib/content/hero-slides';
+import { DEFAULT_WHY_CHOOSE_SETTINGS } from '@/lib/content/why-choose-defaults';
+
+export { DEFAULT_WHY_CHOOSE_SETTINGS } from '@/lib/content/why-choose-defaults';
 
 const COLLECTION = 'siteSettings';
 const HOME_DOC_ID = 'home';
 const INSURANCE_DOC_ID = 'insurance';
+const WHY_CHOOSE_DOC_ID = 'whyChoose';
 
 const emptyLocalized = () => ({ en: '', ar: '' });
 
@@ -178,6 +182,76 @@ export async function updateInsuranceSettings(payload = {}) {
 
   await db.collection(COLLECTION).doc(INSURANCE_DOC_ID).set(data, { merge: true });
   return normalizeInsuranceSettings(data);
+}
+
+function normalizeCounter(raw = {}, fallback = {}) {
+  const value = Number(raw.value ?? fallback.value ?? 0);
+  const decimals = Number.isFinite(Number(raw.decimals))
+    ? Number(raw.decimals)
+    : (fallback.decimals ?? 0);
+
+  return {
+    id: raw.id || fallback.id || `counter-${Math.random().toString(36).slice(2, 8)}`,
+    value: Number.isFinite(value) ? value : 0,
+    prefix: raw.prefix ?? fallback.prefix ?? '',
+    suffix: raw.suffix ?? fallback.suffix ?? '',
+    decimals,
+    label: normalizeLocalizedField(raw.label ?? fallback.label),
+    iconUrl: (raw.iconUrl || fallback.iconUrl || '').trim(),
+  };
+}
+
+export function normalizeWhyChooseSettings(raw = {}) {
+  const defaults = DEFAULT_WHY_CHOOSE_SETTINGS;
+  const countersRaw = Array.isArray(raw.counters) && raw.counters.length
+    ? raw.counters
+    : defaults.counters;
+
+  return {
+    id: WHY_CHOOSE_DOC_ID,
+    title: normalizeLocalizedField(raw.title ?? defaults.title),
+    paragraph1: normalizeLocalizedField(raw.paragraph1 ?? defaults.paragraph1),
+    paragraph2: normalizeLocalizedField(raw.paragraph2 ?? defaults.paragraph2),
+    paragraph3: normalizeLocalizedField(raw.paragraph3 ?? defaults.paragraph3),
+    counters: countersRaw.map((item, index) =>
+      normalizeCounter(item, defaults.counters[index] || defaults.counters[0])
+    ),
+    bookNowLabel: normalizeLocalizedField(raw.bookNowLabel ?? defaults.bookNowLabel),
+    whatsappLabel: normalizeLocalizedField(raw.whatsappLabel ?? defaults.whatsappLabel),
+    whatsappNumber: String(raw.whatsappNumber || defaults.whatsappNumber).replace(/\D/g, ''),
+    whatsappMessage: normalizeLocalizedField(raw.whatsappMessage ?? defaults.whatsappMessage),
+    updatedAt: raw.updatedAt || null,
+  };
+}
+
+export async function getWhyChooseSettings() {
+  const db = getAdminDb();
+  if (!db) {
+    return normalizeWhyChooseSettings(DEFAULT_WHY_CHOOSE_SETTINGS);
+  }
+
+  const doc = await db.collection(COLLECTION).doc(WHY_CHOOSE_DOC_ID).get();
+  if (!doc.exists) {
+    return normalizeWhyChooseSettings(DEFAULT_WHY_CHOOSE_SETTINGS);
+  }
+
+  return normalizeWhyChooseSettings(doc.data());
+}
+
+export async function updateWhyChooseSettings(payload = {}) {
+  const db = getAdminDb();
+  if (!db) throw new Error('Firebase Admin is not configured');
+
+  const existing = await getWhyChooseSettings();
+  const now = new Date().toISOString();
+  const data = normalizeWhyChooseSettings({
+    ...existing,
+    ...payload,
+    updatedAt: now,
+  });
+
+  await db.collection(COLLECTION).doc(WHY_CHOOSE_DOC_ID).set(data, { merge: true });
+  return normalizeWhyChooseSettings(data);
 }
 
 export function isSiteSettingsConfigured() {
