@@ -511,6 +511,66 @@
   box-shadow: 0 10px 22px rgba(0, 108, 53, 0.22) !important;
 }
 
+/* Welcome section — National Day accents from identity assets */
+.welcome-nd {
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-nd__edge {
+  position: absolute;
+  inset-inline: 0;
+  z-index: 2;
+  height: 12px;
+  background-color: #000;
+  background-image: url('/national-day/pattern-chevron.png');
+  background-size: auto 100%;
+  background-repeat: repeat-x;
+  background-position: center;
+}
+
+.welcome-nd__edge--top {
+  top: 0;
+}
+
+.welcome-nd__edge--bottom {
+  bottom: 0;
+  transform: scaleY(-1);
+}
+
+.welcome-nd__motif {
+  display: inline-block;
+  width: 3.25rem;
+  height: 0.85rem;
+  flex-shrink: 0;
+  background-image: url('/national-day/motif-diamonds.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: drop-shadow(0 0 6px rgba(0, 108, 53, 0.2));
+}
+
+.welcome-nd__slogan {
+  letter-spacing: 0.02em;
+}
+
+@media (min-width: 768px) {
+  .welcome-nd__edge {
+    height: 14px;
+  }
+
+  .welcome-nd__motif {
+    width: 4.25rem;
+    height: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome-nd__motif {
+    width: 2.4rem;
+  }
+}
+
 /* WhatsApp float stays above accents */
 .theme-national-day-96 .national-day-accents {
   z-index: 45;
