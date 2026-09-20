@@ -20,7 +20,7 @@ function Footer() {
 
   return (
     <div>
-      <div className="bg-[#063330] w-full py-8 lg:py-20 px-6 lg:px-[120px]">
+      <div className="nd-footer bg-[#063330] w-full py-8 lg:py-20 px-6 lg:px-[120px] pb-12 lg:pb-24">
 
         <div className="flex flex-col md:flex-row justify-between gap-8 md:gap-0">
           <div className="lg:w-1/1">

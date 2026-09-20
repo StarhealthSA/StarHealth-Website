@@ -37,7 +37,7 @@ function Header() {
                 <NavLink
                   href={link.href}
                   className="border-b-2 border-transparent pb-0.5 transition-colors md:pr-[20px] hover:text-[#687276]"
-                  activeClassName="border-[#037B76] font-semibold text-[#037B76]"
+                  activeClassName="nav-link-active border-[#037B76] font-semibold text-[#037B76]"
                 >
                   {t(link.labelKey)}
                 </NavLink>

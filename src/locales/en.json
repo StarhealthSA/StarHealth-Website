@@ -24,6 +24,13 @@
     "label": "Contact us on WhatsApp",
     "message": "Hello Star Health, I would like to know more."
   },
+  "nationalDay": {
+    "bannerLabel": "Saudi National Day 96",
+    "sloganAlt": "Saudi National Day 96 slogan — عزّنا بروحنا",
+    "sloganEn": "Our glory is in our spirit",
+    "yearLabel": "National Day 96",
+    "popBalloon": "Celebrate — pop balloon"
+  },
   "bookingForm": {
     "title": "Book an Appointment",
     "subtitle": "Your Better Health, Just a Click Away",

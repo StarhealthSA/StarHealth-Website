@@ -2,6 +2,9 @@ import Topnav from '@/components/top_nav';
 import Header from '@/components/header/header';
 import Footer from '@/components/footer';
 import NotFoundPage from '@/components/not-found-page';
+import NationalDayThemeRoot from '@/components/national-day/national-day-theme-root';
+import NationalDayBanner from '@/components/national-day/national-day-banner';
+import NationalDayAccents from '@/components/national-day/national-day-accents';
 import { ContentProvider } from '@/contexts/content-context';
 import { getPublishedDoctors } from '@/lib/content/doctors';
 import { getPublishedServices } from '@/lib/content/services';
@@ -20,10 +23,14 @@ export default async function RootNotFound() {
       services={services}
       specializations={specializations}
     >
-      <Topnav />
-      <Header />
-      <NotFoundPage />
-      <Footer />
+      <NationalDayThemeRoot>
+        <Topnav />
+        <NationalDayBanner />
+        <Header />
+        <NotFoundPage />
+        <Footer />
+        <NationalDayAccents />
+      </NationalDayThemeRoot>
     </ContentProvider>
   );
 }

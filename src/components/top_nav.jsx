@@ -24,7 +24,7 @@ function Topnav() {
   const isRTL = i18n.language === 'ar';
 
   return (
-    <div className='flex flex-row items-center justify-between w-full h-[44px] lg:h-[62px] bg-gradient-to-l from-[#037B76] to-[#AED5C6] px-[20px] md:px-[30px] lg:px-[100px]'>
+    <div className='nd-topnav flex flex-row items-center justify-between w-full h-[44px] lg:h-[62px] bg-gradient-to-l from-[#037B76] to-[#AED5C6] px-[20px] md:px-[30px] lg:px-[100px]'>
       <div className='flex justify-between w-full items-center'>
         <div className='flex items-center gap-3 md:gap-5'>
           <div className='flex items-center group'>

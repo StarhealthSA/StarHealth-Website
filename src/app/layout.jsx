@@ -1,9 +1,11 @@
 import Script from 'next/script';
 import './globals.css';
+import '@/styles/national-day.css';
 import Providers from './providers';
 import ScrollToTop from '@/components/scroll_to_top';
 import ScrollTopButton from '@/components/scroll_top_button';
 import RoutePrefetcher from '@/components/route_prefetcher';
+import { NATIONAL_DAY } from '@/lib/national-day/config';
 
 const GTM_ID = 'GTM-P58DHSZX';
 
@@ -33,7 +35,10 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      className={NATIONAL_DAY.enabled ? NATIONAL_DAY.themeClass : undefined}
+    >
       <head>
         {/* Google Tag Manager */}
         <Script id="gtm-head" strategy="beforeInteractive">{`
