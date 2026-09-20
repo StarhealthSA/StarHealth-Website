@@ -9,9 +9,16 @@ const PAUSE_AFTER_INTERACTION_MS = 12000;
 const TRANSITION_MS = 520;
 const SWIPE_THRESHOLD_PX = 48;
 
+function getPerView(width) {
+  if (width < 640) return 1.15;
+  if (width < 900) return 2.2;
+  if (width < 1200) return 3;
+  return 4;
+}
+
 function TeaserSlide({ entry, inert = false }) {
   const { t } = useTranslation();
-  const href = entry.serviceHref || '/services';
+  const href = entry.serviceHref || '/our-work';
   const beforeSrc = entry.beforeImageUrl || '';
   const afterSrc = entry.afterImageUrl || '';
   const hasPair = Boolean(beforeSrc && afterSrc);
@@ -20,6 +27,7 @@ function TeaserSlide({ entry, inert = false }) {
     || beforeSrc
     || (entry.mediaType === 'image' ? entry.mediaUrl : '')
     || '';
+  const label = entry.title || entry.categoryLabel || '';
 
   return (
     <Link
@@ -29,11 +37,15 @@ function TeaserSlide({ entry, inert = false }) {
       className={`our-work-home-carousel__tile${hasPair ? ' our-work-home-carousel__tile--pair' : ''}`}
       aria-label={
         hasPair
-          ? `${entry.categoryLabel || entry.title} — ${t('portfolioPage.before')} / ${t('portfolioPage.after')}`
-          : (entry.categoryLabel || entry.title)
+          ? `${label} — ${t('portfolioPage.before')} / ${t('portfolioPage.after')}`
+          : label
       }
       draggable={false}
     >
+      {label ? (
+        <p className="our-work-home-carousel__caption">{label}</p>
+      ) : null}
+
       {hasPair ? (
         <div className="our-work-home-carousel__pair">
           <figure className="our-work-home-carousel__half">
@@ -64,14 +76,16 @@ function TeaserSlide({ entry, inert = false }) {
           </figure>
         </div>
       ) : singleSrc ? (
-        <img
-          src={singleSrc}
-          alt=""
-          className="our-work-home-carousel__media"
-          loading="lazy"
-          decoding="async"
-          draggable={false}
-        />
+        <div className="our-work-home-carousel__single">
+          <img
+            src={singleSrc}
+            alt=""
+            className="our-work-home-carousel__media"
+            loading="lazy"
+            decoding="async"
+            draggable={false}
+          />
+        </div>
       ) : (
         <div className="our-work-home-carousel__fallback" aria-hidden />
       )}
@@ -80,8 +94,7 @@ function TeaserSlide({ entry, inert = false }) {
 }
 
 /**
- * Homepage Our Work carousel — visuals only (before/after pairs).
- * Supports arrows, dots, swipe, optional autoplay (pauses on hover/focus/interaction).
+ * Homepage Our Work carousel — multi-card before/after teasers.
  */
 export default function OurWorkHomeCarousel({
   items = [],
@@ -91,6 +104,7 @@ export default function OurWorkHomeCarousel({
   const isRTL = i18n.language === 'ar';
   const labelId = useId();
   const rootRef = useRef(null);
+  const viewportRef = useRef(null);
   const pauseUntilRef = useRef(0);
   const isHoveredRef = useRef(false);
   const isFocusedRef = useRef(false);
@@ -100,15 +114,37 @@ export default function OurWorkHomeCarousel({
   const didSwipeRef = useRef(false);
 
   const [index, setIndex] = useState(0);
+  const [perView, setPerView] = useState(4);
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
 
   const count = items.length;
-  const hasMultiple = count > 1;
+  const maxIndex = Math.max(0, count - Math.floor(perView));
+  const hasMultiple = maxIndex > 0;
+  const pageCount = maxIndex + 1;
 
   useEffect(() => {
     reduceMotionRef.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }, []);
+
+  useEffect(() => {
+    const node = viewportRef.current;
+    if (!node) return undefined;
+
+    const update = () => {
+      const next = getPerView(node.clientWidth);
+      setPerView((current) => (Math.abs(current - next) < 0.01 ? current : next));
+    };
+
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    setIndex((current) => Math.min(current, Math.max(0, count - Math.floor(perView))));
+  }, [count, perView]);
 
   useEffect(() => {
     setIndex(0);
@@ -120,9 +156,9 @@ export default function OurWorkHomeCarousel({
   }, []);
 
   const goTo = useCallback((next) => {
-    if (count <= 0) return;
-    setIndex(((next % count) + count) % count);
-  }, [count]);
+    if (pageCount <= 0) return;
+    setIndex(((next % pageCount) + pageCount) % pageCount);
+  }, [pageCount]);
 
   const goNext = useCallback(() => {
     pauseAutoplay();
@@ -134,7 +170,6 @@ export default function OurWorkHomeCarousel({
     goTo(index - 1);
   }, [goTo, index, pauseAutoplay]);
 
-  // Optional autoplay — pauses on hover, focus, interaction, hidden tab, reduced motion.
   useEffect(() => {
     if (!autoplay || !hasMultiple || reduceMotionRef.current) return undefined;
 
@@ -147,11 +182,11 @@ export default function OurWorkHomeCarousel({
       ) {
         return;
       }
-      setIndex((current) => (current + 1) % count);
+      setIndex((current) => (current + 1) % pageCount);
     }, AUTO_PLAY_MS);
 
     return () => window.clearInterval(timer);
-  }, [autoplay, hasMultiple, count]);
+  }, [autoplay, hasMultiple, pageCount]);
 
   useEffect(() => {
     const onVisibility = () => {
@@ -187,7 +222,6 @@ export default function OurWorkHomeCarousel({
 
     if (Math.abs(delta) < SWIPE_THRESHOLD_PX) return;
 
-    // Track is LTR; swipe left → next, swipe right → previous (swap for RTL UI).
     if (delta < 0) (isRTL ? goPrev : goNext)();
     else (isRTL ? goNext : goPrev)();
   };
@@ -214,16 +248,17 @@ export default function OurWorkHomeCarousel({
     } else if (event.key === 'End') {
       event.preventDefault();
       pauseAutoplay();
-      goTo(count - 1);
+      goTo(pageCount - 1);
     }
   };
 
   if (!count) return null;
 
+  const slideBasis = 100 / perView;
   const transition = reduceMotionRef.current || isDragging
     ? 'none'
     : `transform ${TRANSITION_MS}ms cubic-bezier(0.22, 1, 0.36, 1)`;
-  const translateX = `calc(${-index * 100}% + ${dragOffset}px)`;
+  const translateX = `calc(${-index * slideBasis}% + ${dragOffset}px)`;
 
   return (
     <div
@@ -252,43 +287,50 @@ export default function OurWorkHomeCarousel({
         {t('portfolioPage.pagination')}
       </p>
 
-      <div
-        className="our-work-home-carousel__viewport"
-        dir="ltr"
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={finishPointer}
-        onPointerCancel={finishPointer}
-        onClickCapture={onClickCapture}
-      >
+      <div className="our-work-home-carousel__stage">
         <div
-          className="our-work-home-carousel__track"
-          style={{
-            transform: `translate3d(${translateX}, 0, 0)`,
-            transition,
-          }}
+          ref={viewportRef}
+          className="our-work-home-carousel__viewport"
+          dir="ltr"
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={finishPointer}
+          onPointerCancel={finishPointer}
+          onClickCapture={onClickCapture}
         >
-          {items.map((entry, slideIndex) => (
-            <div
-              key={entry.id}
-              className="our-work-home-carousel__slide"
-              role="group"
-              aria-roledescription="slide"
-              aria-label={t('portfolioPage.goToSlide', { number: slideIndex + 1 })}
-              aria-hidden={slideIndex !== index}
-            >
-              <TeaserSlide entry={entry} inert={slideIndex !== index} />
-            </div>
-          ))}
+          <div
+            className="our-work-home-carousel__track"
+            style={{
+              transform: `translate3d(${translateX}, 0, 0)`,
+              transition,
+            }}
+          >
+            {items.map((entry, slideIndex) => {
+              const visibleStart = index;
+              const visibleEnd = index + perView;
+              const inert = slideIndex < visibleStart || slideIndex >= visibleEnd;
+              return (
+                <div
+                  key={entry.id}
+                  className="our-work-home-carousel__slide"
+                  style={{ flex: `0 0 ${slideBasis}%` }}
+                  role="group"
+                  aria-roledescription="slide"
+                  aria-label={t('portfolioPage.goToSlide', { number: slideIndex + 1 })}
+                  aria-hidden={inert}
+                >
+                  <TeaserSlide entry={entry} inert={inert} />
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </div>
 
-      {hasMultiple ? (
-        <div className="our-work-home-carousel__controls" dir="ltr">
-          <div className="our-work-home-carousel__nav">
+        {hasMultiple ? (
+          <>
             <button
               type="button"
-              className="our-work-home-carousel__arrow"
+              className="our-work-home-carousel__arrow our-work-home-carousel__arrow--prev"
               onClick={isRTL ? goNext : goPrev}
               aria-label={isRTL ? t('portfolioPage.next') : t('portfolioPage.previous')}
             >
@@ -296,34 +338,37 @@ export default function OurWorkHomeCarousel({
             </button>
             <button
               type="button"
-              className="our-work-home-carousel__arrow"
+              className="our-work-home-carousel__arrow our-work-home-carousel__arrow--next"
               onClick={isRTL ? goPrev : goNext}
               aria-label={isRTL ? t('portfolioPage.previous') : t('portfolioPage.next')}
             >
               <span aria-hidden>›</span>
             </button>
-          </div>
+          </>
+        ) : null}
+      </div>
 
-          <div
-            className="our-work-home-carousel__dots"
-            role="tablist"
-            aria-label={t('portfolioPage.pagination')}
-          >
-            {items.map((entry, dotIndex) => (
-              <button
-                key={entry.id}
-                type="button"
-                role="tab"
-                aria-selected={dotIndex === index}
-                aria-label={t('portfolioPage.goToSlide', { number: dotIndex + 1 })}
-                className={dotIndex === index ? 'is-active' : undefined}
-                onClick={() => {
-                  pauseAutoplay();
-                  goTo(dotIndex);
-                }}
-              />
-            ))}
-          </div>
+      {hasMultiple ? (
+        <div
+          className="our-work-home-carousel__dots"
+          role="tablist"
+          aria-label={t('portfolioPage.pagination')}
+          dir="ltr"
+        >
+          {Array.from({ length: pageCount }, (_, dotIndex) => (
+            <button
+              key={`dot-${dotIndex}`}
+              type="button"
+              role="tab"
+              aria-selected={dotIndex === index}
+              aria-label={t('portfolioPage.goToSlide', { number: dotIndex + 1 })}
+              className={dotIndex === index ? 'is-active' : undefined}
+              onClick={() => {
+                pauseAutoplay();
+                goTo(dotIndex);
+              }}
+            />
+          ))}
         </div>
       ) : null}
 

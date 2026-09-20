@@ -11,6 +11,7 @@ import { getLocalizedText } from '@/lib/content/localized';
 export default function OurWorkPreview({ entries = [], settings = null }) {
   const { t, i18n } = useTranslation();
   const language = i18n.language;
+  const isRTL = language === 'ar';
 
   const copy = useMemo(() => ({
     eyebrow:
@@ -36,29 +37,27 @@ export default function OurWorkPreview({ entries = [], settings = null }) {
 
   return (
     <section className="our-work-preview" aria-labelledby="our-work-preview-title">
-      <div className="our-work-preview__glow" aria-hidden />
       <div className="our-work-preview__shell">
-        <Reveal>
-          <header className="our-work-preview__header">
-            <p className="our-work-preview__eyebrow">{copy.eyebrow}</p>
-            <h2 id="our-work-preview-title" className="our-work-preview__title">
-              {copy.title}
-            </h2>
-            <p className="our-work-preview__lead">{copy.lead}</p>
-          </header>
-        </Reveal>
+        <div className={`our-work-preview__layout${isRTL ? ' our-work-preview__layout--rtl' : ''}`}>
+          <Reveal className="our-work-preview__carousel-col">
+            <OurWorkHomeCarousel items={items} />
+          </Reveal>
 
-        <Reveal delay={80}>
-          <OurWorkHomeCarousel items={items} />
-        </Reveal>
-
-        <Reveal delay={120}>
-          <div className="our-work-preview__cta-row">
+          <Reveal delay={80} className="our-work-preview__copy-col">
+            <header className="our-work-preview__header">
+              <p className="our-work-preview__eyebrow">{copy.eyebrow}</p>
+              <h2 id="our-work-preview-title" className="our-work-preview__title">
+                {copy.title}
+              </h2>
+              {copy.lead ? (
+                <p className="our-work-preview__lead">{copy.lead}</p>
+              ) : null}
+            </header>
             <Link href="/our-work" className="our-work-preview__cta">
               {t('portfolioPage.viewAll')}
             </Link>
-          </div>
-        </Reveal>
+          </Reveal>
+        </div>
       </div>
     </section>
   );
