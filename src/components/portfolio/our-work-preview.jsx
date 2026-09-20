@@ -7,10 +7,6 @@ import Reveal from '@/components/reveal';
 import OurWorkHomeCarousel from '@/components/portfolio/our-work-home-carousel';
 import { toPublicPortfolioEntry } from '@/lib/content/portfolio-public';
 import { getLocalizedText } from '@/lib/content/localized';
-import {
-  getPortfolioCategoryLabel,
-  getPortfolioServicePath,
-} from '@/lib/content/portfolio-categories';
 
 export default function OurWorkPreview({ entries = [], settings = null }) {
   const { t, i18n } = useTranslation();
@@ -36,24 +32,6 @@ export default function OurWorkPreview({ entries = [], settings = null }) {
     [entries, language]
   );
 
-  const categoryLinks = useMemo(() => {
-    const seen = new Set();
-    const list = [];
-    items.forEach((entry) => {
-      if (!entry.category || seen.has(entry.category)) return;
-      seen.add(entry.category);
-      list.push({
-        id: entry.category,
-        label: entry.categoryLabel || getPortfolioCategoryLabel(entry.category, language),
-        href: entry.serviceHref || getPortfolioServicePath({
-          serviceSlug: entry.serviceSlug,
-          categoryId: entry.category,
-        }),
-      });
-    });
-    return list;
-  }, [items, language]);
-
   if (!items.length) return null;
 
   return (
@@ -74,21 +52,13 @@ export default function OurWorkPreview({ entries = [], settings = null }) {
           <OurWorkHomeCarousel items={items} />
         </Reveal>
 
-        {categoryLinks.length > 0 ? (
-          <Reveal delay={120}>
-            <div className="our-work-preview__cta-row">
-              {categoryLinks.map((link) => (
-                <Link
-                  key={link.id}
-                  href={link.href}
-                  className="our-work-preview__cta"
-                >
-                  {t('portfolioPage.exploreCategory', { category: link.label })}
-                </Link>
-              ))}
-            </div>
-          </Reveal>
-        ) : null}
+        <Reveal delay={120}>
+          <div className="our-work-preview__cta-row">
+            <Link href="/our-work" className="our-work-preview__cta">
+              {t('portfolioPage.viewAll')}
+            </Link>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

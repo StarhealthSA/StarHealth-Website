@@ -3530,32 +3530,20 @@ html {
   align-items: center;
   justify-content: center;
   min-height: 2.7rem;
-  padding: 0.65rem 1.25rem;
+  padding: 0.65rem 1.5rem;
   border-radius: 0.85rem;
-  border: 1px solid rgba(3, 123, 118, 0.22);
-  background: #fff;
-  color: #037b76;
+  border: 1px solid transparent;
+  background: linear-gradient(135deg, #037b76 0%, #025e5a 100%);
+  color: #fff;
   font-size: 0.92rem;
   font-weight: 600;
   text-decoration: none;
-  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 10px 22px rgba(3, 123, 118, 0.2);
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .our-work-preview__cta:hover {
-  background: #037b76;
-  border-color: #037b76;
-  color: #fff;
   transform: translateY(-1px);
-}
-
-.our-work-preview__cta:first-child {
-  background: linear-gradient(135deg, #037b76 0%, #025e5a 100%);
-  border-color: transparent;
-  color: #fff;
-  box-shadow: 0 10px 22px rgba(3, 123, 118, 0.2);
-}
-
-.our-work-preview__cta:first-child:hover {
   box-shadow: 0 14px 28px rgba(3, 123, 118, 0.26);
 }
 
