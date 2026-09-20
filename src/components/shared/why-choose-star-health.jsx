@@ -5,64 +5,41 @@ import Reveal, { staggerDelay } from '@/components/reveal';
 import AnimatedCounter from '@/components/shared/animated-counter';
 import AppointmentModal from '@/components/doctors/appointment-modal';
 import { getCounterFallbackIcon } from '@/components/shared/why-choose-icons';
-import { getLocalizedText } from '@/lib/content/localized';
+import { DEFAULT_WHY_CHOOSE_SETTINGS } from '@/lib/content/why-choose-defaults';
 import { getWhatsAppNumber } from '@/lib/whatsapp';
 import { useTranslation } from 'react-i18next';
 
-function resolveCopy(settings, language, t) {
-  const title =
-    getLocalizedText(settings?.title, language)
-    || t('whyChooseStarHealth.title');
-
-  const paragraphs = [
-    getLocalizedText(settings?.paragraph1, language),
-    getLocalizedText(settings?.paragraph2, language),
-    getLocalizedText(settings?.paragraph3, language),
-  ].filter(Boolean);
-
-  const fallbackParagraphs = t('whyChooseStarHealth.paragraphs', { returnObjects: true });
-  const body = paragraphs.length
-    ? paragraphs
-    : (Array.isArray(fallbackParagraphs) ? fallbackParagraphs : []);
-
-  const counters = (settings?.counters || []).map((counter, index) => ({
-    ...counter,
-    label:
-      getLocalizedText(counter.label, language)
-      || t(`whyChooseStarHealth.counters.${counter.id || index}.label`, {
-        defaultValue: '',
-      }),
-  }));
-
-  return {
-    title,
-    body,
-    counters,
-    bookNowLabel:
-      getLocalizedText(settings?.bookNowLabel, language)
-      || t('whyChooseStarHealth.bookNow'),
-    whatsappLabel:
-      getLocalizedText(settings?.whatsappLabel, language)
-      || t('whyChooseStarHealth.whatsapp'),
-    whatsappMessage:
-      getLocalizedText(settings?.whatsappMessage, language)
-      || t('whyChooseStarHealth.whatsappMessage'),
-    whatsappNumber: settings?.whatsappNumber || getWhatsAppNumber(),
-  };
-}
+const STATIC_COUNTERS = DEFAULT_WHY_CHOOSE_SETTINGS.counters;
 
 /**
  * Shared "Why Choose Star Health" section (Home + About).
- * CMS: Admin → Why Choose. Locale fallbacks for empty fields.
+ * Static content from locale files + fixed counter values.
  */
-export default function WhyChooseStarHealth({ settings = null, className = '' }) {
-  const { t, i18n } = useTranslation();
+export default function WhyChooseStarHealth({ className = '' }) {
+  const { t } = useTranslation();
   const [showModal, setShowModal] = useState(false);
 
-  const copy = useMemo(
-    () => resolveCopy(settings, i18n.language, t),
-    [settings, i18n.language, t]
-  );
+  const copy = useMemo(() => {
+    const paragraphs = t('whyChooseStarHealth.paragraphs', { returnObjects: true });
+    const body = Array.isArray(paragraphs) ? paragraphs.filter(Boolean) : [];
+
+    const counters = STATIC_COUNTERS.map((counter) => ({
+      ...counter,
+      label: t(`whyChooseStarHealth.counters.${counter.id}.label`, {
+        defaultValue: counter.label?.en || '',
+      }),
+    }));
+
+    return {
+      title: t('whyChooseStarHealth.title'),
+      body,
+      counters,
+      bookNowLabel: t('whyChooseStarHealth.bookNow'),
+      whatsappLabel: t('whyChooseStarHealth.whatsapp'),
+      whatsappMessage: t('whyChooseStarHealth.whatsappMessage'),
+      whatsappNumber: getWhatsAppNumber(),
+    };
+  }, [t]);
 
   const whatsappNumber = String(copy.whatsappNumber || '').replace(/\D/g, '') || getWhatsAppNumber();
   const whatsappHref = `https://wa.me/${whatsappNumber}${
@@ -120,15 +97,7 @@ export default function WhyChooseStarHealth({ settings = null, className = '' })
                     >
                       <div role="listitem" className="why-choose-star-health__stat">
                         <div className="why-choose-star-health__stat-icon">
-                          {counter.iconUrl ? (
-                            <img
-                              src={counter.iconUrl}
-                              alt=""
-                              className="why-choose-star-health__counter-icon"
-                            />
-                          ) : (
-                            <FallbackIcon className="why-choose-star-health__metric-svg" />
-                          )}
+                          <FallbackIcon className="why-choose-star-health__metric-svg" />
                         </div>
                         <AnimatedCounter
                           value={counter.value}

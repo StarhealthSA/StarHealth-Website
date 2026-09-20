@@ -6,7 +6,6 @@ import AboutCareProcessSection from '@/components/about/about_care_process_secti
 import WhyChooseStarHealth from '@/components/shared/why-choose-star-health';
 import Whatnext from '@/components/what_next';
 import FaqPageSection from '@/components/shared/faq-page-section';
-import { getWhyChooseSettings } from '@/lib/content/site-settings';
 
 export const revalidate = 60;
 
@@ -26,13 +25,11 @@ export const metadata = {
 export default async function AboutPage() {
   const content =
     'Book your consultation, explore our specialties, or speak to our team. We are here to guide every step of your healthcare journey.';
-  const whyChooseSettings = await getWhyChooseSettings();
-
   return (
     <div className="bg-[#f8fbfa]">
       <IntroSection />
 
-      <WhyChooseStarHealth settings={whyChooseSettings} />
+      <WhyChooseStarHealth />
 
       <AboutPillarsSection />
 

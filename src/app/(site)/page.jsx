@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import HeroSection from '@/components/home/hero_section';
-import { getHomeSettings, getWhyChooseSettings, getOurWorkSettings } from '@/lib/content/site-settings';
+import { getHomeSettings, getOurWorkSettings } from '@/lib/content/site-settings';
 import { getActiveHeroSlides } from '@/lib/content/hero-slides';
 import { getLocalizedText } from '@/lib/content/localized';
 import { preload } from 'react-dom';
@@ -61,8 +61,7 @@ async function DynamicHeroSection() {
 export default async function HomePage() {
   const content =
     'Start by scheduling your consultation, explore our specialties for insights, or access resources to make confident and informed decisions you need.';
-  const [whyChooseSettings, featuredPortfolio, ourWorkSettings] = await Promise.all([
-    getWhyChooseSettings(),
+  const [featuredPortfolio, ourWorkSettings] = await Promise.all([
     getFeaturedPortfolioEntries(),
     getOurWorkSettings(),
   ]);
@@ -72,7 +71,7 @@ export default async function HomePage() {
       <Suspense fallback={<HeroSection />}>
         <DynamicHeroSection />
       </Suspense>
-      <WhyChooseStarHealth settings={whyChooseSettings} />
+      <WhyChooseStarHealth />
       <OurWorkPreview entries={featuredPortfolio} settings={ourWorkSettings} />
       <div className="sm:hidden">
         <Mobviewform />
