@@ -12,116 +12,137 @@ import NavLink from './nav_link';
 import { useTranslation } from 'react-i18next';
 import { FOOTER_QUICK_LINKS } from '@/constants/nav_routes';
 import { useLocalizedServices } from '@/contexts/content-context';
+import { NATIONAL_DAY } from '@/lib/national-day/config';
 
 function Footer() {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
   const services = useLocalizedServices(i18n.language);
+  const isNationalDay = NATIONAL_DAY.enabled;
 
   return (
     <div>
-      <div className="nd-footer bg-[#063330] w-full py-8 lg:py-20 px-6 lg:px-[120px] pb-12 lg:pb-24">
+      <div
+        className={`nd-footer relative w-full bg-[#063330] px-6 py-8 lg:px-[120px] lg:py-20${
+          isNationalDay ? ' nd-footer--festive pb-14 lg:pb-24' : ' pb-12 lg:pb-24'
+        }`}
+      >
+        {isNationalDay ? (
+          <div className="nd-footer__edge nd-footer__edge--top" aria-hidden />
+        ) : null}
 
-        <div className="flex flex-col md:flex-row justify-between gap-8 md:gap-0">
+        {isNationalDay ? (
+          <div className="nd-footer__badge">
+            <span className="nd-footer__motif" aria-hidden />
+            <p className="nd-footer__badge-text" lang="ar">
+              {NATIONAL_DAY.sloganAr}
+              <span className="nd-footer__badge-sep">·</span>
+              {t('nationalDay.yearLabel')}
+            </p>
+            <span className="nd-footer__motif" aria-hidden />
+          </div>
+        ) : null}
+
+        <div className="flex flex-col justify-between gap-8 md:flex-row md:gap-0">
           <div className="lg:w-1/1">
-            <h3 className="text-sm lg:text-base text-[#FFFFFFCC] mb-2 lg:mb-4">{t('footer.appointments')}</h3>
-            <p className="text-base lg:text-xl font-medium text-white">{t('footer.appointmentnumber')}</p>
+            <h3 className="mb-2 text-sm text-[#FFFFFFCC] lg:mb-4 lg:text-base">{t('footer.appointments')}</h3>
+            <p className="text-base font-medium text-white lg:text-xl">{t('footer.appointmentnumber')}</p>
           </div>
           <div className="lg:w-1/1">
-            <h3 className="text-sm lg:text-base text-[#FFFFFFCC] mb-2 lg:mb-4">{t('footer.emergency')}</h3>
-            <p className="text-base lg:text-xl font-medium text-white">{t('footer.emergencynumber')}</p>
+            <h3 className="mb-2 text-sm text-[#FFFFFFCC] lg:mb-4 lg:text-base">{t('footer.emergency')}</h3>
+            <p className="text-base font-medium text-white lg:text-xl">{t('footer.emergencynumber')}</p>
           </div>
           <div className="lg:w-1/1">
-            <h3 className="text-sm lg:text-base text-[#FFFFFFCC] mb-2 lg:mb-4">{t('footer.labResults')}</h3>
+            <h3 className="mb-2 text-sm text-[#FFFFFFCC] lg:mb-4 lg:text-base">{t('footer.labResults')}</h3>
             <a href="mailto:labs@starhealth.sa">
-              <p className="text-base lg:text-xl cursor-pointer font-medium text-white"
-              >{t('footer.labMail')}</p>
+              <p className="cursor-pointer text-base font-medium text-white lg:text-xl">{t('footer.labMail')}</p>
             </a>
           </div>
           <div className="lg:w-1/1">
-            <h3 className="text-sm lg:text-base text-[#FFFFFFCC] mb-2 lg:mb-4">{t('footer.patientEnquiries')}</h3>
+            <h3 className="mb-2 text-sm text-[#FFFFFFCC] lg:mb-4 lg:text-base">{t('footer.patientEnquiries')}</h3>
             <a href="mailto:contact@starhealth.sa">
-              <p className="text-base lg:text-xl cursor-pointer font-medium text-white"
-              >{t('footer.enquirynumber')}</p>
+              <p className="cursor-pointer text-base font-medium text-white lg:text-xl">{t('footer.enquirynumber')}</p>
             </a>
           </div>
         </div>
 
-        <div className="border-b border-[#FFFFFF33] w-full my-8 lg:my-12"></div>
+        <div className="my-8 w-full border-b border-[#FFFFFF33] lg:my-12" />
 
-        <div className="flex flex-col md:flex-row gap-5 lg:gap-16">
-
-          <div className="lg:w-1/4 md:w-1/4">
+        <div className="flex flex-col gap-5 md:flex-row lg:gap-16">
+          <div className="md:w-1/4 lg:w-1/4">
             <NavLink href="/">
-              <img src={logo} alt="Star Health Logo" className="w-32 lg:w-40 mb-4 lg:mb-8" />
+              <img src={logo} alt="Star Health Logo" className="mb-4 w-32 lg:mb-8 lg:w-40" />
             </NavLink>
-            <p className="text-sm lg:text-base text-[#FFFFFFCC] lg:mb-0">
+            <p className="text-sm text-[#FFFFFFCC] lg:mb-0 lg:text-base">
               {t('footer.description')}
             </p>
           </div>
 
-          <div className="lg:w-1/5 md:w-1/5">
-            <h4 className="text-lg lg:text-xl font-medium text-white mb-2 lg:mb-6">{t('footer.quickLinks')}</h4>
-            <ul className="grid grid-cols-3 md:grid-cols-1 gap-2 sm:gap-4">
+          <div className="md:w-1/5 lg:w-1/5">
+            <h4 className="mb-2 text-lg font-medium text-white lg:mb-6 lg:text-xl">{t('footer.quickLinks')}</h4>
+            <ul className="grid grid-cols-3 gap-2 sm:gap-4 md:grid-cols-1">
               {FOOTER_QUICK_LINKS.map((link) => (
-                <li key={link.labelKey} className="text-sm lg:text-base text-[#FFFFFFCC] hover:text-[#FFFFFF]">
+                <li key={link.labelKey} className="text-sm text-[#FFFFFFCC] hover:text-[#FFFFFF] lg:text-base">
                   <NavLink href={link.href}>{t(link.labelKey)}</NavLink>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="lg:w-1/5 md:w-1/5">
-            <h4 className="text-lg lg:text-xl font-medium text-white mb-2 lg:mb-6">{t('footer.ourServices')}</h4>
-            <ul className="grid grid-cols-2 md:grid-cols-1 gap-2 lg:gap-4">
+          <div className="md:w-1/5 lg:w-1/5">
+            <h4 className="mb-2 text-lg font-medium text-white lg:mb-6 lg:text-xl">{t('footer.ourServices')}</h4>
+            <ul className="grid grid-cols-2 gap-2 md:grid-cols-1 lg:gap-4">
               {services.map((service) => (
-                <li key={service.id} className="text-sm lg:text-base text-[#FFFFFFCC] hover:text-[#FFFFFF]">
+                <li key={service.id} className="text-sm text-[#FFFFFFCC] hover:text-[#FFFFFF] lg:text-base">
                   <NavLink href={`/services/${service.slug}`}>{service.displayTitle}</NavLink>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="lg:w-1/3 md:w-2/4">
-            <h4 className="text-lg lg:text-xl font-medium text-white mb-2 lg:mb-6">{t('footer.newsletter')}</h4>
-            <div className="flex flex-row md:flex-row gap-2 mb-4">
+          <div className="md:w-2/4 lg:w-1/3">
+            <h4 className="mb-2 text-lg font-medium text-white lg:mb-6 lg:text-xl">{t('footer.newsletter')}</h4>
+            <div className="mb-4 flex flex-row gap-2">
               <input
                 type="email"
                 placeholder={t('footer.emailPlaceholder')}
-                className={`w-1/2 flex-grow h-10 lg:h-10 px-4 rounded-lg border border-[#FFFFFF4D] bg-transparent text-white placeholder-[#FFFFFF80] ${isRTL ? 'text-right' : 'text-left'}`}
+                className={`h-10 w-1/2 flex-grow rounded-lg border border-[#FFFFFF4D] bg-transparent px-4 text-white placeholder-[#FFFFFF80] lg:h-10 ${isRTL ? 'text-right' : 'text-left'}`}
               />
-              <button className="cursor-pointer bg-gradient-to-tl from-[#037B76] to-[#AED5C6] hover:bg-gradient-to-br hover:from-[#037B76] hover:to-[#AED5C6] text-white h-10 lg:h-10 px-2 lg:px-6 rounded-lg font-medium">
+              <button className="h-10 cursor-pointer rounded-lg bg-gradient-to-tl from-[#037B76] to-[#AED5C6] px-2 font-medium text-white hover:bg-gradient-to-br hover:from-[#037B76] hover:to-[#AED5C6] lg:h-10 lg:px-6">
                 {t('footer.subscribe')}
               </button>
             </div>
 
-            <h4 className="text-lg lg:text-xl font-medium text-white mb-4">{t('footer.socialMedia')}</h4>
+            <h4 className="mb-4 text-lg font-medium text-white lg:text-xl">{t('footer.socialMedia')}</h4>
             <div className="flex gap-4">
-              <a href='https://www.instagram.com/starhealthmedical/'>
-                <img src={instagram} alt="Instagram" className="h-10 w-10 hover:filter hover:brightness-90 hover:saturate(30) hover:invert-[0.2]" />
+              <a href="https://www.instagram.com/starhealthmedical/">
+                <img src={instagram} alt="Instagram" className="h-10 w-10 hover:brightness-90 hover:saturate(30) hover:invert-[0.2]" />
               </a>
-              <a href='https://www.facebook.com/share/1BjorBuyr1/'>
-                <img src={facebook} alt="Facebook" className="h-10 w-10 hover:filter hover:brightness-90 hover:saturate(30) hover:invert-[0.2]" />
+              <a href="https://www.facebook.com/share/1BjorBuyr1/">
+                <img src={facebook} alt="Facebook" className="h-10 w-10 hover:brightness-90 hover:saturate(30) hover:invert-[0.2]" />
               </a>
-              <a href="https://wa.me/+966505730003"
-                dir='ltr'>
-                <img src={whatsapp} alt="WhatsApp" className="h-10 w-10 hover:filter hover:brightness-90 hover:saturate(30) hover:invert-[0.2]" />
+              <a href="https://wa.me/+966505730003" dir="ltr">
+                <img src={whatsapp} alt="WhatsApp" className="h-10 w-10 hover:brightness-90 hover:saturate(30) hover:invert-[0.2]" />
               </a>
-              <a href='https://www.tiktok.com/@starhealthmedicalcenter'>
-                <img src={linkedin} alt="linkedin" className="h-10 w-10 hover:filter hover:brightness-90 hover:saturate(30) hover:invert-[0.2]" />
+              <a href="https://www.tiktok.com/@starhealthmedicalcenter">
+                <img src={linkedin} alt="linkedin" className="h-10 w-10 hover:brightness-90 hover:saturate(30) hover:invert-[0.2]" />
               </a>
-              <a href='https://www.snapchat.com/@starhealth50/'>
-                <img src={snapchat} alt="snapchat" className="h-10 w-10 hover:filter hover:brightness-90 hover:saturate(30) hover:invert-[0.2]" />
+              <a href="https://www.snapchat.com/@starhealth50/">
+                <img src={snapchat} alt="snapchat" className="h-10 w-10 hover:brightness-90 hover:saturate(30) hover:invert-[0.2]" />
               </a>
-              <a href='https://www.tiktok.com/@starhealthmedicalcenter'>
-                <img src={tiktok} alt="tiktok" className="h-10 w-10 hover:filter hover:brightness-90 hover:saturate(30) hover:invert-[0.2]" />
+              <a href="https://www.tiktok.com/@starhealthmedicalcenter">
+                <img src={tiktok} alt="tiktok" className="h-10 w-10 hover:brightness-90 hover:saturate(30) hover:invert-[0.2]" />
               </a>
             </div>
           </div>
         </div>
+
+        {isNationalDay ? (
+          <div className="nd-footer__edge nd-footer__edge--bottom" aria-hidden />
+        ) : null}
       </div>
       <Bottomnav />
-    </div >
+    </div>
   );
 }
 

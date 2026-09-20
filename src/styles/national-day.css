@@ -458,45 +458,110 @@
 /* Footer National Day treatment */
 .theme-national-day-96 .nd-footer {
   position: relative;
+  overflow: hidden;
   background:
-    radial-gradient(ellipse 50% 80% at 0% 100%, rgba(107, 29, 42, 0.35), transparent 55%),
-    radial-gradient(ellipse 45% 70% at 100% 0%, rgba(0, 108, 53, 0.35), transparent 50%),
-    var(--nd-ink) !important;
+    radial-gradient(ellipse 50% 80% at 0% 100%, rgba(107, 29, 42, 0.28), transparent 55%),
+    radial-gradient(ellipse 45% 70% at 100% 0%, rgba(0, 108, 53, 0.28), transparent 50%),
+    #063330 !important;
 }
 
-.theme-national-day-96 .nd-footer::before {
-  content: '';
-  position: absolute;
-  inset-inline: 0;
-  top: 0;
-  height: 6px;
-  background:
-    repeating-linear-gradient(
-      90deg,
-      var(--nd-green-bright) 0 12px,
-      var(--nd-ink) 12px 16px,
-      var(--nd-burgundy-bright) 16px 28px,
-      var(--nd-ink) 28px 32px
-    );
+.theme-national-day-96 .nd-footer--festive {
+  padding-top: 2.75rem;
 }
 
+.theme-national-day-96 .nd-footer::before,
 .theme-national-day-96 .nd-footer::after {
-  content: 'عزّنا بروحنا · اليوم الوطني ٩٦';
-  position: absolute;
-  inset-inline: 0;
-  bottom: 0.65rem;
-  text-align: center;
-  font-family: 'Saudi', 'Saudi Font', 'Inter', sans-serif;
-  font-size: 0.72rem;
-  letter-spacing: 0.04em;
-  color: rgba(255, 255, 255, 0.45);
-  pointer-events: none;
+  display: none;
 }
 
-@media (max-width: 640px) {
-  .theme-national-day-96 .nd-footer::after {
-    font-size: 0.65rem;
-    bottom: 0.4rem;
+.nd-footer__edge {
+  position: absolute;
+  inset-inline: 0;
+  z-index: 2;
+  height: 12px;
+  background-color: #000;
+  background-image: url('/national-day/pattern-chevron.png');
+  background-size: auto 100%;
+  background-repeat: repeat-x;
+  background-position: center;
+}
+
+.nd-footer__edge--top {
+  top: 0;
+}
+
+.nd-footer__edge--bottom {
+  bottom: 0;
+  transform: scaleY(-1);
+}
+
+.nd-footer__badge {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
+}
+
+.nd-footer__motif {
+  display: inline-block;
+  width: 3.5rem;
+  height: 0.9rem;
+  flex-shrink: 0;
+  background-image: url('/national-day/motif-diamonds.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: drop-shadow(0 0 8px rgba(124, 255, 74, 0.25));
+}
+
+.nd-footer__badge-text {
+  margin: 0;
+  font-family: 'Saudi', 'Saudi Font', Inter, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.92);
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+.nd-footer__badge-sep {
+  margin-inline: 0.45rem;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+@media (min-width: 768px) {
+  .nd-footer__edge {
+    height: 14px;
+  }
+
+  .theme-national-day-96 .nd-footer--festive {
+    padding-top: 3.25rem;
+  }
+
+  .nd-footer__badge {
+    margin-bottom: 2.25rem;
+  }
+
+  .nd-footer__motif {
+    width: 4.5rem;
+    height: 1.05rem;
+  }
+
+  .nd-footer__badge-text {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .nd-footer__motif {
+    width: 2.5rem;
+  }
+
+  .nd-footer__badge-text {
+    font-size: 0.82rem;
   }
 }
 
