@@ -3266,8 +3266,9 @@ html {
 }
 
 .our-work-preview__header {
-  max-width: 36rem;
-  margin-inline: auto;
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
   margin-bottom: 1.75rem;
   text-align: center;
 }
@@ -3291,7 +3292,9 @@ html {
 }
 
 .our-work-preview__lead {
-  margin: 0.75rem auto 0;
+  margin: 0.75rem 0 0;
+  width: 100%;
+  max-width: none;
   font-size: 0.98rem;
   line-height: 1.65;
   color: #58696f;
