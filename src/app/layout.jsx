@@ -45,7 +45,7 @@ export default function RootLayout({ children }) {
         `}</Script>
         {/* End Google Tag Manager */}
       </head>
-      <body>
+      <body className="font-sans antialiased">
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe

@@ -41,7 +41,7 @@ export default function ThankYouContent() {
           <p className="mt-6 font-inter text-xs font-semibold uppercase tracking-[0.2em] text-[#037B76]">
             {t('thankYou.eyebrow')}
           </p>
-          <h1 className="mt-3 font-[Merriweather,Georgia,serif] text-3xl font-semibold leading-tight text-[#002333] md:text-4xl">
+          <h1 className="mt-3 font-inter text-3xl font-semibold leading-tight text-[#002333] md:text-4xl">
             {t('thankYou.title')}
           </h1>
           <p className="mx-auto mt-4 max-w-lg font-inter text-base leading-relaxed text-[#586971] md:text-lg">
