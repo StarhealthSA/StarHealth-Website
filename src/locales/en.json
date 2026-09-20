@@ -29,7 +29,9 @@
     "sloganAlt": "Saudi National Day 96 slogan — عزّنا بروحنا",
     "sloganEn": "Our glory is in our spirit",
     "yearLabel": "National Day 96",
-    "popBalloon": "Celebrate — pop balloon"
+    "popBalloon": "Celebrate — pop balloon",
+    "showBalloons": "Show National Day balloons",
+    "hideBalloons": "Hide National Day balloons"
   },
   "bookingForm": {
     "title": "Book an Appointment",

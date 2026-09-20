@@ -80,6 +80,91 @@
   overflow: hidden;
 }
 
+/* Toggle control — stacked above the WhatsApp FAB */
+.national-day-balloon-toggle {
+  position: fixed;
+  right: 1.1rem;
+  bottom: 5.1rem;
+  z-index: 61;
+  display: inline-flex;
+  height: 3.35rem;
+  width: 3.35rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem;
+  border: 2px solid rgba(0, 108, 53, 0.35);
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow:
+    0 4px 14px rgba(0, 108, 53, 0.18),
+    0 10px 28px rgba(0, 47, 59, 0.1);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.national-day-balloon-toggle img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.national-day-balloon-toggle:hover {
+  border-color: rgba(0, 108, 53, 0.55);
+  box-shadow:
+    0 6px 18px rgba(0, 108, 53, 0.24),
+    0 12px 32px rgba(0, 47, 59, 0.12);
+  transform: translateY(-2px);
+}
+
+.national-day-balloon-toggle:focus-visible {
+  outline: 3px solid rgba(0, 108, 53, 0.45);
+  outline-offset: 3px;
+}
+
+.national-day-balloon-toggle.is-active {
+  border-color: #006c35;
+  background: #f3faf6;
+  box-shadow:
+    0 4px 14px rgba(0, 108, 53, 0.28),
+    0 0 0 3px rgba(0, 108, 53, 0.12);
+}
+
+.theme-national-day-96 .scroll-top-button {
+  bottom: 8.85rem;
+}
+
+@media (max-width: 640px) {
+  .national-day-balloon-toggle {
+    right: 1rem;
+    bottom: 9.55rem;
+    height: 3.15rem;
+    width: 3.15rem;
+  }
+
+  .theme-national-day-96 .scroll-top-button {
+    bottom: 13.3rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .national-day-balloon-toggle {
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .national-day-balloon-toggle:hover {
+    transform: none;
+  }
+}
+
 .national-day-sky-balloon {
   pointer-events: auto;
   position: absolute;
@@ -135,6 +220,33 @@
 
 .national-day-sky-balloon:active .national-day-sky-balloon__bob {
   transform: scale(0.94);
+}
+
+.national-day-sky-balloon--pop {
+  pointer-events: none;
+  z-index: 50;
+}
+
+.national-day-sky-balloon--pop .national-day-sky-balloon__bob {
+  animation: nd-sky-pop 0.45s ease-out forwards;
+}
+
+@keyframes nd-sky-pop {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0deg);
+    filter: brightness(1);
+  }
+  35% {
+    opacity: 1;
+    transform: translateY(-6px) scale(1.12) rotate(4deg);
+    filter: brightness(1.35);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.15) rotate(-8deg);
+    filter: brightness(1.8);
+  }
 }
 
 /* Drift paths across the viewport */

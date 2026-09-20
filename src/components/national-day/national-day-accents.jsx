@@ -1,13 +1,15 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NATIONAL_DAY } from '@/lib/national-day/config';
 
 const FIREWORK_COLORS = ['#006c35', '#ffffff', '#1fa05a', '#a8e6c1', '#f8fff9'];
 const BURST_MS = 1600;
+const RESPAWN_MS = 900;
+const TOGGLE_ICON = '/national-day/balloon-green.png';
 
-/** All provided balloon assets — always shown together. */
+/** All provided balloon assets — always shown together when enabled. */
 const BALLOONS = [
   {
     id: 'green-ar',
@@ -73,10 +75,22 @@ function FireworkBurst({ burst }) {
   );
 }
 
-function BalloonButton({ balloon, label, onBurst }) {
+function BalloonButton({ balloon, label, animKey, onPop }) {
+  const [popBox, setPopBox] = useState(null);
+
+  useEffect(() => {
+    setPopBox(null);
+  }, [animKey]);
+
   const handleClick = (event) => {
+    if (popBox) return;
     const rect = event.currentTarget.getBoundingClientRect();
-    onBurst({
+    setPopBox({
+      left: rect.left,
+      top: rect.top,
+      width: rect.width,
+    });
+    onPop(balloon.id, {
       x: rect.left + rect.width / 2,
       y: rect.top + rect.height / 3,
     });
@@ -85,9 +99,29 @@ function BalloonButton({ balloon, label, onBurst }) {
   return (
     <button
       type="button"
-      className={`national-day-sky-balloon national-day-sky-balloon--${balloon.size} national-day-sky-balloon--drift-${balloon.drift}`}
+      className={[
+        'national-day-sky-balloon',
+        `national-day-sky-balloon--${balloon.size}`,
+        `national-day-sky-balloon--drift-${balloon.drift}`,
+        popBox ? 'national-day-sky-balloon--pop' : '',
+      ]
+        .filter(Boolean)
+        .join(' ')}
+      style={
+        popBox
+          ? {
+              left: popBox.left,
+              top: popBox.top,
+              width: popBox.width,
+              animation: 'none',
+              transform: 'none',
+              position: 'fixed',
+            }
+          : undefined
+      }
       onClick={handleClick}
       aria-label={label}
+      disabled={Boolean(popBox)}
     >
       <span className="national-day-sky-balloon__bob">
         <img src={balloon.src} alt="" draggable={false} />
@@ -96,10 +130,14 @@ function BalloonButton({ balloon, label, onBurst }) {
   );
 }
 
-/** Floating sky balloons — click for celebration flares. */
+/** Floating sky balloons — toggled from a control above WhatsApp. */
 export default function NationalDayAccents() {
   const { t } = useTranslation();
+  const [skyEnabled, setSkyEnabled] = useState(false);
   const [bursts, setBursts] = useState([]);
+  const [animKeys, setAnimKeys] = useState(() =>
+    Object.fromEntries(BALLOONS.map((balloon) => [balloon.id, 0])),
+  );
 
   const spawnBurst = useCallback((point) => {
     const id = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
@@ -109,28 +147,60 @@ export default function NationalDayAccents() {
     }, BURST_MS);
   }, []);
 
+  const handlePop = useCallback(
+    (balloonId, point) => {
+      spawnBurst(point);
+      window.setTimeout(() => {
+        setAnimKeys((current) => ({
+          ...current,
+          [balloonId]: (current[balloonId] || 0) + 1,
+        }));
+      }, RESPAWN_MS);
+    },
+    [spawnBurst],
+  );
+
   if (!NATIONAL_DAY.enabled) return null;
 
   const popLabel = t('nationalDay.popBalloon', {
     defaultValue: 'Celebrate — pop balloon',
   });
+  const toggleLabel = skyEnabled
+    ? t('nationalDay.hideBalloons', { defaultValue: 'Hide National Day balloons' })
+    : t('nationalDay.showBalloons', { defaultValue: 'Show National Day balloons' });
 
   return (
-    <div className="national-day-accents">
-      {BALLOONS.map((balloon) => (
-        <BalloonButton
-          key={balloon.id}
-          balloon={balloon}
-          label={popLabel}
-          onBurst={spawnBurst}
-        />
-      ))}
+    <>
+      <button
+        type="button"
+        className={`national-day-balloon-toggle${skyEnabled ? ' is-active' : ''}`}
+        onClick={() => setSkyEnabled((current) => !current)}
+        aria-pressed={skyEnabled}
+        aria-label={toggleLabel}
+        title={toggleLabel}
+      >
+        <img src={TOGGLE_ICON} alt="" draggable={false} />
+      </button>
 
-      <div className="national-day-fireworks" aria-hidden>
-        {bursts.map((burst) => (
-          <FireworkBurst key={burst.id} burst={burst} />
-        ))}
-      </div>
-    </div>
+      {skyEnabled ? (
+        <div className="national-day-accents">
+          {BALLOONS.map((balloon) => (
+            <BalloonButton
+              key={`${balloon.id}-${animKeys[balloon.id]}`}
+              balloon={balloon}
+              label={popLabel}
+              animKey={animKeys[balloon.id]}
+              onPop={handlePop}
+            />
+          ))}
+
+          <div className="national-day-fireworks" aria-hidden>
+            {bursts.map((burst) => (
+              <FireworkBurst key={burst.id} burst={burst} />
+            ))}
+          </div>
+        </div>
+      ) : null}
+    </>
   );
 }
