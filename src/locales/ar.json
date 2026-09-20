@@ -883,6 +883,8 @@
     "lead": "استعرض حالات طب الأسنان والجلدية المعتمدة — صور وفيديوهات ونتائج قبل وبعد يختارها فريق الرعاية لدينا.",
     "viewAll": "عرض الكل",
     "exploreCategory": "استكشف {{category}}",
+    "exploreSpecialty": "استكشف التخصص",
+    "caseCount": "{{count}} حالات",
     "all": "الكل",
     "categories": "فئات الأعمال",
     "serviceTitle": "أعمالنا نماذج — {{category}}",

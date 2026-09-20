@@ -883,6 +883,8 @@
     "lead": "Browse approved dental and dermatology cases — images, videos, and before-and-after results selected by our care team.",
     "viewAll": "View All",
     "exploreCategory": "Explore {{category}}",
+    "exploreSpecialty": "Explore specialty",
+    "caseCount": "{{count}} cases",
     "all": "All",
     "categories": "Work categories",
     "serviceTitle": "Our Work — {{category}}",
