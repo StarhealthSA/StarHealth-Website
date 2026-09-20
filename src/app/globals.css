@@ -3868,17 +3868,6 @@ html {
   color: #037b76;
 }
 
-.portfolio-page__cases {
-  display: grid;
-  gap: 1.5rem;
-}
-
-@media (min-width: 768px) {
-  .portfolio-page__cases {
-    gap: 2rem;
-  }
-}
-
 .portfolio-page__empty {
   margin: 1rem 0;
   padding: 2.5rem 1.5rem;
@@ -3887,6 +3876,94 @@ html {
   border: 1px dashed rgba(3, 123, 118, 0.25);
   text-align: center;
   color: #58696f;
+}
+
+.portfolio-case-carousel {
+  position: relative;
+}
+
+.portfolio-case-carousel__viewport {
+  overflow: hidden;
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+.portfolio-case-carousel__viewport:active {
+  cursor: grabbing;
+}
+
+.portfolio-case-carousel__track {
+  display: flex;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-case-carousel__track {
+    transition: none;
+  }
+}
+
+.portfolio-case-carousel__slide {
+  flex: 0 0 100%;
+  min-width: 0;
+}
+
+.portfolio-case-carousel__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.15rem;
+}
+
+.portfolio-case-carousel__nav {
+  display: flex;
+  gap: 0.55rem;
+}
+
+.portfolio-case-carousel__arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(3, 123, 118, 0.2);
+  background: #fff;
+  color: #037b76;
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.portfolio-case-carousel__arrow:hover {
+  background: #e8f5f2;
+  border-color: rgba(3, 123, 118, 0.4);
+}
+
+.portfolio-case-carousel__dots {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.portfolio-case-carousel__dots button {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  border: none;
+  background: rgba(3, 123, 118, 0.25);
+  cursor: pointer;
+  padding: 0;
+  transition: width 0.2s ease, background 0.2s ease;
+}
+
+.portfolio-case-carousel__dots button.is-active {
+  width: 1.35rem;
+  background: #037b76;
 }
 
 .portfolio-case {

@@ -2,8 +2,8 @@
 
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import Reveal, { staggerDelay } from '@/components/reveal';
-import PortfolioCase from '@/components/portfolio/portfolio-case';
+import Reveal from '@/components/reveal';
+import PortfolioCaseCarousel from '@/components/portfolio/portfolio-case-carousel';
 import { PORTFOLIO_CATEGORIES } from '@/lib/content/portfolio-categories';
 import { toPublicPortfolioEntry } from '@/lib/content/portfolio-public';
 
@@ -50,18 +50,6 @@ export default function PortfolioListing({ entries = [] }) {
     return ordered;
   }, [items, i18n.language]);
 
-  const flatIndexById = useMemo(() => {
-    const map = new Map();
-    let index = 0;
-    groups.forEach((group) => {
-      group.items.forEach((entry) => {
-        map.set(entry.id, index);
-        index += 1;
-      });
-    });
-    return map;
-  }, [groups]);
-
   return (
     <section className="portfolio-page" aria-labelledby="portfolio-page-title">
       <div className="portfolio-page__hero">
@@ -100,16 +88,9 @@ export default function PortfolioListing({ entries = [] }) {
                   </div>
                 </Reveal>
 
-                <div className="portfolio-page__cases">
-                  {group.items.map((entry) => {
-                    const index = flatIndexById.get(entry.id) ?? 0;
-                    return (
-                      <Reveal key={entry.id} delay={staggerDelay(index, 40)}>
-                        <PortfolioCase entry={entry} reversed={index % 2 === 1} />
-                      </Reveal>
-                    );
-                  })}
-                </div>
+                <Reveal delay={60}>
+                  <PortfolioCaseCarousel items={group.items} />
+                </Reveal>
               </div>
             ))
           )}
