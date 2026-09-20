@@ -94,11 +94,9 @@ export default function PortfolioCase({ entry, reversed = false }) {
           <p className="portfolio-case__category">{entry.categoryLabel}</p>
         ) : null}
         <h3 className="portfolio-case__title">{entry.title}</h3>
-        {(entry.serviceName || entry.doctorName) && (
-          <p className="portfolio-case__meta">
-            {[entry.serviceName, entry.doctorName].filter(Boolean).join(' · ')}
-          </p>
-        )}
+        {entry.serviceName ? (
+          <p className="portfolio-case__meta">{entry.serviceName}</p>
+        ) : null}
         {entry.description ? (
           <p className="portfolio-case__description">{entry.description}</p>
         ) : null}

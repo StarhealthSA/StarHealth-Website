@@ -119,6 +119,8 @@ export default function PortfolioFormShell({ initial, services = [] }) {
       serviceId: form.serviceId,
       serviceSlug,
       serviceName,
+      doctorId: '',
+      doctorName: { en: '', ar: '' },
       mediaType: form.mediaType === 'video' ? 'video' : 'image',
     };
 
@@ -190,11 +192,6 @@ export default function PortfolioFormShell({ initial, services = [] }) {
           ) : null}
         </label>
 
-        <LocalizedInput
-          label="Doctor name"
-          value={form.doctorName}
-          onChange={(v) => updateField('doctorName', v)}
-        />
         <LocalizedInput
           label="Short description"
           value={form.description}

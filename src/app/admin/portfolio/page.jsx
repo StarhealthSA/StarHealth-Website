@@ -54,14 +54,12 @@ export default function AdminPortfolioPage() {
       const titleEn = entry.title?.en?.toLowerCase() || '';
       const titleAr = entry.title?.ar?.toLowerCase() || '';
       const serviceEn = entry.serviceName?.en?.toLowerCase() || '';
-      const doctorEn = entry.doctorName?.en?.toLowerCase() || '';
       const slug = entry.slug?.toLowerCase() || '';
       const category = entry.category?.toLowerCase() || '';
       return (
         titleEn.includes(query)
         || titleAr.includes(query)
         || serviceEn.includes(query)
-        || doctorEn.includes(query)
         || slug.includes(query)
         || category.includes(query)
       );
@@ -135,7 +133,7 @@ export default function AdminPortfolioPage() {
               type="search"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search by title, service, doctor, or category..."
+              placeholder="Search by title, service, or category..."
               className="w-full max-w-md rounded-lg border border-[#d7e6e2] px-3 py-2 text-sm"
             />
             <select

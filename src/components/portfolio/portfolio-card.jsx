@@ -75,11 +75,9 @@ export default function PortfolioCard({ entry, compact = false }) {
           <p className="portfolio-card__category">{entry.categoryLabel}</p>
         ) : null}
         <h3 className="portfolio-card__title">{entry.title}</h3>
-        {(entry.serviceName || entry.doctorName) && (
-          <p className="portfolio-card__meta">
-            {[entry.serviceName, entry.doctorName].filter(Boolean).join(' · ')}
-          </p>
-        )}
+        {entry.serviceName ? (
+          <p className="portfolio-card__meta">{entry.serviceName}</p>
+        ) : null}
         {!compact && entry.description ? (
           <p className="portfolio-card__description">{entry.description}</p>
         ) : null}
