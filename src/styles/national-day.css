@@ -91,6 +91,7 @@
   background: transparent;
   cursor: pointer;
   will-change: transform;
+  opacity: 0.3;
   filter: drop-shadow(0 14px 22px rgba(0, 35, 41, 0.22));
 }
 
@@ -119,7 +120,6 @@
 
 .national-day-sky-balloon--sm {
   width: clamp(3.6rem, 6.5vw, 5.4rem);
-  opacity: 0.96;
 }
 
 .national-day-sky-balloon:hover .national-day-sky-balloon__bob {
