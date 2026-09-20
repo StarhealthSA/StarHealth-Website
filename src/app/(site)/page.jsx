@@ -71,11 +71,11 @@ export default async function HomePage() {
       <Suspense fallback={<HeroSection />}>
         <DynamicHeroSection />
       </Suspense>
-      <WhyChooseStarHealth />
-      <OurWorkPreview entries={featuredPortfolio} settings={ourWorkSettings} />
       <div className="sm:hidden">
         <Mobviewform />
       </div>
+      <WhyChooseStarHealth />
+      <OurWorkPreview entries={featuredPortfolio} settings={ourWorkSettings} />
       <div id="about">
         <WelcomePart />
       </div>
