@@ -12,6 +12,11 @@ import { submitAppointmentBooking } from '@/lib/booking/submit-appointment';
 import { useDoctorBookingSchedule } from '@/hooks/use-doctor-booking-schedule';
 import { useBookingServiceDoctors } from '@/hooks/use-booking-service-doctors';
 import notify from '@/lib/ui/notify';
+import {
+  resetAppointmentBookedTracking,
+  trackAppointmentBooked,
+} from '@/lib/analytics/track-appointment-booked';
+import { redirectToThankYou } from '@/lib/booking/thank-you-access';
 
 export default function AppointmentModal({
   isOpen,
@@ -96,6 +101,7 @@ export default function AppointmentModal({
 
     try {
       setSubmitting(true);
+      resetAppointmentBookedTracking();
       await submitAppointmentBooking({
         doctorId,
         doctorName: selectedDoctor?.displayName || preselectedDoctor,
@@ -107,12 +113,12 @@ export default function AppointmentModal({
         speciality: selectedServiceName,
         requiresSchedule: isConfigured,
       });
-      notify.success(t('doctorModal.bookingSuccess'));
+      trackAppointmentBooked();
       resetForm();
       onClose();
+      redirectToThankYou();
     } catch (error) {
       notify.error(error.message || t('doctorModal.bookingFailed'));
-    } finally {
       setSubmitting(false);
     }
   };

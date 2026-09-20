@@ -219,7 +219,9 @@ export default function DoctorFormShell({
                 <input value={form.profilePhotoUrl || ''} onChange={(e) => update('profilePhotoUrl', e.target.value)} className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2" />
               </label>
               <label className="block">
-                <span className="text-sm font-medium text-[#586971]">Upload Photo</span>
+                <span className="text-sm font-medium text-[#586971]">
+                  Upload Photo <span className="font-normal text-[#8a9aa1]">(800×800 px)</span>
+                </span>
                 <input type="file" accept="image/*" onChange={handlePhotoUpload} disabled={isUploading} className="mt-1 w-full text-sm" />
               </label>
             </div>
@@ -258,7 +260,9 @@ export default function DoctorFormShell({
         {tab === 'media' && (
           <div className="space-y-4">
             <label className="block">
-              <span className="text-sm font-medium text-[#586971]">Upload Gallery Images</span>
+              <span className="text-sm font-medium text-[#586971]">
+                Upload Gallery Images <span className="font-normal text-[#8a9aa1]">(1600×1200 px)</span>
+              </span>
               <input type="file" accept="image/*" multiple onChange={handleGalleryUpload} disabled={isUploading} className="mt-1 w-full text-sm" />
             </label>
             <div className="grid grid-cols-2 gap-3 md:grid-cols-4">

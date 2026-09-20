@@ -58,22 +58,22 @@ export function useBookingServiceDoctors({
     if (!isActive) return;
 
     if (lockSelection && preselectedDoctorId) {
-      setDoctorId(preselectedDoctorId);
-      setServiceId(resolvedServiceId);
+      setDoctorId((current) => (current === preselectedDoctorId ? current : preselectedDoctorId));
+      setServiceId((current) => (current === resolvedServiceId ? current : resolvedServiceId));
       return;
     }
 
     if (preselectedDoctorId) {
-      setDoctorId(preselectedDoctorId);
+      setDoctorId((current) => (current === preselectedDoctorId ? current : preselectedDoctorId));
       if (resolvedServiceId) {
-        setServiceId(resolvedServiceId);
+        setServiceId((current) => (current === resolvedServiceId ? current : resolvedServiceId));
       }
       return;
     }
 
     if (preselectedServiceId) {
-      setServiceId(preselectedServiceId);
-      setDoctorId('');
+      setServiceId((current) => (current === preselectedServiceId ? current : preselectedServiceId));
+      setDoctorId((current) => (current === '' ? current : ''));
     }
   }, [
     isActive,
@@ -87,7 +87,7 @@ export function useBookingServiceDoctors({
   useEffect(() => {
     if (!isActive || lockSelection) return;
     if (!serviceId) {
-      setDoctorId('');
+      setDoctorId((current) => (current === '' ? current : ''));
       return;
     }
     if (

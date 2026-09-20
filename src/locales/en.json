@@ -4,6 +4,8 @@
     "about": "About",
     "services": "Services",
     "doctors": "Doctors",
+    "offers": "Offers",
+    "insurance": "Insurance",
     "blogs": "Blogs",
     "loyalty": "Nujoom",
     "contact": "Contact Us",
@@ -28,6 +30,13 @@
     "selectAge": "Select Age",
     "selectDate": "Select Date",
     "bookNow": "Book Now"
+  },
+  "thankYou": {
+    "eyebrow": "Booking received",
+    "title": "Thank you for booking with Star Health",
+    "description": "Your appointment request has been submitted successfully. Our team will review your details and contact you shortly to confirm.",
+    "backHome": "Back to Home",
+    "contactUs": "Contact Us"
   },
   "welcome": {
     "title": "WELCOME TO STAR HEALTH",
@@ -380,6 +389,8 @@
     "emailPlaceholder": "Your email...",
     "subscribe": "Subscribe",
     "socialMedia": "Social Media",
+    "companyName": "Star Health Medical Company",
+    "designedBy": "Designed and developed by",
     "services": {
       "generalMedicine": "General Medicine",
       "paediatrics": "Family Medicine",
@@ -395,6 +406,8 @@
       "aboutUs": "About Us",
       "services": "Services",
       "doctors": "Doctors",
+      "offers": "Offers",
+      "insurance": "Insurance Partners",
       "blogs" : "Blogs",
       "loyalty": "Nujoom by Star Health",
       "contactUs": "Contact Us",
@@ -451,6 +464,84 @@
     }
   },
   "aboutPage": {
+    "hero": {
+      "eyebrow": "STAR HEALTH MEDICAL CENTRE",
+      "title": "Premium Family Healthcare Designed Around Your Everyday Life",
+      "description": "Star Health Medical Center is a multi-specialty outpatient medical facility in Riyadh, delivering ethical, high-quality, and patient-centric healthcare. We combine clinical excellence, operational efficiency, and compassionate care to provide reliable medical services for individuals, families, and corporate partners.",
+      "description2": "At Star Health, patients are treated with the same care, respect, and responsibility that we extend to our families—reflecting our commitment to care that truly feels personal."
+    },
+    "pillars": {
+      "promise": {
+        "title": "Our Promise",
+        "body": "At Star Health Medical Center, healthcare is delivered with clinical integrity, operational efficiency, and trust—serving patients, insurers, and corporate partners with consistency and care."
+      },
+      "mission": {
+        "title": "Our Mission",
+        "body": "To provide high-quality outpatient healthcare with compassion, professionalism, and respect—delivering consistent and reliable care for every patient, every visit."
+      },
+      "vision": {
+        "title": "Our Vision",
+        "body": "To create better patient health outcomes by delivering high-quality care through trusted medical professionals, ethical practice, and a patient-focused service experience."
+      }
+    },
+    "experience": {
+      "title": "Built for Patient-Centered Care",
+      "description": "Our medical professionals are carefully credentialed and trained to deliver consistent, protocol-driven, and patient-focused care—ensuring clinical reliability and professional coordination with insurers and corporate partners.",
+      "stats": {
+        "s1": {
+          "label": "Patient First",
+          "value": "Care decisions guided by patient well-being"
+        },
+        "s2": {
+          "label": "Clinical Excellence",
+          "value": "Qualified and experienced medical professionals"
+        },
+        "s3": {
+          "label": "Care Model",
+          "value": "Patient-focused"
+        },
+        "s4": {
+          "label": "Insurance Status",
+          "value": "Empaneled with 5 major insurance providers"
+        }
+      }
+    },
+    "careProcess": {
+      "title": "How Care Works at Star Health",
+      "imageAlt": "Star Health care team supporting patients",
+      "steps": {
+        "s1": {
+          "title": "Clinical Services",
+          "body": "General Medicine, Family Medicine, Internal Medicine, Obstetrics & Gynecology, Pediatrics, Dentistry & Orthodontics, Orthopedics, Laboratory, and Preventive Health Checkups & Screenings."
+        },
+        "s2": {
+          "title": "Why Partner with Star Health?",
+          "body": "Reliable outpatient medical services, ethical and transparent clinical practices, efficient patient handling and documentation, and a professional, partnership-oriented approach."
+        },
+        "s3": {
+          "title": "Our Growth & Expansion",
+          "body": "Star Health Medical Center follows a structured and sustainable growth strategy. We plan to establish up to five additional medical centers in Riyadh over the next three years, with a focus on standardized clinical quality, operational efficiency, and a consistent patient experience across all locations."
+        },
+        "s4": {
+          "title": "Our Commitment",
+          "body": "At Star Health Medical Center, healthcare is delivered with clinical integrity, operational efficiency, and trust—serving patients, insurers, and corporate partners with consistency and care."
+        }
+      }
+    },
+    "specialties": {
+      "title": "Core Medical Specialties",
+      "description": "Our multidisciplinary services support preventive care, acute treatment, chronic condition management, and long-term family wellness.",
+      "items": {
+        "generalMedicine": "General Medicine",
+        "familyMedicine": "Family Medicine",
+        "internalMedicine": "Internal Medicine",
+        "obg": "Obstetrics & Gynecology",
+        "dentistryOrthodontics": "Dentistry & Orthodontics",
+        "pediatrics": "Pediatrics",
+        "orthopedics": "Orthopedics",
+        "laboratory": "Laboratory Services"
+      }
+    },
     "faq": {
       "title": "Frequently Asked Questions",
       "questions": {
@@ -478,6 +569,63 @@
     }
   },
   "servicesPage": {
+    "hero": {
+      "eyebrow": "STAR HEALTH SERVICES",
+      "title": "Comprehensive Medical Services for Modern Families in Riyadh",
+      "description": "Explore premium outpatient services designed around speed, safety, and continuity of care. This SEO-focused services page helps users and search engines understand your treatment scope, specialties, and patient outcomes."
+    },
+    "coreServices": {
+      "title": "Our Core Medical Services",
+      "description": "Each service line is structured for clinical depth, practical timelines, and coordinated follow-up across your complete health journey."
+    },
+    "highlights": {
+      "h1": "Specialties Under One Roof",
+      "h2": "Average Appointment Flow",
+      "h3": "Follow-up Response Window",
+      "h4": "Patient-Centered Care Model"
+    },
+    "premiumQuality": {
+      "title": "How We Deliver Premium Service Quality",
+      "description": "From your first appointment to follow-up care, every step is designed for clarity, comfort, and clinical excellence.",
+      "steps": {
+        "s1": {
+          "title": "Book & Triage",
+          "body": "We identify the most relevant specialty and urgency before your visit to improve care speed."
+        },
+        "s2": {
+          "title": "Consult & Diagnose",
+          "body": "Doctor-led clinical review supported by targeted diagnostics when needed."
+        },
+        "s3": {
+          "title": "Treat & Educate",
+          "body": "You receive clear treatment plans, medication guidance, and lifestyle recommendations."
+        },
+        "s4": {
+          "title": "Review & Prevent",
+          "body": "Follow-up milestones help sustain results and prevent avoidable complications."
+        }
+      }
+    },
+    "whyChoose": {
+      "title": "Why Choose Star Health Hospital for Quality Healthcare?",
+      "cards": {
+        "c1": {
+          "title": "Trusted Healthcare Services at Star Health Hospital",
+          "text": "Patients across Saudi Arabia choose Star Health Hospital for reliable medical care, advanced treatments, and patient-focused services. Our hospital provides comprehensive healthcare solutions through experienced doctors, modern medical facilities, and specialized departments designed to support preventive care, diagnosis, treatment, and long-term wellness.",
+          "alt": "Why patients search for Star Health services"
+        },
+        "c2": {
+          "title": "Comprehensive Family Healthcare Under One Roof",
+          "text": "Star Health Hospital is committed to making healthcare simple and accessible for families across Saudi Arabia. From routine health check-ups and pediatric care to specialist consultations and chronic disease management, our coordinated healthcare approach ensures every patient receives personalized attention and continuous medical support.",
+          "alt": "Designed for family healthcare journeys"
+        },
+        "c3": {
+          "title": "Advanced Medical Care with Patient-Centered Excellence",
+          "text": "At Star Health Hospital Saudi Arabia, we combine clinical expertise, advanced technology, and compassionate care to deliver high-quality healthcare experiences. Our dedicated medical team focuses on accurate diagnosis, effective treatment plans, and clear communication to help patients make confident decisions about their health.",
+          "alt": "Clinical quality with operational clarity at Star Health"
+        }
+      }
+    },
     "faq": {
       "title": "Frequently Asked Questions",
       "questions": {
@@ -710,6 +858,39 @@
     "publishedOn": "Published on",
     "publishedBy": "Published by",
     "author": "Author"
+  },
+  "offersPage": {
+    "eyebrow": "Current promotions",
+    "title": "Special Offers",
+    "description": "Explore limited-time treatment packages and savings available at Star Health Medical Centre.",
+    "empty": "No active offers right now. Please check back soon.",
+    "featured": "Featured",
+    "validUntil": "Valid until",
+    "bookAppointment": "Book Appointment",
+    "modal": {
+      "title": "Book an Offer Appointment",
+      "description": "Choose an offer and share your details. We will contact you to confirm your appointment.",
+      "callbackNote": "You will get a call back for confirming the appointment.",
+      "offer": "Available offer",
+      "selectOffer": "Select an offer",
+      "fullName": "Full name",
+      "enterFullName": "Enter your full name",
+      "phoneNumber": "Phone number",
+      "enterPhone": "Enter phone number",
+      "age": "Age group",
+      "selectAge": "Select age group",
+      "submit": "Book now",
+      "submitting": "Booking...",
+      "bookingFailed": "Failed to submit your request. Please try again."
+    }
+  },
+  "insurancePage": {
+    "hero": {
+      "title": "Our partners in making care accessible",
+      "description": "We work closely with trusted insurers to simplify claims and reduce cost barriers."
+    },
+    "partnersTitle": "Trusted insurance partnerships",
+    "empty": "Insurance partners will appear here soon. Please check back later."
   },
   "homePrivilegeBanner": {
     "eyebrow": "Nujoom by Star Health ⭐⭐⭐⭐⭐",

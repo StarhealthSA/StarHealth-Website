@@ -776,20 +776,10 @@ html {
     0 18px 40px rgba(3, 123, 118, 0.13);
 }
 
-.testimonial-card--rtl {
-  -webkit-transform: scaleX(-1);
-  transform: scaleX(-1);
-}
-
-.testimonial-card--rtl:hover {
-  -webkit-transform: scaleX(-1) translateY(-4px);
-  transform: scaleX(-1) translateY(-4px);
-}
-
 .testimonial-card__quote-mark {
   position: absolute;
   top: 0.35rem;
-  right: 1rem;
+  inset-inline-end: 1rem;
   font-size: 4.5rem;
   line-height: 1;
   font-family: Georgia, 'Times New Roman', serif;
@@ -1440,12 +1430,38 @@ html {
 }
 
 /* Service landing — hero variants */
-.service-landing-hero--gradient {
-  background: linear-gradient(135deg, #025e5a 0%, #037B76 45%, #AED5C6 100%);
+.service-landing-hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* Fill remaining viewport below top utility bar + main nav */
+  min-height: calc(100dvh - 6.25rem);
 }
 
-.service-landing-hero--video {
-  min-height: 0;
+@media (min-width: 1024px) {
+  .service-landing-hero {
+    min-height: calc(100dvh - 8.5rem);
+  }
+}
+
+.service-landing-hero > .service-detail-container {
+  box-sizing: border-box;
+  display: flex;
+  flex: 1;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media (min-width: 1024px) {
+  .service-landing-hero .service-landing-visual-image {
+    aspect-ratio: 4 / 3;
+    max-height: min(58vh, 520px);
+  }
+}
+
+.service-landing-hero--gradient {
+  background: linear-gradient(135deg, #025e5a 0%, #037B76 45%, #AED5C6 100%);
 }
 
 .service-landing-hero__overlay {
@@ -2402,4 +2418,529 @@ html {
 
 [data-admin-theme="dark"] .star-health-alert__text {
   color: #b8c5cc !important;
+}
+
+/* —— Offers coupon cards —— */
+.offers-coupon-page {
+  padding: 3.5rem 1.25rem 4.75rem;
+  background: linear-gradient(180deg, #f4faf8 0%, #ffffff 45%, #fafaf9 100%);
+}
+
+@media (min-width: 768px) {
+  .offers-coupon-page {
+    padding: 4.5rem 3rem 5.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .offers-coupon-page {
+    padding-inline: 6.25rem;
+  }
+}
+
+.offers-coupon-page__intro {
+  margin-inline: auto;
+  max-width: 40rem;
+  text-align: center;
+}
+
+.offers-coupon-page__eyebrow {
+  margin: 0;
+  font-family: Inter, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #037b76;
+}
+
+.offers-coupon-page__title {
+  margin: 0.65rem 0 0;
+  font-family: Inter, sans-serif;
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  font-weight: 600;
+  color: #002333;
+}
+
+.offers-coupon-page__lead {
+  margin: 0.85rem auto 0;
+  max-width: 34rem;
+  font-family: Inter, sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #687276;
+}
+
+.offers-coupon-page__empty {
+  margin: 2.75rem auto 0;
+  max-width: 28rem;
+  border: 1px solid #e9e7e6;
+  border-radius: 1rem;
+  background: #ffffff;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  font-family: Inter, sans-serif;
+  color: #687276;
+}
+
+.offers-coupon-page__list {
+  display: grid;
+  gap: 1.25rem;
+  margin: 2.5rem auto 0;
+  max-width: 64rem;
+  align-items: stretch;
+}
+
+@media (min-width: 980px) {
+  .offers-coupon-page__list {
+    max-width: 80rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+.offer-coupon {
+  position: relative;
+  display: flex;
+  height: 100%;
+  min-height: 16.5rem;
+  overflow: hidden;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, #0a9a93 0%, #037b76 42%, #042f2e 100%);
+  box-shadow: 0 14px 32px rgba(3, 123, 118, 0.18);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.offer-coupon:hover {
+  box-shadow: 0 20px 42px rgba(3, 123, 118, 0.24);
+  transform: translateY(-2px);
+}
+
+.offer-coupon--featured {
+  background: linear-gradient(135deg, #12b5ac 0%, #037b76 38%, #021c1b 100%);
+}
+
+.offer-coupon__bg {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: center right;
+  opacity: 0.7;
+}
+
+.offer-coupon__shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(4, 47, 46, 0.72) 0%,
+    rgba(3, 123, 118, 0.42) 32%,
+    rgba(4, 47, 46, 0.06) 58%,
+    transparent 78%
+  );
+  pointer-events: none;
+}
+
+[dir='rtl'] .offer-coupon__bg {
+  object-position: center left;
+}
+
+[dir='rtl'] .offer-coupon__shade {
+  background: linear-gradient(
+    to left,
+    rgba(4, 47, 46, 0.72) 0%,
+    rgba(3, 123, 118, 0.42) 32%,
+    rgba(4, 47, 46, 0.06) 58%,
+    transparent 78%
+  );
+}
+
+.offer-coupon__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.45rem;
+  padding: 1.65rem 1.7rem 1.7rem;
+  max-width: 100%;
+}
+
+.offer-coupon__eyebrow {
+  margin: 0;
+  font-family: Inter, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.offer-coupon__eyebrow--featured {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.95);
+  padding: 0.28rem 0.7rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #037b76;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.offer-coupon__headline {
+  margin: 0;
+  font-family: Inter, sans-serif;
+  font-size: clamp(1.7rem, 3vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.offer-coupon__name {
+  margin: 0.15rem 0 0;
+  font-family: Inter, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.offer-coupon__description {
+  margin: 0.15rem 0 0;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  max-width: 70%;
+  font-family: Inter, sans-serif;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.offer-coupon__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.85rem;
+  margin-top: 0.35rem;
+}
+
+.offer-coupon__discount {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  background: #037b76;
+  padding: 0.2rem 0.5rem;
+  font-family: Inter, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.offer-coupon__validity {
+  font-family: Inter, sans-serif;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.offer-coupon__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem 1.1rem;
+  margin-top: auto;
+  padding-top: 0.85rem;
+}
+
+.offer-coupon__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 9999px;
+  background: #ffffff;
+  padding: 0.55rem 1.15rem;
+  font-family: Inter, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #037b76;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.offer-coupon__cta:hover {
+  background: #f3faf8;
+  color: #026862;
+}
+
+.offer-coupon__price-line {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.65rem;
+  border-radius: 0.85rem;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  padding: 0.45rem 0.8rem;
+  font-family: Inter, sans-serif;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.offer-coupon__price {
+  font-size: 1.45rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
+}
+
+.offer-coupon__cross {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: line-through;
+}
+
+@media (max-width: 520px) {
+  .offer-coupon {
+    min-height: 15rem;
+  }
+
+  .offer-coupon__content {
+    max-width: 100%;
+    padding: 1.4rem 1.25rem 1.45rem;
+  }
+}
+
+
+/* —— Insurance partners page —— */
+.insurance-page {
+  background: #ffffff;
+}
+
+.insurance-page__hero {
+  position: relative;
+  min-height: clamp(22rem, 52vw, 36rem);
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+.insurance-page__hero-media {
+  position: absolute;
+  inset: 0;
+}
+
+.insurance-page__hero-image {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+}
+
+.insurance-page__hero-fallback {
+  height: 100%;
+  width: 100%;
+  background:
+    radial-gradient(ellipse 70% 80% at 70% 40%, rgba(174, 213, 198, 0.35), transparent 55%),
+    linear-gradient(135deg, #037b76 0%, #063330 55%, #002333 100%);
+}
+
+.insurance-page__hero-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(0, 35, 51, 0.72) 0%,
+    rgba(0, 35, 51, 0.45) 42%,
+    rgba(0, 35, 51, 0.12) 72%,
+    transparent 100%
+  );
+}
+
+[dir='rtl'] .insurance-page__hero-shade {
+  background: linear-gradient(
+    to left,
+    rgba(0, 35, 51, 0.72) 0%,
+    rgba(0, 35, 51, 0.45) 42%,
+    rgba(0, 35, 51, 0.12) 72%,
+    transparent 100%
+  );
+}
+
+.insurance-page__hero-copy {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 42rem;
+  padding: 2.5rem 1.25rem 2.75rem;
+}
+
+@media (min-width: 768px) {
+  .insurance-page__hero-copy {
+    padding: 3rem 3rem 3.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .insurance-page__hero-copy {
+    padding-inline: 6.25rem;
+  }
+}
+
+.insurance-page__hero-title {
+  margin: 0;
+  font-family: Inter, sans-serif;
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  font-weight: 600;
+  line-height: 1.2;
+  color: #ffffff;
+}
+
+.insurance-page__hero-lead {
+  margin: 0.85rem 0 0;
+  max-width: 32rem;
+  font-family: Inter, sans-serif;
+  font-size: 1.02rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.insurance-page__partners {
+  padding: 3rem 1.25rem 4.5rem;
+}
+
+@media (min-width: 768px) {
+  .insurance-page__partners {
+    padding: 3.75rem 3rem 5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .insurance-page__partners {
+    padding-inline: 6.25rem;
+  }
+}
+
+.insurance-page__partners-title {
+  margin: 0 auto;
+  max-width: 40rem;
+  text-align: center;
+  font-family: Inter, sans-serif;
+  font-size: clamp(1.5rem, 2.8vw, 2rem);
+  font-weight: 600;
+  color: #002333;
+}
+
+.insurance-page__empty {
+  margin: 2.5rem auto 0;
+  max-width: 28rem;
+  border: 1px solid #e9e7e6;
+  border-radius: 1rem;
+  background: #f8fbfa;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  font-family: Inter, sans-serif;
+  color: #687276;
+}
+
+.insurance-page__grid {
+  display: grid;
+  gap: 1rem;
+  margin: 2.25rem auto 0;
+  max-width: 74rem;
+  align-items: stretch;
+}
+
+@media (min-width: 560px) {
+  .insurance-page__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 860px) {
+  .insurance-page__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.15rem;
+  }
+}
+
+@media (min-width: 1100px) {
+  .insurance-page__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+}
+
+.insurance-partner-card {
+  display: flex;
+  height: 100%;
+  min-height: 11.5rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  border: 1px solid #eceae8;
+  border-radius: 0.85rem;
+  background: #ffffff;
+  padding: 1.5rem 1.25rem;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(0, 35, 51, 0.04);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.insurance-partner-card:hover {
+  border-color: rgba(3, 123, 118, 0.22);
+  box-shadow: 0 14px 32px rgba(3, 123, 118, 0.1);
+  transform: translateY(-2px);
+}
+
+.insurance-partner-card__logo-wrap {
+  display: flex;
+  height: 4.5rem;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.insurance-partner-card__logo {
+  max-height: 4.25rem;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.insurance-partner-card__logo-fallback {
+  display: inline-flex;
+  height: 3.5rem;
+  width: 3.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: #e8f5f2;
+  font-family: Inter, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #037b76;
+}
+
+.insurance-partner-card__name {
+  margin: 0;
+  font-family: Inter, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: #002333;
 }

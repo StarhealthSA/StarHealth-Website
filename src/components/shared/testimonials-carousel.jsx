@@ -19,6 +19,7 @@ export default function TestimonialsCarousel({ items = [], isRTL = false }) {
 
   const [position, setPosition] = useState(0);
   const [animate, setAnimate] = useState(true);
+  const [stepPx, setStepPx] = useState(0);
 
   const itemCount = items.length;
   const hasMultiple = itemCount > 1;
@@ -39,12 +40,19 @@ export default function TestimonialsCarousel({ items = [], isRTL = false }) {
     if (!firstSlide || !track) return;
 
     const secondSlide = track.children[1];
+    let nextStep = firstSlide.getBoundingClientRect().width;
+
     if (secondSlide) {
-      stepPxRef.current = secondSlide.offsetLeft - firstSlide.offsetLeft;
-      return;
+      // Use absolute distance so RTL document direction cannot invert the step.
+      nextStep = Math.abs(
+        secondSlide.getBoundingClientRect().left - firstSlide.getBoundingClientRect().left
+      );
     }
 
-    stepPxRef.current = firstSlide.getBoundingClientRect().width;
+    if (!nextStep) return;
+
+    stepPxRef.current = nextStep;
+    setStepPx(nextStep);
   }, []);
 
   useEffect(() => {
@@ -53,11 +61,12 @@ export default function TestimonialsCarousel({ items = [], isRTL = false }) {
     measureStep();
 
     const frame = requestAnimationFrame(() => {
+      measureStep();
       setAnimate(true);
     });
 
     return () => cancelAnimationFrame(frame);
-  }, [items, measureStep]);
+  }, [items, isRTL, measureStep]);
 
   useEffect(() => {
     measureStep();
@@ -75,7 +84,7 @@ export default function TestimonialsCarousel({ items = [], isRTL = false }) {
       observer.disconnect();
       window.removeEventListener('resize', measureStep);
     };
-  }, [measureStep, loopedItems.length]);
+  }, [measureStep, loopedItems.length, isRTL]);
 
   const handleTransitionEnd = useCallback((event) => {
     if (event.target !== trackRef.current || event.propertyName !== 'transform') return;
@@ -133,8 +142,8 @@ export default function TestimonialsCarousel({ items = [], isRTL = false }) {
 
   if (!itemCount) return null;
 
-  const offset = stepPxRef.current * translateIndex;
-  const translateX = isRTL ? offset : -offset;
+  // Keep transform math in LTR coordinates (viewport is forced dir="ltr").
+  const translateX = -(stepPx || stepPxRef.current) * translateIndex;
 
   return (
     <div
@@ -146,7 +155,8 @@ export default function TestimonialsCarousel({ items = [], isRTL = false }) {
         isHoveredRef.current = false;
       }}
     >
-      <div ref={viewportRef} className="testimonials-carousel__viewport">
+      {/* Force LTR geometry so RTL page direction does not break slide offsets. */}
+      <div ref={viewportRef} className="testimonials-carousel__viewport" dir="ltr">
         <div
           ref={trackRef}
           className="testimonials-carousel__track"
@@ -158,27 +168,27 @@ export default function TestimonialsCarousel({ items = [], isRTL = false }) {
         >
           {loopedItems.map((item, index) => (
             <div key={`${item.name}-${index}`} className="testimonials-carousel__slide">
-              <TestimonialCard name={item.name} quote={item.quote} />
+              <TestimonialCard name={item.name} quote={item.quote} isRTL={isRTL} />
             </div>
           ))}
         </div>
       </div>
 
       {hasMultiple && (
-        <div className="testimonials-carousel__nav">
+        <div className="testimonials-carousel__nav" dir="ltr">
           <button
             type="button"
             className="testimonials-carousel__arrow"
-            onClick={goPrev}
-            aria-label={t('testimonials.previous')}
+            onClick={isRTL ? goNext : goPrev}
+            aria-label={isRTL ? t('testimonials.next') : t('testimonials.previous')}
           >
             ‹
           </button>
           <button
             type="button"
             className="testimonials-carousel__arrow"
-            onClick={goNext}
-            aria-label={t('testimonials.next')}
+            onClick={isRTL ? goPrev : goNext}
+            aria-label={isRTL ? t('testimonials.previous') : t('testimonials.next')}
           >
             ›
           </button>

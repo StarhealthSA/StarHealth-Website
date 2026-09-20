@@ -153,7 +153,9 @@ export default function DoctorReelsEditor({ reels = [], onChange, disabled = fal
               />
             </label>
             <label className="block">
-              <span className="text-sm font-medium text-[#586971]">Thumbnail (optional)</span>
+              <span className="text-sm font-medium text-[#586971]">
+                Thumbnail (optional) <span className="font-normal text-[#8a9aa1]">(1080×1920 px)</span>
+              </span>
               <input
                 type="file"
                 accept="image/*"
