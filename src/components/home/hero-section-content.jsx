@@ -18,7 +18,7 @@ export default function HeroSectionContent({ homeSettings = null }) {
         <p className="mb-4 w-full font-nudica text-[32px] font-medium leading-[40px] text-white lg:mb-[19px] lg:w-3/4 lg:text-[64px] lg:leading-[72px]">
           {title}
         </p>
-        <p className="mb-5 w-full text-[16px] font-normal leading-[24px] text-white lg:mb-6 lg:w-3/4 lg:text-[23px] lg:leading-[28px]">
+        <p className="mb-5 w-full text-justify text-base font-normal leading-6 text-white lg:mb-6 lg:w-3/4">
           {subtitle}
         </p>
         <NavLink href="/services">
