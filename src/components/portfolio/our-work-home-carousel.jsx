@@ -37,7 +37,7 @@ function TeaserSlide({ entry, inert = false }) {
       className={`our-work-home-carousel__tile${hasPair ? ' our-work-home-carousel__tile--pair' : ''}`}
       aria-label={
         hasPair
-          ? `${label} — ${t('portfolioPage.before')} / ${t('portfolioPage.after')}`
+          ? `${label}: ${t('portfolioPage.before')} / ${t('portfolioPage.after')}`
           : label
       }
       draggable={false}

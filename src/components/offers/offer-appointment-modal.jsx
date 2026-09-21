@@ -148,7 +148,7 @@ export default function OfferAppointmentModal({
                   {offerOptions.map((offer) => (
                     <option key={offer.id} value={offer.id}>
                       {offer.treatment || offer.name}
-                      {offer.offerPriceLabel ? ` — ${offer.offerPriceLabel}` : ''}
+                      {offer.offerPriceLabel ? `: ${offer.offerPriceLabel}` : ''}
                     </option>
                   ))}
                 </select>
