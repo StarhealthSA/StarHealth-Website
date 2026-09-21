@@ -38,7 +38,7 @@ function WelcomePart() {
         </p>
 
         {isNationalDay ? (
-          <p className="welcome-nd__slogan mt-5 font-inter text-sm font-medium text-[#006c35] md:text-base" lang="ar">
+          <p className="welcome-nd__slogan nd-slogan mt-5 text-sm font-medium text-[#006c35] md:text-base" lang="ar">
             {NATIONAL_DAY.sloganAr}
             <span className="mx-2 text-[#AFAEAD]">·</span>
             {t('nationalDay.yearLabel')}
