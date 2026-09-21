@@ -22,12 +22,12 @@
   isolation: isolate;
 }
 
-/* Slogan banner — middle-up strip */
+/* Slogan banner — middle-up strip (matches top header) */
 .national-day-banner {
   position: relative;
   z-index: 35;
   width: 100%;
-  background: #000;
+  background: linear-gradient(90deg, var(--nd-green) 0%, var(--nd-ink) 55%, var(--nd-burgundy) 100%);
   box-shadow: 0 6px 18px rgba(0, 35, 41, 0.18);
 }
 
