@@ -11,7 +11,7 @@ function WhatNext() {
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <div className="nd-bg nd-bg--gold w-full bg-[#F6F4F3] pt-10 pb-10">
+    <div className="w-full bg-[#F6F4F3] pt-10 pb-10">
       <Reveal className="mx-auto flex flex-col items-center justify-center px-[10px] lg:px-[20px]">
         <h1 className="text-[#002333] text-[24px] lg:text-[44px] font-inter font-medium leading-[32px] pt-[15px] lg:pt-[25px]">
           {t('whatNextSection.title')}

@@ -36,7 +36,7 @@ export default function OurWorkPreview({ entries = [], settings = null }) {
   if (!items.length) return null;
 
   return (
-    <section className="our-work-preview nd-bg nd-bg--green" aria-labelledby="our-work-preview-title">
+    <section className="our-work-preview" aria-labelledby="our-work-preview-title">
       <div className="our-work-preview__shell">
         <div className={`our-work-preview__layout${isRTL ? ' our-work-preview__layout--rtl' : ''}`}>
           <Reveal className="our-work-preview__carousel-col">

@@ -24,7 +24,7 @@ function Testimonials() {
   }));
 
   return (
-    <section className="testimonials-section nd-bg nd-bg--gold">
+    <section className="testimonials-section">
       <div className="testimonials-section__glow" aria-hidden />
 
       <div className="relative z-[1] mx-auto max-w-3xl px-6 text-center lg:px-8">

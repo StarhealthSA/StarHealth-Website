@@ -13,7 +13,7 @@ function Safety() {
     const isRTL = i18n.language === 'ar';
 
     return (
-        <div className={`nd-bg nd-bg--safety flex w-full flex-col bg-white pt-[60px] md:items-center lg:py-0 lg:pt-[80px] lg:pr-[120px] ${isRTL ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+        <div className={`flex w-full flex-col bg-white pt-[60px] md:items-center lg:py-0 lg:pt-[80px] lg:pr-[120px] ${isRTL ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
             <Reveal className='flex w-full flex-col justify-start px-[30px] lg:px-[50px] lg:pb-[50px]'>
                 <h2 className='text-[24px] lg:text-[44px] font-medium leading-[32px] lg:leading-[1.2] text-[#002333] mb-3 md:mb-2 lg:mb-4 font-inter'>
                     {t('safety.title')}

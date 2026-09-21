@@ -12,7 +12,7 @@ function FaqSection() {
   const faqs = getFaqItemsFromTranslations(t, 'contactPage.faq');
 
   return (
-    <div className="nd-bg nd-bg--green bg-white pb-[40px] lg:py-[80px]">
+    <div className="bg-white pb-[40px] lg:py-[80px]">
       <div className="mx-[30px] lg:mx-[120px]">
         <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:gap-12">
           <Reveal className={`${isRTL ? 'pl-0 lg:pl-8' : 'pr-0 lg:pr-8'}`}>

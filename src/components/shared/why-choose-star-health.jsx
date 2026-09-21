@@ -51,7 +51,7 @@ export default function WhyChooseStarHealth({ className = '' }) {
 
   return (
     <section
-      className={`why-choose-star-health nd-bg nd-bg--green ${className}`.trim()}
+      className={`why-choose-star-health ${className}`.trim()}
       aria-labelledby="why-choose-star-health-title"
     >
       <div className="why-choose-star-health__glow why-choose-star-health__glow--a" aria-hidden />
