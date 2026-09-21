@@ -18,7 +18,7 @@ export default function FaqPageSection({
   if (!items.length) return null;
 
   return (
-    <section className={className}>
+    <section className={`nd-bg nd-bg--green ${className}`.trim()}>
       <div className={`mx-auto w-full ${maxWidthClassName}`}>
         <Reveal>
           <FaqSectionTitle className="text-center">{t(titleKey)}</FaqSectionTitle>

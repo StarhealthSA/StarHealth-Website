@@ -16,7 +16,7 @@ const SpecializedServices = () => {
   const displayedServices = showAll ? services : services.slice(0, 4);
 
   return (
-    <div className="bg-[#E9E7E6] flex flex-col justify-start items-center px-[30px] md:px-[10px] py-[50px] lg:py-[80px]">
+    <div className="nd-bg nd-bg--green bg-[#E9E7E6] flex flex-col justify-start items-center px-[30px] md:px-[10px] py-[50px] lg:py-[80px]">
       <Reveal className="flex flex-col items-center">
         <h1 className="w-full text-center font-inter text-[24px] font-medium leading-[32px] text-[#002333] lg:text-[44px] lg:leading-[56px]">
           {t('services.title')}

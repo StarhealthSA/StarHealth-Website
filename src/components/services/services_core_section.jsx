@@ -8,7 +8,7 @@ export default function ServicesCoreSection() {
   const { t } = useTranslation();
 
   return (
-    <section className="px-[20px] md:px-[30px] lg:px-[120px] pb-14 lg:pb-20">
+    <section className="nd-bg nd-bg--blue px-[20px] py-14 md:px-[30px] lg:px-[120px] lg:py-20">
       <Reveal>
         <h2 className="text-[28px] font-semibold text-[#002333]">
           {t('servicesPage.coreServices.title')}

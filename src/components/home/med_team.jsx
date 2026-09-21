@@ -18,7 +18,7 @@ function medTeam() {
     : localizedDoctors.slice(0, 4);
 
   return (
-    <div className="bg-[#FFFFFF] flex flex-col justify-start items-center py-[60px] lg:py-[80px]">
+    <div className="nd-bg nd-bg--blue flex flex-col items-center justify-start bg-[#FFFFFF] py-[60px] lg:py-[80px]">
       <Reveal className="flex flex-col items-center">
         <h1 className="font-inter text-[24px] font-medium leading-[32px] text-[#002333] lg:text-[44px] lg:leading-[54px]">{t('medicalTeam.title')}</h1>
         <p className="mb-0 mt-4 w-full px-[30px] text-center font-inter text-[14px] font-normal leading-[22px] text-[#687276] sm:mt-[10px] md:mb-0 lg:w-3/5 lg:text-[16px] lg:leading-[24px]">
