@@ -169,74 +169,296 @@
 }
 
 .national-day-sky-balloon {
-  pointer-events: none;
+  pointer-events: auto;
   position: absolute;
-  display: block;
-  opacity: 0.45;
+  left: 0;
+  top: 0;
+  display: inline-flex;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  will-change: transform;
+  opacity: 0.3;
   filter: drop-shadow(0 14px 22px rgba(0, 35, 41, 0.22));
+}
+
+.national-day-sky-balloon__bob {
+  display: block;
+  animation: nd-sky-bob 4.8s ease-in-out infinite;
+  transform-origin: 50% 80%;
 }
 
 .national-day-sky-balloon img {
   width: 100%;
   height: auto;
   display: block;
+  pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
 }
 
 .national-day-sky-balloon--lg {
-  width: clamp(6.5rem, 13vw, 9.5rem);
+  width: clamp(5.6rem, 11vw, 8.5rem);
 }
 
 .national-day-sky-balloon--md {
-  width: clamp(5.2rem, 10vw, 7.5rem);
+  width: clamp(4.6rem, 8.5vw, 7rem);
 }
 
-/* Full balloons on left / right, vertically centered */
-.national-day-sky-balloon--left {
-  left: clamp(0.5rem, 1.5vw, 1.25rem);
+.national-day-sky-balloon--sm {
+  width: clamp(3.6rem, 6.5vw, 5.4rem);
 }
 
-.national-day-sky-balloon--right {
-  right: clamp(0.5rem, 1.5vw, 1.25rem);
+.national-day-sky-balloon:hover .national-day-sky-balloon__bob {
+  animation-play-state: paused;
+  transform: scale(1.06);
 }
 
-.national-day-sky-balloon--mid {
-  top: 50%;
-  transform: translateY(-50%);
+.national-day-sky-balloon:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 6px;
+  border-radius: 999px;
 }
 
-.national-day-sky-balloon--upper {
-  top: clamp(6.5rem, 18vh, 10rem);
+.national-day-sky-balloon:active .national-day-sky-balloon__bob {
+  transform: scale(0.94);
 }
 
-.national-day-sky-balloon--lower {
-  bottom: clamp(5.5rem, 16vh, 9rem);
+/* Drift paths across the viewport */
+.national-day-sky-balloon--drift-1 {
+  animation: nd-sky-drift-1 42s linear infinite;
+}
+
+.national-day-sky-balloon--drift-2 {
+  animation: nd-sky-drift-2 48s linear infinite;
+  animation-delay: -8s;
+}
+
+.national-day-sky-balloon--drift-3 {
+  animation: nd-sky-drift-3 36s linear infinite;
+  animation-delay: -14s;
+}
+
+.national-day-sky-balloon--drift-4 {
+  animation: nd-sky-drift-4 52s linear infinite;
+  animation-delay: -20s;
+}
+
+.national-day-sky-balloon--drift-5 {
+  animation: nd-sky-drift-5 40s linear infinite;
+  animation-delay: -6s;
+}
+
+@keyframes nd-sky-bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(-14px) rotate(2.5deg);
+  }
+}
+
+@keyframes nd-sky-drift-1 {
+  0% {
+    transform: translate(-12vw, 72vh) rotate(-3deg);
+  }
+  25% {
+    transform: translate(28vw, 38vh) rotate(2deg);
+  }
+  50% {
+    transform: translate(58vw, 18vh) rotate(-1deg);
+  }
+  75% {
+    transform: translate(86vw, 42vh) rotate(3deg);
+  }
+  100% {
+    transform: translate(112vw, 8vh) rotate(-2deg);
+  }
+}
+
+@keyframes nd-sky-drift-2 {
+  0% {
+    transform: translate(110vw, 58vh) rotate(2deg);
+  }
+  30% {
+    transform: translate(70vw, 24vh) rotate(-3deg);
+  }
+  55% {
+    transform: translate(36vw, 48vh) rotate(1deg);
+  }
+  80% {
+    transform: translate(12vw, 20vh) rotate(-2deg);
+  }
+  100% {
+    transform: translate(-14vw, 64vh) rotate(2deg);
+  }
+}
+
+@keyframes nd-sky-drift-3 {
+  0% {
+    transform: translate(8vw, -12vh) rotate(1deg);
+  }
+  35% {
+    transform: translate(42vw, 28vh) rotate(-2deg);
+  }
+  65% {
+    transform: translate(78vw, 12vh) rotate(3deg);
+  }
+  100% {
+    transform: translate(108vw, 56vh) rotate(-1deg);
+  }
+}
+
+@keyframes nd-sky-drift-4 {
+  0% {
+    transform: translate(-10vw, 28vh) rotate(-2deg);
+  }
+  20% {
+    transform: translate(18vw, 62vh) rotate(2deg);
+  }
+  45% {
+    transform: translate(48vw, 34vh) rotate(-3deg);
+  }
+  70% {
+    transform: translate(76vw, 68vh) rotate(1deg);
+  }
+  100% {
+    transform: translate(112vw, 30vh) rotate(-2deg);
+  }
+}
+
+@keyframes nd-sky-drift-5 {
+  0% {
+    transform: translate(96vw, 8vh) rotate(2deg);
+  }
+  40% {
+    transform: translate(52vw, 44vh) rotate(-2deg);
+  }
+  70% {
+    transform: translate(22vw, 16vh) rotate(3deg);
+  }
+  100% {
+    transform: translate(-12vw, 50vh) rotate(-1deg);
+  }
 }
 
 @media (max-width: 767px) {
   .national-day-sky-balloon--lg {
-    width: 4.4rem;
+    width: 4.2rem;
   }
 
-  .national-day-sky-balloon--md {
-    width: 3.6rem;
+  .national-day-sky-balloon--md,
+  .national-day-sky-balloon--sm {
+    width: 3.4rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .national-day-sky-balloon,
+  .national-day-sky-balloon__bob {
+    animation: none !important;
   }
 
-  .national-day-sky-balloon--left {
-    left: 0.35rem;
+  .national-day-sky-balloon--drift-1 {
+    transform: translate(6vw, 24vh);
   }
 
-  .national-day-sky-balloon--right {
-    right: 0.35rem;
+  .national-day-sky-balloon--drift-2 {
+    transform: translate(78vw, 32vh);
   }
 
-  .national-day-sky-balloon--upper {
-    top: 5.75rem;
+  .national-day-sky-balloon--drift-3 {
+    transform: translate(40vw, 18vh);
   }
 
-  .national-day-sky-balloon--lower {
-    bottom: 7.5rem;
+  .national-day-sky-balloon--drift-4 {
+    transform: translate(18vw, 58vh);
+  }
+
+  .national-day-sky-balloon--drift-5 {
+    transform: translate(62vw, 62vh);
+  }
+}
+
+/* Fireworks / flag glare */
+.national-day-fireworks {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+}
+
+.national-day-firework {
+  position: fixed;
+  width: 0;
+  height: 0;
+  transform: translate(-50%, -50%);
+}
+
+.national-day-firework__glare {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: radial-gradient(circle, #fff 0%, #c8f0d8 35%, rgba(0, 108, 53, 0) 70%);
+  box-shadow:
+    0 0 24px 10px rgba(255, 255, 255, 0.85),
+    0 0 48px 18px rgba(0, 140, 75, 0.45),
+    0 0 70px 28px rgba(0, 108, 53, 0.28);
+  animation: nd-glare 1.1s ease-out forwards;
+}
+
+.national-day-firework__spark {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--nd-spark-size, 5px);
+  height: var(--nd-spark-size, 5px);
+  border-radius: 999px;
+  background: var(--nd-spark-color, #fff);
+  box-shadow: 0 0 8px var(--nd-spark-color, #fff);
+  animation: nd-spark 1.15s cubic-bezier(0.12, 0.7, 0.25, 1) forwards;
+  animation-delay: var(--nd-spark-delay, 0ms);
+  opacity: 0;
+}
+
+@keyframes nd-glare {
+  0% {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+  25% {
+    transform: scale(1.6);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(3.2);
+    opacity: 0;
+  }
+}
+
+@keyframes nd-spark {
+  0% {
+    transform: translate(0, 0) scale(0.4);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--nd-spark-x), var(--nd-spark-y)) scale(0.2);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .national-day-firework__glare,
+  .national-day-firework__spark {
+    animation-duration: 0.01ms !important;
   }
 }
 
