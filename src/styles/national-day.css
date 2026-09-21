@@ -168,6 +168,71 @@
   }
 }
 
+/* Hero edge peeks — big asset cropped to a narrow strip */
+.national-day-edge-balloon {
+  pointer-events: auto;
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  display: block;
+  height: clamp(22rem, 62vh, 38rem);
+  width: clamp(3.75rem, 6.5vw, 6.25rem);
+  padding: 0;
+  border: none;
+  background: transparent;
+  overflow: hidden;
+  cursor: pointer;
+  transform: translateY(-50%);
+  filter: drop-shadow(0 18px 28px rgba(0, 35, 41, 0.28));
+}
+
+.national-day-edge-balloon img {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: auto;
+  max-width: none;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  opacity: 0.72;
+}
+
+.national-day-edge-balloon--left {
+  left: 0;
+}
+
+.national-day-edge-balloon--left img {
+  /* Crop to the right side of the balloon (facing the page) */
+  right: 0;
+}
+
+.national-day-edge-balloon--right {
+  right: 0;
+}
+
+.national-day-edge-balloon--right img {
+  /* Crop to the left side of the balloon (facing the page) */
+  left: 0;
+}
+
+.national-day-edge-balloon:hover img {
+  opacity: 0.9;
+}
+
+.national-day-edge-balloon:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: -2px;
+}
+
+@media (max-width: 767px) {
+  .national-day-edge-balloon {
+    height: clamp(16rem, 48vh, 24rem);
+    width: 2.85rem;
+  }
+}
+
 .national-day-sky-balloon {
   pointer-events: auto;
   position: absolute;

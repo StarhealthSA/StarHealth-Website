@@ -8,7 +8,7 @@ const FIREWORK_COLORS = ['#006c35', '#ffffff', '#1fa05a', '#a8e6c1', '#f8fff9'];
 const BURST_MS = 1600;
 const TOGGLE_ICON = '/national-day/balloon-green.png';
 
-/** All provided balloon assets — always shown together when enabled. */
+/** Floating sky balloons — always shown together when enabled. */
 const BALLOONS = [
   {
     id: 'green-ar',
@@ -35,6 +35,17 @@ const BALLOONS = [
     size: 'lg',
   },
 ];
+
+const EDGE_BALLOON_SRC = {
+  ar: {
+    left: '/national-day/balloon-green.png',
+    right: '/national-day/balloon-red.png',
+  },
+  en: {
+    left: '/national-day/balloon-green-en.png',
+    right: '/national-day/balloon-red-en.png',
+  },
+};
 
 function FireworkBurst({ burst }) {
   const sparks = Array.from({ length: 18 }, (_, index) => {
@@ -97,11 +108,35 @@ function BalloonButton({ balloon, label, onBurst }) {
   );
 }
 
+/** Oversized balloon cropped to a narrow left/right strip. */
+function EdgeBalloon({ side, src, label, onBurst }) {
+  const handleClick = (event) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    onBurst({
+      x: side === 'left' ? rect.right - 8 : rect.left + 8,
+      y: rect.top + rect.height / 3,
+    });
+  };
+
+  return (
+    <button
+      type="button"
+      className={`national-day-edge-balloon national-day-edge-balloon--${side}`}
+      onClick={handleClick}
+      aria-label={label}
+    >
+      <img src={src} alt="" draggable={false} />
+    </button>
+  );
+}
+
 /** Floating sky balloons — toggled from a control above WhatsApp. */
 export default function NationalDayAccents() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [skyEnabled, setSkyEnabled] = useState(false);
   const [bursts, setBursts] = useState([]);
+  const isArabic = (i18n.language || '').toLowerCase().startsWith('ar');
+  const edgeSrc = isArabic ? EDGE_BALLOON_SRC.ar : EDGE_BALLOON_SRC.en;
 
   const spawnBurst = useCallback((point) => {
     const id = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
@@ -135,6 +170,19 @@ export default function NationalDayAccents() {
 
       {skyEnabled ? (
         <div className="national-day-accents">
+          <EdgeBalloon
+            side="left"
+            src={edgeSrc.left}
+            label={popLabel}
+            onBurst={spawnBurst}
+          />
+          <EdgeBalloon
+            side="right"
+            src={edgeSrc.right}
+            label={popLabel}
+            onBurst={spawnBurst}
+          />
+
           {BALLOONS.map((balloon) => (
             <BalloonButton
               key={balloon.id}
