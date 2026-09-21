@@ -530,38 +530,6 @@
   border-bottom: 1px solid rgba(0, 108, 53, 0.12);
 }
 
-/* Primary teal CTAs → Saudi green */
-.theme-national-day-96 .bg-\[\#037B76\],
-.theme-national-day-96 button.bg-\[\#037B76\],
-.theme-national-day-96 a.bg-\[\#037B76\] {
-  background-color: var(--nd-green) !important;
-}
-
-.theme-national-day-96 .from-\[\#037B76\] {
-  --tw-gradient-from: var(--nd-green) !important;
-}
-
-.theme-national-day-96 .to-\[\#AED5C6\] {
-  --tw-gradient-to: #b7dcc8 !important;
-}
-
-.theme-national-day-96 .text-\[\#037B76\] {
-  color: var(--nd-green) !important;
-}
-
-.theme-national-day-96 .border-\[\#037B76\] {
-  border-color: var(--nd-green) !important;
-}
-
-.theme-national-day-96 .hover\:bg-\[\#026661\]:hover {
-  background-color: #005a2c !important;
-}
-
-/* Booking form gradients */
-.theme-national-day-96 .bg-gradient-to-tl.from-\[\#037B76\].to-\[\#AED5C6\] {
-  background-image: linear-gradient(to top left, var(--nd-green), #8fc9a8) !important;
-}
-
 /* Footer National Day treatment */
 .theme-national-day-96 .nd-footer {
   position: relative;
