@@ -156,6 +156,12 @@ export default function AdminDashboard() {
             count={counts.offers}
           />
           <DashboardStatCard
+            href="/admin/portfolio"
+            title="Our Work"
+            description="Publish dental and dermatology portfolio cases for homepage and listing."
+            count={counts.portfolioEntries}
+          />
+          <DashboardStatCard
             href="/admin/insurance"
             title="Insurance"
             description="Manage insurance partner logos and visibility on the public listing."

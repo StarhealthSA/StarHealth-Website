@@ -36,9 +36,9 @@ export default function AboutPillarsSection() {
 
   return (
     <section className="px-[20px] md:px-[30px] lg:px-[120px] py-14 lg:py-20">
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="about-equal-cards grid gap-4 md:grid-cols-3 md:items-stretch">
         {PILLARS.map((item, index) => (
-          <Reveal key={item.key} delay={staggerDelay(index, 70)}>
+          <Reveal key={item.key} delay={staggerDelay(index, 70)} className="h-full">
             <article className="about-value-card">
               <div className="about-value-card__icon">{item.icon}</div>
               <h2 className="about-value-card__title">

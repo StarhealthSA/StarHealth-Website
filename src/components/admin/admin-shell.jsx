@@ -20,6 +20,7 @@ const NAV_ITEMS = [
   { href: '/admin/doctors', label: 'Doctors' },
   { href: '/admin/services', label: 'Services' },
   { href: '/admin/offers', label: 'Offers' },
+  { href: '/admin/portfolio', label: 'Our Work' },
   { href: '/admin/insurance', label: 'Insurance' },
   { href: '/admin/blogs', label: 'Blogs' },
   { href: '/admin/homepage', label: 'Homepage' },

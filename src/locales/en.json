@@ -20,6 +20,10 @@
     "subtitle": "Compassionate and Expert Care is just a click away",
     "cta": "Explore"
   },
+  "floatingWhatsApp": {
+    "label": "Contact us on WhatsApp",
+    "message": "Hello Star Health, I would like to know more."
+  },
   "bookingForm": {
     "title": "Book an Appointment",
     "subtitle": "Your Better Health, Just a Click Away",
@@ -316,6 +320,22 @@
       "simpleClear": "Simple & Clear Guidance",
       "convenientLocation": "Conveniently Located",
       "safetyAccountability2": "Safety and Accountability"
+    }
+  },
+  "whyChooseStarHealth": {
+    "eyebrow": "Star Health",
+    "title": "Why Choose Star Health",
+    "paragraphs": [
+      "Because at Star Health, you are not just a number in a booking system. You receive a human experience worthy of you and personalized care built around understanding your needs and creating a comprehensive care plan.",
+      "We treat you as we treat our own family. We choose for you only what we would accept for our loved ones—from the competence of our doctors and the quality of the materials, equipment and technologies used in our medical and aesthetic services to the follow-up we provide after the procedure.",
+      "Because every detail of your journey matters to us."
+    ],
+    "bookNow": "Book Now",
+    "whatsapp": "WhatsApp",
+    "whatsappMessage": "Hello Star Health, I would like to know more.",
+    "counters": {
+      "clients": { "label": "Number of clients served" },
+      "satisfaction": { "label": "Customer satisfaction rate" }
     }
   },
   "insurance": {
@@ -858,6 +878,29 @@
     "publishedOn": "Published on",
     "publishedBy": "Published by",
     "author": "Author"
+  },
+  "portfolioPage": {
+    "eyebrow": "Approved cases",
+    "homeTitle": "Our Work",
+    "homeLead": "A quick look at real dental and dermatology results — explore each specialty for the full cases.",
+    "title": "Our Work Portfolio",
+    "lead": "Browse approved dental and dermatology cases — images, videos, and before-and-after results selected by our care team.",
+    "viewAll": "View All",
+    "exploreCategory": "Explore {{category}}",
+    "exploreSpecialty": "Explore specialty",
+    "caseCount": "{{count}} cases",
+    "all": "All",
+    "categories": "Work categories",
+    "serviceTitle": "Our Work — {{category}}",
+    "serviceLead": "Approved cases from this specialty — images, videos, and before-and-after results.",
+    "empty": "Portfolio cases will appear here once published.",
+    "before": "Before",
+    "after": "After",
+    "compareLabel": "Before and after",
+    "previous": "Previous case",
+    "next": "Next case",
+    "pagination": "Portfolio slides",
+    "goToSlide": "Go to case {{number}}"
   },
   "offersPage": {
     "eyebrow": "Current promotions",

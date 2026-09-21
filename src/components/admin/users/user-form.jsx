@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { ROLE_LABELS } from '@/lib/firebase/roles';
+import PasswordInput from '@/components/admin/password-input';
 
 export default function UserForm({
   mode,
@@ -49,6 +50,7 @@ export default function UserForm({
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            autoComplete="username"
             className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
           />
         </label>
@@ -57,13 +59,12 @@ export default function UserForm({
       {mode === 'create' && (
         <label className="block">
           <span className="text-sm font-medium text-[#586971]">Password</span>
-          <input
-            type="password"
+          <PasswordInput
             required
             minLength={6}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
+            autoComplete="new-password"
           />
         </label>
       )}
@@ -71,13 +72,12 @@ export default function UserForm({
       {mode === 'edit' && isSuperAdmin && (
         <label className="block">
           <span className="text-sm font-medium text-[#586971]">New password (optional)</span>
-          <input
-            type="password"
+          <PasswordInput
             minLength={6}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Leave blank to keep current password"
-            className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
+            autoComplete="new-password"
           />
         </label>
       )}
