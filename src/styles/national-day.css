@@ -172,7 +172,7 @@
   pointer-events: none;
   position: absolute;
   display: block;
-  opacity: 0.35;
+  opacity: 0.45;
   filter: drop-shadow(0 14px 22px rgba(0, 35, 41, 0.22));
 }
 
@@ -185,19 +185,25 @@
 }
 
 .national-day-sky-balloon--lg {
-  width: clamp(5.6rem, 11vw, 8.5rem);
+  width: clamp(6.5rem, 13vw, 9.5rem);
 }
 
 .national-day-sky-balloon--md {
-  width: clamp(4.6rem, 8.5vw, 7rem);
+  width: clamp(5.2rem, 10vw, 7.5rem);
 }
 
+/* Full balloons on left / right, vertically centered */
 .national-day-sky-balloon--left {
-  left: clamp(0.35rem, 1.5vw, 1.25rem);
+  left: clamp(0.5rem, 1.5vw, 1.25rem);
 }
 
 .national-day-sky-balloon--right {
-  right: clamp(0.35rem, 1.5vw, 1.25rem);
+  right: clamp(0.5rem, 1.5vw, 1.25rem);
+}
+
+.national-day-sky-balloon--mid {
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .national-day-sky-balloon--upper {
@@ -208,21 +214,21 @@
   bottom: clamp(5.5rem, 16vh, 9rem);
 }
 
-.national-day-sky-balloon--left.national-day-sky-balloon--lower {
-  left: clamp(1.25rem, 3vw, 2.75rem);
-}
-
-.national-day-sky-balloon--right.national-day-sky-balloon--upper {
-  right: clamp(1.25rem, 3vw, 2.75rem);
-}
-
 @media (max-width: 767px) {
   .national-day-sky-balloon--lg {
-    width: 3.6rem;
+    width: 4.4rem;
   }
 
   .national-day-sky-balloon--md {
-    width: 3rem;
+    width: 3.6rem;
+  }
+
+  .national-day-sky-balloon--left {
+    left: 0.35rem;
+  }
+
+  .national-day-sky-balloon--right {
+    right: 0.35rem;
   }
 
   .national-day-sky-balloon--upper {
