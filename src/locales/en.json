@@ -44,11 +44,11 @@
   },
   "welcome": {
     "title": "WELCOME TO STAR HEALTH",
-    "description": "At Star Health, we do more than treat illness — we care for you as a person. You are not a case number — you are family. From diagnosis to healing, we stand with you."
+    "description": "At Star Health, we do more than treat illness. We care for you as a person. You are not a case number. You are family. From diagnosis to healing, we stand with you."
   },
   "safety": {
     "title": "We Prioritize Your Health, Safety and Well-being",
-    "description": "Star Health Medical Centre is designed for your peace of mind - from hygiene protocols to a calming patient experience. From entry to exit, your health and peace of mind matters the most.",
+    "description": "Star Health Medical Centre is designed for your peace of mind, from hygiene protocols to a calming patient experience. From entry to exit, your health and peace of mind matters the most.",
     "point1": "Our team is trained to care with empathy, not just efficiency.",
     "point2": " We ensure smooth patient flow to minimize waiting and stress. ",
     "point3": "Our clean, quiet spaces are designed to help you relax and feel at home. ",
@@ -56,17 +56,17 @@
   },
   "services": {
     "title": "Our Services",
-    "description": "Whatever your health concern — big or small — we’ll treat you with warmth, honesty, and care just like family. ",
+    "description": "Whatever your health concern, big or small, we’ll treat you with warmth, honesty, and care just like family. ",
     "showMore": "Show More",
     "contactUs": "Contact Us",
     "service": {
       "generalMedicine": {
         "title": "General Medicine",
-        "description": "Feeling unwell or just need a routine check-up? Our doctors are here to listen, guide, and help you stay healthy — one visit at a time. "
+        "description": "Feeling unwell or just need a routine check-up? Our doctors are here to listen, guide, and help you stay healthy, one visit at a time. "
       },
       "familyMedicine": {
         "title": "Family Medicine",
-        "description": "Your trusted family doctor — from kids to grandparents. Our family doctors take the time to listen, and care — just like someone who’s known you for years."
+        "description": "Your trusted family doctor, from kids to grandparents. Our family doctors take the time to listen, and care, just like someone who’s known you for years."
       },
       "internalMedicine": {
         "title": "Internal Medicine",
@@ -74,7 +74,7 @@
       },
       "obg": {
         "title": "Obstetrics & Gynecology (OBG)",
-        "description": "From pregnancy care to women’s wellness, our OBG specialists offer trusted, private, and supportive care — every step of the way. "
+        "description": "From pregnancy care to women’s wellness, our OBG specialists offer trusted, private, and supportive care, every step of the way. "
       },
       "generalDentistry": {
         "title": "Dentistry & Orthodontics",
@@ -82,7 +82,7 @@
       },
       "ortho": {
         "title": "Orthopedics",
-        "description": "From joint pain to injuries, our Orthopedics team is only a call away — ready to support you through recovery always with care."
+        "description": "From joint pain to injuries, our Orthopedics team is only a call away, ready to support you through recovery always with care."
       },
       "laboratory": {
         "title": "Laboratory",
@@ -327,15 +327,19 @@
     "title": "Why Choose Star Health",
     "paragraphs": [
       "Because at Star Health, you are not just a number in a booking system. You receive a human experience worthy of you and personalized care built around understanding your needs and creating a comprehensive care plan.",
-      "We treat you as we treat our own family. We choose for you only what we would accept for our loved ones—from the competence of our doctors and the quality of the materials, equipment and technologies used in our medical and aesthetic services to the follow-up we provide after the procedure.",
+      "We treat you as we treat our own family. We choose for you only what we would accept for our loved ones, from the competence of our doctors and the quality of the materials, equipment and technologies used in our medical and aesthetic services to the follow-up we provide after the procedure.",
       "Because every detail of your journey matters to us."
     ],
     "bookNow": "Book Now",
     "whatsapp": "WhatsApp",
     "whatsappMessage": "Hello Star Health, I would like to know more.",
     "counters": {
-      "clients": { "label": "Number of clients served" },
-      "satisfaction": { "label": "Customer satisfaction rate" }
+      "clients": {
+        "label": "Number of clients served"
+      },
+      "satisfaction": {
+        "label": "Customer satisfaction rate"
+      }
     }
   },
   "insurance": {
@@ -376,13 +380,13 @@
         "name": "Rajesh D",
         "comment": "If you need a nursing staff for the clinic, I am here. I have experience in clinics and the clinic is close to me. i have valid saudi council license. thank you..."
       },
-      "muntasr":{
+      "muntasr": {
         "name": "Muntasr Bajsair",
         "comment": "The center is very clean, with excellent and pleasant service. The reception and attention from the medical staff were wonderful. Pediatrician Dr. Haifa Ali is very professional and gives helpful advice. May God bless you all."
       },
-      "amar":{
-        "name":"Amer Bayazeed",
-        "comment":"Excellent service and professional staff; a comprehensive center.Special thanks to the kind Dr. Haifa.We also thank the management and staff for their excellent service."
+      "amar": {
+        "name": "Amer Bayazeed",
+        "comment": "Excellent service and professional staff; a comprehensive center.Special thanks to the kind Dr. Haifa.We also thank the management and staff for their excellent service."
       }
     }
   },
@@ -391,18 +395,18 @@
     "bookAppointment": "Book Consultation",
     "specialities": "Call Us ",
     "findLocation": "Find a Location",
-    "modalDescription": "Every journey to better health starts with a simple step. Schedule your consultation, explore our care areas, or talk to our team — we’ll guide you every step of the way."
+    "modalDescription": "Every journey to better health starts with a simple step. Schedule your consultation, explore our care areas, or talk to our team. We'll guide you every step of the way."
   },
   "footer": {
     "appointments": "For Appointments",
     "appointmentnumber": "+966 505 730 003",
     "emergency": "Emergency",
     "emergencynumber": "+966 505 730 003",
-    "labResults" : "For Lab Results",
+    "labResults": "For Lab Results",
     "labMail": "labs@starhealth.sa",
     "patientEnquiries": "For Job Enquiries",
     "enquirynumber": "contact@starhealth.sa",
-    "description": "At Star Health, we believe every patient deserves the same warmth and attention we give our own family. From your first consultation to recovery and beyond, our doctors, nurses, and support staff walk with you every step of the way — ensuring comfort, clarity, and confidence in your care. ",
+    "description": "At Star Health, we believe every patient deserves the same warmth and attention we give our own family. From your first consultation to recovery and beyond, our doctors, nurses, and support staff walk with you every step of the way, ensuring comfort, clarity, and confidence in your care. ",
     "quickLinks": "Quick Links",
     "ourServices": "Our Services",
     "newsletter": "Subscribe to Our Newsletter",
@@ -419,7 +423,7 @@
       "dentistry": "Orthopedics",
       "dermatology": "Dentistry & Orthodontics",
       "laboratory": "Laboratory",
-      "pediatrics" : "Pediatrics"
+      "pediatrics": "Pediatrics"
     },
     "quickLink": {
       "home": "Home",
@@ -428,7 +432,7 @@
       "doctors": "Doctors",
       "offers": "Offers",
       "insurance": "Insurance Partners",
-      "blogs" : "Blogs",
+      "blogs": "Blogs",
       "loyalty": "Nujoom by Star Health",
       "contactUs": "Contact Us",
       "privacy": "Privacy Policy"
@@ -488,16 +492,16 @@
       "eyebrow": "STAR HEALTH MEDICAL CENTRE",
       "title": "Premium Family Healthcare Designed Around Your Everyday Life",
       "description": "Star Health Medical Center is a multi-specialty outpatient medical facility in Riyadh, delivering ethical, high-quality, and patient-centric healthcare. We combine clinical excellence, operational efficiency, and compassionate care to provide reliable medical services for individuals, families, and corporate partners.",
-      "description2": "At Star Health, patients are treated with the same care, respect, and responsibility that we extend to our families—reflecting our commitment to care that truly feels personal."
+      "description2": "At Star Health, patients are treated with the same care, respect, and responsibility that we extend to our families, reflecting our commitment to care that truly feels personal."
     },
     "pillars": {
       "promise": {
         "title": "Our Promise",
-        "body": "At Star Health Medical Center, healthcare is delivered with clinical integrity, operational efficiency, and trust—serving patients, insurers, and corporate partners with consistency and care."
+        "body": "At Star Health Medical Center, healthcare is delivered with clinical integrity, operational efficiency, and trust, serving patients, insurers, and corporate partners with consistency and care."
       },
       "mission": {
         "title": "Our Mission",
-        "body": "To provide high-quality outpatient healthcare with compassion, professionalism, and respect—delivering consistent and reliable care for every patient, every visit."
+        "body": "To provide high-quality outpatient healthcare with compassion, professionalism, and respect, delivering consistent and reliable care for every patient, every visit."
       },
       "vision": {
         "title": "Our Vision",
@@ -506,7 +510,7 @@
     },
     "experience": {
       "title": "Built for Patient-Centered Care",
-      "description": "Our medical professionals are carefully credentialed and trained to deliver consistent, protocol-driven, and patient-focused care—ensuring clinical reliability and professional coordination with insurers and corporate partners.",
+      "description": "Our medical professionals are carefully credentialed and trained to deliver consistent, protocol-driven, and patient-focused care, ensuring clinical reliability and professional coordination with insurers and corporate partners.",
       "stats": {
         "s1": {
           "label": "Patient First",
@@ -544,7 +548,7 @@
         },
         "s4": {
           "title": "Our Commitment",
-          "body": "At Star Health Medical Center, healthcare is delivered with clinical integrity, operational efficiency, and trust—serving patients, insurers, and corporate partners with consistency and care."
+          "body": "At Star Health Medical Center, healthcare is delivered with clinical integrity, operational efficiency, and trust, serving patients, insurers, and corporate partners with consistency and care."
         }
       }
     },
@@ -867,9 +871,9 @@
       }
     }
   },
-  "blogs":{
-    "title" : "Expert Advice And Updates",
-    "description":"Our blog shares valuable knowledge, real-world strategies, and actionable insights to support your personal and business growth journey.",
+  "blogs": {
+    "title": "Expert Advice And Updates",
+    "description": "Our blog shares valuable knowledge, real-world strategies, and actionable insights to support your personal and business growth journey.",
     "readMore": "Read more",
     "allPosts": "All Events & News",
     "viewAll": "View All",
@@ -882,17 +886,17 @@
   "portfolioPage": {
     "eyebrow": "Approved cases",
     "homeTitle": "Our Work",
-    "homeLead": "A quick look at real dental and dermatology results — explore each specialty for the full cases.",
+    "homeLead": "A quick look at real dental and dermatology results. Explore each specialty for the full cases.",
     "title": "Our Work Portfolio",
-    "lead": "Browse approved dental and dermatology cases — images, videos, and before-and-after results selected by our care team.",
+    "lead": "Browse approved dental and dermatology cases, images, videos, and before-and-after results selected by our care team.",
     "viewAll": "View All",
     "exploreCategory": "Explore {{category}}",
     "exploreSpecialty": "Explore specialty",
     "caseCount": "{{count}} cases",
     "all": "All",
     "categories": "Work categories",
-    "serviceTitle": "Our Work — {{category}}",
-    "serviceLead": "Approved cases from this specialty — images, videos, and before-and-after results.",
+    "serviceTitle": "Our Work: {{category}}",
+    "serviceLead": "Approved cases from this specialty, images, videos, and before-and-after results.",
     "empty": "Portfolio cases will appear here once published.",
     "before": "Before",
     "after": "After",

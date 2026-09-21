@@ -10,8 +10,8 @@ export const DEFAULT_OUR_WORK_SETTINGS = {
     ar: 'أعمالنا نماذج',
   },
   lead: {
-    en: 'A quick look at real dental and dermatology results — explore each specialty for the full cases.',
-    ar: 'نظرة سريعة على نتائج طب الأسنان والجلدية — استكشف كل تخصص لعرض الحالات كاملة.',
+    en: 'A quick look at real dental and dermatology results. Explore each specialty for the full cases.',
+    ar: 'نظرة سريعة على نتائج طب الأسنان والجلدية. استكشف كل تخصص لعرض الحالات كاملة.',
   },
 };
 

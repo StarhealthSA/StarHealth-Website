@@ -91,8 +91,8 @@ export const FALLBACK_SERVICES = [
     slug: 'general-medicine',
     title: { en: 'General Medicine', ar: 'الطب العام' },
     description: {
-      en: 'Feeling unwell or just need a routine check-up? Our doctors are here to listen, guide, and help you stay healthy — one visit at a time.',
-      ar: 'تشعر بالتوعك أو تحتاج فقط لفحص روتيني؟ أطباؤنا هنا للاستماع والإرشاد ومساعدتك على البقاء بصحة جيدة - زيارة واحدة في كل مرة.',
+      en: 'Feeling unwell or just need a routine check-up? Our doctors are here to listen, guide, and help you stay healthy, one visit at a time.',
+      ar: 'تشعر بالتوعك أو تحتاج فقط لفحص روتيني؟ أطباؤنا هنا للاستماع والإرشاد ومساعدتك على البقاء بصحة جيدة، زيارة واحدة في كل مرة.',
     },
     iconKey: 'generalMedicine',
     order: 1,
@@ -104,8 +104,8 @@ export const FALLBACK_SERVICES = [
     slug: 'family-medicine',
     title: { en: 'Family Medicine', ar: 'طب العائلة' },
     description: {
-      en: 'Your trusted family doctor — from kids to grandparents. Our family doctors take the time to listen, and care — just like someone who\'s known you for years.',
-      ar: 'طبيب عائلتك الموثوق - من الأطفال إلى الأجداد. يأخذ أطباء العائلة لدينا الوقت الكافي للاستماع والإرشاد والرعاية.',
+      en: 'Your trusted family doctor, from kids to grandparents. Our family doctors take the time to listen, and care, just like someone who\'s known you for years.',
+      ar: 'طبيب عائلتك الموثوق، من الأطفال إلى الأجداد. يأخذ أطباء العائلة لدينا الوقت الكافي للاستماع والإرشاد والرعاية.',
     },
     iconKey: 'familyMedicine',
     order: 2,
@@ -130,7 +130,7 @@ export const FALLBACK_SERVICES = [
     slug: 'obg',
     title: { en: 'Obstetrics & Gynecology (OBG)', ar: 'التوليد وأمراض النساء' },
     description: {
-      en: 'From pregnancy care to women\'s wellness, our OBG specialists offer trusted, private, and supportive care — every step of the way.',
+      en: 'From pregnancy care to women\'s wellness, our OBG specialists offer trusted, private, and supportive care, every step of the way.',
       ar: 'من رعاية الحمل إلى صحة المرأة، يقدم أخصائيو التوليد وأمراض النساء لدينا رعاية موثوقة وخاصة وداعمة.',
     },
     iconKey: 'obg',
@@ -143,7 +143,7 @@ export const FALLBACK_SERVICES = [
     slug: 'orthopedics',
     title: { en: 'Orthopedics', ar: 'أورثو' },
     description: {
-      en: 'From joint pain to injuries, our Orthopedics team is only a call away — ready to support you through recovery always with care.',
+      en: 'From joint pain to injuries, our Orthopedics team is only a call away, ready to support you through recovery always with care.',
       ar: 'من آلام المفاصل إلى الإصابات، فريق جراحة العظام لدينا على بُعد مكالمة هاتفية فقط.',
     },
     iconKey: 'ortho',
