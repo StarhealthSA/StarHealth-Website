@@ -40,6 +40,7 @@
   justify-content: center;
   min-height: 3.25rem;
   overflow: hidden;
+  padding-block: 0.85rem;
 }
 
 .national-day-banner__art {
@@ -49,12 +50,13 @@
   max-height: 7.5rem;
   object-fit: contain;
   object-position: center;
-  background: #000;
+  background: transparent;
 }
 
 @media (min-width: 768px) {
   .national-day-banner__inner {
     min-height: 4.25rem;
+    padding-block: 1.1rem;
   }
 
   .national-day-banner__art {
@@ -63,6 +65,10 @@
 }
 
 @media (min-width: 1024px) {
+  .national-day-banner__inner {
+    padding-block: 1.35rem;
+  }
+
   .national-day-banner__art {
     max-height: 10.5rem;
   }

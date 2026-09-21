@@ -3797,23 +3797,25 @@ html {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2.7rem;
-  padding: 0.65rem 1.5rem;
-  border-radius: 0.85rem;
+  min-height: 2.75rem;
+  padding: 0.65rem 2.5rem;
+  border-radius: 0.5rem;
   border: 1px solid transparent;
-  background: linear-gradient(135deg, #037b76 0%, #025e5a 100%);
+  background: linear-gradient(to top left, #037b76, #aed5c6);
   color: #fff;
-  font-size: 0.92rem;
-  font-weight: 600;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
   text-decoration: none;
-  box-shadow: 0 10px 22px rgba(3, 123, 118, 0.2);
-  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  box-shadow: none;
+  transition: background 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
 }
 
 .our-work-preview__cta:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 14px 28px rgba(3, 123, 118, 0.26);
-  background: linear-gradient(135deg, #037b76 0%, #025e5a 100%);
+  transform: none;
+  opacity: 0.95;
+  box-shadow: none;
+  background: linear-gradient(to bottom right, #037b76, #aed5c6);
   border-color: transparent;
   color: #fff;
 }
