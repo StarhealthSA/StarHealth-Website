@@ -50,6 +50,9 @@ export default function AppointmentBookingForm({
   });
 
   const { isConfigured, isOpenSchedule, loading: scheduleLoading } = useDoctorBookingSchedule(doctorId);
+  const [slotFreeCount, setSlotFreeCount] = useState(null);
+  const noFreeSlots = Boolean(selectedDate) && slotFreeCount === 0;
+  const requiresSchedule = isConfigured && !noFreeSlots;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -60,7 +63,7 @@ export default function AppointmentBookingForm({
     e.preventDefault();
     if (!doctorId || !serviceId || scheduleLoading) return;
 
-    if (isConfigured && (!selectedDate || !selectedSlot)) {
+    if (requiresSchedule && (!selectedDate || !selectedSlot)) {
       notify.warning(t('doctorModal.selectSlotRequired'));
       return;
     }
@@ -71,13 +74,13 @@ export default function AppointmentBookingForm({
       await submitAppointmentBooking({
         doctorId,
         doctorName: selectedDoctor?.displayName || '',
-        date: selectedDate,
-        slot: selectedSlot,
+        date: requiresSchedule ? selectedDate : null,
+        slot: requiresSchedule ? selectedSlot : null,
         patientName: formData.name,
         phone: formData.phonenumber,
         age: formData.age,
         speciality: selectedServiceName,
-        requiresSchedule: isConfigured,
+        requiresSchedule,
       });
       trackAppointmentBooked();
       redirectToThankYou();
@@ -198,6 +201,7 @@ export default function AppointmentBookingForm({
                 onChange={(date) => {
                   setSelectedDate(date);
                   setSelectedSlot(null);
+                  setSlotFreeCount(null);
                 }}
                 isRTL={isRTL}
                 inputClassName={`w-full rounded-lg border border-[#DAD8D7] py-3 text-sm text-[#687276] ${isRTL ? 'pr-4 pl-10' : 'pl-4 pr-10'}`}
@@ -224,6 +228,7 @@ export default function AppointmentBookingForm({
               date={selectedDate}
               selectedSlot={selectedSlot?.index ?? null}
               onSelect={setSelectedSlot}
+              onAvailabilityChange={({ freeCount }) => setSlotFreeCount(freeCount)}
             />
           </div>
         )}

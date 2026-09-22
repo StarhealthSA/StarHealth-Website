@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatDateKey } from '@/lib/appointments/slot-utils';
 
@@ -13,17 +13,21 @@ export default function AppointmentSlotPicker({
   className = '',
   gridClassName = '',
   variant = 'light',
+  onAvailabilityChange,
 }) {
   const isDark = variant === 'onDark';
   const { t } = useTranslation();
   const [slots, setSlots] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const onAvailabilityChangeRef = useRef(onAvailabilityChange);
+  onAvailabilityChangeRef.current = onAvailabilityChange;
 
   useEffect(() => {
     if (!doctorId || !date) {
       setSlots([]);
       setError('');
+      onAvailabilityChangeRef.current?.({ loading: false, freeCount: null });
       return undefined;
     }
 
@@ -32,6 +36,7 @@ export default function AppointmentSlotPicker({
     async function loadSlots() {
       try {
         setLoading(true);
+        onAvailabilityChangeRef.current?.({ loading: true, freeCount: null });
         setError('');
         const dateKey = formatDateKey(date);
         const excludeQuery = excludeAppointmentId
@@ -45,14 +50,22 @@ export default function AppointmentSlotPicker({
         if (!response.ok) {
           throw new Error(data.error || 'Failed to load slots');
         }
-        setSlots(data.slots || []);
+        const nextSlots = data.slots || [];
+        if (!controller.signal.aborted) {
+          setSlots(nextSlots);
+          const freeCount = nextSlots.filter((slot) => slot.status !== 'booked').length;
+          onAvailabilityChangeRef.current?.({ loading: false, freeCount });
+        }
       } catch (err) {
         if (err.name !== 'AbortError') {
           setSlots([]);
           setError(err.message || 'Failed to load slots');
+          onAvailabilityChangeRef.current?.({ loading: false, freeCount: 0 });
         }
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
       }
     }
 
@@ -62,6 +75,7 @@ export default function AppointmentSlotPicker({
 
   const messageClass = isDark ? 'text-sm text-white/80' : 'text-sm text-[#586971]';
   const titleClass = isDark ? 'mb-3 text-sm font-medium text-white' : 'mb-3 text-sm font-medium text-[#002333]';
+  const freeSlots = slots.filter((slot) => slot.status !== 'booked');
 
   if (!doctorId || !date) {
     return (
@@ -79,8 +93,13 @@ export default function AppointmentSlotPicker({
     return <p className={`text-sm ${isDark ? 'text-red-200' : 'text-red-600'} ${className}`}>{error}</p>;
   }
 
-  if (!slots.length) {
-    return <p className={`${messageClass} ${className}`}>{t('doctorModal.noSlotsAvailable')}</p>;
+  if (!freeSlots.length) {
+    return (
+      <div className={className}>
+        <p className={messageClass}>{t('doctorModal.noSlotsAvailable')}</p>
+        <p className={`mt-2 ${messageClass}`}>{t('doctorModal.openScheduleNote')}</p>
+      </div>
+    );
   }
 
   const defaultGridClass = 'grid max-h-40 grid-cols-1 gap-2 overflow-y-auto sm:grid-cols-2';

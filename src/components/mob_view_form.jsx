@@ -41,6 +41,9 @@ function Mobviewform() {
   } = useBookingServiceDoctors();
 
   const { isConfigured, isOpenSchedule, loading: scheduleLoading } = useDoctorBookingSchedule(doctorId);
+  const [slotFreeCount, setSlotFreeCount] = useState(null);
+  const noFreeSlots = Boolean(selectedDate) && slotFreeCount === 0;
+  const requiresSchedule = isConfigured && !noFreeSlots;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -51,19 +54,21 @@ function Mobviewform() {
     setServiceId(value);
     setSelectedSlot(null);
     setSelectedDate(null);
+    setSlotFreeCount(null);
   };
 
   const handleDoctorChange = (value) => {
     setDoctorId(value);
     setSelectedSlot(null);
     setSelectedDate(null);
+    setSlotFreeCount(null);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!doctorId || !serviceId || scheduleLoading) return;
 
-    if (isConfigured && (!selectedDate || !selectedSlot)) {
+    if (requiresSchedule && (!selectedDate || !selectedSlot)) {
       notify.warning(t('doctorModal.selectSlotRequired'));
       return;
     }
@@ -74,13 +79,13 @@ function Mobviewform() {
       await submitAppointmentBooking({
         doctorId,
         doctorName: selectedDoctor?.displayName || '',
-        date: selectedDate,
-        slot: selectedSlot,
+        date: requiresSchedule ? selectedDate : null,
+        slot: requiresSchedule ? selectedSlot : null,
         patientName: formData.name,
         phone: formData.phonenumber,
         age: formData.age,
         speciality: selectedServiceName,
-        requiresSchedule: isConfigured,
+        requiresSchedule,
       });
       trackAppointmentBooked();
       redirectToThankYou();
@@ -220,6 +225,7 @@ function Mobviewform() {
               onChange={(date) => {
                 setSelectedDate(date);
                 setSelectedSlot(null);
+                setSlotFreeCount(null);
               }}
               variant="onDark"
               isRTL={isRTL}
@@ -242,6 +248,7 @@ function Mobviewform() {
               date={selectedDate}
               selectedSlot={selectedSlot?.index ?? null}
               onSelect={setSelectedSlot}
+              onAvailabilityChange={({ freeCount }) => setSlotFreeCount(freeCount)}
               variant="onDark"
               className="mt-2"
             />

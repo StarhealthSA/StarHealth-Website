@@ -58,6 +58,9 @@ export default function AppointmentModal({
   });
 
   const { isConfigured, isOpenSchedule, loading: scheduleLoading } = useDoctorBookingSchedule(doctorId);
+  const [slotFreeCount, setSlotFreeCount] = useState(null);
+  const noFreeSlots = Boolean(selectedDate) && slotFreeCount === 0;
+  const requiresSchedule = isConfigured && !noFreeSlots;
   const wasOpenRef = useRef(false);
 
   useEffect(() => {
@@ -68,6 +71,7 @@ export default function AppointmentModal({
     if (isOpen && !wasOpenRef.current) {
       setSelectedDate(null);
       setSelectedSlot(null);
+      setSlotFreeCount(null);
     }
     wasOpenRef.current = isOpen;
   }, [isOpen]);
@@ -80,12 +84,14 @@ export default function AppointmentModal({
   const handleDateChange = (date) => {
     setSelectedDate(date);
     setSelectedSlot(null);
+    setSlotFreeCount(null);
   };
 
   const resetForm = () => {
     setFormData({ name: '', phonenumber: '', age: '' });
     setSelectedDate(null);
     setSelectedSlot(null);
+    setSlotFreeCount(null);
     resetSelection();
   };
 
@@ -94,7 +100,7 @@ export default function AppointmentModal({
 
     if (!doctorId || !serviceId || scheduleLoading) return;
 
-    if (isConfigured && (!selectedDate || !selectedSlot)) {
+    if (requiresSchedule && (!selectedDate || !selectedSlot)) {
       notify.warning(t('doctorModal.selectSlotRequired'));
       return;
     }
@@ -105,13 +111,13 @@ export default function AppointmentModal({
       await submitAppointmentBooking({
         doctorId,
         doctorName: selectedDoctor?.displayName || preselectedDoctor,
-        date: selectedDate,
-        slot: selectedSlot,
+        date: requiresSchedule ? selectedDate : null,
+        slot: requiresSchedule ? selectedSlot : null,
         patientName: formData.name,
         phone: formData.phonenumber,
         age: formData.age,
         speciality: selectedServiceName,
-        requiresSchedule: isConfigured,
+        requiresSchedule,
       });
       trackAppointmentBooked();
       resetForm();
@@ -282,6 +288,7 @@ export default function AppointmentModal({
                   date={selectedDate}
                   selectedSlot={selectedSlot?.index ?? null}
                   onSelect={setSelectedSlot}
+                  onAvailabilityChange={({ freeCount }) => setSlotFreeCount(freeCount)}
                 />
               </div>
             )}

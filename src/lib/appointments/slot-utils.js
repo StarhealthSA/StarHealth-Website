@@ -92,6 +92,16 @@ export function doctorHasAvailabilitySchedule(doctor) {
   return Object.values(availability).some((entry) => entry?.enabled);
 }
 
+/** True when the doctor has at least one enabled date in the public booking window. */
+export function doctorHasUpcomingBookableDates(doctor, days = OPEN_BOOKING_DAYS) {
+  if (!doctorHasAvailabilitySchedule(doctor)) return false;
+
+  return getUpcomingDateKeys(days).some((dateKey) => {
+    const entry = getDateAvailabilityEntry(doctor, parseDateKey(dateKey));
+    return Boolean(entry?.enabled);
+  });
+}
+
 export function getDateAvailabilityEntry(doctor, date) {
   const dateKey = formatDateKey(date);
   const entry = doctor?.dateAvailability?.[dateKey];

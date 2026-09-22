@@ -1,7 +1,7 @@
 import { getAdminDb, isFirebaseAdminConfigured } from '@/lib/firebase/admin';
 import {
   buildSlotAvailability,
-  doctorHasAvailabilitySchedule,
+  doctorHasUpcomingBookableDates,
   formatDateKey,
   formatDateLabel,
   getDateAvailabilityEntry,
@@ -55,7 +55,7 @@ export async function getDoctorAvailableDates(doctorId) {
   const doctor = await getDoctorById(doctorId);
   if (!doctor) throw new Error('Doctor not found');
 
-  if (!doctorHasAvailabilitySchedule(doctor)) {
+  if (!doctorHasUpcomingBookableDates(doctor)) {
     return { scheduleMode: 'open', dates: [] };
   }
 
@@ -139,10 +139,11 @@ export async function createAppointment(payload, { source = 'website', read = fa
   const doctor = await getDoctorById(doctorId);
   if (!doctor) throw new Error('Doctor not found');
 
-  const hasSchedule = doctorHasAvailabilitySchedule(doctor);
   const now = new Date().toISOString();
+  const wantsScheduledSlot = Boolean(date) && slotIndex != null;
 
-  if (!hasSchedule) {
+  // No date/time chosen (or doctor has none available) → accept and confirm later
+  if (!wantsScheduledSlot) {
     const docId = openAppointmentDocId(doctorId);
     await db.collection(COLLECTION).doc(docId).set({
       id: docId,
@@ -164,10 +165,6 @@ export async function createAppointment(payload, { source = 'website', read = fa
     });
 
     return { id: docId, slotLabel: 'To be confirmed' };
-  }
-
-  if (!date || slotIndex == null) {
-    throw new Error('Doctor, date, and time slot are required');
   }
 
   const { slot } = await assertSlotAvailable(doctorId, date, slotIndex);
@@ -283,7 +280,7 @@ export async function confirmOfferBooking(id, payload = {}) {
 
   const doctorName = payload.doctorName || doctor.name?.en || '';
   const now = new Date().toISOString();
-  const hasSchedule = doctorHasAvailabilitySchedule(doctor);
+  const hasUpcomingSlots = doctorHasUpcomingBookableDates(doctor);
 
   let nextData = {
     ...existing,
@@ -301,7 +298,7 @@ export async function confirmOfferBooking(id, payload = {}) {
     updatedAt: now,
   };
 
-  if (!hasSchedule) {
+  if (!hasUpcomingSlots) {
     nextData = {
       ...nextData,
       date: '',
