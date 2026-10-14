@@ -32,37 +32,49 @@ export function useContent() {
 
 export function useLocalizedDoctors(language) {
   const { doctors, specializations } = useContent();
-  return doctors.map((doctor) => ({
-    ...doctor,
-    displayName: getLocalizedText(doctor.name, language),
-    displaySpecialty: getDoctorDisplayLine(doctor, language),
-    displayQualification: getLocalizedText(doctor.qualification, language),
-    displayDesignation: getLocalizedText(doctor.designation, language),
-    displayShortIntro: getLocalizedText(doctor.shortIntro, language),
-    displayBiography: getLocalizedText(doctor.biography, language),
-    displaySpecialization: findSpecializationName(specializations, doctor.specializationId, language),
-    displaySubSpecialization: findSpecializationName(specializations, doctor.subSpecializationId, language),
-    image: resolveDoctorImage(doctor),
-  }));
+  return useMemo(
+    () =>
+      doctors.map((doctor) => ({
+        ...doctor,
+        displayName: getLocalizedText(doctor.name, language),
+        displaySpecialty: getDoctorDisplayLine(doctor, language),
+        displayQualification: getLocalizedText(doctor.qualification, language),
+        displayDesignation: getLocalizedText(doctor.designation, language),
+        displayShortIntro: getLocalizedText(doctor.shortIntro, language),
+        displayBiography: getLocalizedText(doctor.biography, language),
+        displaySpecialization: findSpecializationName(specializations, doctor.specializationId, language),
+        displaySubSpecialization: findSpecializationName(specializations, doctor.subSpecializationId, language),
+        image: resolveDoctorImage(doctor),
+      })),
+    [doctors, specializations, language]
+  );
 }
 
 export function useLocalizedServices(language) {
   const { services } = useContent();
-  return services.map((service) => ({
-    ...service,
-    displayTitle: getLocalizedText(service.title, language),
-    displayDescription: getLocalizedText(service.shortDescription || service.description, language),
-    displayShortDescription: getLocalizedText(service.shortDescription || service.description, language),
-    displayFullDescription: getLocalizedText(service.fullDescription, language),
-    icon: resolveServiceIcon(service),
-    bannerImage: resolveServiceBannerImage(service),
-  }));
+  return useMemo(
+    () =>
+      services.map((service) => ({
+        ...service,
+        displayTitle: getLocalizedText(service.title, language),
+        displayDescription: getLocalizedText(service.shortDescription || service.description, language),
+        displayShortDescription: getLocalizedText(service.shortDescription || service.description, language),
+        displayFullDescription: getLocalizedText(service.fullDescription, language),
+        icon: resolveServiceIcon(service),
+        bannerImage: resolveServiceBannerImage(service),
+      })),
+    [services, language]
+  );
 }
 
 export function useSpecializations(language) {
   const { specializations } = useContent();
-  return specializations.map((spec) => ({
-    ...spec,
-    displayName: getLocalizedText(spec.name, language),
-  }));
+  return useMemo(
+    () =>
+      specializations.map((spec) => ({
+        ...spec,
+        displayName: getLocalizedText(spec.name, language),
+      })),
+    [specializations, language]
+  );
 }

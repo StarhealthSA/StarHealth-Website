@@ -13,7 +13,7 @@ function PatientAvatar({ name }) {
 
 export default function TestimonialCard({ name, quote, isRTL = false }) {
   return (
-    <article className={`testimonial-card${isRTL ? ' testimonial-card--rtl' : ''}`}>
+    <article className="testimonial-card" dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="testimonial-card__quote-mark" aria-hidden>
         &ldquo;
       </div>

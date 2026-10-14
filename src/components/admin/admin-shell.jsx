@@ -19,6 +19,8 @@ const NAV_ITEMS = [
   { href: '/admin/specializations', label: 'Specializations' },
   { href: '/admin/doctors', label: 'Doctors' },
   { href: '/admin/services', label: 'Services' },
+  { href: '/admin/offers', label: 'Offers' },
+  { href: '/admin/insurance', label: 'Insurance' },
   { href: '/admin/blogs', label: 'Blogs' },
   { href: '/admin/homepage', label: 'Homepage' },
   { href: '/admin/users', label: 'Users', requiresUserManagement: true },

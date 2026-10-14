@@ -37,6 +37,7 @@ export function normalizeDoctor(raw = {}) {
     dutySchedule: raw.dutySchedule ?? {},
     dateAvailability: raw.dateAvailability ?? {},
     scheduleBreak: normalizeScheduleBreak(raw.scheduleBreak),
+    slotDurationMinutes: Number(raw.slotDurationMinutes) === 40 ? 40 : 30,
     onlineConsultationAvailable: raw.onlineConsultationAvailable ?? false,
     galleryImages: raw.galleryImages ?? [],
     reels: raw.reels ?? [],

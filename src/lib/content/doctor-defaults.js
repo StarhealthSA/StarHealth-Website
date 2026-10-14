@@ -29,6 +29,7 @@ export function createEmptyDoctor() {
     scheduleBreak: {
       breaks: [],
     },
+    slotDurationMinutes: 30,
     onlineConsultationAvailable: false,
     galleryImages: [],
     reels: [],

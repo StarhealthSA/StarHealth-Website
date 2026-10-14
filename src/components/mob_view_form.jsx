@@ -10,6 +10,11 @@ import { useBookingServiceDoctors } from '@/hooks/use-booking-service-doctors';
 import { submitAppointmentBooking } from '@/lib/booking/submit-appointment';
 import { useDoctorBookingSchedule } from '@/hooks/use-doctor-booking-schedule';
 import notify from '@/lib/ui/notify';
+import {
+  resetAppointmentBookedTracking,
+  trackAppointmentBooked,
+} from '@/lib/analytics/track-appointment-booked';
+import { redirectToThankYou } from '@/lib/booking/thank-you-access';
 
 function Mobviewform() {
   const { t, i18n } = useTranslation();
@@ -65,6 +70,7 @@ function Mobviewform() {
 
     try {
       setSubmitting(true);
+      resetAppointmentBookedTracking();
       await submitAppointmentBooking({
         doctorId,
         doctorName: selectedDoctor?.displayName || '',
@@ -76,15 +82,10 @@ function Mobviewform() {
         speciality: selectedServiceName,
         requiresSchedule: isConfigured,
       });
-      notify.success(t('doctorModal.bookingSuccess'));
-      setFormData({ name: '', phonenumber: '', age: '' });
-      setServiceId('');
-      setDoctorId('');
-      setSelectedDate(null);
-      setSelectedSlot(null);
+      trackAppointmentBooked();
+      redirectToThankYou();
     } catch (error) {
       notify.error(error.message || t('doctorModal.bookingFailed'));
-    } finally {
       setSubmitting(false);
     }
   };

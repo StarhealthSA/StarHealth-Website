@@ -337,6 +337,9 @@ function SlideEditor({
       <label className="mt-4 block">
         <span className="text-sm font-medium text-[#586971]">
           Or upload {slide.type === 'video' ? 'a video file' : 'an image file'}
+          {slide.type === 'image' && (
+            <span className="font-normal text-[#8a9aa1]"> (1920×1080 px)</span>
+          )}
         </span>
         <input
           type="file"

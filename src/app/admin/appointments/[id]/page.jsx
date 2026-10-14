@@ -7,9 +7,21 @@ import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { adminFetch } from '@/lib/admin-api';
 import AdminPageLoader from '@/components/admin/admin-page-loader';
 import { AdminActionButton, AdminActionGroup, AdminActionLink } from '@/components/admin/admin-action-button';
+import OfferBookingConfirmForm from '@/components/admin/appointments/offer-booking-confirm-form';
 import { formatDateLabel } from '@/lib/appointments/slot-utils';
+import {
+  isOfferBookingConfirmed,
+  isOfferBookingPending,
+} from '@/lib/appointments/offer-booking-status';
 import { doctorAvailabilityAdminPath } from '@/lib/content/doctor-defaults';
 import notify from '@/lib/ui/notify';
+
+function statusLabel(appointment) {
+  if (appointment.status === 'cancelled') return 'Cancelled';
+  if (isOfferBookingPending(appointment)) return 'Pending';
+  if (isOfferBookingConfirmed(appointment)) return 'Booking confirmed';
+  return 'Booked';
+}
 
 export default function AdminAppointmentDetailPage() {
   const { id } = useParams();
@@ -38,10 +50,13 @@ export default function AdminAppointmentDetailPage() {
   }, [load]);
 
   const handleCancel = async () => {
+    const isOffer = appointment?.type === 'offer_callback';
     const confirmed = await notify.confirm({
-      title: 'Cancel appointment?',
-      text: 'This will free the time slot for other patients.',
-      confirmText: 'Cancel appointment',
+      title: isOffer ? 'Cancel offer booking?' : 'Cancel appointment?',
+      text: isOffer
+        ? 'This offer booking will be marked as cancelled.'
+        : 'This will free the time slot for other patients.',
+      confirmText: isOffer ? 'Cancel request' : 'Cancel appointment',
       danger: true,
     });
     if (!confirmed) return;
@@ -59,11 +74,11 @@ export default function AdminAppointmentDetailPage() {
   };
 
   const handleDelete = async () => {
-    const isBooked = appointment?.status === 'booked';
+    const isBooked = appointment?.status === 'booked' || appointment?.status === 'pending';
     const confirmed = await notify.confirm({
       title: isBooked ? 'Delete booking?' : 'Delete cancelled booking?',
       text: isBooked
-        ? 'The time slot will be freed permanently.'
+        ? 'This booking will be removed permanently.'
         : 'This action cannot be undone.',
       confirmText: 'Delete',
       danger: true,
@@ -95,6 +110,11 @@ export default function AdminAppointmentDetailPage() {
     return <p className="text-[#586971]">Appointment not found.</p>;
   }
 
+  const isOffer = appointment.type === 'offer_callback';
+  const isPendingOffer = isOfferBookingPending(appointment);
+  const isConfirmedOffer = isOfferBookingConfirmed(appointment);
+  const canCancel = appointment.status === 'booked' || appointment.status === 'pending';
+
   return (
     <div>
       <Link href="/admin/appointments" className="text-sm text-[#037B76] hover:underline">
@@ -103,18 +123,29 @@ export default function AdminAppointmentDetailPage() {
 
       <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-semibold text-[#002f3b]">Appointment details</h1>
+          <h1 className="text-3xl font-semibold text-[#002f3b]">
+            {isOffer ? 'Offer booking details' : 'Appointment details'}
+          </h1>
           <p className="mt-1 text-sm text-[#586971]">
-            {appointment.status === 'booked' && !appointment.read
-              ? 'Marked as seen. Booking stays active until cancelled.'
-              : 'Booking information'}
+            {isPendingOffer
+              ? 'Pending offer request. Assign a doctor to confirm the booking.'
+              : isConfirmedOffer
+                ? 'Offer booking confirmed and available in Active bookings.'
+                : appointment.status === 'booked' && !appointment.read
+                  ? 'Marked as seen. Booking stays active until cancelled.'
+                  : 'Booking information'}
           </p>
         </div>
         {canWrite && (
           <AdminActionGroup>
-            {appointment.status === 'booked' && (
+            {canCancel && (
               <>
-                <AdminActionLink action="edit" href={`/admin/appointments/${id}/edit`} />
+                {!isOffer && (
+                  <AdminActionLink action="edit" href={`/admin/appointments/${id}/edit`} />
+                )}
+                {isConfirmedOffer && (
+                  <AdminActionLink action="edit" href={`/admin/appointments/${id}/edit`} />
+                )}
                 <AdminActionButton action="cancel" onClick={handleCancel} />
               </>
             )}
@@ -130,11 +161,22 @@ export default function AdminAppointmentDetailPage() {
           ['Patient', appointment.patientName],
           ['Phone', appointment.phone],
           ['Age', appointment.age],
-          ['Speciality', appointment.speciality],
-          ['Doctor', appointment.doctorName],
-          ['Date', appointment.date ? formatDateLabel(appointment.date) : 'To be confirmed'],
-          ['Time slot', appointment.slotLabel || 'To be confirmed'],
-          ['Status', appointment.status === 'cancelled' ? 'Cancelled' : 'Booked'],
+          isOffer
+            ? ['Offer', appointment.offerName || appointment.speciality]
+            : ['Speciality', appointment.speciality],
+          ['Doctor', appointment.doctorName || (isPendingOffer ? 'Not assigned' : '—')],
+          [
+            'Date',
+            appointment.date
+              ? formatDateLabel(appointment.date)
+              : (isPendingOffer ? 'Pending confirmation' : 'To be confirmed'),
+          ],
+          [
+            'Time slot',
+            appointment.slotLabel
+              || (isPendingOffer ? 'Pending confirmation' : 'To be confirmed'),
+          ],
+          ['Status', statusLabel(appointment)],
           ['Source', appointment.source || 'website'],
           ['Seen', appointment.read ? 'Yes' : 'No'],
           ['Created', appointment.createdAt ? new Date(appointment.createdAt).toLocaleString() : '—'],
@@ -147,7 +189,20 @@ export default function AdminAppointmentDetailPage() {
         ))}
       </div>
 
-      {(appointment.unscheduled || !appointment.date) && appointment.doctorId && canWrite && (
+      {isPendingOffer && canWrite && (
+        <OfferBookingConfirmForm
+          appointment={appointment}
+          onConfirmed={(confirmed) => {
+            setAppointment(confirmed);
+            notify.success('Offer booking confirmed and moved to Active bookings.');
+          }}
+        />
+      )}
+
+      {(appointment.unscheduled || !appointment.date)
+        && appointment.doctorId
+        && !isPendingOffer
+        && canWrite && (
         <div className="mt-6 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-[#586971]">
           <p>Date and time are not set yet. Enable bookable dates and duty hours for this doctor, then edit this booking.</p>
           <Link
@@ -159,9 +214,17 @@ export default function AdminAppointmentDetailPage() {
         </div>
       )}
 
+      {isConfirmedOffer && (
+        <p className="mt-6 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+          Booking confirmed. This appointment also appears under Active bookings.
+        </p>
+      )}
+
       {appointment.status === 'cancelled' && (
         <p className="mt-6 rounded-lg border border-[#d7e6e2] bg-[#f8fbfa] px-4 py-3 text-sm text-[#586971]">
-          This slot is available for booking again.
+          {isOffer
+            ? 'This offer booking was cancelled.'
+            : 'This slot is available for booking again.'}
         </p>
       )}
     </div>

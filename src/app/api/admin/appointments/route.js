@@ -10,7 +10,8 @@ export async function GET(request) {
     const date = searchParams.get('date') || undefined;
     const status = searchParams.get('status') || undefined;
     const search = searchParams.get('search') || undefined;
-    const appointments = await listAppointments({ doctorId, date, status, search });
+    const type = searchParams.get('type') || undefined;
+    const appointments = await listAppointments({ doctorId, date, status, search, type });
     return NextResponse.json(appointments);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 401 });

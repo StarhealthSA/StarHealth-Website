@@ -12,6 +12,7 @@ import {
 
 const COLLECTION = 'siteSettings';
 const HOME_DOC_ID = 'home';
+const INSURANCE_DOC_ID = 'insurance';
 
 const emptyLocalized = () => ({ en: '', ar: '' });
 
@@ -26,6 +27,11 @@ export const DEFAULT_HOME_SETTINGS = {
     url: '',
     platform: '',
   },
+};
+
+export const DEFAULT_INSURANCE_SETTINGS = {
+  heroTitle: emptyLocalized(),
+  heroSubtitle: emptyLocalized(),
 };
 
 function normalizeLocalizedField(raw) {
@@ -132,6 +138,46 @@ export async function updateHomeSettings(payload = {}) {
 
   await db.collection(COLLECTION).doc(HOME_DOC_ID).set(data, { merge: true });
   return normalizeHomeSettings(data);
+}
+
+export function normalizeInsuranceSettings(raw = {}) {
+  return {
+    id: INSURANCE_DOC_ID,
+    heroTitle: normalizeLocalizedField(raw.heroTitle),
+    heroSubtitle: normalizeLocalizedField(raw.heroSubtitle),
+    updatedAt: raw.updatedAt || null,
+  };
+}
+
+export async function getInsuranceSettings() {
+  const db = getAdminDb();
+  if (!db) {
+    return normalizeInsuranceSettings(DEFAULT_INSURANCE_SETTINGS);
+  }
+
+  const doc = await db.collection(COLLECTION).doc(INSURANCE_DOC_ID).get();
+  if (!doc.exists) {
+    return normalizeInsuranceSettings(DEFAULT_INSURANCE_SETTINGS);
+  }
+
+  return normalizeInsuranceSettings(doc.data());
+}
+
+export async function updateInsuranceSettings(payload = {}) {
+  const db = getAdminDb();
+  if (!db) throw new Error('Firebase Admin is not configured');
+
+  const existing = await getInsuranceSettings();
+  const now = new Date().toISOString();
+  const data = {
+    id: INSURANCE_DOC_ID,
+    heroTitle: normalizeLocalizedField(payload.heroTitle ?? existing.heroTitle),
+    heroSubtitle: normalizeLocalizedField(payload.heroSubtitle ?? existing.heroSubtitle),
+    updatedAt: now,
+  };
+
+  await db.collection(COLLECTION).doc(INSURANCE_DOC_ID).set(data, { merge: true });
+  return normalizeInsuranceSettings(data);
 }
 
 export function isSiteSettingsConfigured() {

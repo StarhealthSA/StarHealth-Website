@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import {
-  DEFAULT_DUTY_SCHEDULE,
   DEFAULT_SCHEDULE_BREAK,
   createDefaultBreakPeriod,
   formatBreakPeriodLabel,
@@ -13,28 +12,31 @@ import {
   formatTime12h,
   getAllSlotOptions,
   getBookableSlotIndicesFromEntry,
+  getDefaultDutySchedule,
+  getSlotsPerDay,
   getUpcomingDateKeys,
   normalizeScheduleBreak,
+  normalizeSlotDuration,
   parseDateKey,
   slotIndexToMinutes,
-  SLOTS_PER_DAY,
 } from '@/lib/appointments/slot-utils';
 import AdminPageLoader from '@/components/admin/admin-page-loader';
 
-const SLOT_OPTIONS = getAllSlotOptions();
 const UPCOMING_DAYS = 30;
-
-function getEndTimeLabel(endSlot) {
-  return formatTime12h(slotIndexToMinutes(endSlot));
-}
 
 export default function DoctorAvailabilityCalendar({
   dateAvailability = {},
   onChange,
   scheduleBreak = DEFAULT_SCHEDULE_BREAK,
   onScheduleBreakChange,
+  slotDurationMinutes = 30,
   doctorId = '',
 }) {
+  const duration = normalizeSlotDuration(slotDurationMinutes);
+  const slotsPerDay = getSlotsPerDay(duration);
+  const slotOptions = useMemo(() => getAllSlotOptions(duration), [duration]);
+  const defaultDuty = useMemo(() => getDefaultDutySchedule(duration), [duration]);
+
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [bookedSlots, setBookedSlots] = useState([]);
   const [loadingBooked, setLoadingBooked] = useState(false);
@@ -52,23 +54,27 @@ export default function DoctorAvailabilityCalendar({
 
   const selectedEntry = dateAvailability[selectedDateKey];
   const isSelectedEnabled = Boolean(selectedEntry?.enabled);
-  const startSlot = selectedEntry?.startSlot ?? DEFAULT_DUTY_SCHEDULE.startSlot;
-  const endSlot = selectedEntry?.endSlot ?? DEFAULT_DUTY_SCHEDULE.endSlot;
+  const startSlot = selectedEntry?.startSlot ?? defaultDuty.startSlot;
+  const endSlot = selectedEntry?.endSlot ?? defaultDuty.endSlot;
   const breaks = normalizeScheduleBreak(scheduleBreak).breaks;
+
+  const getEndTimeLabel = (slot) => formatTime12h(slotIndexToMinutes(slot, duration));
 
   const slotPreview = useMemo(() => {
     if (!isSelectedEnabled) return [];
     const entry = { enabled: true, startSlot, endSlot };
     return getBookableSlotIndicesFromEntry(entry, scheduleBreak).map((index) => {
-      const option = SLOT_OPTIONS.find((slot) => slot.index === index);
+      const option = slotOptions.find((slot) => slot.index === index);
       return option?.label || '';
     });
-  }, [isSelectedEnabled, startSlot, endSlot, scheduleBreak]);
+  }, [isSelectedEnabled, startSlot, endSlot, scheduleBreak, slotOptions]);
 
   const breakPreview = useMemo(() => {
     if (!isSelectedEnabled || !breaks.length) return [];
-    return breaks.map((period) => formatBreakPeriodLabel(period)).filter(Boolean);
-  }, [isSelectedEnabled, breaks]);
+    return breaks
+      .map((period) => formatBreakPeriodLabel(period, duration))
+      .filter(Boolean);
+  }, [isSelectedEnabled, breaks, duration]);
 
   useEffect(() => {
     if (!doctorId || !isSelectedEnabled) {
@@ -102,7 +108,7 @@ export default function DoctorAvailabilityCalendar({
     onChange({
       ...dateAvailability,
       [selectedDateKey]: {
-        ...(dateAvailability[selectedDateKey] || DEFAULT_DUTY_SCHEDULE),
+        ...(dateAvailability[selectedDateKey] || defaultDuty),
         enabled: true,
         ...patch,
       },
@@ -122,7 +128,7 @@ export default function DoctorAvailabilityCalendar({
     onChange({
       ...dateAvailability,
       [dateKey]: {
-        ...(dateAvailability[dateKey] || DEFAULT_DUTY_SCHEDULE),
+        ...(dateAvailability[dateKey] || defaultDuty),
         enabled: true,
       },
     });
@@ -138,7 +144,7 @@ export default function DoctorAvailabilityCalendar({
 
   const addBreak = () => {
     onScheduleBreakChange?.({
-      breaks: [...breaks, createDefaultBreakPeriod(breaks)],
+      breaks: [...breaks, createDefaultBreakPeriod(breaks, duration)],
     });
   };
 
@@ -168,6 +174,7 @@ export default function DoctorAvailabilityCalendar({
         <h3 className="text-sm font-semibold text-[#002f3b]">Availability calendar</h3>
         <p className="mt-1 text-xs text-[#586971]">
           Click dates on the calendar to enable or disable booking. Configure duty hours for the selected date on the right.
+          Slots use this doctor&apos;s {duration}-minute duration.
         </p>
       </div>
 
@@ -204,7 +211,7 @@ export default function DoctorAvailabilityCalendar({
                     onChange={(e) => {
                       const nextStart = Number(e.target.value);
                       const nextEnd = period.breakEndSlot <= nextStart
-                        ? Math.min(nextStart + 1, SLOTS_PER_DAY)
+                        ? Math.min(nextStart + 1, slotsPerDay)
                         : period.breakEndSlot;
                       updateBreak(period.id, {
                         breakStartSlot: nextStart,
@@ -213,7 +220,7 @@ export default function DoctorAvailabilityCalendar({
                     }}
                     className="mt-1 w-full rounded-lg border border-[#d7e6e2] bg-white px-3 py-2 text-sm"
                   >
-                    {SLOT_OPTIONS.map((slot) => (
+                    {slotOptions.map((slot) => (
                       <option key={slot.index} value={slot.index}>{slot.label}</option>
                     ))}
                   </select>
@@ -226,7 +233,7 @@ export default function DoctorAvailabilityCalendar({
                     className="mt-1 w-full rounded-lg border border-[#d7e6e2] bg-white px-3 py-2 text-sm"
                   >
                     {Array.from(
-                      { length: SLOTS_PER_DAY - period.breakStartSlot },
+                      { length: slotsPerDay - period.breakStartSlot },
                       (_, offset) => period.breakStartSlot + offset + 1
                     ).map((slotIndex) => (
                       <option key={slotIndex} value={slotIndex}>{getEndTimeLabel(slotIndex)}</option>
@@ -295,13 +302,13 @@ export default function DoctorAvailabilityCalendar({
                     onChange={(e) => {
                       const nextStart = Number(e.target.value);
                       const nextEnd = endSlot <= nextStart
-                        ? Math.min(nextStart + 1, SLOTS_PER_DAY)
+                        ? Math.min(nextStart + 1, slotsPerDay)
                         : endSlot;
                       updateSelectedEntry({ startSlot: nextStart, endSlot: nextEnd });
                     }}
                     className="mt-1 w-full rounded-lg border border-[#d7e6e2] bg-white px-3 py-2 text-sm"
                   >
-                    {SLOT_OPTIONS.map((slot) => (
+                    {slotOptions.map((slot) => (
                       <option key={slot.index} value={slot.index}>{slot.label}</option>
                     ))}
                   </select>
@@ -313,7 +320,7 @@ export default function DoctorAvailabilityCalendar({
                     onChange={(e) => updateSelectedEntry({ endSlot: Number(e.target.value) })}
                     className="mt-1 w-full rounded-lg border border-[#d7e6e2] bg-white px-3 py-2 text-sm"
                   >
-                    {Array.from({ length: SLOTS_PER_DAY - startSlot }, (_, offset) => startSlot + offset + 1).map((index) => (
+                    {Array.from({ length: slotsPerDay - startSlot }, (_, offset) => startSlot + offset + 1).map((index) => (
                       <option key={index} value={index}>{getEndTimeLabel(index)}</option>
                     ))}
                   </select>

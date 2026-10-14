@@ -5,7 +5,7 @@ import ScrollToTop from '@/components/scroll_to_top';
 import ScrollTopButton from '@/components/scroll_top_button';
 import RoutePrefetcher from '@/components/route_prefetcher';
 
-const GA_MEASUREMENT_ID = 'G-ZXW6122Z4R';
+const GTM_ID = 'GTM-P58DHSZX';
 
 export const metadata = {
   title: 'Star Health',

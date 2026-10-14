@@ -216,7 +216,9 @@ export default function BlogFormShell({ initial }) {
               />
             </label>
             <label className="block">
-              <span className="text-sm font-medium text-[#586971]">Upload OG image</span>
+              <span className="text-sm font-medium text-[#586971]">
+                Upload OG image <span className="font-normal text-[#8a9aa1]">(1200×630 px)</span>
+              </span>
               <input
                 type="file"
                 accept="image/*"
@@ -247,7 +249,9 @@ export default function BlogFormShell({ initial }) {
               />
             </label>
             <label className="block">
-              <span className="text-sm font-medium text-[#586971]">Upload featured image</span>
+              <span className="text-sm font-medium text-[#586971]">
+                Upload featured image <span className="font-normal text-[#8a9aa1]">(1600×900 px)</span>
+              </span>
               <input
                 type="file"
                 accept="image/*"

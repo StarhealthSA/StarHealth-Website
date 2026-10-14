@@ -4,6 +4,7 @@ import {
   formatDateLabel,
   formatTime12h,
   getDateAvailabilityEntry,
+  getDoctorSlotDuration,
   getUpcomingDateKeys,
   normalizeBreakPeriod,
   normalizeScheduleBreak,
@@ -13,11 +14,11 @@ import {
 } from '@/lib/appointments/slot-utils';
 import { getLocalizedText } from '@/lib/content/localized';
 
-function formatConsultationWindow(startSlot, endSlot) {
-  return `${formatTime12h(slotIndexToMinutes(startSlot))} - ${formatTime12h(slotIndexToMinutes(endSlot))}`;
+function formatConsultationWindow(startSlot, endSlot, duration) {
+  return `${formatTime12h(slotIndexToMinutes(startSlot, duration))} - ${formatTime12h(slotIndexToMinutes(endSlot, duration))}`;
 }
 
-export function getConsultationWindowsFromEntry(entry, scheduleBreak) {
+export function getConsultationWindowsFromEntry(entry, scheduleBreak, duration = 30) {
   if (!entry?.enabled || entry.startSlot == null || entry.endSlot == null) {
     return [];
   }
@@ -35,7 +36,7 @@ export function getConsultationWindowsFromEntry(entry, scheduleBreak) {
     .sort((a, b) => a.breakStartSlot - b.breakStartSlot);
 
   if (!breaks.length) {
-    return [formatConsultationWindow(dutyStart, dutyEnd)];
+    return [formatConsultationWindow(dutyStart, dutyEnd, duration)];
   }
 
   const windows = [];
@@ -43,13 +44,13 @@ export function getConsultationWindowsFromEntry(entry, scheduleBreak) {
 
   breaks.forEach((period) => {
     if (period.breakStartSlot > cursor) {
-      windows.push(formatConsultationWindow(cursor, period.breakStartSlot));
+      windows.push(formatConsultationWindow(cursor, period.breakStartSlot, duration));
     }
     cursor = Math.max(cursor, period.breakEndSlot);
   });
 
   if (cursor < dutyEnd) {
-    windows.push(formatConsultationWindow(cursor, dutyEnd));
+    windows.push(formatConsultationWindow(cursor, dutyEnd, duration));
   }
 
   return windows;
@@ -58,7 +59,11 @@ export function getConsultationWindowsFromEntry(entry, scheduleBreak) {
 export function getTodayConsultationWindows(doctor, date = new Date()) {
   const entry = getDateAvailabilityEntry(doctor, date);
   if (!entry) return [];
-  return getConsultationWindowsFromEntry(entry, doctor?.scheduleBreak);
+  return getConsultationWindowsFromEntry(
+    entry,
+    doctor?.scheduleBreak,
+    getDoctorSlotDuration(doctor)
+  );
 }
 
 export function getUpcomingEnabledDates(

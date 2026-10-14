@@ -205,7 +205,9 @@ export default function ServiceFormShell({
                 </select>
               </label>
               <label className="block">
-                <span className="text-sm font-medium text-[#586971]">Custom Icon Upload</span>
+                <span className="text-sm font-medium text-[#586971]">
+                  Custom Icon Upload <span className="font-normal text-[#8a9aa1]">(512×512 px)</span>
+                </span>
                 <input type="file" accept="image/*" onChange={handleIconUpload} disabled={isUploading} className="mt-1 block w-full text-sm" />
               </label>
             </div>
@@ -225,7 +227,9 @@ export default function ServiceFormShell({
             <h3 className="text-sm font-semibold text-[#002f3b]">Banner Image</h3>
             <p className="mt-1 text-xs text-[#586971]">Shown in the hero area on the service detail page only.</p>
             <label className="mt-4 block">
-              <span className="text-sm font-medium text-[#586971]">Upload Banner Image</span>
+              <span className="text-sm font-medium text-[#586971]">
+                Upload Banner Image <span className="font-normal text-[#8a9aa1]">(1600×1200 px)</span>
+              </span>
               <input type="file" accept="image/*" onChange={handleFeaturedUpload} disabled={isUploading} className="mt-1 block w-full text-sm" />
             </label>
             {form.featuredImageUrl && (
@@ -305,7 +309,9 @@ export default function ServiceFormShell({
       {tab === 'media' && (
         <div className="space-y-4">
           <label className="block">
-            <span className="text-sm font-medium text-[#586971]">Gallery Images</span>
+            <span className="text-sm font-medium text-[#586971]">
+              Gallery Images <span className="font-normal text-[#8a9aa1]">(1600×1200 px)</span>
+            </span>
             <input type="file" accept="image/*" multiple onChange={handleGalleryUpload} disabled={isUploading} className="mt-1 block w-full text-sm" />
           </label>
           {(form.galleryImages || []).length > 0 && (
