@@ -10,11 +10,13 @@ import SpecializedServices from '@/components/home/specialized_services';
 import MedTeam from '@/components/home/med_team';
 import Testimonials from '@/components/home/testomonials';
 import PrivilegeMembershipBanner from '@/components/home/privilege-membership-banner';
+import GiveawayHomeBanner from '@/components/home/giveaway-home-banner';
 import Whatnext from '@/components/what_next';
 import Mobviewform from '@/components/mob_view_form';
 import WhyChooseStarHealth from '@/components/shared/why-choose-star-health';
 import OurWorkPreview from '@/components/portfolio/our-work-preview';
 import { getFeaturedPortfolioEntries } from '@/lib/content/portfolio';
+import { GIVEAWAY } from '@/lib/giveaway/config';
 
 export const revalidate = 60;
 
@@ -80,6 +82,7 @@ export default async function HomePage() {
         <WelcomePart />
       </div>
       <PrivilegeMembershipBanner />
+      {GIVEAWAY.enabled ? <GiveawayHomeBanner /> : null}
       <Safety />
       <div id="services">
         <SpecializedServices />

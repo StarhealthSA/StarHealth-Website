@@ -9,9 +9,10 @@ import linkedin from '../assets/home/linkedin.svg';
 import snapchat from '../assets/home/snapchat.svg';
 import tiktok from '../assets/home/tiktok.svg';
 import { useTranslation } from 'react-i18next';
+import i18n from '@/i18n';
 
 function Topnav() {
-  const { i18n } = useTranslation();
+  useTranslation(); // subscribe to language changes for re-render
 
   const toggleLanguage = () => {
     const newLang = i18n.language === 'en' ? 'ar' : 'en';

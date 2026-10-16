@@ -4,6 +4,7 @@ export const PREFETCH_ROUTES = [
   '/services',
   '/doctors',
   '/offers',
+  '/giveaway',
   '/insurance',
   '/blogs',
   '/loyalty-program',
@@ -38,6 +39,10 @@ export function isNavLinkActive(href, pathname = '') {
     return pathname === '/offers' || pathname.startsWith('/offers/');
   }
 
+  if (href === '/giveaway') {
+    return pathname === '/giveaway';
+  }
+
   if (href === '/insurance') {
     return pathname === '/insurance' || pathname.startsWith('/insurance/');
   }
@@ -67,6 +72,7 @@ export const FOOTER_QUICK_LINKS = [
   { href: '/services', labelKey: 'footer.quickLink.services' },
   { href: '/doctors', labelKey: 'footer.quickLink.doctors' },
   { href: '/offers', labelKey: 'footer.quickLink.offers' },
+  { href: '/giveaway', labelKey: 'footer.quickLink.giveaway' },
   { href: '/insurance', labelKey: 'footer.quickLink.insurance' },
   { href: '/blogs', labelKey: 'footer.quickLink.blogs' },
   { href: '/loyalty-program', labelKey: 'footer.quickLink.loyalty' },

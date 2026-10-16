@@ -13,15 +13,18 @@ import phone from '../../assets/home/phone.svg';
 import mail from '../../assets/home/mail.svg';
 import biglogo from '../../assets/home/whyuslogo.png';
 import { useTranslation } from 'react-i18next';
+import i18n from '@/i18n';
 
 function Menulist({ open, setOpen }) {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     const isRTL = i18n.language === 'ar';
 
     useEffect(() => {
         if (open) {
             setOpen(false);
         }
+        // Close drawer when language (and layout direction) changes.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [i18n.language]);
 
     const toggleLanguage = () => {

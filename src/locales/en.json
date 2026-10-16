@@ -9,7 +9,8 @@
     "blogs": "Blogs",
     "loyalty": "Nujoom",
     "contact": "Contact Us",
-    "booking": "Book Appointment"
+    "booking": "Book Appointment",
+    "giveaway": "Giveaway"
   },
   "topNav": {
     "phone": "+966 505730003",
@@ -435,7 +436,8 @@
       "blogs": "Blogs",
       "loyalty": "Nujoom by Star Health",
       "contactUs": "Contact Us",
-      "privacy": "Privacy Policy"
+      "privacy": "Privacy Policy",
+      "giveaway": "Anniversary Giveaway"
     }
   },
   "doctorsPage": {
@@ -1010,5 +1012,117 @@
     "contactUs": "Contact Us",
     "adminDescription": "This admin page does not exist or you may not have access to it.",
     "backToDashboard": "Back to Dashboard"
+  },
+  "homeGiveawayBanner": {
+    "eyebrow": "Anniversary celebration",
+    "title": "Win care packages in our giveaway",
+    "description": "Celebrate one year of Star Health with exclusive prizes, anniversary packages, and an easy WhatsApp entry.",
+    "cta": "Explore the Giveaway",
+    "note": "Limited-time campaign — countdown is live."
+  },
+  "giveawayPage": {
+    "whatsappMessage": "Hello Star Health, I want to enter the anniversary giveaway.",
+    "hero": {
+      "eyebrow": "Star Health anniversary",
+      "title": "Star Health Turns One… and Celebrates with Special Gifts for You!",
+      "lead": "We are proud to celebrate a full year of caring for our community in Riyadh. Now is your chance to win one of two iPhone 18 Pro devices — two winners, one device each."
+    },
+    "countdown": {
+      "eyebrow": "Entries close in",
+      "days": "Days",
+      "hours": "Hours",
+      "minutes": "Mins",
+      "seconds": "Secs",
+      "ended": "This giveaway has ended. Thank you for celebrating with us.",
+      "sectionEyebrow": "Prize clock",
+      "sectionTitle": "The draw closes soon",
+      "sectionLead": "Every second counts — enter on WhatsApp before the clock runs out."
+    },
+    "cta": {
+      "enter": "Enter the Giveaway Now",
+      "enterNow": "Enter via WhatsApp",
+      "book": "Book Appointment",
+      "contact": "Contact Us",
+      "whatsapp": "WhatsApp"
+    },
+    "howToEnter": {
+      "eyebrow": "Simple steps",
+      "title": "How to Enter the Giveaway",
+      "lead": "We’d love to welcome you to our branch to collect your entry coupon after receiving the service that suits your needs.",
+      "steps": {
+        "s1": "Visit our branch.",
+        "s2": "Receive the service that suits your needs.",
+        "s3": "Collect your entry coupon and fill in the required details."
+      },
+      "openingDate": "Entries open on 18 October 2026.",
+      "branchLocation": "Branch Location",
+      "callNow": "Call Now"
+    },
+    "packages": {
+      "title": "Offers to Celebrate Our First Year",
+      "lead": "Special anniversary offers selected for this celebration. New creatives will appear here as they go live.",
+      "viewOffers": "Browse More Offers",
+      "empty": "Anniversary offers will appear here soon. Browse all current offers in the meantime."
+    },
+    "journey": {
+      "eyebrow": "One-year journey",
+      "title": "Built on trust, one patient at a time",
+      "lead": "From our first consultations to thousands of cared-for families, this anniversary marks a year of listening, healing, and showing up.",
+      "stats": {
+        "clients": {
+          "value": "+63K",
+          "label": "Number of clients served"
+        },
+        "satisfaction": {
+          "value": "92.5%",
+          "label": "Customer satisfaction rate"
+        }
+      },
+      "items": {
+        "m1": {
+          "year": "Opening chapter",
+          "title": "A patient-first clinic in Riyadh",
+          "body": "We opened Star Health to deliver ethical outpatient care with warmth, clarity, and clinical excellence."
+        },
+        "m2": {
+          "year": "Growing with you",
+          "title": "More specialties, same promise",
+          "body": "Family medicine, dentistry, OBG, orthopedics, and more — expanding so your care stays under one trusted roof."
+        },
+        "m3": {
+          "year": "Community trust",
+          "title": "Families choosing Star Health",
+          "body": "Patients returned for follow-ups, brought loved ones, and helped us become part of their health journey."
+        },
+        "m4": {
+          "year": "Anniversary",
+          "title": "Celebrating one year together",
+          "body": "This giveaway is our thank-you — a celebration of every visit, every recovery, and every family who trusted us."
+        }
+      }
+    },
+    "faq": {
+      "eyebrow": "Questions answered",
+      "title": "Frequently Asked Questions (FAQs)",
+      "items": {
+        "open": {
+          "question": "When does the giveaway open?",
+          "answer": "Entries open on 18 October 2026."
+        },
+        "enter": {
+          "question": "How can I enter the giveaway?",
+          "answer": "We’d love to welcome you to our center to fill out your entry coupon after receiving the service that suits your needs."
+        },
+        "winners": {
+          "question": "When will the winners be announced?",
+          "answer": "The winners will be announced on 16 December 2026."
+        },
+        "multiple": {
+          "question": "Can I enter more than once?",
+          "answer": "Yes. For more details, please contact us now."
+        }
+      }
+    },
+    "whatNext": "Enter the giveaway, explore anniversary offers, or book a consultation — we are here to celebrate this year of care with you."
   }
 }

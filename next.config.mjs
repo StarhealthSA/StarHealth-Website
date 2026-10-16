@@ -1,3 +1,8 @@
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -9,6 +14,14 @@ const nextConfig = {
     disableStaticImages: true,
   },
   webpack(config) {
+    // Force a single react-i18next instance and auto-register i18n before hooks.
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'react-i18next-original': path.resolve(__dirname, 'node_modules/react-i18next'),
+      'react-i18next': path.resolve(__dirname, 'src/lib/i18n/react-i18next-shim.js'),
+      i18next: path.resolve(__dirname, 'node_modules/i18next'),
+    };
+
     // Disable Next.js image metadata imports and @svgr for SVGs so
     // `import icon from './icon.svg'` returns a URL string (Vite-compatible).
     config.module.rules.forEach((rule) => {
