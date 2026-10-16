@@ -4,6 +4,13 @@ export const GIVEAWAY_TERMS = {
   titleEn: 'Terms and Conditions',
   scanLabelEn: 'scan for location',
   scanLabelAr: 'امسح للموقع',
+  permitLabelEn: 'Competition Permit No.',
+  permitLabelAr: 'رقم تصريح المسابقة',
+  permitNumber: '13705',
+  licenseeLabelEn: 'Licensee',
+  licenseeLabelAr: 'المرخص له',
+  licenseeAr: 'شركة الصحة النجمية الطبية',
+  licenseeEn: 'Star Health Medical Company',
   itemsAr: [
     'يجب على المشاركين كتابة الاسم ورقم الجوال ورقم الهوية بوضوح، والإجابة بشكل صحيح عن الأسئلة الموجودة في القسيمة.',
     'تبدأ فترة العرض من 18 أكتوبر 2026 وحتى 16 ديسمبر 2026.',

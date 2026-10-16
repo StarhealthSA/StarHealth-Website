@@ -76,13 +76,13 @@ export default async function HomePage() {
       <div className="sm:hidden">
         <Mobviewform />
       </div>
+      {GIVEAWAY.enabled ? <GiveawayHomeBanner /> : null}
       <WhyChooseStarHealth />
       <OurWorkPreview entries={featuredPortfolio} settings={ourWorkSettings} />
       <div id="about">
         <WelcomePart />
       </div>
       <PrivilegeMembershipBanner />
-      {GIVEAWAY.enabled ? <GiveawayHomeBanner /> : null}
       <Safety />
       <div id="services">
         <SpecializedServices />

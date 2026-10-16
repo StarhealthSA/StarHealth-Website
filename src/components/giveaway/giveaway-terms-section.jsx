@@ -18,6 +18,12 @@ export default function GiveawayTermsSection() {
   const title = isArabic ? GIVEAWAY_TERMS.titleAr : GIVEAWAY_TERMS.titleEn;
   const items = isArabic ? GIVEAWAY_TERMS.itemsAr : GIVEAWAY_TERMS.itemsEn;
   const scanLabel = isArabic ? GIVEAWAY_TERMS.scanLabelAr : GIVEAWAY_TERMS.scanLabelEn;
+  const permitLabel = isArabic
+    ? GIVEAWAY_TERMS.permitLabelAr
+    : GIVEAWAY_TERMS.permitLabelEn;
+  const licenseeLabel = isArabic
+    ? GIVEAWAY_TERMS.licenseeLabelAr
+    : GIVEAWAY_TERMS.licenseeLabelEn;
 
   return (
     <section className="giveaway-terms" id="terms">
@@ -62,6 +68,24 @@ export default function GiveawayTermsSection() {
                 <li key={item}>{item}</li>
               ))}
             </ol>
+
+            <div className="giveaway-terms__permit">
+              <p>
+                <span className="giveaway-terms__permit-label">{permitLabel}:</span>{' '}
+                <span className="giveaway-terms__permit-value">
+                  {GIVEAWAY_TERMS.permitNumber}
+                </span>
+              </p>
+              <p>
+                <span className="giveaway-terms__permit-label">{licenseeLabel}:</span>{' '}
+                <span className="giveaway-terms__permit-value" dir="rtl" lang="ar">
+                  {GIVEAWAY_TERMS.licenseeAr}
+                </span>
+                <span className="giveaway-terms__permit-en">
+                  ({GIVEAWAY_TERMS.licenseeEn})
+                </span>
+              </p>
+            </div>
           </div>
         </div>
       </Reveal>

@@ -6252,6 +6252,42 @@ html {
   text-align: right;
 }
 
+.giveaway-terms__permit {
+  margin-top: 1.35rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid rgba(143, 29, 50, 0.18);
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: #2a2a2a;
+}
+
+.giveaway-terms__permit p {
+  margin: 0;
+}
+
+.giveaway-terms__permit p + p {
+  margin-top: 0.4rem;
+}
+
+.giveaway-terms__permit-label {
+  font-weight: 700;
+  color: #8f1d32;
+}
+
+.giveaway-terms__permit-value {
+  font-weight: 600;
+}
+
+.giveaway-terms__permit-en {
+  display: inline-block;
+  margin-inline-start: 0.35rem;
+  color: #586971;
+}
+
+.giveaway-terms__block[dir='rtl'] .giveaway-terms__permit {
+  text-align: right;
+}
+
 /* Homepage teaser — full-bleed iPhone banner */
 .giveaway-home__panel {
   position: relative;
