@@ -1,6 +1,7 @@
 import Topnav from '@/components/top_nav';
 import Header from '@/components/header/header';
 import Footer from '@/components/footer';
+import FloatingGiftButton from '@/components/floating-gift-button';
 import FloatingWhatsAppButton from '@/components/floating-whatsapp-button';
 import { ContentProvider } from '@/contexts/content-context';
 import { getPublishedDoctors } from '@/lib/content/doctors';
@@ -26,6 +27,7 @@ export default async function SiteLayout({ children }) {
       <Header />
       {children}
       <Footer />
+      <FloatingGiftButton />
       <FloatingWhatsAppButton />
     </ContentProvider>
   );

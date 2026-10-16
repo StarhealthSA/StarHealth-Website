@@ -25,6 +25,10 @@
     "label": "Contact us on WhatsApp",
     "message": "Hello Star Health, I would like to know more."
   },
+  "floatingGift": {
+    "label": "Open anniversary giveaway",
+    "badge": "Win"
+  },
   "bookingForm": {
     "title": "Book an Appointment",
     "subtitle": "Your Better Health, Just a Click Away",
