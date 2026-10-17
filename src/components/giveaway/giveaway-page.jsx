@@ -10,7 +10,8 @@ import GiveawayOffersSection from '@/components/giveaway/giveaway-offers-section
 import GiveawayTermsSection from '@/components/giveaway/giveaway-terms-section';
 import { GIVEAWAY } from '@/lib/giveaway/config';
 import { staggerDelay } from '@/lib/stagger_delay';
-import heroImage from '@/assets/giveaway/hero-iphones.png';
+import heroImageEn from '@/assets/giveaway/hero-iphones.png';
+import heroImageAr from '@/assets/giveaway/iphone-banner-arabic.png';
 import journeyClinic from '@/assets/giveaway/star.jpeg';
 import journeyCare from '@/assets/home/treatment.jpg';
 import journeyFamily from '@/assets/home/Designed for Family Healthcare Journeys.png';
@@ -21,7 +22,9 @@ function assetUrl(asset) {
 }
 
 export default function GiveawayPage({ offers = [] }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isArabic = i18n.language?.startsWith('ar');
+  const heroImage = isArabic ? heroImageAr : heroImageEn;
 
   const steps = [
     t('giveawayPage.howToEnter.steps.s1'),

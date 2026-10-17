@@ -6,16 +6,20 @@ import NavLink from '@/components/nav_link';
 import GiveawayCountdown from '@/components/giveaway/giveaway-countdown';
 import { useTranslation } from 'react-i18next';
 import { GIVEAWAY } from '@/lib/giveaway/config';
-import bannerImage from '@/assets/giveaway/hero-iphones-home.png';
+import bannerImageEn from '@/assets/giveaway/hero-iphones-home.png';
+import bannerImageAr from '@/assets/giveaway/arabic-home-banner.png';
 
 function assetUrl(asset) {
   return typeof asset === 'string' ? asset : asset?.src || '';
 }
 
 export default function GiveawayHomeBanner() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   if (!GIVEAWAY.enabled) return null;
+
+  const isArabic = i18n.language?.startsWith('ar');
+  const bannerImage = isArabic ? bannerImageAr : bannerImageEn;
 
   const countdownLabels = {
     eyebrow: t('giveawayPage.countdown.eyebrow'),
