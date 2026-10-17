@@ -43,7 +43,6 @@ export default function GiveawayOffersSection({ offers = [] }) {
               <GiveawayOfferCard
                 offer={offer}
                 bookLabel={t('offersPage.bookAppointment')}
-                validUntilLabel={t('offersPage.validUntil')}
                 featuredLabel={t('offersPage.featured')}
                 language={i18n.language}
                 onBook={() => openBooking(offer.id)}
