@@ -9,6 +9,7 @@ import GiveawayFaqSection from '@/components/giveaway/giveaway-faq-section';
 import GiveawayOffersSection from '@/components/giveaway/giveaway-offers-section';
 import GiveawayTermsSection from '@/components/giveaway/giveaway-terms-section';
 import { GIVEAWAY } from '@/lib/giveaway/config';
+import { pad2Locale } from '@/lib/i18n/digits';
 import { staggerDelay } from '@/lib/stagger_delay';
 import heroImageEn from '@/assets/giveaway/hero-iphones.png';
 import heroImageAr from '@/assets/giveaway/iphone-banner-arabic.png';
@@ -25,6 +26,7 @@ export default function GiveawayPage({ offers = [] }) {
   const { t, i18n } = useTranslation();
   const isArabic = i18n.language?.startsWith('ar');
   const heroImage = isArabic ? heroImageAr : heroImageEn;
+  const language = i18n.language;
 
   const steps = [
     t('giveawayPage.howToEnter.steps.s1'),
@@ -123,7 +125,7 @@ export default function GiveawayPage({ offers = [] }) {
             >
               <li className="giveaway-enter__step">
                 <span className="giveaway-enter__index" aria-hidden>
-                  {String(index + 1).padStart(2, '0')}
+                  {pad2Locale(index + 1, language)}
                 </span>
                 <h3 className="giveaway-enter__step-title">{step}</h3>
               </li>
@@ -215,7 +217,7 @@ export default function GiveawayPage({ offers = [] }) {
                   </div>
 
                   <span className="giveaway-journey__node" aria-hidden>
-                    {String(index + 1).padStart(2, '0')}
+                    {pad2Locale(index + 1, language)}
                   </span>
 
                   <div className="giveaway-journey__media">

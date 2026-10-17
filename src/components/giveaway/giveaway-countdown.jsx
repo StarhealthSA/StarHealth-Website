@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { getGiveawayEndDate } from '@/lib/giveaway/config';
+import { pad2Locale, toLocaleDigits } from '@/lib/i18n/digits';
 
 const DROP_MS = 560;
 
@@ -15,10 +17,6 @@ function getRemaining(endDate) {
     seconds: totalSeconds % 60,
     expired: diff <= 0,
   };
-}
-
-function pad2(value) {
-  return String(value).padStart(2, '0');
 }
 
 function DropDigit({ digit }) {
@@ -67,8 +65,8 @@ function DropDigit({ digit }) {
   );
 }
 
-function FlipUnit({ value, label }) {
-  const digits = pad2(value).split('');
+function FlipUnit({ value, label, language }) {
+  const digits = pad2Locale(value, language).split('');
 
   return (
     <div className="flip-unit">
@@ -81,7 +79,7 @@ function FlipUnit({ value, label }) {
   );
 }
 
-function FlipClock({ remaining, labels, className = '' }) {
+function FlipClock({ remaining, labels, className = '', language }) {
   const units = [
     { key: 'days', value: remaining.days, label: labels.days },
     { key: 'hours', value: remaining.hours, label: labels.hours },
@@ -96,14 +94,20 @@ function FlipClock({ remaining, labels, className = '' }) {
       aria-label={labels.eyebrow}
     >
       {units.map((unit) => (
-        <FlipUnit key={unit.key} value={unit.value} label={unit.label} />
+        <FlipUnit
+          key={unit.key}
+          value={unit.value}
+          label={unit.label}
+          language={language}
+        />
       ))}
     </div>
   );
 }
 
 /** Stable SSR placeholder — avoids Date.now() hydration mismatches. */
-function FlipClockPlaceholder({ labels, className = '' }) {
+function FlipClockPlaceholder({ labels, className = '', language }) {
+  const zero = toLocaleDigits('0', language);
   const units = [
     { key: 'days', label: labels.days },
     { key: 'hours', label: labels.hours },
@@ -120,10 +124,10 @@ function FlipClockPlaceholder({ labels, className = '' }) {
         <div key={unit.key} className="flip-unit">
           <div className="flip-unit__digits">
             <div className="flip-digit">
-              <span className="flip-digit__layer flip-digit__layer--in">0</span>
+              <span className="flip-digit__layer flip-digit__layer--in">{zero}</span>
             </div>
             <div className="flip-digit">
-              <span className="flip-digit__layer flip-digit__layer--in">0</span>
+              <span className="flip-digit__layer flip-digit__layer--in">{zero}</span>
             </div>
           </div>
           <span className="flip-unit__label">{unit.label}</span>
@@ -138,6 +142,8 @@ export default function GiveawayCountdown({
   className = '',
   variant = 'default',
 }) {
+  const { i18n } = useTranslation();
+  const language = i18n.language;
   const [remaining, setRemaining] = useState(null);
 
   useEffect(() => {
@@ -153,7 +159,13 @@ export default function GiveawayCountdown({
   // Wait until client mount so SSR HTML matches first client paint.
   if (!remaining) {
     if (isFlip) {
-      return <FlipClockPlaceholder labels={labels} className={className} />;
+      return (
+        <FlipClockPlaceholder
+          labels={labels}
+          className={className}
+          language={language}
+        />
+      );
     }
     return (
       <div className={`giveaway-countdown ${className}`} aria-hidden>
@@ -161,7 +173,9 @@ export default function GiveawayCountdown({
         <div className="giveaway-countdown__grid">
           {[labels.days, labels.hours, labels.minutes, labels.seconds].map((label) => (
             <div key={label} className="giveaway-countdown__unit">
-              <span className="giveaway-countdown__value">00</span>
+              <span className="giveaway-countdown__value">
+                {pad2Locale(0, language)}
+              </span>
               <span className="giveaway-countdown__label">{label}</span>
             </div>
           ))}
@@ -179,7 +193,14 @@ export default function GiveawayCountdown({
   }
 
   if (isFlip) {
-    return <FlipClock remaining={remaining} labels={labels} className={className} />;
+    return (
+      <FlipClock
+        remaining={remaining}
+        labels={labels}
+        className={className}
+        language={language}
+      />
+    );
   }
 
   return (
@@ -193,7 +214,9 @@ export default function GiveawayCountdown({
           { key: 'seconds', value: remaining.seconds, label: labels.seconds },
         ].map((unit) => (
           <div key={unit.key} className="giveaway-countdown__unit">
-            <span className="giveaway-countdown__value">{pad2(unit.value)}</span>
+            <span className="giveaway-countdown__value">
+              {pad2Locale(unit.value, language)}
+            </span>
             <span className="giveaway-countdown__label">{unit.label}</span>
           </div>
         ))}

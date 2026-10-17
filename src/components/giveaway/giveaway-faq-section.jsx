@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Reveal from '@/components/reveal';
 import { GIVEAWAY, getGiveawayEntryWhatsAppUrl } from '@/lib/giveaway/config';
+import { pad2Locale } from '@/lib/i18n/digits';
 import { staggerDelay } from '@/lib/stagger_delay';
 
 const FAQ_KEYS = ['open', 'enter', 'winners', 'multiple'];
@@ -51,7 +52,7 @@ export default function GiveawayFaqSection() {
                   onClick={() => setActiveIndex(isOpen ? null : index)}
                 >
                   <span className="giveaway-faq__index" aria-hidden>
-                    {String(index + 1).padStart(2, '0')}
+                    {pad2Locale(index + 1, i18n.language)}
                   </span>
                   <span className="giveaway-faq__question-text">{item.question}</span>
                   <span className="giveaway-faq__chevron" aria-hidden>
