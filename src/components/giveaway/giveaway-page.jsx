@@ -11,7 +11,7 @@ import GiveawayTermsSection from '@/components/giveaway/giveaway-terms-section';
 import { GIVEAWAY } from '@/lib/giveaway/config';
 import { staggerDelay } from '@/lib/stagger_delay';
 import heroImage from '@/assets/giveaway/hero-iphones.png';
-import journeyClinic from '@/assets/home/headerimage.jpg';
+import journeyClinic from '@/assets/giveaway/star.jpeg';
 import journeyCare from '@/assets/home/treatment.jpg';
 import journeyFamily from '@/assets/home/Designed for Family Healthcare Journeys.png';
 import journeyAnniversary from '@/assets/giveaway/-2.jpg';
