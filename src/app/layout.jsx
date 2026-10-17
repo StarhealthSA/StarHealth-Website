@@ -33,7 +33,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="ar" dir="rtl">
       <head>
         {/* Google Tag Manager */}
         <Script id="gtm-head" strategy="beforeInteractive">{`

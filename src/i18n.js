@@ -11,7 +11,7 @@ const resources = {
 if (!i18n.isInitialized) {
   i18n.use(initReactI18next).init({
     resources,
-    lng: 'en',
+    lng: 'ar',
     fallbackLng: 'en',
     // Inline resources: sync init so SSR and client render the same translated text.
     initImmediate: false,
