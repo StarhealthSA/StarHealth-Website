@@ -6368,3 +6368,49 @@ html {
   justify-content: center;
 }
 
+@media (max-width: 639px) {
+  .giveaway-home__timer {
+    max-width: none;
+  }
+
+  .giveaway-home .flip-clock,
+  .giveaway-home .flip-clock--compact {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    overflow: visible;
+  }
+
+  .giveaway-home .flip-unit {
+    gap: 0.55rem;
+    padding: 0.9rem 0.55rem 0.75rem;
+    border-radius: 1.1rem;
+    background: rgba(255, 255, 255, 0.62);
+    box-shadow: 0 10px 24px rgba(42, 6, 16, 0.06);
+  }
+
+  .giveaway-home .flip-unit__digits {
+    justify-content: center;
+    gap: 0.4rem;
+  }
+
+  .giveaway-home .flip-clock--compact .flip-digit,
+  .giveaway-home .flip-digit {
+    --flip-w: 3.15rem;
+    --flip-h: 3.7rem;
+    --flip-radius: 0.55rem;
+  }
+
+  .giveaway-home .flip-digit__layer {
+    font-size: 1.85rem;
+    letter-spacing: 0;
+  }
+
+  .giveaway-home .flip-clock--compact .flip-unit__label,
+  .giveaway-home .flip-unit__label {
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    color: #6b5a55;
+  }
+}
+
