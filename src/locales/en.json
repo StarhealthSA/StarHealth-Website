@@ -1055,7 +1055,7 @@
       "lead": "We’d love to welcome you to our branch to collect your entry coupon after receiving the service that suits your needs.",
       "steps": {
         "s1": "Visit our branch.",
-        "s2": "Receive the service that suits your needs.",
+        "s2": "Answer the competition question.",
         "s3": "Collect your entry coupon and fill in the required details."
       },
       "openingDate": "Entries open on 18 October 2026.",
@@ -1123,7 +1123,7 @@
         },
         "multiple": {
           "question": "Can I enter more than once?",
-          "answer": "Yes. For more details, please contact us now."
+          "answer": "For more details, please contact us now."
         }
       }
     },
