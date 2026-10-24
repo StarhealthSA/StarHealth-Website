@@ -5886,22 +5886,22 @@ html {
     min-height: 14.5rem;
     aspect-ratio: auto;
   }
-}
 
-[dir='rtl'] .giveaway-journey__row--left .giveaway-journey__card {
-  grid-column: 3;
-}
+  [dir='rtl'] .giveaway-journey__row--left .giveaway-journey__card {
+    grid-column: 3;
+  }
 
-[dir='rtl'] .giveaway-journey__row--left .giveaway-journey__media {
-  grid-column: 1;
-}
+  [dir='rtl'] .giveaway-journey__row--left .giveaway-journey__media {
+    grid-column: 1;
+  }
 
-[dir='rtl'] .giveaway-journey__row--right .giveaway-journey__media {
-  grid-column: 3;
-}
+  [dir='rtl'] .giveaway-journey__row--right .giveaway-journey__media {
+    grid-column: 3;
+  }
 
-[dir='rtl'] .giveaway-journey__row--right .giveaway-journey__card {
-  grid-column: 1;
+  [dir='rtl'] .giveaway-journey__row--right .giveaway-journey__card {
+    grid-column: 1;
+  }
 }
 
 .giveaway-faq {
