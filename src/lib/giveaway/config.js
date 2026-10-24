@@ -1,8 +1,10 @@
 /** Anniversary giveaway campaign settings. */
 export const GIVEAWAY = {
   enabled: true,
-  /** ISO datetime — ends in Riyadh local time (UTC+3). */
-  endsAt: '2026-11-30T23:59:59+03:00',
+  /** Entries open — Riyadh local time (UTC+3). */
+  startsAt: '2026-10-18T00:00:00+03:00',
+  /** Entries close — 16 December 2026, 11:59 PM Riyadh (UTC+3). */
+  endsAt: '2026-12-16T23:59:59+03:00',
   whatsappNumber: '966505730003',
   phoneTel: '+966505730003',
   path: '/giveaway',
@@ -15,6 +17,10 @@ export function getGiveawayEntryWhatsAppUrl(message) {
     message || 'Hello Star Health, I want to enter the anniversary giveaway.'
   );
   return `https://wa.me/${GIVEAWAY.whatsappNumber}?text=${text}`;
+}
+
+export function getGiveawayStartDate() {
+  return new Date(GIVEAWAY.startsAt);
 }
 
 export function getGiveawayEndDate() {
