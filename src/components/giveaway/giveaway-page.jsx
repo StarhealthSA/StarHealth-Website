@@ -76,7 +76,6 @@ export default function GiveawayPage({ offers = [] }) {
         className="giveaway-hero"
         style={{ backgroundImage: `url(${assetUrl(heroImage)})` }}
       >
-        <div className="giveaway-hero__shade" aria-hidden />
         <div className="giveaway-hero__inner">
           <Reveal>
             <p className="giveaway-hero__eyebrow">{t('giveawayPage.hero.eyebrow')}</p>
