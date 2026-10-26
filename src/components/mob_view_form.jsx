@@ -15,6 +15,7 @@ import {
   trackAppointmentBooked,
 } from '@/lib/analytics/track-appointment-booked';
 import { redirectToThankYou } from '@/lib/booking/thank-you-access';
+import { BOOKING_PHONE_MAX_LENGTH, sanitizeBookingPhone } from '@/lib/booking/phone';
 
 function Mobviewform() {
   const { t, i18n } = useTranslation();
@@ -44,7 +45,8 @@ function Mobviewform() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const nextValue = name === 'phonenumber' ? sanitizeBookingPhone(value) : value;
+    setFormData((prev) => ({ ...prev, [name]: nextValue }));
   };
 
   const handleServiceChange = (value) => {
@@ -183,6 +185,8 @@ function Mobviewform() {
             value={formData.phonenumber}
             onChange={handleChange}
             type="tel"
+            inputMode="numeric"
+            maxLength={BOOKING_PHONE_MAX_LENGTH}
             placeholder={t('bookingForm.yourPhone')}
             className={`w-full border border-[#FFFFFF66] rounded-lg bg-transparent text-white placeholder-white font-inter text-base p-3 outline-none ${isRTL ? 'text-right' : 'text-left'}`}
             required
