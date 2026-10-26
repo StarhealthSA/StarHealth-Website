@@ -1,7 +1,7 @@
 import { getAdminDb, isFirebaseAdminConfigured } from '@/lib/firebase/admin';
 import {
   buildSlotAvailability,
-  doctorHasAvailabilitySchedule,
+  doctorHasBookableUpcomingSchedule,
   formatDateKey,
   formatDateLabel,
   getDateAvailabilityEntry,
@@ -55,7 +55,7 @@ export async function getDoctorAvailableDates(doctorId) {
   const doctor = await getDoctorById(doctorId);
   if (!doctor) throw new Error('Doctor not found');
 
-  if (!doctorHasAvailabilitySchedule(doctor)) {
+  if (!doctorHasBookableUpcomingSchedule(doctor)) {
     return { scheduleMode: 'open', dates: [] };
   }
 
@@ -139,10 +139,10 @@ export async function createAppointment(payload, { source = 'website', read = fa
   const doctor = await getDoctorById(doctorId);
   if (!doctor) throw new Error('Doctor not found');
 
-  const hasSchedule = doctorHasAvailabilitySchedule(doctor);
+  const hasBookableSchedule = doctorHasBookableUpcomingSchedule(doctor);
   const now = new Date().toISOString();
 
-  if (!hasSchedule) {
+  if (!hasBookableSchedule) {
     const docId = openAppointmentDocId(doctorId);
     await db.collection(COLLECTION).doc(docId).set({
       id: docId,
@@ -283,7 +283,7 @@ export async function confirmOfferBooking(id, payload = {}) {
 
   const doctorName = payload.doctorName || doctor.name?.en || '';
   const now = new Date().toISOString();
-  const hasSchedule = doctorHasAvailabilitySchedule(doctor);
+  const hasBookableSchedule = doctorHasBookableUpcomingSchedule(doctor);
 
   let nextData = {
     ...existing,
@@ -301,7 +301,7 @@ export async function confirmOfferBooking(id, payload = {}) {
     updatedAt: now,
   };
 
-  if (!hasSchedule) {
+  if (!hasBookableSchedule) {
     nextData = {
       ...nextData,
       date: '',
