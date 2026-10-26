@@ -15,6 +15,7 @@ import {
   trackAppointmentBooked,
 } from '@/lib/analytics/track-appointment-booked';
 import { redirectToThankYou } from '@/lib/booking/thank-you-access';
+import { BOOKING_PHONE_MAX_LENGTH, sanitizeBookingPhone } from '@/lib/booking/phone';
 
 export default function AppointmentBookingForm({
   preselectedDoctorId = '',
@@ -53,7 +54,8 @@ export default function AppointmentBookingForm({
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const nextValue = name === 'phonenumber' ? sanitizeBookingPhone(value) : value;
+    setFormData((prev) => ({ ...prev, [name]: nextValue }));
   };
 
   const handleSubmit = async (e) => {
@@ -167,6 +169,8 @@ export default function AppointmentBookingForm({
               value={formData.phonenumber}
               onChange={handleChange}
               type="tel"
+              inputMode="numeric"
+              maxLength={BOOKING_PHONE_MAX_LENGTH}
               required
               placeholder={t('doctorModal.enterPhone')}
               className={`w-full rounded-lg border border-[#DAD8D7] px-4 py-3 text-sm text-[#687276] ${isRTL ? 'text-right' : 'text-left'}`}
