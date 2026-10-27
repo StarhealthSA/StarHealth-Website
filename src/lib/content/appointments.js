@@ -125,16 +125,20 @@ export async function createAppointment(payload, { source = 'website', read = fa
     date,
     slotIndex,
     slotLabel,
-    patientName,
-    phone,
-    age,
     speciality,
     doctorName,
   } = payload;
 
+  const patientName = String(payload.patientName || '').trim();
+  const phone = String(payload.phone || '').trim();
+  const age = String(payload.age || '').trim();
+
   if (!doctorId) {
     throw new Error('Doctor is required');
   }
+  if (!patientName) throw new Error('Full name is required');
+  if (!phone) throw new Error('Phone number is required');
+  if (!age) throw new Error('Age group is required');
 
   const doctor = await getDoctorById(doctorId);
   if (!doctor) throw new Error('Doctor not found');
@@ -151,9 +155,9 @@ export async function createAppointment(payload, { source = 'website', read = fa
       date: '',
       slotIndex: null,
       slotLabel: 'To be confirmed',
-      patientName: patientName || '',
-      phone: phone || '',
-      age: age || '',
+      patientName,
+      phone,
+      age,
       speciality: speciality || '',
       status: 'booked',
       unscheduled: true,
@@ -187,9 +191,9 @@ export async function createAppointment(payload, { source = 'website', read = fa
       date,
       slotIndex: Number(slotIndex),
       slotLabel: slotLabel || slot.label,
-      patientName: patientName || '',
-      phone: phone || '',
-      age: age || '',
+      patientName,
+      phone,
+      age,
       speciality: speciality || '',
       status: 'booked',
       unscheduled: false,
