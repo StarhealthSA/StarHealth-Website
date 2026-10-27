@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAdminAuth } from '@/contexts/admin-auth-context';
 import AdminPageLoader from '@/components/admin/admin-page-loader';
+import PasswordInput from '@/components/admin/password-input';
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -73,18 +74,18 @@ export default function AdminLoginPage() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            autoComplete="username"
             className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
           />
         </label>
 
         <label className="mt-4 block">
           <span className="text-sm font-medium text-[#586971]">Password</span>
-          <input
-            type="password"
+          <PasswordInput
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
+            autoComplete="current-password"
           />
         </label>
 

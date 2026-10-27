@@ -23,11 +23,14 @@ export default function ServiceAbout({ service }) {
                   title={t('serviceDetail.aboutService')}
                   description={t('serviceDetail.aboutLead')}
                   align="start"
+                  className="max-w-none"
                 />
               </Reveal>
               <Reveal delay={80}>
-                <div className="service-landing-prose mt-6">
-                  <p className="whitespace-pre-line">{service.displayFullDescription}</p>
+                <div className="service-landing-prose service-landing-prose--about mt-6 w-full">
+                  <p className="whitespace-pre-line text-justify text-base font-normal leading-7">
+                    {service.displayFullDescription}
+                  </p>
                 </div>
               </Reveal>
             </div>
@@ -49,13 +52,15 @@ export default function ServiceAbout({ service }) {
                 label={t('serviceDetail.overview')}
                 title={t('serviceDetail.aboutService')}
                 description={t('serviceDetail.aboutLead')}
-                align="center"
-                className="max-w-3xl"
+                align="start"
+                className="max-w-none w-full"
               />
             </Reveal>
             <Reveal delay={80}>
-              <div className="service-landing-prose mx-auto mt-10 max-w-3xl text-center">
-                <p className="whitespace-pre-line">{service.displayFullDescription}</p>
+              <div className="service-landing-prose service-landing-prose--about mt-8 w-full">
+                <p className="whitespace-pre-line text-justify text-base font-normal leading-7">
+                  {service.displayFullDescription}
+                </p>
               </div>
             </Reveal>
           </>

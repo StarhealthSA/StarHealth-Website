@@ -4,6 +4,8 @@ import { getPublishedDoctors } from '@/lib/content/doctors';
 import { getServiceBySlug } from '@/lib/content/services';
 import { getActiveSpecializations } from '@/lib/content/specializations';
 import { getLocalizedText } from '@/lib/content/localized';
+import { getPublishedPortfolioEntries } from '@/lib/content/portfolio';
+import { resolvePortfolioCategoryForService } from '@/lib/content/portfolio-categories';
 
 export const revalidate = 60;
 
@@ -28,9 +30,14 @@ export default async function ServiceDetailPage({ params }) {
     notFound();
   }
 
-  const [doctors, specializations] = await Promise.all([
+  const portfolioCategory = resolvePortfolioCategoryForService(service);
+
+  const [doctors, specializations, portfolioEntries] = await Promise.all([
     getPublishedDoctors(),
     getActiveSpecializations(),
+    portfolioCategory
+      ? getPublishedPortfolioEntries({ category: portfolioCategory })
+      : Promise.resolve([]),
   ]);
 
   return (
@@ -38,6 +45,8 @@ export default async function ServiceDetailPage({ params }) {
       service={service}
       doctors={doctors}
       specializations={specializations}
+      portfolioEntries={portfolioEntries}
+      portfolioCategory={portfolioCategory}
     />
   );
 }

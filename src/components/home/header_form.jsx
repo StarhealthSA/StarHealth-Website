@@ -14,6 +14,7 @@ import {
   trackAppointmentBooked,
 } from '@/lib/analytics/track-appointment-booked';
 import { redirectToThankYou } from '@/lib/booking/thank-you-access';
+import { BOOKING_PHONE_MAX_LENGTH, sanitizeBookingPhone } from '@/lib/booking/phone';
 
 function HeaderForm() {
   const { t, i18n } = useTranslation();
@@ -43,7 +44,8 @@ function HeaderForm() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const nextValue = name === 'phonenumber' ? sanitizeBookingPhone(value) : value;
+    setFormData((prev) => ({ ...prev, [name]: nextValue }));
   };
 
   const handleServiceChange = (value) => {
@@ -182,6 +184,8 @@ function HeaderForm() {
             <input
               name='phonenumber'
               type="tel"
+              inputMode="numeric"
+              maxLength={BOOKING_PHONE_MAX_LENGTH}
               value={formData.phonenumber}
               onChange={handleChange}
               placeholder={t('bookingForm.yourPhone')}

@@ -43,6 +43,12 @@ const SKIP_KEYS = new Set([
   'slotDurationMinutes',
   'logoUrl',
   'websiteUrl',
+  'iconUrl',
+  'whatsappNumber',
+  'prefix',
+  'suffix',
+  'decimals',
+  'value',
 ]);
 
 export function isLocalizedField(value) {

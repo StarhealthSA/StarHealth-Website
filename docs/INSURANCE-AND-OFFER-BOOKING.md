@@ -251,3 +251,28 @@ Confirming in admin (**assign doctor**) does **not** send a second email today. 
 3. Open **Admin → Bookings → Offer Bookings** (badge should show if unread)
 4. Open the row → assign doctor & slot → **Confirm booking**
 5. Verify it appears under **Active** with status **Booking confirmed**
+
+---
+
+## 6. Why Choose Star Health (Home + About)
+
+### Placement
+- Home: immediately after Hero
+- About: immediately after About hero
+- One shared component; one CMS source
+
+### Includes
+- Approved EN/AR body copy
+- Animated proof counters: **+63K** clients, **92.5%** satisfaction
+- **Book Now** → opens appointment booking modal
+- **WhatsApp** → unified clinic number (`966505730003` by default)
+
+### Admin
+**Admin → Why Choose**
+- Edit title, paragraphs (EN/AR)
+- Edit counter values, prefixes/suffixes, labels, optional icons
+- Edit Book Now / WhatsApp labels, number, prefilled message
+
+Firestore: `siteSettings/whyChoose`
+
+Fallbacks live in `src/locales/*/whyChooseStarHealth` and `src/lib/content/why-choose-defaults.js`.

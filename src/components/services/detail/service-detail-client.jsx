@@ -7,6 +7,8 @@ import { resolveServiceBannerImage, resolveServiceIcon } from '@/lib/content/ser
 import { normalizeMarketing } from '@/lib/content/service-marketing';
 import { getServiceMatchedDoctors } from '@/lib/content/service-doctors';
 import AppointmentModal from '@/components/doctors/appointment-modal';
+import ServicePortfolioSection from '@/components/portfolio/service-portfolio-section';
+import { getPortfolioCategoryLabel } from '@/lib/content/portfolio-categories';
 import ServiceBanner from './service_banner';
 import ServiceAbout from './service_about';
 import ServiceProcedure from './service_procedure';
@@ -24,6 +26,9 @@ export default function ServiceDetailClient({
   doctors = [],
   specializations = [],
   childSpecializations = [],
+  portfolioEntries = [],
+  portfolioCategory = null,
+  portfolioCategoryLabel = '',
 }) {
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
@@ -60,6 +65,11 @@ export default function ServiceDetailClient({
     [childSpecializations, specializations, rawService]
   );
 
+  const resolvedCategoryLabel = portfolioCategoryLabel
+    || (portfolioCategory
+      ? getPortfolioCategoryLabel(portfolioCategory, lang)
+      : '');
+
   const showWhatsApp = marketing.whatsappEnabled !== false;
 
   const hasTestimonials =
@@ -85,6 +95,10 @@ export default function ServiceDetailClient({
       {matchedDoctors.length > 0 && (
         <ServiceDoctors matchedDoctors={matchedDoctors} lang={lang} />
       )}
+      <ServicePortfolioSection
+        entries={portfolioEntries}
+        categoryLabel={resolvedCategoryLabel}
+      />
       <ServiceProcedure service={service} lang={lang} />
       <ServiceRecovery service={service} lang={lang} />
       <ServiceGallery service={service} />

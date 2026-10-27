@@ -5,7 +5,13 @@ import { useAdminAuth } from '@/contexts/admin-auth-context';
 import { translateSingleText } from '@/lib/admin-translate';
 import notify from '@/lib/ui/notify';
 
-export default function LocalizedInput({ label, value, onChange, multiline = false }) {
+export default function LocalizedInput({
+  label,
+  value,
+  onChange,
+  multiline = false,
+  placeholder = null,
+}) {
   const { getIdToken } = useAdminAuth();
   const [translating, setTranslating] = useState(false);
   const Tag = multiline ? 'textarea' : 'input';
@@ -45,6 +51,7 @@ export default function LocalizedInput({ label, value, onChange, multiline = fal
             value={value?.en || ''}
             onChange={(e) => onChange({ ...value, en: e.target.value })}
             rows={multiline ? 3 : undefined}
+            placeholder={placeholder?.en || ''}
             className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
           />
         </label>
@@ -54,6 +61,7 @@ export default function LocalizedInput({ label, value, onChange, multiline = fal
             value={value?.ar || ''}
             onChange={(e) => onChange({ ...value, ar: e.target.value })}
             rows={multiline ? 3 : undefined}
+            placeholder={placeholder?.ar || ''}
             dir="rtl"
             className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
           />

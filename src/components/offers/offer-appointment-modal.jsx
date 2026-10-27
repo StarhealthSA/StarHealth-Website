@@ -12,6 +12,7 @@ import {
   trackAppointmentBooked,
 } from '@/lib/analytics/track-appointment-booked';
 import notify from '@/lib/ui/notify';
+import { BOOKING_PHONE_MAX_LENGTH, sanitizeBookingPhone } from '@/lib/booking/phone';
 
 const AGE_RANGE_KEYS = [
   'ageRanges.1-10',
@@ -67,7 +68,8 @@ export default function OfferAppointmentModal({
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const nextValue = name === 'phonenumber' ? sanitizeBookingPhone(value) : value;
+    setFormData((prev) => ({ ...prev, [name]: nextValue }));
   };
 
   const selectedOffer = offerOptions.find((offer) => offer.id === formData.offerId);
@@ -148,7 +150,7 @@ export default function OfferAppointmentModal({
                   {offerOptions.map((offer) => (
                     <option key={offer.id} value={offer.id}>
                       {offer.treatment || offer.name}
-                      {offer.offerPriceLabel ? ` — ${offer.offerPriceLabel}` : ''}
+                      {offer.offerPriceLabel ? `: ${offer.offerPriceLabel}` : ''}
                     </option>
                   ))}
                 </select>
@@ -178,6 +180,8 @@ export default function OfferAppointmentModal({
                   value={formData.phonenumber}
                   onChange={handleChange}
                   type="tel"
+                  inputMode="numeric"
+                  maxLength={BOOKING_PHONE_MAX_LENGTH}
                   required
                   placeholder={t('offersPage.modal.enterPhone')}
                   className={`w-full rounded-lg border border-[#DAD8D7] px-4 py-3 text-sm text-[#687276] placeholder-gray-400 sm:text-base ${isRTL ? 'text-right' : 'text-left'}`}

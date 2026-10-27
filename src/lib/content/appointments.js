@@ -1,7 +1,7 @@
 import { getAdminDb, isFirebaseAdminConfigured } from '@/lib/firebase/admin';
 import {
   buildSlotAvailability,
-  doctorHasAvailabilitySchedule,
+  doctorHasBookableUpcomingSchedule,
   formatDateKey,
   formatDateLabel,
   getDateAvailabilityEntry,
@@ -55,7 +55,7 @@ export async function getDoctorAvailableDates(doctorId) {
   const doctor = await getDoctorById(doctorId);
   if (!doctor) throw new Error('Doctor not found');
 
-  if (!doctorHasAvailabilitySchedule(doctor)) {
+  if (!doctorHasBookableUpcomingSchedule(doctor)) {
     return { scheduleMode: 'open', dates: [] };
   }
 
@@ -125,24 +125,28 @@ export async function createAppointment(payload, { source = 'website', read = fa
     date,
     slotIndex,
     slotLabel,
-    patientName,
-    phone,
-    age,
     speciality,
     doctorName,
   } = payload;
 
+  const patientName = String(payload.patientName || '').trim();
+  const phone = String(payload.phone || '').trim();
+  const age = String(payload.age || '').trim();
+
   if (!doctorId) {
     throw new Error('Doctor is required');
   }
+  if (!patientName) throw new Error('Full name is required');
+  if (!phone) throw new Error('Phone number is required');
+  if (!age) throw new Error('Age group is required');
 
   const doctor = await getDoctorById(doctorId);
   if (!doctor) throw new Error('Doctor not found');
 
-  const hasSchedule = doctorHasAvailabilitySchedule(doctor);
+  const hasBookableSchedule = doctorHasBookableUpcomingSchedule(doctor);
   const now = new Date().toISOString();
 
-  if (!hasSchedule) {
+  if (!hasBookableSchedule) {
     const docId = openAppointmentDocId(doctorId);
     await db.collection(COLLECTION).doc(docId).set({
       id: docId,
@@ -151,9 +155,9 @@ export async function createAppointment(payload, { source = 'website', read = fa
       date: '',
       slotIndex: null,
       slotLabel: 'To be confirmed',
-      patientName: patientName || '',
-      phone: phone || '',
-      age: age || '',
+      patientName,
+      phone,
+      age,
       speciality: speciality || '',
       status: 'booked',
       unscheduled: true,
@@ -187,9 +191,9 @@ export async function createAppointment(payload, { source = 'website', read = fa
       date,
       slotIndex: Number(slotIndex),
       slotLabel: slotLabel || slot.label,
-      patientName: patientName || '',
-      phone: phone || '',
-      age: age || '',
+      patientName,
+      phone,
+      age,
       speciality: speciality || '',
       status: 'booked',
       unscheduled: false,
@@ -283,7 +287,7 @@ export async function confirmOfferBooking(id, payload = {}) {
 
   const doctorName = payload.doctorName || doctor.name?.en || '';
   const now = new Date().toISOString();
-  const hasSchedule = doctorHasAvailabilitySchedule(doctor);
+  const hasBookableSchedule = doctorHasBookableUpcomingSchedule(doctor);
 
   let nextData = {
     ...existing,
@@ -301,7 +305,7 @@ export async function confirmOfferBooking(id, payload = {}) {
     updatedAt: now,
   };
 
-  if (!hasSchedule) {
+  if (!hasBookableSchedule) {
     nextData = {
       ...nextData,
       date: '',
