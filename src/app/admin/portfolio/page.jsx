@@ -156,7 +156,7 @@ export default function AdminPortfolioPage() {
                 <tr>
                   <th className="px-4 py-3 font-medium text-[#586971]">Case</th>
                   <th className="px-4 py-3 font-medium text-[#586971]">Category</th>
-                  <th className="px-4 py-3 font-medium text-[#586971]">Media</th>
+                  <th className="px-4 py-3 font-medium text-[#586971]">Image</th>
                   <th className="px-4 py-3 font-medium text-[#586971]">Order</th>
                   <th className="px-4 py-3 font-medium text-[#586971]">Status</th>
                   <th className="px-4 py-3 font-medium text-[#586971]">Actions</th>
@@ -184,8 +184,7 @@ export default function AdminPortfolioPage() {
                         {getPortfolioCategoryLabel(entry.category, 'en') || entry.category}
                       </td>
                       <td className="px-4 py-3 text-[#586971]">
-                        {entry.mediaType === 'video' ? 'Video' : 'Image'}
-                        {entry.beforeImageUrl && entry.afterImageUrl ? ' · Before/After' : ''}
+                        {entry.mediaUrl ? '1080 × 1920' : '—'}
                       </td>
                       <td className="px-4 py-3 text-[#586971]">{entry.order ?? 0}</td>
                       <td className="px-4 py-3">

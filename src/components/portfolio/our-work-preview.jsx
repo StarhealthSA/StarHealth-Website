@@ -28,8 +28,7 @@ export default function OurWorkPreview({ entries = [], settings = null }) {
   const items = useMemo(
     () => entries
       .map((entry) => toPublicPortfolioEntry(entry, language))
-      .filter(Boolean)
-      .filter((entry) => entry.hasBeforeAfter || entry.mediaUrl),
+      .filter(Boolean),
     [entries, language]
   );
 

@@ -8,12 +8,13 @@ import { isPortfolioPublished } from './normalize-portfolio';
 export function toPublicPortfolioEntry(entry, language = 'en') {
   if (!entry || !isPortfolioPublished(entry)) return null;
 
-  const hasBeforeAfter = Boolean(entry.beforeImageUrl && entry.afterImageUrl);
-  const primaryMedia =
+  const mediaUrl =
     entry.mediaUrl
     || entry.afterImageUrl
     || entry.beforeImageUrl
     || '';
+  if (!mediaUrl) return null;
+
   const serviceSlug = entry.serviceSlug || entry.serviceId || '';
 
   return {
@@ -31,11 +32,8 @@ export function toPublicPortfolioEntry(entry, language = 'en') {
     description: getLocalizedText(entry.description, language),
     category: entry.category,
     categoryLabel: getPortfolioCategoryLabel(entry.category, language),
-    mediaType: entry.mediaType === 'video' ? 'video' : 'image',
-    mediaUrl: primaryMedia,
-    beforeImageUrl: entry.beforeImageUrl || '',
-    afterImageUrl: entry.afterImageUrl || '',
-    hasBeforeAfter,
+    mediaType: 'image',
+    mediaUrl,
     altText:
       getLocalizedText(entry.altText, language)
       || getLocalizedText(entry.title, language)
