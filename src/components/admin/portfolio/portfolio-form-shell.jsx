@@ -55,12 +55,12 @@ export default function PortfolioFormShell({ initial, services = [] }) {
     }));
   };
 
-  const handleUpload = async (file, field, folder, label) => {
+  const handleUpload = async (file) => {
     if (!file || isUploading) return;
     try {
       const token = await getIdToken();
-      const url = await uploadFile(file, folder, token, label);
-      updateField(field, url);
+      const url = await uploadFile(file, 'portfolio', token, 'Uploading portfolio image...');
+      updateField('mediaUrl', url);
     } catch (err) {
       setError(err.message);
     }
@@ -90,12 +90,8 @@ export default function PortfolioFormShell({ initial, services = [] }) {
       return;
     }
 
-    const hasMedia = Boolean(
-      form.mediaUrl
-      || (form.beforeImageUrl && form.afterImageUrl)
-    );
-    if (!hasMedia) {
-      setError('Add a main image/video, or both before and after images.');
+    if (!form.mediaUrl?.trim()) {
+      setError('Please upload a portfolio image (1080 × 1920).');
       return;
     }
 
@@ -121,7 +117,10 @@ export default function PortfolioFormShell({ initial, services = [] }) {
       serviceName,
       doctorId: '',
       doctorName: { en: '', ar: '' },
-      mediaType: form.mediaType === 'video' ? 'video' : 'image',
+      mediaType: 'image',
+      mediaUrl: form.mediaUrl.trim(),
+      beforeImageUrl: '',
+      afterImageUrl: '',
     };
 
     try {
@@ -199,23 +198,12 @@ export default function PortfolioFormShell({ initial, services = [] }) {
           multiline
         />
         <LocalizedInput
-          label="Image / video alt text"
+          label="Image alt text"
           value={form.altText}
           onChange={(v) => updateField('altText', v)}
         />
 
-        <div className="grid gap-4 md:grid-cols-3">
-          <label className="block">
-            <span className="text-sm font-medium text-[#586971]">Media type</span>
-            <select
-              value={form.mediaType}
-              onChange={(e) => updateField('mediaType', e.target.value)}
-              className="mt-1 w-full rounded-lg border border-[#d7e6e2] px-3 py-2"
-            >
-              <option value="image">Image</option>
-              <option value="video">Video</option>
-            </select>
-          </label>
+        <div className="grid gap-4 md:grid-cols-2">
           <label className="block">
             <span className="text-sm font-medium text-[#586971]">Status</span>
             <select
@@ -259,22 +247,15 @@ export default function PortfolioFormShell({ initial, services = [] }) {
         </label>
 
         <div>
-          <span className="text-sm font-medium text-[#586971]">
-            Main {form.mediaType === 'video' ? 'video' : 'image'}
-          </span>
+          <span className="text-sm font-medium text-[#586971]">Case image</span>
           <p className="mt-0.5 text-xs text-[#586971]">
-            Upload a file or paste an approved media URL below.
+            Recommended: 1080 × 1920 px (9:16). Used on homepage carousel, listing, and detail pages.
           </p>
           <input
             type="file"
-            accept={form.mediaType === 'video' ? 'video/mp4,video/webm,video/quicktime' : 'image/*'}
+            accept="image/*"
             disabled={isUploading}
-            onChange={(e) => handleUpload(
-              e.target.files?.[0],
-              'mediaUrl',
-              form.mediaType === 'video' ? 'portfolio/videos' : 'portfolio',
-              form.mediaType === 'video' ? 'Uploading portfolio video...' : 'Uploading portfolio image...'
-            )}
+            onChange={(e) => handleUpload(e.target.files?.[0])}
             className="mt-2 block w-full text-sm"
           />
           <input
@@ -284,81 +265,15 @@ export default function PortfolioFormShell({ initial, services = [] }) {
             placeholder="https://..."
             className="mt-2 w-full rounded-lg border border-[#d7e6e2] px-3 py-2 text-sm"
           />
-          {form.mediaType === 'image' && form.mediaUrl ? (
-            <div className="mt-3">
-              <AdminImagePreview src={form.mediaUrl} alt="Portfolio media" />
+          {form.mediaUrl ? (
+            <div className="mt-3 inline-block overflow-hidden rounded-lg border border-[#d7e6e2] bg-[#f4f8f7]">
+              <AdminImagePreview
+                src={form.mediaUrl}
+                alt="Portfolio case"
+                imageClassName="h-36 w-24 rounded-lg object-cover"
+              />
             </div>
           ) : null}
-          {form.mediaType === 'video' && form.mediaUrl ? (
-            <video
-              src={form.mediaUrl}
-              controls
-              className="mt-3 max-h-56 w-full rounded-xl bg-black object-contain"
-            >
-              <track kind="captions" />
-            </video>
-          ) : null}
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-2">
-          <div>
-            <span className="text-sm font-medium text-[#586971]">Before image (optional)</span>
-            <p className="mt-0.5 text-xs text-[#586971]">
-              Use with After for before-and-after cases.
-            </p>
-            <input
-              type="file"
-              accept="image/*"
-              disabled={isUploading}
-              onChange={(e) => handleUpload(
-                e.target.files?.[0],
-                'beforeImageUrl',
-                'portfolio/before-after',
-                'Uploading before image...'
-              )}
-              className="mt-2 block w-full text-sm"
-            />
-            <input
-              type="url"
-              value={form.beforeImageUrl}
-              onChange={(e) => updateField('beforeImageUrl', e.target.value)}
-              placeholder="https://..."
-              className="mt-2 w-full rounded-lg border border-[#d7e6e2] px-3 py-2 text-sm"
-            />
-            {form.beforeImageUrl ? (
-              <div className="mt-3">
-                <AdminImagePreview src={form.beforeImageUrl} alt="Before" />
-              </div>
-            ) : null}
-          </div>
-
-          <div>
-            <span className="text-sm font-medium text-[#586971]">After image (optional)</span>
-            <input
-              type="file"
-              accept="image/*"
-              disabled={isUploading}
-              onChange={(e) => handleUpload(
-                e.target.files?.[0],
-                'afterImageUrl',
-                'portfolio/before-after',
-                'Uploading after image...'
-              )}
-              className="mt-2 block w-full text-sm"
-            />
-            <input
-              type="url"
-              value={form.afterImageUrl}
-              onChange={(e) => updateField('afterImageUrl', e.target.value)}
-              placeholder="https://..."
-              className="mt-2 w-full rounded-lg border border-[#d7e6e2] px-3 py-2 text-sm"
-            />
-            {form.afterImageUrl ? (
-              <div className="mt-3">
-                <AdminImagePreview src={form.afterImageUrl} alt="After" />
-              </div>
-            ) : null}
-          </div>
         </div>
       </div>
 

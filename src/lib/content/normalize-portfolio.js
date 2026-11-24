@@ -14,7 +14,15 @@ export function isPortfolioPublished(entry) {
 
 export function normalizePortfolioEntry(raw = {}) {
   const defaults = createEmptyPortfolioEntry();
-  const mediaType = raw.mediaType === 'video' ? 'video' : 'image';
+
+  // Prefer mediaUrl; fall back to legacy before/after fields for older records.
+  const mediaUrl =
+    raw.mediaUrl
+    || raw.imageUrl
+    || raw.featuredImageUrl
+    || raw.afterImageUrl
+    || raw.beforeImageUrl
+    || '';
 
   return {
     ...defaults,
@@ -28,10 +36,8 @@ export function normalizePortfolioEntry(raw = {}) {
     doctorName: normalizeLocalized(raw.doctorName || raw.doctor),
     description: normalizeLocalized(raw.description),
     category: String(raw.category || defaults.category).trim().toLowerCase() || defaults.category,
-    mediaType,
-    mediaUrl: raw.mediaUrl || raw.imageUrl || raw.featuredImageUrl || '',
-    beforeImageUrl: raw.beforeImageUrl || '',
-    afterImageUrl: raw.afterImageUrl || '',
+    mediaType: 'image',
+    mediaUrl,
     altText: normalizeLocalized(raw.altText || raw.alt),
     status: raw.status ?? (raw.published === false ? 'draft' : 'active'),
     featured: Boolean(raw.featured),

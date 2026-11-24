@@ -1,14 +1,15 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Reveal from '@/components/reveal';
-import PortfolioCaseCarousel from '@/components/portfolio/portfolio-case-carousel';
+import Reveal, { staggerDelay } from '@/components/reveal';
+import PortfolioCase from '@/components/portfolio/portfolio-case';
 import { PORTFOLIO_CATEGORIES } from '@/lib/content/portfolio-categories';
 import { toPublicPortfolioEntry } from '@/lib/content/portfolio-public';
 
 export default function PortfolioListing({ entries = [] }) {
   const { t, i18n } = useTranslation();
+  const [activeCategory, setActiveCategory] = useState('all');
 
   const items = useMemo(
     () => entries
@@ -17,38 +18,27 @@ export default function PortfolioListing({ entries = [] }) {
     [entries, i18n.language]
   );
 
-  const groups = useMemo(() => {
-    const byCategory = new Map();
-    items.forEach((item) => {
-      const key = item.category || 'other';
-      if (!byCategory.has(key)) byCategory.set(key, []);
-      byCategory.get(key).push(item);
-    });
-
-    const ordered = [];
-    PORTFOLIO_CATEGORIES.forEach((category) => {
-      const list = byCategory.get(category.id);
-      if (!list?.length) return;
-      ordered.push({
+  const filters = useMemo(() => {
+    const present = new Set(items.map((item) => item.category).filter(Boolean));
+    const categoryFilters = PORTFOLIO_CATEGORIES
+      .filter((category) => present.has(category.id))
+      .map((category) => ({
         id: category.id,
         label: i18n.language === 'ar'
           ? (category.label?.ar || category.label?.en || category.id)
           : (category.label?.en || category.id),
-        items: list,
-      });
-      byCategory.delete(category.id);
-    });
+      }));
 
-    byCategory.forEach((list, id) => {
-      ordered.push({
-        id,
-        label: list[0]?.categoryLabel || id,
-        items: list,
-      });
-    });
+    return [
+      { id: 'all', label: t('portfolioPage.all') },
+      ...categoryFilters,
+    ];
+  }, [items, i18n.language, t]);
 
-    return ordered;
-  }, [items, i18n.language]);
+  const visibleItems = useMemo(() => {
+    if (activeCategory === 'all') return items;
+    return items.filter((item) => item.category === activeCategory);
+  }, [items, activeCategory]);
 
   return (
     <section className="portfolio-page" aria-labelledby="portfolio-page-title">
@@ -77,22 +67,46 @@ export default function PortfolioListing({ entries = [] }) {
           {items.length === 0 ? (
             <p className="portfolio-page__empty">{t('portfolioPage.empty')}</p>
           ) : (
-            groups.map((group) => (
-              <div key={group.id} className="portfolio-page__group">
+            <>
+              {filters.length > 1 ? (
                 <Reveal>
-                  <div className="portfolio-page__group-head">
-                    <h2 className="portfolio-page__group-title">{group.label}</h2>
-                    <span className="portfolio-page__group-count">
-                      {t('portfolioPage.caseCount', { count: group.items.length })}
-                    </span>
+                  <div
+                    className="portfolio-page__filters"
+                    role="tablist"
+                    aria-label={t('portfolioPage.categories')}
+                  >
+                    {filters.map((filter) => (
+                      <button
+                        key={filter.id}
+                        type="button"
+                        role="tab"
+                        aria-selected={activeCategory === filter.id}
+                        className={
+                          activeCategory === filter.id
+                            ? 'portfolio-page__filter is-active'
+                            : 'portfolio-page__filter'
+                        }
+                        onClick={() => setActiveCategory(filter.id)}
+                      >
+                        {filter.label}
+                      </button>
+                    ))}
                   </div>
                 </Reveal>
+              ) : null}
 
-                <Reveal delay={60}>
-                  <PortfolioCaseCarousel items={group.items} />
-                </Reveal>
-              </div>
-            ))
+              {visibleItems.length === 0 ? (
+                <p className="portfolio-page__empty">{t('portfolioPage.empty')}</p>
+              ) : (
+                <div className="portfolio-gallery">
+                  {visibleItems.map((entry, index) => (
+                    <Reveal key={entry.id} delay={staggerDelay(index, 40)}>
+                      <PortfolioCase entry={entry} />
+                    </Reveal>
+                  ))}
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>

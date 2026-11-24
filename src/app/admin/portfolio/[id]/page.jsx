@@ -68,7 +68,7 @@ export default function AdminPortfolioEditPage() {
         {isNew ? 'Add portfolio case' : 'Edit portfolio case'}
       </h1>
       <p className="mt-1 mb-6 text-sm text-[#586971]">
-        Set case media, before/after images, bilingual content, service, and homepage featuring.
+        Upload a 1080 × 1920 case image, bilingual content, service, and homepage featuring.
       </p>
       <PortfolioFormShell
         initial={isNew ? null : entry}

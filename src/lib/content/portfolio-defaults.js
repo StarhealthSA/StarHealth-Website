@@ -13,8 +13,6 @@ export function createEmptyPortfolioEntry() {
     category: 'dental',
     mediaType: 'image',
     mediaUrl: '',
-    beforeImageUrl: '',
-    afterImageUrl: '',
     altText: emptyLocalized(),
     status: 'draft',
     featured: false,

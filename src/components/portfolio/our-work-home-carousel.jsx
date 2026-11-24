@@ -17,16 +17,8 @@ function getPerView(width) {
 }
 
 function TeaserSlide({ entry, inert = false }) {
-  const { t } = useTranslation();
   const href = entry.serviceHref || '/our-work';
-  const beforeSrc = entry.beforeImageUrl || '';
-  const afterSrc = entry.afterImageUrl || '';
-  const hasPair = Boolean(beforeSrc && afterSrc);
-  const singleSrc =
-    afterSrc
-    || beforeSrc
-    || (entry.mediaType === 'image' ? entry.mediaUrl : '')
-    || '';
+  const imageSrc = entry.mediaUrl || '';
   const label = entry.title || entry.categoryLabel || '';
 
   return (
@@ -34,51 +26,18 @@ function TeaserSlide({ entry, inert = false }) {
       href={href}
       tabIndex={inert ? -1 : 0}
       aria-hidden={inert || undefined}
-      className={`our-work-home-carousel__tile${hasPair ? ' our-work-home-carousel__tile--pair' : ''}`}
-      aria-label={
-        hasPair
-          ? `${label}: ${t('portfolioPage.before')} / ${t('portfolioPage.after')}`
-          : label
-      }
+      className="our-work-home-carousel__tile"
+      aria-label={label}
       draggable={false}
     >
       {label ? (
         <p className="our-work-home-carousel__caption">{label}</p>
       ) : null}
 
-      {hasPair ? (
-        <div className="our-work-home-carousel__pair">
-          <figure className="our-work-home-carousel__half">
-            <img
-              src={beforeSrc}
-              alt=""
-              className="our-work-home-carousel__media"
-              loading="lazy"
-              decoding="async"
-              draggable={false}
-            />
-            <figcaption className="our-work-home-carousel__badge">
-              {t('portfolioPage.before')}
-            </figcaption>
-          </figure>
-          <figure className="our-work-home-carousel__half">
-            <img
-              src={afterSrc}
-              alt=""
-              className="our-work-home-carousel__media"
-              loading="lazy"
-              decoding="async"
-              draggable={false}
-            />
-            <figcaption className="our-work-home-carousel__badge our-work-home-carousel__badge--after">
-              {t('portfolioPage.after')}
-            </figcaption>
-          </figure>
-        </div>
-      ) : singleSrc ? (
+      {imageSrc ? (
         <div className="our-work-home-carousel__single">
           <img
-            src={singleSrc}
+            src={imageSrc}
             alt=""
             className="our-work-home-carousel__media"
             loading="lazy"
@@ -94,7 +53,7 @@ function TeaserSlide({ entry, inert = false }) {
 }
 
 /**
- * Homepage Our Work carousel — multi-card before/after teasers.
+ * Homepage Our Work carousel — 9:16 case image teasers.
  */
 export default function OurWorkHomeCarousel({
   items = [],
