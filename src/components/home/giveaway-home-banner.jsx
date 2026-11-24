@@ -6,8 +6,8 @@ import NavLink from '@/components/nav_link';
 import GiveawayCountdown from '@/components/giveaway/giveaway-countdown';
 import { useTranslation } from 'react-i18next';
 import { GIVEAWAY } from '@/lib/giveaway/config';
-import bannerImageEn from '@/assets/giveaway/hero-iphones-home.png';
-import bannerImageAr from '@/assets/giveaway/arabic-home-banner.png';
+import bannerImageEn from '@/assets/giveaway/iphone-burgundy-english.png';
+import bannerImageAr from '@/assets/giveaway/iphone-burgundy-arabic.png';
 
 function assetUrl(asset) {
   return typeof asset === 'string' ? asset : asset?.src || '';
